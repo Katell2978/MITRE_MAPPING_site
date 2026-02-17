@@ -1,0 +1,16 @@
+body { font-family: system-ui, Segoe UI, Arial, sans-serif; margin: 0; background:#0b0f19; color:#e6e6e6; }
+.container { max-width: 900px; margin: 40px auto; padding: 0 16px; }
+h1 { margin-bottom: 8px; }
+.sub { opacity: 0.85; margin-top: 0; }
+.card { background: #121a2b; border: 1px solid #22304d; border-radius: 12px; padding: 16px; }
+label { display:block; margin-bottom: 6px; }
+input { width: min(420px, 100%); padding: 10px; border-radius: 8px; border:1px solid #2a3b5e; background:#0f1524; color:#fff; }
+button { margin-top: 10px; margin-right: 8px; padding: 10px 14px; border-radius: 8px; border: 1px solid #2a3b5e; background:#2a64ff; color:#fff; cursor:pointer; }
+button.secondary { background:#1b263d; }
+.status { margin-top: 12px; opacity: 0.9; }
+.results { margin-top: 14px; }
+.result-item { padding: 10px; border: 1px solid #22304d; border-radius: 10px; margin-bottom: 10px; background:#0f1524; }
+.result-item a { color:#78a6ff; text-decoration:none; }
+.result-item a:hover { text-decoration:underline; }
+.footer { margin-top: 18px; opacity: 0.75; }
+code { background:#0f1524; padding:2px 6px; border-radius:6px; border:1px solid #22304d; }
