@@ -61,10 +61,11 @@
 
     <script>
         // URLs des bases de données de Galeax et MITRE
-        const CAPEC_DB_URL = "https://raw.githubusercontent.com/Galeax/CVE2CAPEC/main/resources/capec_db.json";
-        const CWE_DB_URL = "https://raw.githubusercontent.com/Galeax/CVE2CAPEC/main/resources/cwe_db.json";
+        //const CAPEC_DB_URL = "https://raw.githubusercontent.com/Galeax/CVE2CAPEC/main/resources/capec_db.json";
+        //const CWE_DB_URL = "https://raw.githubusercontent.com/Galeax/CVE2CAPEC/main/resources/cwe_db.json";
         // Note: EMB3D est un dataset récent, nous utilisons ici un mock ou le lien STIX si disponible
         const EMB3D_STIX_URL = "https://emb3d.mitre.org/data/emb3d-stix-v2.0.1.json";
+        //to moi :  genere les fichier sur le repo 
 
         async function performMapping() {
             let input = document.getElementById('cweInput').value.trim().toUpperCase();
