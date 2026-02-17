@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>EMB3D – Recherche CWE → TID</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Recherche CWE → TID (MITRE EMB3D)</h1>
+    <p class="sub">
+      Saisis une CWE (ex: <code>CWE-119</code>) pour obtenir les Threat IDs EMB3D (TID-xxx).
+    </p>
+
+    <section class="card">
+      <label for="cweInput">CWE :</label>
+      <input id="cweInput" placeholder="CWE-119" autocomplete="off" />
+      <button id="searchBtn">Rechercher</button>
+      <button id="clearBtn" class="secondary">Effacer</button>
+
+      <div id="status" class="status"></div>
+      <div id="results" class="results"></div>
+    </section>
+
+    <footer class="footer">
+      <small>
+        Données : EMB3D STIX 2.1 (MITRE). Les CWE proviennent du champ <code>x_mitre_emb3d_threat_CWEs</code>. [1](https://mindmapai.app/mind-mapping/cartographie-des-menaces-avec-mitre-attck)[2](https://cyber-commonplace.dev/mitre-attck-mapping-process/)
+      </small>
+    </footer>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
