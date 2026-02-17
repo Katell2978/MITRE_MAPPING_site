@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mitre Mapping by Katell</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0f172a; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        .card { background-color: #1e293b; border: 1px solid #334155; border-radius: 0.75rem; padding: 1.5rem; }
+        .accent-color { color: #38bdf8; }
+        .btn-primary { background-color: #0284c7; transition: all 0.2s; }
+        .btn-primary:hover { background-color: #0369a1; }
+        input { background-color: #334155; border: 1px solid #475569; color: white; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold mb-2 accent-color">Mitre Mapping by Katell</h1>
+            <p class="text-slate-400">Mapping intelligent entre CWE, ATT&CK (TTP) et EMB3D (TID)</p>
+        </header>
+
+        <div class="card mb-8 text-center">
+            <label for="cweInput" class="block text-sm font-medium mb-2">Entrez un code CWE (ex: 79, 121, 287)</label>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <input type="text" id="cweInput" placeholder="CWE-..." class="rounded px-4 py-2 w-full sm:w-64 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                <button onclick="performMapping()" class="btn-primary text-white font-bold py-2 px-6 rounded shadow-lg">
+                    Générer le Mapping
+                </button>
+            </div>
+        </div>
+
+        <div id="results" class="grid grid-cols-1 md:grid-cols-2 gap-6 hidden">
+            
+            <div class="card border-l-4 border-l-sky-500">
+                <h2 class="text-xl font-bold mb-4 flex items-center">
+                    <span class="mr-2">⚔️</span> MITRE ATT&CK (TTP)
+                </h2>
+                <div id="attackResults" class="space-y-3 text-sm">
+                    <p class="text-slate-500 italic">Recherche en cours...</p>
+                </div>
+            </div>
+
+            <div class="card border-l-4 border-l-emerald-500">
+                <h2 class="text-xl font-bold mb-4 flex items-center">
+                    <span class="mr-2">🛡️</span> MITRE EMB3D (TID)
+                </h2>
+                <div id="emb3dResults" class="space-y-3 text-sm">
+                    <p class="text-slate-500 italic">Recherche en cours...</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="noResult" class="text-center text-slate-500 hidden mt-10">
+            Aucun mapping trouvé pour ce CWE.
+        </div>
+    </div>
+
+    <script>
+        // URLs des bases de données de Galeax et MITRE
+        const CAPEC_DB_URL = "https://raw.githubusercontent.com/Galeax/CVE2CAPEC/main/resources/capec_db.json";
+        const CWE_DB_URL = "https://raw.githubusercontent.com/Galeax/CVE2CAPEC/main/resources/cwe_db.json";
+        // Note: EMB3D est un dataset récent, nous utilisons ici un mock ou le lien STIX si disponible
+        const EMB3D_STIX_URL = "https://emb3d.mitre.org/data/emb3d-stix-v2.0.1.json";
+
+        async function performMapping() {
+            let input = document.getElementById('cweInput').value.trim().toUpperCase();
+            if (!input) return;
+            
+            // Nettoyage de l'input (CWE-79 -> 79)
+            const cweId = input.replace('CWE-', '');
+            
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('noResult').classList.add('hidden');
+            document.getElementById('attackResults').innerHTML = "Chargement...";
+            document.getElementById('emb3dResults').innerHTML = "Chargement...";
+
+            try {
+                // 1. Récupération des données ATT&CK (via CAPEC)
+                const cweResponse = await fetch(CWE_DB_URL);
+                const cweData = await cweResponse.json();
+                
+                const capecResponse = await fetch(CAPEC_DB_URL);
+                const capecData = await capecResponse.json();
+
+                // Trouver les CAPECs liés à ce CWE
+                let relatedCapecs = [];
+                // Dans le format de Galeax, cwe_db contient les mappings directs
+                if (cweData[cweId]) {
+                    relatedCapecs = cweData[cweId]; // Liste d'IDs CAPEC
+                }
+
+                let attackHtml = "";
+                let techniquesFound = new Set();
+
+                relatedCapecs.forEach(id => {
+                    const capec = capecData[id];
+                    if (capec && capec.techniques) {
+                        capec.techniques.forEach(tech => {
+                            techniquesFound.add(`${tech.ID}: ${tech.Name}`);
+                        });
+                    }
+                });
+
+                if (techniquesFound.size > 0) {
+                    techniquesFound.forEach(t => {
+                        attackHtml += `<div class="p-2 bg-slate-700 rounded border border-slate-600">
+                            <span class="font-mono text-sky-400 font-bold">${t.split(':')[0]}</span> 
+                            <span class="ml-2">${t.split(':')[1]}</span>
+                        </div>`;
+                    });
+                } else {
+                    attackHtml = "<p class='text-slate-500'>Aucune technique ATT&CK directe trouvée via CAPEC.</p>";
+                }
+                document.getElementById('attackResults').innerHTML = attackHtml;
+
+                // 2. Récupération des données EMB3D
+                // Pour EMB3D, comme le fichier STIX peut être gros ou bloqué par CORS, 
+                // on implémente une logique de filtrage sur le fichier JSON officiel.
+                const embResponse = await fetch(EMB3D_STIX_URL);
+                const embData = await embResponse.json();
+                
+                let emb3dHtml = "";
+                let foundTids = 0;
+
+                // Parcourir les objets de type 'vulnerability' (Threats dans EMB3D)
+                embData.objects.forEach(obj => {
+                    if (obj.type === 'vulnerability' && obj.external_references) {
+                        const hasCwe = obj.external_references.find(ref => 
+                            ref.source_name === 'cwe' && ref.external_id === `CWE-${cweId}`
+                        );
+                        
+                        if (hasCwe) {
+                            const tid = obj.external_references.find(ref => ref.source_name === 'mitre-emb3d')?.external_id || "TID-???";
+                            foundTids++;
+                            emb3dHtml += `<div class="p-2 bg-slate-700 rounded border border-slate-600">
+                                <span class="font-mono text-emerald-400 font-bold">${tid}</span> 
+                                <span class="ml-2">${obj.name}</span>
+                                <p class="text-xs text-slate-400 mt-1">${obj.description ? obj.description.substring(0, 100) + '...' : ''}</p>
+                            </div>`;
+                        }
+                    }
+                });
+
+                if (foundTids === 0) {
+                    emb3dHtml = "<p class='text-slate-500'>Aucune menace EMB3D (systèmes embarqués) répertoriée pour ce CWE.</p>";
+                }
+                document.getElementById('emb3dResults').innerHTML = emb3dHtml;
+
+                if (techniquesFound.size === 0 && foundTids === 0) {
+                    document.getElementById('noResult').classList.remove('hidden');
+                }
+
+            } catch (error) {
+                console.error(error);
+                document.getElementById('attackResults').innerHTML = "<span class='text-red-400'>Erreur lors du chargement des données.</span>";
+                document.getElementById('emb3dResults').innerHTML = "<span class='text-red-400'>Erreur lors du chargement des données EMB3D.</span>";
+            }
+        }
+    </script>
+</body>
+</html>
