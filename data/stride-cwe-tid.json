@@ -1,0 +1,102 @@
+{
+  "Spoofing": [
+    {
+      "cwe": "CWE-287",
+      "cwe_description": "Improper Authentication. The system does not correctly verify the identity of a user or component.",
+      "tids": [
+        {
+          "tid": "TID-310",
+          "tid_description": "Remote service accessible without proper authentication."
+        },
+        {
+          "tid": "TID-328",
+          "tid_description": "Use of hard-coded credentials enabling identity spoofing."
+        }
+      ]
+    }
+  ],
+
+  "Tampering": [
+    {
+      "cwe": "CWE-1247",
+      "cwe_description": "Improper Control of Hardware Security Features. Hardware fault injection can alter execution flow.",
+      "tids": [
+        {
+          "tid": "TID-105",
+          "tid_description": "Voltage or clock glitching to bypass security checks."
+        }
+      ]
+    },
+    {
+      "cwe": "CWE-693",
+      "cwe_description": "Protection Mechanism Failure. Security controls are missing or ineffective.",
+      "tids": [
+        {
+          "tid": "TID-201",
+          "tid_description": "Bootloader modification due to missing integrity protection."
+        }
+      ]
+    }
+  ],
+
+  "Information Disclosure": [
+    {
+      "cwe": "CWE-311",
+      "cwe_description": "Missing Encryption of Sensitive Data. Data is stored or transmitted in clear text.",
+      "tids": [
+        {
+          "tid": "TID-106",
+          "tid_description": "Data bus interception revealing sensitive information."
+        },
+        {
+          "tid": "TID-108",
+          "tid_description": "Extraction of secrets from ROM or NVRAM."
+        }
+      ]
+    },
+    {
+      "cwe": "CWE-1300",
+      "cwe_description": "Improper Protection of Physical Side Channels.",
+      "tids": [
+        {
+          "tid": "TID-101",
+          "tid_description": "Power consumption analysis to extract cryptographic secrets."
+        },
+        {
+          "tid": "TID-102",
+          "tid_description": "Electromagnetic analysis leaking sensitive data."
+        }
+      ]
+    }
+  ],
+
+  "Denial of Service": [
+    {
+      "cwe": "CWE-400",
+      "cwe_description": "Uncontrolled Resource Consumption leading to service unavailability.",
+      "tids": [
+        {
+          "tid": "TID-401",
+          "tid_description": "Flooding requests causing ECU resource exhaustion."
+        }
+      ]
+    }
+  ],
+
+  "Elevation of Privilege": [
+    {
+      "cwe": "CWE-1191",
+      "cwe_description": "On-Chip Debug and Test Interface With Improper Access Control.",
+      "tids": [
+        {
+          "tid": "TID-115",
+          "tid_description": "Unauthorized access via JTAG or SWD interface."
+        },
+        {
+          "tid": "TID-119",
+          "tid_description": "Latent debug port enabling memory or code manipulation."
+        }
+      ]
+    }
+  ]
+}
