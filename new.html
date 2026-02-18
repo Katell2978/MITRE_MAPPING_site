@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<title>Technique / CAPEC / CWE – Graph</title>
+
+https://d3js.org/d3.v7.min.jsscript>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    overflow: hidden;
+  }
+  #toolbar {
+    padding: 10px;
+    background: #222;
+    color: white;
+  }
+  select {
+    padding: 5px;
+    margin-left: 10px;
+  }
+  svg {
+    width: 100vw;
+    height: calc(100vh - 50px);
+  }
+</style>
+</head>
+
+<body>
+
+<div id="toolbar">
+  Élément pivot :
+  <select id="pivot">
+    <option value="technique">Technique</option>
+    <option value="capec">CAPEC</option>
+    <option value="cwe">CWE</option>
+  </select>
+</div>
+
+<svg></svg>
+
+<script>
+const width = window.innerWidth;
+const height = window.innerHeight - 50;
+
+const svg = d3.select("svg");
+const g = svg.append("g");
+
+svg.call(
+  d3.zoom()
+    .scaleExtent([0.1, 5])
+    .on("zoom", e => g.attr("transform", e.transform))
+);
+
+const color = {
+  technique: "#4da6ff",
+  capec: "#ff9933",
+  cwe: "#ff4d4d"
+};
+
+Promise.all([
+  fetch("data/techniques_association.json").then(r => r.json()),
+  fetch("data/techniques_db.json").then(r => r.json()),
+  fetch("data/capec_db.json").then(r => r.json()),
+  fetch("data/cwe_db.json").then(r => r.json())
+]).then(init);
+
+function init([assoc, techniques, capec, cwe]) {
+  document.getElementById("pivot").addEventListener("change", e => {
+    buildGraph(e.target.value, assoc, techniques, capec, cwe);
+  });
+
+  buildGraph("technique", assoc, techniques, capec, cwe);
+}
+
+function buildGraph(pivot, assoc, techniques, capec, cwe) {
+  g.selectAll("*").remove();
+
+  const nodes = new Map();
+  const links = [];
+
+  function addNode(id, type, label) {
+    if (!nodes.has(id)) {
+      nodes.set(id, { id, type, label });
+    }
+  }
+
+  function addLink(source, target) {
+    links.push({ source, target });
+  }
+
+  Object.entries(assoc).forEach(([techId, map]) => {
+    if (pivot === "technique") addNode("T" + techId, "technique", techId);
+
+    ["mobile", "ics"].forEach(domain => {
+      const capecId = map[domain];
+      if (capecId) {
+        addNode("C" + capecId, "capec", "CAPEC-" + capecId);
+        addLink("T" + techId, "C" + capecId);
+      }
+    });
+  });
+
+  Object.entries(cwe).forEach(([cweId, obj]) => {
+    addNode("W" + cweId, "cwe", "CWE-" + cweId);
+    (obj.RelatedAttackPatterns || []).forEach(capecId => {
+      addNode("C" + capecId, "capec", "CAPEC-" + capecId);
+      addLink("C" + capecId, "W" + cweId);
+    });
+  });
+
+  const simulation = d3.forceSimulation([...nodes.values()])
+    .force("link", d3.forceLink(links).id(d => d.id).distance(80))
+    .force("charge", d3.forceManyBody().strength(-300))
+    .force("center", d3.forceCenter(width / 2, height / 2));
+
+  const link = g.selectAll("line")
+    .data(links)
+    .enter()
+    .append("line")
+    .attr("stroke", "#aaa");
+
+  const node = g.selectAll("circle")
+    .data([...nodes.values()])
+    .enter()
+    .append("circle")
+    .attr("r", 8)
+    .attr("fill", d => color[d.type])
+    .call(d3.drag()
+      .on("start", dragStart)
+      .on("drag", dragged)
+      .on("end", dragEnd)
+    );
+
+  node.append("title").text(d => d.label);
+
+  simulation.on("tick", () => {
+    link
+      .attr("x1", d => d.source.x)
+      .attr("y1", d => d.source.y)
+      .attr("x2", d => d.target.x)
+      .attr("y2", d => d.target.y);
+
+    node
+      .attr("cx", d => d.x)
+      .attr("cy", d => d.y);
+  });
+
+  function dragStart(event) {
+    if (!event.active) simulation.alphaTarget(0.3).restart();
+    event.subject.fx = event.subject.x;
+    event.subject.fy = event.subject.y;
+  }
+
+  function dragged(event) {
+    event.subject.fx = event.x;
+    event.subject.fy = event.y;
+  }
+
+  function dragEnd(event) {
+    if (!event.active) simulation.alphaTarget(0);
+    event.subject.fx = null;
+    event.subject.fy = null;
+  }
+}
+</script>
+
+</body>
+</html>
