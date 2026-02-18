@@ -10,14 +10,14 @@
       margin: 2rem;
       background: #f8f9fa;
     }
-    h1 {
-      color: #222;
-    }
+    h1 { color: #222; }
+
     select, button {
       padding: 8px;
       font-size: 1rem;
       margin-right: 8px;
     }
+
     .card {
       background: #fff;
       padding: 1rem;
@@ -25,12 +25,9 @@
       border-left: 5px solid #0078d4;
       box-shadow: 0 2px 4px rgba(0,0,0,.1);
     }
-    ul {
-      margin-top: 0.5rem;
-    }
-    li {
-      margin-bottom: 0.3rem;
-    }
+
+    ul { margin-top: 0.5rem; }
+    li { margin-bottom: 0.4rem; }
   </style>
 </head>
 
@@ -39,8 +36,7 @@
 <h1>STRIDE → CWE Mapping (MITRE EMB3D)</h1>
 
 <p>
-Sélectionne une catégorie <strong>STRIDE</strong> pour afficher les
-<strong>CWE associées</strong>.
+Sélectionne un <strong>STRIDE</strong> pour afficher les <strong>CWE associées</strong>.
 </p>
 
 <select id="strideSelect">
@@ -57,16 +53,20 @@ Sélectionne une catégorie <strong>STRIDE</strong> pour afficher les
 
 <div id="results"></div>
 
-<!-- ✅ Chargement des données -->
+<!-- ✅ CHARGEMENT CORRECT DES DONNÉES -->
 <script src="data/data.js"></script>
 
+<!-- ✅ LOGIQUE DE RECHERCHE -->
 <script>
 function searchByStride() {
   const selectedStride = document.getElementById("strideSelect").value;
   const results = document.getElementById("results");
   results.innerHTML = "";
 
-  if (!selectedStride) return;
+  if (!selectedStride) {
+    results.innerHTML = "<p>Veuillez sélectionner un STRIDE.</p>";
+    return;
+  }
 
   const matchingCWEs = Object.entries(CWE_DATA)
     .filter(([_, data]) => data.stride.includes(selectedStride));
