@@ -2,32 +2,64 @@ name: Build EMB3D CWE→TID mapping
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
   workflow_dispatch: {}
 
 permissions:
   contents: write
 
 jobs:
-  build:
+  build-mapping:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
+      - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Generate mapping
+      # (Optionnel) Affiche la version python
+      - name: Python version
+        run: python --version
+
+      - name: Generate mapping JSON
         run: |
           python build/generate_mapping.py
+          test -f data/cwe_to_tid.json
 
-      - name: Commit generated JSON
+      - name: Show diff (debug)
         run: |
+          git status
+          git diff -- data/cwe_to_tid.json || true
+
+      - name: Commit & push if changed
+        run: |
+          # Empêche les boucles: si le dernier commit vient du bot, on ne recommit pas
+          LAST_AUTHOR="$(git log -1 --pretty=format:'%an')"
+          echo "Last author: $LAST_AUTHOR"
+          if [ "$LAST_AUTHOR" = "github-actions[bot]" ]; then
+            echo "Last commit is from github-actions bot; skipping commit to avoid loop."
+            exit 0
+          fi
+
+          # Ajouter le fichier généré
+          git add data/cwe_to_tid.json
+
+          # S'il n'y a aucun changement, on s'arrête proprement
+          if git diff --cached --quiet; then
+            echo "No changes in data/cwe_to_tid.json"
+            exit 0
+          fi
+
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/cwe_to_tid.json
-          git commit -m "Update cwe_to_tid.json" || echo "No changes"
+
+          git commit -m "chore(data): update EMB3D cwe_to_tid.json [skip ci]"
           git push
+``
