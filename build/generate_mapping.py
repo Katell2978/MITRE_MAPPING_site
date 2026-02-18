@@ -5,9 +5,7 @@ import urllib.request
 
 # URL officielle (STIX EMB3D v2.0.1)
 # La page Data indique que EMB3D est dispo en STIX 2.1 et détaille le champ CWE dans le Threat. [1](https://mindmapai.app/mind-mapping/cartographie-des-menaces-avec-mitre-attck)
-EMB3D_STIX_URL = "https://emb3d.mitre.org/assets/stix/emb3d-stix-v2.0.1.json"
-
-TID_RE = re.compile(r"\bTID-\d+\b")
+EMB3D_STIX_URL = "https://emb3d.mitre.org/assets/emb3d-stix-v2.0.1.json" 
 CWE_RE = re.compile(r"\bCWE-\d+\b", re.IGNORECASE)
 
 def download_json(url: str):
