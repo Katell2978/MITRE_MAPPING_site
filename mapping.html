@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>STRIDE / CWE / TID – ISO 21434</title>
+  <title>STRIDE / CWE → TID (ISO 21434)</title>
 
   <style>
     body {
@@ -11,11 +11,13 @@
       background: #f8f9fa;
     }
     h1 { color: #222; }
+
     select, input, button {
       padding: 8px;
       font-size: 1rem;
       margin-right: 6px;
     }
+
     .card {
       background: #fff;
       padding: 1rem;
@@ -23,23 +25,28 @@
       border-left: 5px solid #0078d4;
       box-shadow: 0 2px 4px rgba(0,0,0,.1);
     }
+
     .cwe {
       margin-top: 1rem;
     }
-    .tags {
+
+    .iso {
       font-size: 0.9em;
       color: #555;
     }
-    ul { margin-top: 0.5rem; }
+
+    ul {
+      margin-top: 0.5rem;
+    }
   </style>
 </head>
 
 <body>
 
-<h1>Recherche STRIDE / CWE → TID (EMB3D – ISO 21434)</h1>
+<h1>STRIDE / CWE → TID (EMB3D – ISO 21434)</h1>
 
 <p>
-Recherche par :
+Recherche <strong>soit</strong> par STRIDE <strong>soit</strong> par CWE.
 </p>
 
 <select id="strideSelect">
@@ -53,139 +60,120 @@ Recherche par :
 
 <input id="cweInput" placeholder="CWE-1191">
 
-<button onclick="search()">Rechercher</button>
+<button id="searchBtn">Rechercher</button>
 
 <div id="results"></div>
 
 <script>
-/* =======================
-   JSON COMPLET INTÉGRÉ
-   ======================= */
-const DATA = {
-  "Spoofing": [
-    {
-      "cwe": "CWE-287",
-      "cwe_description": "Improper Authentication.",
-      "mitre_link": "https://cwe.mitre.org/data/definitions/287.html",
-      "iso21434": {
-        "security_properties": ["Authenticity"],
-        "security_goals": ["SG-Auth"]
-      },
-      "tids": [
-        {
-          "tid": "TID-310",
-          "tid_description": "Remote service accessible without authentication."
-        },
-        {
-          "tid": "TID-328",
-          "tid_description": "Hard-coded credentials enabling impersonation."
-        }
-      ]
-    }
-  ],
+let DATA = null;
 
-  "Tampering": [
-    {
-      "cwe": "CWE-1247",
-      "cwe_description": "Improper Control of Hardware Security Features.",
-      "mitre_link": "https://cwe.mitre.org/data/definitions/1247.html",
-      "iso21434": {
-        "security_properties": ["Integrity"],
-        "security_goals": ["SG-Integrity", "SG-Platform"]
-      },
-      "tids": [
-        {
-          "tid": "TID-105",
-          "tid_description": "Voltage or clock glitching to bypass security checks."
-        }
-      ]
-    }
-  ],
+/* ============================
+   Chargement du JSON (fetch)
+   ============================ */
+fetch("./data/stride-cwe-tid-iso21434.json")
+  .then(r => {
+    if (!r.ok) throw new Error("JSON non chargé");
+    return r.json();
+  })
+  .then(json => {
+    DATA = json;
+    console.log("JSON chargé OK");
+  })
+  .catch(err => {
+    alert("Erreur de chargement du JSON");
+    console.error(err);
+  });
 
-  "Information Disclosure": [
-    {
-      "cwe": "CWE-311",
-      "cwe_description": "Missing Encryption of Sensitive Data.",
-      "mitre_link": "https://cwe.mitre.org/data/definitions/311.html",
-      "iso21434": {
-        "security_properties": ["Confidentiality"],
-        "security_goals": ["SG-Confidentiality"]
-      },
-      "tids": [
-        {
-          "tid": "TID-106",
-          "tid_description": "Data bus interception."
-        },
-        {
-          "tid": "TID-108",
-          "tid_description": "Extraction of secrets from ROM or NVRAM."
-        }
-      ]
-    }
-  ],
+/* ============================
+   Recherche exclusive
+   ============================ */
+document.getElementById("searchBtn").onclick = function () {
+  if (!DATA) {
+    alert("Données non chargées");
+    return;
+  }
 
-  "Denial of Service": [
-    {
-      "cwe": "CWE-400",
-      "cwe_description": "Uncontrolled Resource Consumption.",
-      "mitre_link": "https://cwe.mitre.org/data/definitions/400.html",
-      "iso21434": {
-        "security_properties": ["Availability"],
-        "security_goals": ["SG-Availability"]
-      },
-      "tids": [
-        {
-          "tid": "TID-401",
-          "tid_description": "Flooding requests causing ECU resource exhaustion."
-        }
-      ]
-    }
-  ],
-
-  "Elevation of Privilege": [
-    {
-      "cwe": "CWE-1191",
-      "cwe_description": "Improper Access Control on Debug Interfaces.",
-      "mitre_link": "https://cwe.mitre.org/data/definitions/1191.html",
-      "iso21434": {
-        "security_properties": ["Integrity", "Authenticity"],
-        "security_goals": ["SG-Platform", "SG-Debug"]
-      },
-      "tids": [
-        {
-          "tid": "TID-115",
-          "tid_description": "Unauthorized access via JTAG or SWD."
-        },
-        {
-          "tid": "TID-119",
-          "tid_description": "Latent debug port enabling code manipulation."
-        }
-      ]
-    }
-  ]
-};
-
-/* =======================
-   LOGIQUE DE RECHERCHE
-   ======================= */
-function search() {
   const stride = document.getElementById("strideSelect").value;
-  const cweSearch = document.getElementById("cweInput").value.toUpperCase();
+  const cweSearch = document.getElementById("cweInput").value.trim().toUpperCase();
   const results = document.getElementById("results");
+
   results.innerHTML = "";
 
-  Object.entries(DATA).forEach(([strideKey, cwes]) => {
-    if (stride && stride !== strideKey) return;
+  /* ❌ Cas invalide */
+  if (stride && cweSearch) {
+    results.innerHTML =
+      "<p><strong>Merci de choisir soit STRIDE soit CWE, pas les deux.</strong></p>";
+    return;
+  }
 
-    cwes.forEach(entry => {
-      if (cweSearch && !entry.cwe.includes(cweSearch)) return;
+  /* ✅ Recherche par STRIDE */
+  if (stride) {
+    if (!DATA[stride]) {
+      results.innerHTML = "<p>Aucun résultat.</p>";
+      return;
+    }
 
-      const tids = entry.tids.map(t =>
-        `<li><strong>${t.tid}</strong> — ${t.tid_description}</li>`
-      ).join("");
+    renderStride(stride, DATA[stride]);
+    return;
+  }
 
-      results.innerHTML += `
-        <div class="card">
-          <h3>${strideKey} – ${entry.cwe}</h3>
-          <p>${entry.cwe_description}</p>
-          <p>
+  /* ✅ Recherche par CWE */
+  if (cweSearch) {
+    let found = false;
+
+    Object.entries(DATA).forEach(([strideKey, cwes]) => {
+      cwes.forEach(entry => {
+        if (entry.cwe === cweSearch) {
+          found = true;
+          renderStride(strideKey, [entry]);
+        }
+      });
+    });
+
+    if (!found) {
+      results.innerHTML = "<p>Aucune CWE trouvée.</p>";
+    }
+    return;
+  }
+
+  results.innerHTML = "<p>Veuillez saisir un critère de recherche.</p>";
+};
+
+/* ============================
+   Rendu
+   ============================ */
+function renderStride(stride, cwes) {
+  const results = document.getElementById("results");
+
+  const blocks = cwes.map(entry => {
+    const tids = entry.tids.map(t =>
+      `<li><strong>${t.tid}</strong> — ${t.tid_description}</li>`
+    ).join("");
+
+    return `
+      <div class="cwe">
+        <p>
+          <strong>${entry.cwe}</strong><br>
+          ${entry.cwe_description}<br>
+          <a href="${entry.mitre_link}" target="_blank">Lien MITRE</a>
+        </p>
+        <p class="iso">
+          ISO 21434 – Propriétés : ${entry.iso21434.security_properties.join(", ")}<br>
+          Security Goals : ${entry.iso21434.security_goals.join(", ")}
+        </p>
+        <ul>${tids}</ul>
+      </div>
+    `;
+  }).join("");
+
+  results.innerHTML += `
+    <div class="card">
+      <h3>STRIDE : ${stride}</h3>
+      ${blocks}
+    </div>
+  `;
+}
+</script>
+
+</body>
+</html>
