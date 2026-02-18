@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>STRIDE → CWE Mapping (EMB3D)</title>
+  <title>STRIDE → CWE → TID (EMB3D)</title>
 
   <style>
     body {
@@ -14,7 +14,7 @@
     select, button {
       padding: 8px;
       font-size: 1rem;
-      margin-right: 8px;
+      margin-right: 6px;
     }
     .card {
       background: #fff;
@@ -23,73 +23,83 @@
       border-left: 5px solid #0078d4;
       box-shadow: 0 2px 4px rgba(0,0,0,.1);
     }
+    .cwe {
+      margin-top: 0.5rem;
+    }
+    ul {
+      margin-top: 0.3rem;
+    }
   </style>
 </head>
 
 <body>
 
-<h1>STRIDE → CWE Mapping</h1>
+<h1>STRIDE → CWE → TID (MITRE EMB3D)</h1>
 
-  <!-- ✅ 1️⃣ Chargement des données AVANT toute logique -->
-<script src="./data/data.js"></script>
+<p>Sélectionne un STRIDE pour afficher les CWE et TID associés.</p>
 
 <select id="strideSelect">
   <option value="">-- Choisir un STRIDE --</option>
-  <option value="Spoofing">Spoofing</option>
-  <option value="Tampering">Tampering</option>
-  <option value="Repudiation">Repudiation</option>
-  <option value="Information Disclosure">Information Disclosure</option>
-  <option value="Denial of Service">Denial of Service</option>
-  <option value="Elevation of Privilege">Elevation of Privilege</option>
+  <option>Spoofing</option>
+  <option>Tampering</option>
+  <option>Information Disclosure</option>
+  <option>Denial of Service</option>
+  <option>Elevation of Privilege</option>
 </select>
 
-<button id="searchBtn">Afficher</button>
+<button id="btn">Afficher</button>
 
 <div id="results"></div>
 
-
-
-<!-- ✅ 2️⃣ Logique applicative -->
 <script>
-document.getElementById("searchBtn").addEventListener("click", searchByStride);
+let DATA = null;
 
-function searchByStride() {
-  if (typeof CWE_DATA === "undefined") {
-    alert("Erreur : données CWE non chargées (CWE_DATA undefined)");
+// ✅ chargement robuste du JSON
+fetch("./data/stride-cwe-tid.json")
+  .then(r => r.json())
+  .then(json => {
+    DATA = json;
+    console.log("JSON chargé", DATA);
+  })
+  .catch(() => {
+    alert("Erreur de chargement du JSON");
+  });
+
+document.getElementById("btn").onclick = function () {
+  if (!DATA) {
+    alert("Données non chargées");
     return;
   }
 
-  const selectedStride = document.getElementById("strideSelect").value;
+  const stride = document.getElementById("strideSelect").value;
   const results = document.getElementById("results");
   results.innerHTML = "";
 
-  if (!selectedStride) {
-    results.innerHTML = "<p>Veuillez sélectionner un STRIDE.</p>";
+  if (!stride || !DATA[stride]) {
+    results.innerHTML = "<p>Aucun résultat.</p>";
     return;
   }
 
-  const matchingCWEs = Object.entries(CWE_DATA)
-    .filter(([_, data]) => data.stride.includes(selectedStride));
+  const blocks = DATA[stride].map(entry => {
+    const tids = entry.tids.map(t =>
+      `<li><strong>${t.tid}</strong> — ${t.tid_description}</li>`
+    ).join("");
 
-  if (matchingCWEs.length === 0) {
-    results.innerHTML = "<p>Aucune CWE trouvée.</p>";
-    return;
-  }
-
-  const list = matchingCWEs.map(([cwe, data]) => `
-    <li>
-      <strong>${cwe}</strong> —
-      <a href="${data.lien}" target="_blank">MITRE</a>
-    </li>
-  `).join("");
+    return `
+      <div class="cwe">
+        <p><strong>${entry.cwe}</strong><br>${entry.cwe_description}</p>
+        <ul>${tids}</ul>
+      </div>
+    `;
+  }).join("");
 
   results.innerHTML = `
     <div class="card">
-      <h3>${selectedStride}</h3>
-      <ul>${list}</ul>
+      <h3>STRIDE : ${stride}</h3>
+      ${blocks}
     </div>
   `;
-}
+};
 </script>
 
 </body>
