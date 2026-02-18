@@ -1,4 +1,4 @@
-<script>
+//<script>
 const CWE_DATA = {
   "CWE-20": {
     "stride": ["Tampering", "Denial of Service"],
@@ -131,4 +131,4 @@ const CWE_DATA = {
     "applies_to": "all TID referencing this CWE"
   }
 };
-</script>
+//</script>
