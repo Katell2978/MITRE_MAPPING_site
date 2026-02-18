@@ -62,4 +62,3 @@ jobs:
 
           git commit -m "chore(data): update EMB3D cwe_to_tid.json [skip ci]"
           git push
-``
