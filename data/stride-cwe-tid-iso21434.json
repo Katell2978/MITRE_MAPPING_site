@@ -1,0 +1,137 @@
+{
+  "Spoofing": [
+    {
+      "cwe": "CWE-287",
+      "cwe_description": "Improper Authentication. The system fails to correctly authenticate an entity.",
+      "mitre_link": "https://cwe.mitre.org/data/definitions/287.html",
+      "iso21434": {
+        "security_properties": ["Authenticity"],
+        "security_goals": ["SG-Auth"]
+      },
+      "tids": [
+        {
+          "tid": "TID-310",
+          "tid_description": "Remote service accessible without authentication, allowing identity spoofing."
+        },
+        {
+          "tid": "TID-328",
+          "tid_description": "Hard-coded credentials embedded in firmware enabling attacker impersonation."
+        }
+      ]
+    }
+  ],
+
+  "Tampering": [
+    {
+      "cwe": "CWE-1247",
+      "cwe_description": "Improper Control of Hardware Security Features. Fault injection can alter execution flow.",
+      "mitre_link": "https://cwe.mitre.org/data/definitions/1247.html",
+      "iso21434": {
+        "security_properties": ["Integrity"],
+        "security_goals": ["SG-Integrity", "SG-Platform"]
+      },
+      "tids": [
+        {
+          "tid": "TID-105",
+          "tid_description": "Voltage or clock glitching used to bypass secure boot or authentication checks."
+        }
+      ]
+    },
+    {
+      "cwe": "CWE-693",
+      "cwe_description": "Protection Mechanism Failure. Security controls are missing or ineffective.",
+      "mitre_link": "https://cwe.mitre.org/data/definitions/693.html",
+      "iso21434": {
+        "security_properties": ["Integrity"],
+        "security_goals": ["SG-Platform", "SG-Update"]
+      },
+      "tids": [
+        {
+          "tid": "TID-201",
+          "tid_description": "Bootloader modification due to missing integrity verification."
+        }
+      ]
+    }
+  ],
+
+  "Information Disclosure": [
+    {
+      "cwe": "CWE-311",
+      "cwe_description": "Missing Encryption of Sensitive Data. Data is stored or transmitted in cleartext.",
+      "mitre_link": "https://cwe.mitre.org/data/definitions/311.html",
+      "iso21434": {
+        "security_properties": ["Confidentiality"],
+        "security_goals": ["SG-Confidentiality", "SG-Data"]
+      },
+      "tids": [
+        {
+          "tid": "TID-106",
+          "tid_description": "Interception of internal data bus revealing sensitive information."
+        },
+        {
+          "tid": "TID-108",
+          "tid_description": "Extraction of secrets from ROM or NVRAM due to lack of encryption."
+        }
+      ]
+    },
+    {
+      "cwe": "CWE-1300",
+      "cwe_description": "Improper Protection of Physical Side Channels.",
+      "mitre_link": "https://cwe.mitre.org/data/definitions/1300.html",
+      "iso21434": {
+        "security_properties": ["Confidentiality"],
+        "security_goals": ["SG-Crypto", "SG-KeyManagement"]
+      },
+      "tids": [
+        {
+          "tid": "TID-101",
+          "tid_description": "Power consumption analysis used to extract cryptographic keys."
+        },
+        {
+          "tid": "TID-102",
+          "tid_description": "Electromagnetic analysis leaking sensitive computation data."
+        }
+      ]
+    }
+  ],
+
+  "Denial of Service": [
+    {
+      "cwe": "CWE-400",
+      "cwe_description": "Uncontrolled Resource Consumption leading to service unavailability.",
+      "mitre_link": "https://cwe.mitre.org/data/definitions/400.html",
+      "iso21434": {
+        "security_properties": ["Availability"],
+        "security_goals": ["SG-Availability"]
+      },
+      "tids": [
+        {
+          "tid": "TID-401",
+          "tid_description": "Flooding of service requests causing ECU resource exhaustion."
+        }
+      ]
+    }
+  ],
+
+  "Elevation of Privilege": [
+    {
+      "cwe": "CWE-1191",
+      "cwe_description": "On-Chip Debug and Test Interface With Improper Access Control.",
+      "mitre_link": "https://cwe.mitre.org/data/definitions/1191.html",
+      "iso21434": {
+        "security_properties": ["Integrity", "Authenticity"],
+        "security_goals": ["SG-Platform", "SG-Debug"]
+      },
+      "tids": [
+        {
+          "tid": "TID-115",
+          "tid_description": "Unauthorized access via JTAG or SWD interface."
+        },
+        {
+          "tid": "TID-119",
+          "tid_description": "Latent debug port enabling memory or code manipulation."
+        }
+      ]
+    }
+  ]
+}
