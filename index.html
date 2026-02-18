@@ -3,42 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <title>CWE → STRIDE Mapping (EMB3D)</title>
+
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 2rem;
       background: #f8f9fa;
     }
-    h1 {
-      color: #222;
-    }
-    input {
-      padding: 8px;
-      width: 300px;
-      margin-right: 10px;
-    }
-    button {
-      padding: 8px 12px;
-      cursor: pointer;
-    }
-    .result {
-      margin-top: 2rem;
-    }
+    h1 { color: #222; }
+    input { padding: 8px; width: 320px; }
+    button { padding: 8px 12px; margin-left: 6px; }
     .card {
-      background: white;
+      background: #fff;
       padding: 1rem;
-      margin-bottom: 1rem;
+      margin: 1rem 0;
       border-left: 5px solid #0078d4;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 4px rgba(0,0,0,.1);
     }
-    .stride {
-      font-weight: bold;
-      color: #444;
-    }
-    a {
-      color: #0078d4;
-      text-decoration: none;
-    }
+    .stride { font-weight: bold; }
   </style>
 </head>
 
@@ -47,45 +29,23 @@
 <h1>CWE → STRIDE Mapping (MITRE EMB3D)</h1>
 
 <p>
-Recherche par <strong>CWE</strong> (ex: <code>CWE-1191</code>) ou par
-<strong>STRIDE</strong> (ex: <code>Information Disclosure</code>)
+Recherche par <b>CWE</b> (ex: <code>CWE-1191</code>) ou par
+<b>STRIDE</b> (ex: <code>Information Disclosure</code>)
 </p>
 
-<input id="searchInput" placeholder="CWE-1191 ou Information Disclosure" />
+<input id="searchInput" placeholder="CWE-1191 ou Information Disclosure">
 <button onclick="search()">Rechercher</button>
 
-<div class="result" id="results"></div>
+<div id="results"></div>
+
+<!-- ✅ Chargement des données -->
+<script src="/data/data.js"></script>
 
 <script>
-/* ======== DATA ======== */
-const CWE_DATA = {
-  "CWE-20": {
-    "stride": ["Tampering", "Denial of Service"],
-    "lien": "https://cwe.mitre.org/data/definitions/20.html"
-  },
-  "CWE-22": {
-    "stride": ["Information Disclosure", "Elevation of Privilege"],
-    "lien": "https://cwe.mitre.org/data/definitions/22.html"
-  },
-  "CWE-79": {
-    "stride": ["Tampering", "Information Disclosure"],
-    "lien": "https://cwe.mitre.org/data/definitions/79.html"
-  },
-  "CWE-1191": {
-    "stride": ["Elevation of Privilege", "Tampering"],
-    "lien": "https://cwe.mitre.org/data/definitions/1191.html"
-  },
-  "CWE-1300": {
-    "stride": ["Information Disclosure"],
-    "lien": "https://cwe.mitre.org/data/definitions/1300.html"
-  }
-};
-
-/* ======== SEARCH LOGIC ======== */
 function search() {
   const query = document.getElementById("searchInput").value.toLowerCase();
-  const resultsDiv = document.getElementById("results");
-  resultsDiv.innerHTML = "";
+  const results = document.getElementById("results");
+  results.innerHTML = "";
 
   if (!query) return;
 
@@ -93,24 +53,24 @@ function search() {
 
   Object.entries(CWE_DATA).forEach(([cwe, data]) => {
     const matchCWE = cwe.toLowerCase().includes(query);
-    const matchStride = data.stride.some(s =>
-      s.toLowerCase().includes(query)
-    );
+    const matchStride = data.stride.some(s => s.toLowerCase().includes(query));
 
     if (matchCWE || matchStride) {
       found = true;
-      resultsDiv.innerHTML += `
+      results.innerHTML += `
         <div class="card">
           <h3>${cwe}</h3>
-          <p class="stride">STRIDE: ${data.stride.join(", ")}</p>
-          <p><a href="${data.lien}" target="_blank">Lien officiel CWE</a></p>
+          <p class="stride">STRIDE : ${data.stride.join(", ")}</p>
+          <p>
+            <a href="${data.lien}" target="_blank">Lien CWE officiel</a>
+          </p>
         </div>
       `;
     }
   });
 
   if (!found) {
-    resultsDiv.innerHTML = "<p>Aucun résultat trouvé.</p>";
+    results.innerHTML = "<p>Aucun résultat trouvé.</p>";
   }
 }
 </script>
