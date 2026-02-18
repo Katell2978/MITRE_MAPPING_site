@@ -11,13 +11,11 @@
       background: #f8f9fa;
     }
     h1 { color: #222; }
-
     select, button {
       padding: 8px;
       font-size: 1rem;
       margin-right: 8px;
     }
-
     .card {
       background: #fff;
       padding: 1rem;
@@ -25,19 +23,15 @@
       border-left: 5px solid #0078d4;
       box-shadow: 0 2px 4px rgba(0,0,0,.1);
     }
-
-    ul { margin-top: 0.5rem; }
-    li { margin-bottom: 0.4rem; }
   </style>
 </head>
 
 <body>
 
-<h1>STRIDE → CWE Mapping (MITRE EMB3D)</h1>
+<h1>STRIDE → CWE Mapping</h1>
 
-<p>
-Sélectionne un <strong>STRIDE</strong> pour afficher les <strong>CWE associées</strong>.
-</p>
+  <!-- ✅ 1️⃣ Chargement des données AVANT toute logique -->
+<script src="./data/data.js"></script>
 
 <select id="strideSelect">
   <option value="">-- Choisir un STRIDE --</option>
@@ -49,16 +43,22 @@ Sélectionne un <strong>STRIDE</strong> pour afficher les <strong>CWE associées
   <option value="Elevation of Privilege">Elevation of Privilege</option>
 </select>
 
-<button onclick="searchByStride()">Afficher</button>
+<button id="searchBtn">Afficher</button>
 
 <div id="results"></div>
 
-<!-- ✅ CHARGEMENT CORRECT DES DONNÉES -->
-<script src="./data/data.js"></script
 
-<!-- ✅ LOGIQUE DE RECHERCHE -->
+
+<!-- ✅ 2️⃣ Logique applicative -->
 <script>
+document.getElementById("searchBtn").addEventListener("click", searchByStride);
+
 function searchByStride() {
+  if (typeof CWE_DATA === "undefined") {
+    alert("Erreur : données CWE non chargées (CWE_DATA undefined)");
+    return;
+  }
+
   const selectedStride = document.getElementById("strideSelect").value;
   const results = document.getElementById("results");
   results.innerHTML = "";
@@ -72,24 +72,21 @@ function searchByStride() {
     .filter(([_, data]) => data.stride.includes(selectedStride));
 
   if (matchingCWEs.length === 0) {
-    results.innerHTML = "<p>Aucune CWE trouvée pour ce STRIDE.</p>";
+    results.innerHTML = "<p>Aucune CWE trouvée.</p>";
     return;
   }
 
-  const cweList = matchingCWEs.map(([cwe, data]) => `
+  const list = matchingCWEs.map(([cwe, data]) => `
     <li>
       <strong>${cwe}</strong> —
-      <a href="${data.lien}" target="_blank">Lien MITRE</a>
+      <a href="${data.lien}" target="_blank">MITRE</a>
     </li>
   `).join("");
 
   results.innerHTML = `
     <div class="card">
-      <h3>STRIDE : ${selectedStride}</h3>
-      <p><strong>CWE associées :</strong></p>
-      <ul>
-        ${cweList}
-      </ul>
+      <h3>${selectedStride}</h3>
+      <ul>${list}</ul>
     </div>
   `;
 }
