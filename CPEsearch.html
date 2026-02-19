@@ -97,14 +97,14 @@ async function searchCPE(cpe){
   log(`Volume total NVD: ${total}`);
 
   let url, note="";
-  if(total>CPE_THRESHOLD){
+ /* if(total>CPE_THRESHOLD){
     const w=last12Months();
     note=" (12 derniers mois)";
     log(`Filtrage temporel appliqué: ${w.start} → ${w.end}`,"warn");
     url=`${NVD_API}?cpeName=${encodeURIComponent(cpe)}&pubStartDate=${w.start}&pubEndDate=${w.end}&resultsPerPage=50`;
   } else {
     url=`${NVD_API}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=50`;
-  }
+  }*/
 
   const json=await fetch(url).then(r=>r.json());
   renderResults(cpe+note, json);
@@ -136,7 +136,7 @@ function renderResults(cpe, json){
            👉 MODIFIE CETTE URL POUR POINTER VERS TA PAGE CVE
            Exemple : analyse-cve.html?cve=CVE-2023-12345
            ===================================================== */
-        const cveLink = `analyse-cve.html?cve=${c.id}`;
+        const cveLink = `CVESearch.html?cve=${c.id}`;
 
         return `<li>
           <a href="${cveLink}"><b>${c.id}</b></a>
