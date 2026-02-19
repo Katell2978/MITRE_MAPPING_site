@@ -97,14 +97,14 @@ async function searchCPE(cpe){
   log(`Volume total NVD: ${total}`);
 
   let url, note="";
- /* if(total>CPE_THRESHOLD){
+ if(total>CPE_THRESHOLD){
     const w=last12Months();
     note=" (12 derniers mois)";
     log(`Filtrage temporel appliqué: ${w.start} → ${w.end}`,"warn");
     url=`${NVD_API}?cpeName=${encodeURIComponent(cpe)}&pubStartDate=${w.start}&pubEndDate=${w.end}&resultsPerPage=50`;
   } else {
     url=`${NVD_API}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=50`;
-  }*/
+  }
 
   const json=await fetch(url).then(r=>r.json());
   renderResults(cpe+note, json);
