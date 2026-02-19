@@ -8,7 +8,7 @@
 <style>
 :root{
   --bg:#0b1020; --card:#121a33; --txt:#e9ecff; --muted:#aab3da;
-  --accent:#7aa2ff; --ok:#36d399; --warn:#fbbf24; --bad:#f87171; --line:#26325f;
+  --accent:#7aa2ff; --line:#26325f;
   --mono: ui-monospace, Menlo, Consolas, monospace;
   --sans: system-ui, Segoe UI, Roboto, Arial, sans-serif;
 }
@@ -22,12 +22,11 @@ button{cursor:pointer}
 button:hover{border-color:#3b4aa0}
 .mono{font-family:var(--mono)}
 .muted{color:var(--muted)}
-.tag{border:1px solid var(--line);border-radius:999px;padding:2px 6px;font-size:11px;margin-left:6px;color:var(--muted)}
+.tag{border:1px solid var(--line);border-radius:999px;padding:2px 6px;font-size:11px;margin-left:6px}
 a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
 .hr{height:1px;background:var(--line);margin:12px 0}
 .log{font-family:var(--mono);font-size:12px;max-height:200px;overflow:auto}
-.log .ok{color:var(--ok)} .log .warn{color:var(--warn)} .log .bad{color:var(--bad)}
 </style>
 </head>
 
@@ -35,8 +34,8 @@ a:hover{text-decoration:underline}
 <header>
   <h1>Recherche de CVE à partir d’un CPE</h1>
   <p class="muted">
-    Page dédiée à l’exploration des vulnérabilités (<b>CVE</b>) associées à un <b>CPE</b>.<br/>
-    En cas de volume élevé, les résultats sont automatiquement limités aux <b>12 derniers mois</b>.
+    Exploration des vulnérabilités (<b>CVE</b>) associées à un <b>CPE</b>.<br/>
+    Filtrage automatique sur les <b>12 derniers mois</b> si nécessaire.
   </p>
 </header>
 
@@ -44,7 +43,7 @@ a:hover{text-decoration:underline}
   <div class="card">
     <div class="row">
       <input id="cpeInput" class="mono" style="flex:1"
-             placeholder="cpe:2.3:o:vendor:product:version:*:*:*:*:*:*:*" />
+        placeholder="cpe:2.3:o:microsoft:windows_10:1607:*:*:*:*:*:*:*" />
       <button id="searchBtn">Rechercher</button>
       <span id="status" class="muted">Prêt.</span>
     </div>
@@ -66,12 +65,12 @@ const CPE_THRESHOLD = 200;
 
 function escapeHtml(s){
   return String(s ?? "").replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
   }[c]));
 }
-function log(msg,cls=""){
+function log(msg){
   const l=document.getElementById("log");
-  l.innerHTML+=`<div class="${cls}">${escapeHtml(msg)}</div>`;
+  l.innerHTML+=`<div>${escapeHtml(msg)}</div>`;
   l.scrollTop=l.scrollHeight;
 }
 function setStatus(t){document.getElementById("status").textContent=t}
@@ -85,42 +84,43 @@ function last12Months(){
 
 async function searchCPE(cpe){
   if(!isLikelyCpe(cpe)){
-    alert("CPE invalide (doit commencer par cpe:2.3:)");
+    alert("CPE invalide");
     return;
   }
 
   setStatus("Recherche CPE…");
   log(`Recherche CPE: ${cpe}`);
 
-  const probe=await fetch(`${NVD_API}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=1`).then(r=>r.json());
-  const total=probe.totalResults||0;
-  log(`Volume total NVD: ${total}`);
+  const probe = await fetch(
+    `${NVD_API}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=1`
+  ).then(r=>r.json());
 
-  let url, note="";
- if(total>CPE_THRESHOLD){
-    const w=last12Months();
-    note=" (12 derniers mois)";
-    log(`Filtrage temporel appliqué: ${w.start} → ${w.end}`,"warn");
-    url=`${NVD_API}?cpeName=${encodeURIComponent(cpe)}&pubStartDate=${w.start}&pubEndDate=${w.end}&resultsPerPage=50`;
+  const total = probe.totalResults || 0;
+  log(`Volume NVD: ${total}`);
+
+  let url;
+  if(total > CPE_THRESHOLD){
+    const w = last12Months();
+    url = `${NVD_API}?cpeName=${encodeURIComponent(cpe)}&pubStartDate=${w.start}&pubEndDate=${w.end}&resultsPerPage=50`;
   } else {
-    url=`${NVD_API}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=50`;
+    url = `${NVD_API}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=50`;
   }
 
-  const json=await fetch(url).then(r=>r.json());
-  renderResults(cpe+note, json);
+  const json = await fetch(url).then(r=>r.json());
+  renderResults(cpe, json);
   setStatus("Résultats affichés");
 }
 
 function renderResults(cpe, json){
-  const vulns=json.vulnerabilities||[];
-  const wrap=document.getElementById("results");
+  const vulns = json.vulnerabilities || [];
+  const wrap = document.getElementById("results");
 
   if(!vulns.length){
-    wrap.innerHTML=`<div class="card muted">Aucune CVE trouvée.</div>`;
+    wrap.innerHTML = `<div class="card muted">Aucune CVE trouvée.</div>`;
     return;
   }
 
-  wrap.innerHTML=`
+  wrap.innerHTML = `
   <div class="card">
     <h2>Résultats pour <span class="mono">${escapeHtml(cpe)}</span></h2>
     <div class="muted">${vulns.length} CVE affichées</div>
@@ -130,16 +130,11 @@ function renderResults(cpe, json){
         const c=v.cve;
         const score=c.metrics?.cvssMetricV31?.[0]?.cvssData?.baseScore;
         const sev=c.metrics?.cvssMetricV31?.[0]?.cvssData?.baseSeverity;
-
-        /* =====================================================
-           LIEN VERS LA PAGE D’ANALYSE CVE COMPLETE
-           👉 MODIFIE CETTE URL POUR POINTER VERS TA PAGE CVE
-           Exemple : analyse-cve.html?cve=CVE-2023-12345
-           ===================================================== */
-        const cveLink = `CVESearch.html?cve=${c.id}`;
-
-        return `<li>
-          <a href="${cveLink}"><b>${c.id}</b></a>
+        return `
+        <li>
+          <a href="analyse-cve.html?cve=${c.id}">
+            <b>${c.id}</b>
+          </a>
           ${score?`<span class="tag">CVSS ${score} ${sev}</span>`:""}
           <div class="muted">${escapeHtml(c.descriptions?.[0]?.value||"")}</div>
         </li>`;
@@ -149,8 +144,7 @@ function renderResults(cpe, json){
 }
 
 document.getElementById("searchBtn").onclick=()=>{
-  const cpe=document.getElementById("cpeInput").value.trim();
-  searchCPE(cpe);
+  searchCPE(document.getElementById("cpeInput").value.trim());
 };
 
 log("Page chargée ✅");
