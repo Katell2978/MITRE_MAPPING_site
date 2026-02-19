@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Recherche CVE par CPE – Page dédiée</title>
+<title>Recherche CVE par CPE – CVSS & CISA KEV</title>
 
 <style>
 :root{
   --bg:#0b1020; --card:#121a33; --txt:#e9ecff; --muted:#aab3da;
-  --accent:#7aa2ff; --line:#26325f;
+  --accent:#7aa2ff; --ok:#36d399; --bad:#f87171; --line:#26325f;
   --mono: ui-monospace, Menlo, Consolas, monospace;
   --sans: system-ui, Segoe UI, Roboto, Arial, sans-serif;
 }
-body{margin:0;font-family:var(--sans);background:linear-gradient(160deg,#070a15,var(--bg));color:var(--txt);}  
+body{margin:0;font-family:var(--sans);background:linear-gradient(160deg,#070a15,var(--bg));color:var(--txt);}
 header,main,.monitor{max-width:1100px;margin:auto;padding:18px}
 h1{margin:0 0 8px;font-size:22px}
 .card{background:rgba(18,26,51,.95);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:14px}
@@ -23,6 +23,8 @@ button:hover{border-color:#3b4aa0}
 .mono{font-family:var(--mono)}
 .muted{color:var(--muted)}
 .tag{border:1px solid var(--line);border-radius:999px;padding:2px 6px;font-size:11px;margin-left:6px}
+.tag.bad{color:var(--bad)}
+.tag.ok{color:var(--ok)}
 a{color:var(--accent);text-decoration:none}
 a:hover{text-decoration:underline}
 .hr{height:1px;background:var(--line);margin:12px 0}
@@ -34,8 +36,8 @@ a:hover{text-decoration:underline}
 <header>
   <h1>Recherche de CVE à partir d’un CPE</h1>
   <p class="muted">
-    Exploration des vulnérabilités (<b>CVE</b>) associées à un <b>CPE</b>.<br/>
-    Filtrage automatique sur les <b>12 derniers mois</b> si nécessaire.
+    Recherche NVD par <b>CPE</b> avec affichage du <b>CVSS base</b> et du statut
+    <b>CISA KEV</b>.
   </p>
 </header>
 
@@ -61,6 +63,7 @@ a:hover{text-decoration:underline}
 
 <script>
 const NVD_API = "https://services.nvd.nist.gov/rest/json/cves/2.0";
+const CISA_KEV_JSON = "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json";
 const CPE_THRESHOLD = 200;
 
 function escapeHtml(s){
@@ -80,6 +83,15 @@ function last12Months(){
   const start=new Date(); start.setMonth(start.getMonth()-12);
   const iso=d=>d.toISOString().split(".")[0]+"Z";
   return {start:iso(start), end:iso(end)};
+}
+
+let KEV_CACHE=null;
+async function loadKev(){
+  if(KEV_CACHE) return KEV_CACHE;
+  log("Chargement CISA KEV…");
+  const j = await fetch(CISA_KEV_JSON).then(r=>r.json());
+  KEV_CACHE = new Set((j.vulnerabilities||[]).map(v=>v.cveID));
+  return KEV_CACHE;
 }
 
 async function searchCPE(cpe){
@@ -106,12 +118,13 @@ async function searchCPE(cpe){
     url = `${NVD_API}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=50`;
   }
 
+  const kevSet = await loadKev();
   const json = await fetch(url).then(r=>r.json());
-  renderResults(cpe, json);
+  renderResults(cpe, json, kevSet);
   setStatus("Résultats affichés");
 }
 
-function renderResults(cpe, json){
+function renderResults(cpe, json, kevSet){
   const vulns = json.vulnerabilities || [];
   const wrap = document.getElementById("results");
 
@@ -128,14 +141,22 @@ function renderResults(cpe, json){
     <ul>
       ${vulns.map(v=>{
         const c=v.cve;
-        const score=c.metrics?.cvssMetricV31?.[0]?.cvssData?.baseScore;
-        const sev=c.metrics?.cvssMetricV31?.[0]?.cvssData?.baseSeverity;
+        const cvss =
+          c.metrics?.cvssMetricV31?.[0]?.cvssData ||
+          c.metrics?.cvssMetricV30?.[0]?.cvssData ||
+          c.metrics?.cvssMetricV2?.[0]?.cvssData;
+
+        const score = cvss?.baseScore;
+        const sev   = cvss?.baseSeverity || "";
+        const isKev = kevSet.has(c.id);
+
         return `
         <li>
           <a href="analyse-cve.html?cve=${c.id}">
             <b>${c.id}</b>
           </a>
-          ${score?`<span class="tag">CVSS ${score} ${sev}</span>`:""}
+          ${score ? `<span class="tag">CVSS ${score} ${sev}</span>` : ""}
+          ${isKev ? `<span class="tag bad">CISA KEV</span>` : `<span class="tag ok">Non KEV</span>`}
           <div class="muted">${escapeHtml(c.descriptions?.[0]?.value||"")}</div>
         </li>`;
       }).join("")}
