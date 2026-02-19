@@ -1,0 +1,84 @@
+﻿Tactics;ATM ID;;Mitre ID Ent;mitre ID Mobile;DET_ID;Log_source;;;;;Data Onboard;Data Offboard;rmq
+Privilege Escalation;ATM-T0024;Abuse Elevation Control Mechanism;T1548;;DET0345;DC0059; DC0034; DC0021;;;;;
+Collection;ATM-T0055;Abuse Standard Diagnostic Protocol for Collection;T0893 (ICS);;DET0749;;;;;;;;
+Lateral Movement;ATM-T0050;Abuse Standard Diagnostic Protocol for Lateral Movement;T1563;;DET0079;DC0064; DC0032; DC0078;;;;;Diag = remote service, DC a adapter
+Persistence;ATM-T0020;Abuse Standard Diagnostic Protocol for Persistence;T1133;;DET0354;DC0088; DC0038; DC0082;;;;;"lien difficile avec mitre je fais le choix de prendre ""external remote service"" à revoir"
+Execution;ATM-T0074;Abuse Standard Diagnostic Protocol to Temporarily Modify Execution;T1674;;DET0568;DC0032; DC0042;;;;;;"lien difficile avec mitre je fais le choix de prendre ""input injection"" à revoir"
+Privilege Escalation;;Access Token Manipulation;T1134;;DET0283;DC0088; DC0032; DC0035; DC0021; DC0066;;;
+Exfiltration;ATM-T0010;Aftermarket, Customer, or Dealer Equipment;;;;;;;;;;;
+Initial Access;ATM-T0010;Aftermarket, Customer, or Dealer Equipment;;;;;;;;;;;
+Initial Access;;Application Versioning;;T1661;DET0652;DC0114; DC0112; DC0113;;;Y;;
+Lateral Movement;ATM-T0051;Bridge Vehicle Networks;;;;;;;;;;;
+Initial Access;ATM-T0011;Browser Compromise;T1185;;DET0507;Only Windows;;;;;;;
+Defense Evasion;ATM-T0031;Bypass Code Integrity Protections;;;DET0523;DC0032;;;;;;;
+Defense Evasion;ATM-T0034;Bypass Mandatory Access Control;T1550;;DET0338;DC0002; DC0067;;;;;;
+Defense Evasion;ATM-T0032;Bypass Network Filtering;;;;DC0051; DC0053; DC0004;;;;;
+Defense Evasion;ATM-T0033;Bypass UDS Security Access;T1548;;DET0345;DC0021; DC0059; DC0034;;;;;
+Collection;ATM-T0058;Capture Camera or Audio;T1123;T1429, T1512;DET0673, DET0695;DC0118; DC0114;;;;;;
+Credential Access;ATM-T0035;Capture SMS Message;;T1517;DET0611;DC0118; DC0114;;;;;;
+Collection;ATM-T0035;Capture SMS Message;;T1517;DET0611;DC0118; DC0114;;;;;;
+Exfiltration;ATM-T0062;Cellular Communication;T1011;;DET0077;DC0082; DC0085; DC0039;;;;;
+Execution;ATM-T0018;Command and Scripting Interpreter;T1059;T1623;DET0655;DC0064; DC0032; DC0112; DC0034;;Y;Y;
+Lateral Movement;ATM-T0075;Compromise Cryptographic Security;T1550;;DET0338;DC0002; DC0067;;;;;;Crypto pour authent
+Persistence;ATM-T0075;Compromise Cryptographic Security;T1600;T1521;DET0339;DC0061; DC0085; DC0016;;;;;pas aussi large en mobile que vu par ATM
+Privilege Escalation;ATM-T0075;Compromise Cryptographic Security;T1600;T1521;DET0339;DC0061; DC0085; DC0016;;;;;
+Defense Evasion;ATM-T0075;Compromise Cryptographic Security;T1600;T1521;DET0339;DC0061; DC0085; DC0016;;;;;
+Collection;;Data from Information Repositories;T1213;;DET0358, DET0263, DET0567, DET0242;;;;;;N;Y;
+Collection;ATM-T0059;Data from Local System;T1005;T1533;DET0380,DET0713;DC0055; DC0032;;;;;;hard to detect on mobile
+Persistence;ATM-T0021;Disable Software Update;;;DET0309;;;;;;;;pas d'équivalent
+Credential Access;ATM-T0039;ECU Credential Dumping;T1003;;DET0523;DC0055; DC0035; DC0032;;;;;
+Privilege Escalation;;Escape to Host;T1611;;DET0219;DC0021; DC0032;;;;;;
+Privilege Escalation;ATM-T0025;Exploit Co-Located Computing Device for Privilege Escalation;T1068;T1404;DET0665;DC0018; DC0112;;;;;;
+Lateral Movement;ATM-T0052;Exploit ECU for Lateral Movement;;;;;;;;;;;
+Privilege Escalation;ATM-T0027;Exploit Isolated Execution Environment Vulnerability;;;;;;;;;;;ko equivalence
+Credential Access;ATM-T0027;Exploit Isolated Execution Environment Vulnerability;;;;;;;;;;;
+Privilege Escalation;ATM-T0026;Exploit OS Vulnerability;T1068;;DET0514;DC0032; DC0035; DC0016;;;;;
+Initial Access;ATM-T0012;Exploit via Radio Interface;;;;;;;;;;;
+Initial Access;ATM-T0013;Exploit via Removable Media;;T1458;DET0691;DC0018;;;;;;;reverifier correspondance
+Initial Access;;Exploitation for Initial Access;;T1664;DET0666;DC0018;;;;;Y;;
+Discovery;ATM-T0042;File and Directory Discovery;T1083;;DET0370;DC0055; DC0032; DC0064;;;;;
+Privilege Escalation;ATM-T0028;Hardware Fault Injection;;;;;;;;;;;Glitch attack mentionnées dans ATM, --> CWE-1247
+Credential Access;ATM-T0036;Input Capture;T1056;T1417;DET0705;DC0118; DC0114;;;;;;
+Collection;ATM-T0036;Input Capture;T1056;T1417;DET0705;DC0118; DC0114;;;;;;
+Credential Access;ATM-T0037;Input Prompt;;;;;;;;;;;
+Exfiltration;ATM-T0063;Internet Communication;T1048;;DET0131;DC0032; DC0082; DC0055; DC0061; DC0078;;;
+Discovery;ATM-T0043;Location Tracking;T1430;;DET0675;DC0118; DC0114;;;;;;
+Collection;ATM-T0043;Location Tracking;;T1430;DET0675;DC0118; DC0114;;;;;;
+Initial Access;ATM-T0014;Malicious App;;;;;;;;;;;
+Persistence;ATM-T0023;Modify Isolated Execution Environment;T1675;;DET0232;DC0038;;;;;;;"lien difficile avec mitre je fais le choix de prendre ""external remote service"" à revoir"
+Persistence;ATM-T0022;Modify OS Kernel, Boot Partition, or System Partition;T1398;;DET0654;DC0018;;;;;Y;Y;
+Execution;ATM-T0019;Native API;T1106;T1575;DET0529;DC0016; DC0035; DC0032;;;N;Y;
+Collection;ATM-T0060;Network Information Discovery;T1602.002;;DET0233;DC0002; DC0064; DC0085; DC0082;;;;
+Discovery;ATM-T0044;Network Service Scanning;T1046;;DET0376;DC0032; DC0078;;;;;;
+Credential Access;ATM-T0038;Network Sniffing;T1040;;DET0314;DC0032; DC0064; DC0085; DC0002;DC0078;;;
+Collection;ATM-T0038;Network Sniffing;T1040;;DET0314;DC0032; DC0064; DC0085; DC002; DC0085;;;
+Initial Access;ATM-T0015;Phishing;T1566;T1660;DET0684;DC0085; DC0078;;;;Y;Y;
+Exfiltration;ATM-T0073;Physical Access;T1052;;DET0123;DC0055; DC0042;;;;;;
+Initial Access;ATM-T0016;Physical Modification;;;;;;;;;;;
+Discovery;ATM-T0045;Process Discovery;T1057;;DET0034;DC0055; DC0032; DC0035; DC0064;;;;
+Privilege Escalation;ATM-T0029;Process Injection;T1055;;DET0508;DC0021; DC0055; DC0020;;;;;
+Lateral Movement;ATM-T0053;Remote Services;T1210;;DET0118;DC0085; DC0032; DC0038;;;;;
+Exfiltration;ATM-T0006;Removable Media;T1052.001;;DET0220;DC0055; DC0042;;;;;;
+Privilege Escalation;ATM-T0030;Reprogram Co-Located Computing Device for Privilege Escalation;;;;;;;;;;;ko equivalence
+Lateral Movement;ATM-T0054;Reprogram ECU for Lateral Movement;T1072;;DET0223;DC0078; DC0032; DC0038;;;;;
+Collection;ATM-T0061;Screen Capture;T1113;T1513;DET0668;DC0118; DC0112;;;;;;
+Exfiltration;ATM-T0065;Short Range Wireless Communication;T1011.001;;DET0554;DC0055; DC0082; DC0064;;;;;
+Initial Access;;SIM Card Swap;;T1451;DET0658;DC0117;;;;;Y;;
+Discovery;ATM-T0046;Software Discovery;T1518;;DET0392;DC0064; DC0032; DC0038;;;;;
+Exfiltration;ATM-T0066;Standard Cryptographic Protocol;;;;;;;;;;;
+Initial Access;ATM-T0017;Supply Chain Compromise;T1195;T1474;DET0704, DET0604, DET0721;DC0018; DC0112; DC0064; DC0055; DC0085;Y;;
+Discovery;ATM-T0047;System Information Discovery;T1082;;DET0525;DC0064; DC0032;;;;;;
+Discovery;ATM-T0048;System Network Configuration Discovery;T1016.001;;DET0357;DC0032; DC0082; DC0029;;;Y;;Internet
+Discovery;ATM-T0048;System Network Configuration Discovery;T1016.002;;DET0464;DC0055; DC0032;;;;Y;;Wifi
+Discovery;ATM-T0049;System Network Connections Discovery;T1049;;DET0320;DC0064; DC0032; DC0021;;;;;
+Credential Access;ATM-T0040;Unsecured Credentials;T1552.005;;DET0001;DC0082; DC0070; DC0085;;;N;Y;
+Credential Access;ATM-T0040;Unsecured Credentials;T1552.008;;DET0111;DC0038;;;;;N;Y;
+Credential Access;ATM-T0040;Unsecured Credentials;T1552.007;;DET0198;;;;;;N;Y;
+Credential Access;ATM-T0040;Unsecured Credentials;T1552.002;;DET0250;DC0032; DC0064; DC0050;;;;;
+Credential Access;ATM-T0040;Unsecured Credentials;T1552.001;;DET0307;DC0055; DC0064; DC0067;;;;;
+Credential Access;ATM-T0040;Unsecured Credentials;T1552.006;;DET0381;DC0032; DC0039; DC0029; DC0102;;N;Y;
+Credential Access;ATM-T0040;Unsecured Credentials;T1552.003;;DET0385;DC0032; DC0055; DC0039;;;;;
+Credential Access;ATM-T0040;Unsecured Credentials;T1552;;DET0412;DC0055; DC0085; DC0064;;;Y;Y;
+Credential Access;ATM-T0040;Unsecured Credentials;T1552.004;;DET0549;DC0055; DC0032; DC0064;;;;;
+Credential Access;ATM-T0041;URI Hijacking;T1552.007;;DET0198;DC0064; DC0002; DC0032; DC0038;;N;Y;
+Privilege Escalation;;Valid Accounts;T1078;;DET0560;DC0002; DC0032;;;;;;
