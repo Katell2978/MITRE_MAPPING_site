@@ -45,7 +45,7 @@ a:hover{text-decoration:underline}
   <div class="card">
     <div class="row">
       <input id="cpeInput" class="mono" style="flex:1"
-        placeholder="cpe:2.3:o:microsoft:windows_10:1607:*:*:*:*:*:*:*" />
+        placeholder="cpe:2.3:o:google:android:14.0:*:*:*:*:*:*:*" />
       <button id="searchBtn">Rechercher</button>
       <span id="status" class="muted">Prêt.</span>
     </div>
@@ -86,11 +86,16 @@ function last12Months(){
 }
 
 let KEV_CACHE=null;
-async function loadKev(){
+async function loadKevSafe(){
   if(KEV_CACHE) return KEV_CACHE;
-  log("Chargement CISA KEV…");
-  const j = await fetch(CISA_KEV_JSON).then(r=>r.json());
-  KEV_CACHE = new Set((j.vulnerabilities||[]).map(v=>v.cveID));
+  try{
+    log("Chargement CISA KEV…");
+    const j = await fetch(CISA_KEV_JSON).then(r=>r.json());
+    KEV_CACHE = new Set((j.vulnerabilities||[]).map(v=>v.cveID));
+  }catch(e){
+    log("⚠ CISA KEV non accessible (CORS navigateur)");
+    KEV_CACHE = new Set();
+  }
   return KEV_CACHE;
 }
 
@@ -118,7 +123,7 @@ async function searchCPE(cpe){
     url = `${NVD_API}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=50`;
   }
 
-  const kevSet = await loadKev();
+  const kevSet = await loadKevSafe();
   const json = await fetch(url).then(r=>r.json());
   renderResults(cpe, json, kevSet);
   setStatus("Résultats affichés");
