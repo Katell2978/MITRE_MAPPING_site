@@ -1,193 +1,855 @@
 <!doctype html>
 <html lang="fr">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>CVE → CWE → CAPEC → ATT&CK → ATM</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recherche CVE / CPE → CWE → CAPEC → ATT&CK → ATM</title>
 
-<style>
-:root{
-  --bg:#0b1020; --card:#121a33; --txt:#e9ecff; --muted:#aab3da;
-  --accent:#7aa2ff; --ok:#36d399; --bad:#f87171; --line:#26325f;
-  --mono: ui-monospace, Menlo, Consolas, monospace;
-  --sans: system-ui, Segoe UI, Roboto, Arial, sans-serif;
-}
-body{margin:0;font-family:var(--sans);background:linear-gradient(160deg,#070a15,var(--bg));color:var(--txt);}
-header,main{max-width:1100px;margin:auto;padding:18px}
-h1{margin:0 0 6px;font-size:22px}
-.card{background:rgba(18,26,51,.95);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:14px}
-.row{display:flex;gap:10px;flex-wrap:wrap}
-input,select,button{
-  padding:10px;border-radius:10px;border:1px solid var(--line);
-  background:#0a0f22;color:var(--txt)
-}
-button{cursor:pointer}
-button:hover{border-color:#3b4aa0}
-.mono{font-family:var(--mono)}
-.muted{color:var(--muted)}
-.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:3px 8px;font-size:12px;margin:2px}
-.tag{border:1px solid var(--line);border-radius:999px;padding:2px 6px;font-size:11px;margin-left:4px}
-.spinner{width:12px;height:12px;border:2px solid #fff3;border-top-color:#fff;border-radius:50%;display:inline-block;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-</style>
+  <style>
+    :root{
+      --bg:#0b1020; --card:#121a33; --card2:#0f1630; --txt:#e9ecff; --muted:#aab3da;
+      --accent:#7aa2ff; --ok:#36d399; --warn:#fbbf24; --bad:#f87171; --line:#26325f;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    body{margin:0; font-family:var(--sans); background:linear-gradient(160deg, #070a15, var(--bg)); color:var(--txt);}
+    header{padding:28px 18px 12px; max-width:1100px; margin:0 auto;}
+    h1{margin:0 0 8px; font-size:22px;}
+    p{margin:6px 0; color:var(--muted); line-height:1.4;}
+    main{max-width:1100px; margin:0 auto; padding: 0 18px 20px;}
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+    input[type="text"]{
+      flex:1; min-width:260px; padding:12px 12px; border-radius:10px;
+      border:1px solid var(--line); background:#0a0f22; color:var(--txt);
+      font-family:var(--mono); font-size:14px;
+    }
+    select{
+      padding:12px 12px; border-radius:10px; border:1px solid var(--line);
+      background:#0a0f22; color:var(--txt);
+      font-family:var(--sans); font-size:14px;
+    }
+    button{
+      padding:12px 14px; border-radius:10px; border:1px solid var(--line);
+      background: #182454; color: var(--txt); cursor:pointer; font-weight:600;
+    }
+    button:hover{border-color:#3b4aa0;}
+    button:disabled{opacity:.55; cursor:not-allowed;}
+    .card{
+      background: rgba(18,26,51,.9); border:1px solid var(--line); border-radius:14px;
+      padding:14px; margin-top:14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    .card h2{margin:0 0 10px; font-size:16px;}
+    .grid{display:grid; grid-template-columns: 1.1fr .9fr; gap:12px;}
+    @media (max-width: 920px){ .grid{grid-template-columns:1fr;} }
+    .kv{display:grid; grid-template-columns: 160px 1fr; gap:6px 12px; font-size:14px;}
+    .k{color:var(--muted);}
+    .v{color:var(--txt);}
+    .pill{display:inline-flex; gap:6px; align-items:center; padding:4px 10px; border-radius:999px;
+      border:1px solid var(--line); background: #0b1333; margin:4px 6px 0 0; font-size:12px;}
+    .pill a{color:var(--accent); text-decoration:none;}
+    .pill button{padding:0; margin:0; border:none; background:transparent; color:var(--accent); font-weight:700; cursor:pointer;}
+    a{color:var(--accent);}
+    .mono{font-family:var(--mono);}
+    .muted{color:var(--muted);}
+    .status{font-size:13px; margin-top:10px;}
+    .status.ok{color:var(--ok);}
+    .status.warn{color:var(--warn);}
+    .status.bad{color:var(--bad);}
+    details{border:1px solid var(--line); border-radius:12px; padding:10px 12px; background: rgba(15,22,48,.8);}
+    details summary{cursor:pointer; font-weight:700;}
+    ul{margin:8px 0 0 18px;}
+    li{margin:4px 0;}
+    .twoCol{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+    @media (max-width: 920px){ .twoCol{grid-template-columns:1fr;} }
+    .small{font-size:12px;}
+    .hr{height:1px; background:var(--line); margin:12px 0;}
+    .tag{display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; margin-left:6px; border:1px solid var(--line); color:var(--muted);}
+    .spinner{
+      display:inline-block; width:12px; height:12px; border:2px solid rgba(255,255,255,.25);
+      border-top-color: rgba(255,255,255,.9); border-radius:999px; margin-right:6px;
+      animation: spin .9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Monitor */
+    .monitor{
+      max-width:1100px; margin:0 auto; padding:0 18px 24px;
+    }
+    .monitorBox{
+      margin-top:14px; border:1px solid var(--line); border-radius:14px;
+      background: rgba(10,15,34,.85);
+      padding:10px 12px;
+    }
+    .monitorHead{display:flex; justify-content:space-between; align-items:center; gap:10px;}
+    .monitorHead b{font-size:13px;}
+    .log{
+      margin-top:10px;
+      font-family:var(--mono);
+      font-size:12px;
+      color:var(--txt);
+      white-space:pre-wrap;
+      max-height:220px;
+      overflow:auto;
+      border-top:1px solid var(--line);
+      padding-top:10px;
+    }
+    .log .t{color:var(--muted);}
+    .log .ok{color:var(--ok);}
+    .log .warn{color:var(--warn);}
+    .log .bad{color:var(--bad);}
+
+    /* Pivot visual */
+    .pivotTitle{margin:0 0 8px; font-size:14px;}
+    #pivotSvg{width:100%; height:420px; display:block;}
+  </style>
 </head>
 
 <body>
-
 <header>
-<h1>CVE → CWE → CAPEC → ATT&CK → ATM</h1>
-<p class="muted">Chaînage complet vulnérabilité → menace → détection automotive</p>
+  <h1>Recherche CVE / CPE → CWE → CAPEC → ATT&CK → ATM</h1>
+  <p>
+    Mode <b>CVE</b> : détail (CVSS, CWE, références, CPE si disponibles), puis drilldown CWE→CAPEC→ATT&CK→ATM.<br/>
+    Mode <b>CPE</b> : liste des CVE via NVD, clic sur une CVE = ouverture du détail CVE.
+  </p>
+  <p class="small muted">
+    Prérequis: <span class="mono">/data/cwe_db.json</span>, <span class="mono">/data/capec_db.json</span>,
+    <span class="mono">/data/techniques_db.json</span>, <span class="mono">/data/ATM-matrix-TTP.csv</span>.
+  </p>
 </header>
 
 <main>
-<div class="card">
-  <div class="row">
-    <select id="mode">
-      <option value="cve">Recherche CVE</option>
-      <option value="cpe">Recherche CPE</option>
-    </select>
-    <input id="queryInput" value="CVE-2023-48010"/>
-    <button id="searchBtn">Rechercher</button>
+  <div class="card">
+    <div class="row">
+      <select id="mode">
+        <option value="cve">Recherche par CVE</option>
+        <option value="cpe">Recherche par CPE</option>
+      </select>
+      <input id="queryInput" type="text" placeholder="Ex: CVE-2023-48010" value="CVE-2023-48010" />
+      <button id="searchBtn">Rechercher</button>
+      <button id="clearBtn" title="Effacer">Effacer</button>
+    </div>
+    <div id="status" class="status muted">Prêt.</div>
   </div>
-  <div id="status" class="muted">Prêt.</div>
-</div>
 
-<div id="results"></div>
+  <div id="results"></div>
 </main>
 
+<div class="monitor">
+  <div class="monitorBox">
+    <div class="monitorHead">
+      <b>Moniteur d’activité</b>
+      <button id="clearLogBtn" style="padding:6px 10px;">Vider</button>
+    </div>
+    <div id="log" class="log"></div>
+  </div>
+</div>
+
 <script>
-/* ================= UTILS ================= */
+console.log("JS chargé ✅");
+
+/* =======================
+   Config / API
+   ======================= */
+const NVD_CVE_API_BASE = "https://services.nvd.nist.gov/rest/json/cves/2.0";
+const DATA_BASE = "./data"; // tes fichiers locaux
+
+/* =======================
+   Monitor / UI helpers
+   ======================= */
+const cache = new Map();
+
+function now(){
+  return new Date().toLocaleTimeString("fr-FR", {hour12:false});
+}
+function log(msg, level="t"){
+  const el = document.getElementById("log");
+  const line = document.createElement("div");
+  line.innerHTML = `<span class="t">[${now()}]</span> <span class="${level}">${escapeHtml(msg)}</span>`;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+}
+function setStatus(msg, level="muted", busy=false){
+  const el = document.getElementById("status");
+  el.className = "status " + level;
+  el.innerHTML = busy ? `<span class="spinner"></span>${escapeHtml(msg)}` : escapeHtml(msg);
+}
+function disableUI(disabled){
+  document.getElementById("searchBtn").disabled = disabled;
+  document.getElementById("clearBtn").disabled = disabled;
+  document.getElementById("mode").disabled = disabled;
+  document.getElementById("queryInput").disabled = disabled;
+}
 function escapeHtml(s){
-  return String(s ?? "").replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  return String(s ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#39;"
   }[c]));
 }
-function setStatus(t){document.getElementById("status").textContent=t}
+function isValidCve(s){ return /^CVE-\d{4}-\d{4,}$/i.test(String(s||"").trim()); }
+function isLikelyCpe(s){ return /^cpe:2\.3:/i.test(String(s||"").trim()); }
 
-/* ================= DATA LOADERS ================= */
-let CWE_DB=null, CAPEC_DB=null, TECH_DB=null, ATM_DB=null;
-
-async function loadBases(){
-  if(CWE_DB) return;
-  [CWE_DB,CAPEC_DB,TECH_DB]=await Promise.all([
-    fetch("./data/cwe_db.json").then(r=>r.json()),
-    fetch("./data/capec_db.json").then(r=>r.json()),
-    fetch("./data/techniques_db.json").then(r=>r.json())
-  ]);
-}
-
-async function loadATM(){
-  if(ATM_DB) return ATM_DB;
-  const txt=await fetch("./data/ATM-matrix-TTP.csv").then(r=>r.text());
-  ATM_DB=txt.split(/\r?\n/).slice(1).filter(Boolean).map(l=>{
-    const c=l.split(";").map(x=>x.trim());
-    return{
-      tactic:c[0],atm:c[1],label:c[2],
-      ent:(c[3]||"").split(",").map(x=>x.trim()).filter(Boolean),
-      mob:(c[4]||"").split(",").map(x=>x.trim()).filter(Boolean),
-      det:(c[5]||"").split(",").map(x=>x.trim()).filter(Boolean),
-      dc:(c[6]||"").match(/DC\d{4}/g)||[],
-      on:c[12]==="Y",off:c[13]==="Y",rmq:c[14]||""
-    };
+async function fetchJson(url){
+  if(cache.has(url)) return cache.get(url);
+  const p = fetch(url, {cache:"force-cache"}).then(async r=>{
+    if(!r.ok){
+      const t = await r.text().catch(()=> "");
+      throw new Error(`HTTP ${r.status} sur ${url}${t?` — ${t}`:""}`);
+    }
+    return r.json();
   });
-  return ATM_DB;
+  cache.set(url,p);
+  return p;
 }
 
-/* ================= CWE → CAPEC → ATT&CK ================= */
-function extractTechniques(taxonomy){
-  const out=new Set();
-  taxonomy?.split("NAME:ATTACK:ENTRY ").slice(1).forEach(p=>{
-    const m=p.match(/:(\d{4}(?:\.\d{3})?)/);
+/* =======================
+   CVSS extraction
+   ======================= */
+function pickCvss(metrics){
+  const m40 = metrics?.cvssMetricV40?.[0]; if(m40?.cvssData) return {version:"4.0", ...m40};
+  const m31 = metrics?.cvssMetricV31?.[0]; if(m31?.cvssData) return {version:"3.1", ...m31};
+  const m30 = metrics?.cvssMetricV30?.[0]; if(m30?.cvssData) return {version:"3.0", ...m30};
+  const m2  = metrics?.cvssMetricV2?.[0];  if(m2?.cvssData)  return {version:"2.0", ...m2};
+  return null;
+}
+function parseVector(vector){
+  const out = {};
+  if(!vector) return out;
+  vector.split("/").forEach(part=>{
+    const [k,v] = part.split(":");
+    if(v && k && k !== "CVSS") out[k]=v;
+  });
+  return out;
+}
+function getCwesFromNvd(weaknesses){
+  const cwes = [];
+  (weaknesses || []).forEach(w=>{
+    (w.description||[]).forEach(d=>{
+      const m = (d.value||"").match(/CWE-(\d{1,5})/);
+      if(m) cwes.push({id:m[1], label:`CWE-${m[1]}`, type:w.type || "Unknown"});
+    });
+  });
+  const byId = new Map();
+  for(const c of cwes){
+    if(!byId.has(c.id)) byId.set(c.id, c);
+    else if((c.type||"").toLowerCase()==="primary") byId.set(c.id, c);
+  }
+  return [...byId.values()];
+}
+function flattenCpes(config){
+  const out = [];
+  function walk(node){
+    if(!node) return;
+    if(Array.isArray(node.cpeMatch)){
+      for(const m of node.cpeMatch){
+        if(m?.criteria) out.push(m.criteria);
+        if(m?.cpe23Uri) out.push(m.cpe23Uri);
+      }
+    }
+    if(Array.isArray(node.nodes)) node.nodes.forEach(walk);
+  }
+  if(Array.isArray(config?.nodes)) config.nodes.forEach(walk);
+  if(Array.isArray(config)) config.forEach(walk);
+  return [...new Set(out)];
+}
+
+/* =======================
+   Bases CWE/CAPEC/ATT&CK
+   ======================= */
+let CWE_DB=null, CAPEC_DB=null, TECH_DB=null;
+
+async function loadSecurityBases(){
+  if(CWE_DB && CAPEC_DB && TECH_DB) return;
+  log("Chargement bases (cwe_db / capec_db / techniques_db)…");
+  [CWE_DB, CAPEC_DB, TECH_DB] = await Promise.all([
+    fetchJson(`${DATA_BASE}/cwe_db.json`),
+    fetchJson(`${DATA_BASE}/capec_db.json`),
+    fetchJson(`${DATA_BASE}/techniques_db.json`)
+  ]);
+  log("Bases CWE/CAPEC/ATT&CK chargées ✅", "ok");
+}
+
+function extractTechniqueIdsFromCapecTaxonomy(taxonomy){
+  if(!taxonomy) return [];
+  const out = new Set();
+  // Format attendu: "... NAME:ATTACK:ENTRY ...:<ID>: ..."
+  taxonomy.split("NAME:ATTACK:ENTRY ").slice(1).forEach(p=>{
+    const m = p.match(/:(\d{4}(?:\.\d{3})?)/);
     if(m) out.add("T"+m[1]);
   });
   return [...out];
 }
 
-async function computeATTACKfromCWE(cwe){
-  await loadBases();
-  const rel=CWE_DB[cwe];
-  if(!rel?.RelatedAttackPatterns) return [];
-  const t=new Set();
-  rel.RelatedAttackPatterns.forEach(id=>{
-    const cap=CAPEC_DB[id];
-    extractTechniques(cap?.techniques).forEach(x=>t.add(x));
+async function computeCapecAndTechniquesFromCWE(cweId){
+  await loadSecurityBases();
+
+  const rel = CWE_DB?.[cweId];
+  const capecIds = (rel?.RelatedAttackPatterns || []).map(String);
+
+  const capecs = capecIds.map(id=>{
+    const meta = CAPEC_DB?.[id];
+    return {
+      id,
+      name: meta?.name || "",
+      taxonomy: meta?.techniques || ""
+    };
   });
-  return [...t].map(tid=>({
-    tid,platforms:TECH_DB[tid]||[],
-    url:`https://attack.mitre.org/techniques/${tid}/`
+
+  const techniquesSet = new Set();
+  capecs.forEach(c=>{
+    extractTechniqueIdsFromCapecTaxonomy(c.taxonomy).forEach(tid=>techniquesSet.add(tid));
+  });
+
+  const techniques = [...techniquesSet].sort().map(tid=>({
+    tid,
+    platforms: TECH_DB?.[tid] || [],
+    url: `https://attack.mitre.org/techniques/${tid}/`
   }));
+
+  return {capecs, techniques};
 }
 
-/* ================= NVD ================= */
-const NVD="https://services.nvd.nist.gov/rest/json/cves/2.0";
+/* =======================
+   ATM mapping
+   ======================= */
+let ATM_ROWS=null;
 
-async function searchCVE(id){
-  setStatus("Recherche CVE…");
-  const j=await fetch(`${NVD}?cveId=${id}`).then(r=>r.json());
-  const cve=j.vulnerabilities?.[0]?.cve;
-  if(!cve){setStatus("CVE introuvable");return;}
-  renderCVE(cve);
+async function loadATM(){
+  if(ATM_ROWS) return ATM_ROWS;
+  log("Chargement ATM-matrix-TTP.csv…");
+  const txt = await fetch(`${DATA_BASE}/ATM-matrix-TTP.csv`, {cache:"force-cache"}).then(r=>{
+    if(!r.ok) throw new Error("Impossible de charger ATM-matrix-TTP.csv");
+    return r.text();
+  });
+
+  const lines = txt.split(/\r?\n/);
+  const rows = [];
+  // 1ère ligne = header
+  for(const line of lines.slice(1)){
+    if(!line.trim()) continue;
+    const cols = line.split(";").map(c => c.trim());
+    rows.push({
+      tactic: cols[0] || "",
+      atmId: cols[1] || "",
+      label: cols[2] || "",
+      mitreEnt: (cols[3] || "").split(",").map(x=>x.trim()).filter(Boolean),
+      mitreMob: (cols[4] || "").split(",").map(x=>x.trim()).filter(Boolean),
+      det: (cols[5] || "").split(",").map(x=>x.trim()).filter(Boolean),
+      dc: (cols[6] || "").match(/DC\d{4}/g) || [],
+      onboard: cols[12] === "Y",
+      offboard: cols[13] === "Y",
+      rmq: cols[14] || ""
+    });
+  }
+  ATM_ROWS = rows;
+  log(`ATM chargé ✅ (${rows.length} lignes)`, "ok");
+  return ATM_ROWS;
 }
 
-function renderCVE(cve){
-  const div=document.getElementById("results");
-  const cwes=(cve.weaknesses||[]).flatMap(w=>w.description||[])
-    .map(d=>d.value.match(/CWE-(\d+)/)?.[1]).filter(Boolean);
-
-  div.innerHTML=`
-<div class="card">
-<h2>${cve.id}</h2>
-<p>${escapeHtml(cve.descriptions?.[0]?.value||"")}</p>
-<div>
-${cwes.map(c=>`<span class="pill"><button onclick="drill('${c}')">CWE-${c}</button></span>`).join("")}
-</div>
-<div id="drill" class="card muted">Clique sur une CWE</div>
-</div>`;
-}
-
-/* ================= DRILLDOWN ================= */
-async function drill(cwe){
-  const d=document.getElementById("drill");
-  d.innerHTML='<span class="spinner"></span> Calcul CAPEC → ATT&CK → ATM…';
-
-  const techniques=await computeATTACKfromCWE(cwe);
-  const atm=await loadATM();
-  const tids=techniques.map(t=>t.tid);
-
-  const hits=atm.filter(r=>
-    r.ent.some(t=>tids.includes(t))||
-    r.mob.some(t=>tids.includes(t))
+function matchATMByTechniques(techniques, atmRows){
+  const tids = new Set(techniques.map(t=>t.tid));
+  const hits = atmRows.filter(r =>
+    r.mitreEnt.some(t=>tids.has(t)) || r.mitreMob.some(t=>tids.has(t))
   );
-
-  d.innerHTML=`
-<h3>ATT&CK dérivées de CAPEC</h3>
-<ul class="mono">
-${techniques.map(t=>`
-<li><a href="${t.url}" target="_blank">${t.tid}</a>
-<span class="muted">${t.platforms.join(", ")}</span></li>`).join("")}
-</ul>
-
-<h3>ATM & Détection</h3>
-${hits.length?`
-<ul>
-${hits.map(h=>`
-<li>
-<b>${h.atm}</b> – ${escapeHtml(h.label)}
-<span class="tag">${h.tactic}</span>
-${h.on?'<span class="tag">Onboard</span>':''}
-${h.off?'<span class="tag">Offboard</span>':''}
-<div class="muted">DET: ${h.det.join(", ")||"—"} | DC: ${h.dc.join(", ")||"—"}</div>
-${h.rmq?`<div class="muted">⚠ ${escapeHtml(h.rmq)}</div>`:""}
-</li>`).join("")}
-</ul>`:`<div class="muted">Aucun mapping ATM</div>`}
-`;
+  return hits;
 }
 
-/* ================= UI ================= */
-document.getElementById("searchBtn").onclick=()=>{
-  const q=document.getElementById("queryInput").value.trim();
-  searchCVE(q);
-};
+/* =======================
+   Pivot visual (SVG)
+   ======================= */
+function renderPivotGraph({cweId, capecs, techniques, atmHits}) {
+  const svg = document.getElementById("pivotSvg");
+  if(!svg) return;
+  svg.innerHTML = "";
+
+  const W = svg.clientWidth || 1000;
+  const H = svg.clientHeight || 420;
+
+  // limiter pour lisibilité
+  const capecsMax = capecs.slice(0, 8);
+  const techMax   = techniques.slice(0, 10);
+  const atmMax    = atmHits.slice(0, 8);
+
+  const detDcList = [];
+  atmMax.forEach(a => {
+    a.det.forEach(x => detDcList.push(x));
+    a.dc.forEach(x => detDcList.push(x));
+  });
+  const detDcMax = [...new Set(detDcList)].slice(0, 10);
+
+  const cols = [
+    {x: 30,  title: "CWE",        items: [`CWE-${cweId}`]},
+    {x: 210, title: `CAPEC (${capecs.length})`, items: capecsMax.map(c => `CAPEC-${c.id}`)},
+    {x: 410, title: `ATT&CK (${techniques.length})`, items: techMax.map(t => t.tid)},
+    {x: 610, title: `ATM (${atmHits.length})`, items: atmMax.map(a => a.atmId)},
+    {x: 820, title: "DET/DC",     items: detDcMax}
+  ];
+
+  const ns = "http://www.w3.org/2000/svg";
+  function add(tag, attrs, text){
+    const el = document.createElementNS(ns, tag);
+    Object.entries(attrs||{}).forEach(([k,v])=>el.setAttribute(k, v));
+    if(text!=null) el.textContent = text;
+    svg.appendChild(el);
+    return el;
+  }
+
+  function yPos(items, i){
+    const step = Math.min(42, (H-110)/Math.max(1, items.length));
+    return 62 + i*step;
+  }
+
+  // Titles
+  cols.forEach(c=>{
+    add("text", {x:c.x, y:22, fill:"#aab3da", "font-size":"13"}, c.title);
+  });
+
+  // Nodes
+  cols.forEach(c=>{
+    c.items.forEach((it,i)=>{
+      const y = yPos(c.items, i);
+      add("rect", {x:c.x-8, y:y-14, rx:7, ry:7, width:170, height:24, fill:"#121a33", stroke:"#26325f"});
+      add("text", {x:c.x, y:y+4, fill:"#e9ecff", "font-size":"12"}, it);
+    });
+  });
+
+  function link(x1,y1,x2,y2){
+    const d = `M${x1},${y1} C${x1+80},${y1} ${x2-80},${y2} ${x2},${y2}`;
+    add("path", {d, stroke:"#7aa2ff", "stroke-width":"1.6", fill:"none", opacity:"0.55"});
+  }
+
+  // CWE->CAPEC
+  capecsMax.forEach((c,i)=>{
+    link(cols[0].x+162, yPos(cols[0].items,0), cols[1].x-10, yPos(cols[1].items,i));
+  });
+
+  // CAPEC->ATT&CK (liens complets (dense) = trop; on relie CAPEC->chaque tech (limité))
+  capecsMax.forEach((c,i)=>{
+    techMax.forEach((t,j)=>{
+      link(cols[1].x+162, yPos(cols[1].items,i), cols[2].x-10, yPos(cols[2].items,j));
+    });
+  });
+
+  // ATT&CK->ATM (limité)
+  techMax.forEach((t,i)=>{
+    atmMax.forEach((a,j)=>{
+      const hit = a.mitreEnt.includes(t.tid) || a.mitreMob.includes(t.tid);
+      if(hit){
+        link(cols[2].x+162, yPos(cols[2].items,i), cols[3].x-10, yPos(cols[3].items,j));
+      }
+    });
+  });
+
+  // ATM->DET/DC
+  atmMax.forEach((a,i)=>{
+    const targets = [...new Set([...(a.det||[]), ...(a.dc||[])])].filter(x => detDcMax.includes(x));
+    targets.forEach((tgt)=>{
+      const j = detDcMax.indexOf(tgt);
+      link(cols[3].x+162, yPos(cols[3].items,i), cols[4].x-10, yPos(cols[4].items,j));
+    });
+  });
+
+  // Disclaimer if truncated
+  const trunc = (capecs.length>capecsMax.length) || (techniques.length>techMax.length) || (atmHits.length>atmMax.length) || (detDcList.length>detDcMax.length);
+  if(trunc){
+    add("text", {x:30, y:H-14, fill:"#aab3da", "font-size":"12"},
+      "Note: visuel tronqué pour lisibilité (affiche un sous-ensemble des nœuds)."
+    );
+  }
+}
+
+/* =======================
+   Render CVE details
+   ======================= */
+function renderCveDetail(cve){
+  const wrap = document.getElementById("results");
+  wrap.innerHTML = "";
+
+  const id = cve?.id || "";
+  const desc = (cve?.descriptions || []).find(d=>d.lang==="en")?.value
+            || (cve?.descriptions || [])[0]?.value || "";
+
+  const metrics = pickCvss(cve?.metrics);
+  const cvssData = metrics?.cvssData || null;
+  const vector = cvssData?.vectorString || "";
+  const vec = parseVector(vector);
+
+  const baseScore = cvssData?.baseScore;
+  const baseSeverity = cvssData?.baseSeverity || metrics?.baseSeverity || "";
+
+  const published = cve?.published;
+  const lastModified = cve?.lastModified;
+
+  const cwes = getCwesFromNvd(cve?.weaknesses);
+
+  const nvdUrl = `https://nvd.nist.gov/vuln/detail/${encodeURIComponent(id)}`;
+  const euvdUrl = `https://euvd.enisa.europa.eu/vulnerability/${encodeURIComponent(id)}`;
+
+  const cpes = flattenCpes(cve?.configurations);
+
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `
+    <h2>Détails CVE <span class="mono">${escapeHtml(id)}</span></h2>
+    <div class="grid">
+      <div>
+        <div class="kv">
+          <div class="k">Description</div><div class="v">${escapeHtml(desc)}</div>
+
+          <div class="k">Dates</div>
+          <div class="v"><span class="mono">Published:</span> ${escapeHtml(published || "n/a")} &nbsp; | &nbsp;
+              <span class="mono">Last modified:</span> ${escapeHtml(lastModified || "n/a")}</div>
+
+          <div class="k">Liens</div>
+          <div class="v">
+            <a href="${nvdUrl}" target="_blank" rel="noreferrer">NVD</a> ·
+            <a href="${euvdUrl}" target="_blank" rel="noreferrer">EUVD</a>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div>
+          <div class="k">CVSS (Base)</div>
+          <div class="v">
+            ${cvssData ? `
+              <span class="pill"><b>${escapeHtml(baseScore)}</b> <span class="tag">v${escapeHtml(metrics.version)}</span>
+              <span class="tag">${escapeHtml(baseSeverity)}</span></span>
+              <div class="small muted mono">${escapeHtml(vector)}</div>
+              <div class="small muted">Détail: AV=${escapeHtml(vec.AV||"-")} AC=${escapeHtml(vec.AC||"-")} PR=${escapeHtml(vec.PR||"-")} UI=${escapeHtml(vec.UI||"-")}
+                S=${escapeHtml(vec.S||"-")} C=${escapeHtml(vec.C||"-")} I=${escapeHtml(vec.I||"-")} A=${escapeHtml(vec.A||"-")}</div>
+            ` : `<span class="muted">Pas de métrique CVSS trouvée dans NVD.</span>`}
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div>
+          <div class="k">CWE associées (depuis NVD)</div>
+          <div class="v" id="cweList"></div>
+        </div>
+      </div>
+
+      <div>
+        <details ${cpes.length ? "" : "open"}>
+          <summary>CPE / Produits affectés (NVD)</summary>
+          ${cpes.length
+            ? `<div class="small muted">${cpes.length} entrées CPE trouvées.</div>
+               <ul class="mono small">${cpes.slice(0, 60).map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>
+               ${cpes.length>60 ? `<div class="small muted">… (${cpes.length-60} autres)</div>` : ""}`
+            : `<div class="small muted">Aucune configuration CPE listée dans NVD pour cette CVE.</div>`
+          }
+        </details>
+
+        <div style="height:10px"></div>
+
+        <details open>
+          <summary>Références (NVD)</summary>
+          <ul class="small">
+            ${(cve?.references || []).slice(0, 40).map(r=>`<li><a href="${escapeHtml(r.url)}" target="_blank" rel="noreferrer">${escapeHtml(r.url)}</a></li>`).join("") || "<li class='muted'>Aucune référence listée.</li>"}
+          </ul>
+          ${(cve?.references || []).length > 40 ? `<div class="small muted">… (${(cve?.references || []).length-40} autres)</div>` : ""}
+        </details>
+      </div>
+    </div>
+
+    <div class="hr"></div>
+
+    <div id="drilldown" class="card" style="background:rgba(15,22,48,.6); border-style:dashed;">
+      <div class="muted">Clique sur une CWE (↳) pour afficher CAPEC + ATT&CK + ATM + visuel.</div>
+    </div>
+  `;
+  wrap.appendChild(card);
+
+  // CWE pills + click
+  const cweList = card.querySelector("#cweList");
+  if(!cwes.length){
+    cweList.innerHTML = `<span class="muted">Aucune CWE fournie par NVD sur cette CVE.</span>`;
+  }else{
+    cweList.innerHTML = cwes.map(c=>{
+      const cweUrl = `https://cwe.mitre.org/data/definitions/${c.id}.html`;
+      return `
+        <span class="pill">
+          <a href="${cweUrl}" target="_blank" rel="noreferrer" class="mono">${escapeHtml(c.label)}</a>
+          <span class="tag">${escapeHtml(c.type)}</span>
+          <button data-cwe="${escapeHtml(c.id)}" title="Voir CAPEC + ATT&CK + ATM">↳</button>
+        </span>
+      `;
+    }).join("");
+  }
+
+  card.querySelectorAll("button[data-cwe]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const cweId = btn.getAttribute("data-cwe");
+      await renderDrilldown(id, cweId);
+      window.scrollTo({top: document.body.scrollHeight, behavior:"smooth"});
+    });
+  });
+}
+
+/* =======================
+   Drilldown: CWE -> CAPEC -> ATT&CK -> ATM + Visuel
+   ======================= */
+async function renderDrilldown(cveId, cweId){
+  const drill = document.getElementById("drilldown");
+  drill.innerHTML = `<div class="muted"><span class="spinner"></span>Calcul CAPEC → ATT&CK → ATM + visuel…</div>`;
+
+  try{
+    log(`Drilldown: CWE-${cweId} (CAPEC → ATT&CK → ATM)`);
+    const {capecs, techniques} = await computeCapecAndTechniquesFromCWE(cweId);
+
+    const atmRows = await loadATM();
+    const atmHits = matchATMByTechniques(techniques, atmRows);
+
+    const capecHtml = capecs.length ? `
+      <div class="small muted">${capecs.length} CAPEC.</div>
+      <ul>
+        ${capecs.slice(0, 30).map(c=>{
+          const url = `https://capec.mitre.org/data/definitions/${c.id}.html`;
+          const label = c.name ? `CAPEC-${c.id} — ${escapeHtml(c.name)}` : `CAPEC-${c.id}`;
+          return `<li><a href="${url}" target="_blank" rel="noreferrer">${label}</a></li>`;
+        }).join("")}
+      </ul>
+      ${capecs.length>30 ? `<div class="small muted">… (${capecs.length-30} autres)</div>` : ""}
+    ` : `<div class="muted small">Aucun CAPEC relié à CWE-${escapeHtml(cweId)}.</div>`;
+
+    const techHtml = techniques.length ? `
+      <div class="small muted">${techniques.length} techniques ATT&CK (dérivées via CAPEC).</div>
+      <ul class="mono small">
+        ${techniques.slice(0, 60).map(t=>{
+          const platformInfo = (t.platforms && t.platforms.length) ? ` — ${escapeHtml(t.platforms.join(", "))}` : "";
+          return `<li><a href="${t.url}" target="_blank" rel="noreferrer">${t.tid}</a><span class="muted">${platformInfo}</span></li>`;
+        }).join("")}
+      </ul>
+      ${techniques.length>60 ? `<div class="small muted">… (${techniques.length-60} autres)</div>` : ""}
+    ` : `<div class="muted small">Aucune technique ATT&CK trouvée.</div>`;
+
+    const atmHtml = atmHits.length ? `
+      <div class="small muted">${atmHits.length} entrées ATM matchées (via ATT&CK).</div>
+      <ul class="small">
+        ${atmHits.slice(0, 40).map(a=>{
+          const tags = [
+            a.onboard ? `<span class="tag">Onboard</span>` : "",
+            a.offboard ? `<span class="tag">Offboard</span>` : ""
+          ].join("");
+          const det = (a.det && a.det.length) ? a.det.join(", ") : "—";
+          const dc = (a.dc && a.dc.length) ? a.dc.join(", ") : "—";
+          const rmq = a.rmq ? `<div class="muted small">⚠ ${escapeHtml(a.rmq)}</div>` : "";
+          return `
+            <li>
+              <b>${escapeHtml(a.atmId)}</b> — ${escapeHtml(a.label)} <span class="tag">${escapeHtml(a.tactic)}</span> ${tags}
+              <div class="muted small">DET: ${escapeHtml(det)} | DC: ${escapeHtml(dc)}</div>
+              ${rmq}
+            </li>`;
+        }).join("")}
+      </ul>
+      ${atmHits.length>40 ? `<div class="small muted">… (${atmHits.length-40} autres)</div>` : ""}
+    ` : `<div class="muted small">Aucun mapping ATM trouvé pour ces techniques.</div>`;
+
+    drill.innerHTML = `
+      <h2>Drilldown : <span class="mono">CWE-${escapeHtml(cweId)}</span> → CAPEC → ATT&CK → ATM</h2>
+      <div class="twoCol">
+        <div>
+          <div class="k">CAPEC reliés</div>
+          ${capecHtml}
+        </div>
+        <div>
+          <div class="k">Techniques ATT&CK</div>
+          ${techHtml}
+        </div>
+      </div>
+
+      <div class="hr"></div>
+
+      <div>
+        <div class="k">ATM & Détection (DET/DC)</div>
+        ${atmHtml}
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="card" style="background:rgba(15,22,48,.55);">
+        <h3 class="pivotTitle">Visuel des pivots (CWE → CAPEC → ATT&CK → ATM → DET/DC)</h3>
+        <svg id="pivotSvg" viewBox="0 0 1000 420" preserveAspectRatio="none"></svg>
+        <div class="small muted">Le visuel affiche un sous-ensemble si le volume est important (lisibilité).</div>
+      </div>
+
+      <div class="hr"></div>
+
+      <div class="small muted">
+        Liens : <a href="https://nvd.nist.gov/vuln/detail/${encodeURIComponent(cveId)}" target="_blank" rel="noreferrer">NVD</a> ·
+        <a href="https://euvd.enisa.europa.eu/vulnerability/${encodeURIComponent(cveId)}" target="_blank" rel="noreferrer">EUVD</a> ·
+        <a href="https://cwe.mitre.org/data/definitions/${encodeURIComponent(cweId)}.html" target="_blank" rel="noreferrer">CWE</a>
+      </div>
+    `;
+
+    // Render the pivot graph after inserting SVG
+    renderPivotGraph({cweId, capecs, techniques, atmHits});
+
+    log(`Drilldown OK: ${capecs.length} CAPEC, ${techniques.length} ATT&CK, ${atmHits.length} ATM`, "ok");
+  }catch(e){
+    log(`Erreur drilldown: ${e.message}`, "bad");
+    drill.innerHTML = `<div class="bad">Erreur: ${escapeHtml(e.message)}</div>`;
+  }
+}
+
+/* =======================
+   Render CPE results
+   ======================= */
+function renderCpeResults(cpe, nvdJson){
+  const wrap = document.getElementById("results");
+  wrap.innerHTML = "";
+
+  const total = nvdJson?.totalResults ?? 0;
+  const vulns = nvdJson?.vulnerabilities || [];
+
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `
+    <h2>Résultats CPE <span class="mono">${escapeHtml(cpe)}</span></h2>
+    <div class="small muted">Total NVD: <b>${escapeHtml(total)}</b> (affiché: ${escapeHtml(vulns.length)}).</div>
+    <div class="hr"></div>
+    <ul id="cveList"></ul>
+    <div class="small muted">Clic sur une CVE → ouverture du détail CVE.</div>
+  `;
+  wrap.appendChild(card);
+
+  const list = card.querySelector("#cveList");
+  if(!vulns.length){
+    list.innerHTML = `<li class="muted">Aucune CVE renvoyée par NVD pour ce CPE.</li>`;
+    return;
+  }
+
+  list.innerHTML = vulns.map(v=>{
+    const cve = v.cve;
+    const id = cve?.id || "";
+    const m = pickCvss(cve?.metrics);
+    const base = m?.cvssData?.baseScore;
+    const sev = m?.cvssData?.baseSeverity || m?.baseSeverity || "";
+    const tag = (base!==undefined) ? `<span class="tag">CVSS ${escapeHtml(base)} ${escapeHtml(sev)}</span>` : `<span class="tag">CVSS n/a</span>`;
+    return `
+      <li class="mono">
+        <a href="#" data-cve="${escapeHtml(id)}">${escapeHtml(id)}</a>
+        ${tag}
+      </li>
+    `;
+  }).join("");
+
+  list.querySelectorAll("a[data-cve]").forEach(a=>{
+    a.addEventListener("click", async (e)=>{
+      e.preventDefault();
+      const cveId = a.getAttribute("data-cve");
+      document.getElementById("mode").value = "cve";
+      document.getElementById("queryInput").value = cveId;
+      await searchCve(cveId);
+      window.scrollTo({top:0, behavior:"smooth"});
+    });
+  });
+}
+
+/* =======================
+   Search functions
+   ======================= */
+async function searchCve(cveId){
+  log(`Recherche CVE lancée: ${cveId}`);
+  setStatus(`Recherche CVE: ${cveId}`, "muted", true);
+  disableUI(true);
+
+  try{
+    log("Étape 1/3 — Validation CVE…");
+    if(!isValidCve(cveId)) throw new Error("Format CVE invalide (ex: CVE-2023-48010).");
+
+    log("Étape 2/3 — Requête NVD (cveId)…");
+    const url = `${NVD_CVE_API_BASE}?cveId=${encodeURIComponent(cveId)}`;
+    const json = await fetchJson(url);
+
+    const vuln = json?.vulnerabilities?.[0]?.cve;
+    if(!vuln) throw new Error("CVE introuvable dans la réponse NVD.");
+
+    log("Étape 3/3 — Rendu détail CVE…");
+    renderCveDetail(vuln);
+
+    setStatus("OK. Clique sur ↳ d’une CWE pour CAPEC + ATT&CK + ATM + visuel.", "ok", false);
+    log("Recherche CVE terminée ✅", "ok");
+  }catch(e){
+    setStatus(`Erreur: ${e.message}`, "bad", false);
+    log(`Erreur recherche CVE: ${e.message}`, "bad");
+    document.getElementById("results").innerHTML = "";
+  }finally{
+    disableUI(false);
+  }
+}
+
+async function searchCpe(cpe){
+  log(`Recherche CPE lancée: ${cpe}`);
+  setStatus(`Recherche CPE: ${cpe}`, "muted", true);
+  disableUI(true);
+
+  try{
+    log("Étape 1/3 — Validation CPE…");
+    if(!isLikelyCpe(cpe)) throw new Error("Format CPE attendu: commence par cpe:2.3:...");
+
+    log("Étape 2/3 — Requête NVD (cpeName)…");
+    const url = `${NVD_CVE_API_BASE}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=50&startIndex=0`;
+    const json = await fetchJson(url);
+
+    log("Étape 3/3 — Rendu liste de CVE…");
+    renderCpeResults(cpe, json);
+
+    setStatus("OK. Clique sur une CVE pour voir le détail.", "ok", false);
+    log("Recherche CPE terminée ✅", "ok");
+  }catch(e){
+    setStatus(`Erreur: ${e.message}`, "bad", false);
+    log(`Erreur recherche CPE: ${e.message}`, "bad");
+    document.getElementById("results").innerHTML = "";
+  }finally{
+    disableUI(false);
+  }
+}
+
+async function search(){
+  const mode = document.getElementById("mode").value;
+  const q = document.getElementById("queryInput").value.trim();
+
+  log("────────────────────────────────────────");
+  log(`Bouton Rechercher cliqué. Mode=${mode.toUpperCase()} Query="${q}"`);
+
+  if(mode === "cve") return searchCve(q.toUpperCase());
+  return searchCpe(q);
+}
+
+/* =======================
+   UI Events
+   ======================= */
+document.getElementById("searchBtn").addEventListener("click", search);
+document.getElementById("clearBtn").addEventListener("click", ()=>{
+  document.getElementById("queryInput").value = "";
+  document.getElementById("results").innerHTML = "";
+  setStatus("Prêt.", "muted", false);
+  log("Écran effacé.");
+});
+document.getElementById("clearLogBtn").addEventListener("click", ()=>{
+  document.getElementById("log").innerHTML = "";
+  log("Moniteur vidé.");
+});
+document.getElementById("mode").addEventListener("change", ()=>{
+  const mode = document.getElementById("mode").value;
+  document.getElementById("queryInput").value =
+    (mode==="cve") ? "CVE-2023-48010" : "cpe:2.3:o:microsoft:windows_10:1607:*:*:*:*:*:*:*";
+  document.getElementById("results").innerHTML = "";
+  setStatus("Prêt.", "muted", false);
+  log(`Mode changé: ${mode.toUpperCase()}`);
+});
+document.getElementById("queryInput").addEventListener("keydown", (e)=>{
+  if(e.key==="Enter") search();
+});
+
+// Auto-run
+log("Page chargée. Lancement auto (CVE).");
+search();
 </script>
 
 </body>
