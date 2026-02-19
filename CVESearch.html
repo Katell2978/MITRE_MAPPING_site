@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CVE → CWE → CAPEC → ATT&CK (Enterprise/Mobile) + NVD/EUVD</title>
+  <title>Recherche CVE / CPE → CWE → CAPEC → ATT&CK + NVD/EUVD</title>
   <style>
     :root{
       --bg:#0b1020; --card:#121a33; --card2:#0f1630; --txt:#e9ecff; --muted:#aab3da;
@@ -15,18 +15,24 @@
     header{padding:28px 18px 12px; max-width:1100px; margin:0 auto;}
     h1{margin:0 0 8px; font-size:22px;}
     p{margin:6px 0; color:var(--muted); line-height:1.4;}
-    main{max-width:1100px; margin:0 auto; padding: 0 18px 40px;}
+    main{max-width:1100px; margin:0 auto; padding: 0 18px 20px;}
     .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
     input[type="text"]{
       flex:1; min-width:260px; padding:12px 12px; border-radius:10px;
       border:1px solid var(--line); background:#0a0f22; color:var(--txt);
       font-family:var(--mono); font-size:14px;
     }
+    select{
+      padding:12px 12px; border-radius:10px; border:1px solid var(--line);
+      background:#0a0f22; color:var(--txt);
+      font-family:var(--sans); font-size:14px;
+    }
     button{
       padding:12px 14px; border-radius:10px; border:1px solid var(--line);
       background: #182454; color: var(--txt); cursor:pointer; font-weight:600;
     }
     button:hover{border-color:#3b4aa0;}
+    button:disabled{opacity:.55; cursor:not-allowed;}
     .card{
       background: rgba(18,26,51,.9); border:1px solid var(--line); border-radius:14px;
       padding:14px; margin-top:14px;
@@ -41,7 +47,7 @@
     .pill{display:inline-flex; gap:6px; align-items:center; padding:4px 10px; border-radius:999px;
       border:1px solid var(--line); background: #0b1333; margin:4px 6px 0 0; font-size:12px;}
     .pill a{color:var(--accent); text-decoration:none;}
-    .pill button{padding:0; margin:0; border:none; background:transparent; color:var(--accent); font-weight:700;}
+    .pill button{padding:0; margin:0; border:none; background:transparent; color:var(--accent); font-weight:700; cursor:pointer;}
     a{color:var(--accent);}
     .mono{font-family:var(--mono);}
     .muted{color:var(--muted);}
@@ -58,20 +64,61 @@
     .small{font-size:12px;}
     .hr{height:1px; background:var(--line); margin:12px 0;}
     .tag{display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; margin-left:6px; border:1px solid var(--line); color:var(--muted);}
+    .spinner{
+      display:inline-block; width:12px; height:12px; border:2px solid rgba(255,255,255,.25);
+      border-top-color: rgba(255,255,255,.9); border-radius:999px; margin-right:6px;
+      animation: spin .9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Monitor */
+    .monitor{
+      max-width:1100px; margin:0 auto; padding:0 18px 24px;
+    }
+    .monitorBox{
+      margin-top:14px; border:1px solid var(--line); border-radius:14px;
+      background: rgba(10,15,34,.85);
+      padding:10px 12px;
+    }
+    .monitorHead{display:flex; justify-content:space-between; align-items:center; gap:10px;}
+    .monitorHead b{font-size:13px;}
+    .log{
+      margin-top:10px;
+      font-family:var(--mono);
+      font-size:12px;
+      color:var(--txt);
+      white-space:pre-wrap;
+      max-height:210px;
+      overflow:auto;
+      border-top:1px solid var(--line);
+      padding-top:10px;
+    }
+    .log .t{color:var(--muted);}
+    .log .ok{color:var(--ok);}
+    .log .warn{color:var(--warn);}
+    .log .bad{color:var(--bad);}
   </style>
 </head>
 <body>
 <header>
-  <h1>CVE → CWE → CAPEC → ATT&CK (Enterprise/Mobile) + liens NVD / EUVD</h1>
+  <h1>Recherche CVE / CPE → CWE → CAPEC → ATT&CK + liens NVD / EUVD</h1>
   <p>
-    Les infos CVSS/CVE viennent de l’API NVD 2.0 (utilisée par CVE2CAPEC). 
+    Mode <b>CVE</b> : détail (CVSS, CWE, références, CPE si disponibles), puis drilldown CWE→CAPEC→ATT&CK.<br/>
+    Mode <b>CPE</b> : liste des CVE trouvées via NVD, clic sur une CVE = ouverture du détail CVE.
+  </p>
+  <p class="small muted">
+    Prérequis : placer <span class="mono">resources/cwe_db.json</span>, <span class="mono">resources/capec_db.json</span>, <span class="mono">resources/techniques_db.json</span> dans le repo Pages (même structure que ton dossier <span class="mono">resources/</span>).
   </p>
 </header>
 
 <main>
   <div class="card">
     <div class="row">
-      <input id="cveInput" type="text" placeholder="Ex: CVE-2023-48010" value="CVE-2023-48010" />
+      <select id="mode">
+        <option value="cve">Recherche par CVE</option>
+        <option value="cpe">Recherche par CPE</option>
+      </select>
+      <input id="queryInput" type="text" placeholder="Ex: CVE-2023-48010" value="CVE-2023-48010" />
       <button id="searchBtn">Rechercher</button>
       <button id="clearBtn" title="Effacer">Effacer</button>
     </div>
@@ -81,66 +128,78 @@
   <div id="results"></div>
 </main>
 
+<div class="monitor">
+  <div class="monitorBox">
+    <div class="monitorHead">
+      <b>Moniteur d’activité</b>
+      <button id="clearLogBtn" style="padding:6px 10px;">Vider</button>
+    </div>
+    <div id="log" class="log"></div>
+  </div>
+</div>
+
 <script>
 /**
- * --- Sources utilisées ---
- * NVD API 2.0  : https://services.nvd.nist.gov/rest/json/cves/2.0/
- * EUVD (page par CVE) : https://euvd.enisa.europa.eu/vulnerability/<CVE>
- * CVE2CAPEC resources : https://galeax.github.io/CVE2CAPEC/resources/{cwe_db.json,capec_db.json,techniques_db.json}
+ * APIs
+ * - NVD CVE API 2.0: https://services.nvd.nist.gov/rest/json/cves/2.0
+ *   - Recherche CVE précise: ?cveId=CVE-...
+ *   - Recherche par CPE: ?cpeName=cpe:2.3:...
  */
-
-const GALEAX_BASE = "https://galeax.github.io/CVE2CAPEC";
-const NVD_API = "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=";
+const NVD_CVE_API_BASE = "https://services.nvd.nist.gov/rest/json/cves/2.0";
+const RESOURCES_BASE = "./resources"; // => resources/cwe_db.json, capec_db.json, techniques_db.json (dans TON repo)
 
 const cache = new Map();
 
-function setStatus(msg, level="muted"){
+function now(){
+  const d = new Date();
+  return d.toLocaleTimeString("fr-FR", {hour12:false});
+}
+function log(msg, level="t"){
+  const el = document.getElementById("log");
+  const line = document.createElement("div");
+  line.innerHTML = `<span class="t">[${now()}]</span> <span class="${level}">${escapeHtml(msg)}</span>`;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
+}
+function setStatus(msg, level="muted", busy=false){
   const el = document.getElementById("status");
   el.className = "status " + level;
-  el.textContent = msg;
+  el.innerHTML = busy ? `<span class="spinner"></span>${escapeHtml(msg)}` : escapeHtml(msg);
 }
 
-function isValidCve(s){
-  return /^CVE-\d{4}-\d{4,}$/i.test(s.trim());
+function escapeHtml(s){ return String(s ?? "").replace(/[&<>"']/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+
+function disableUI(disabled){
+  document.getElementById("searchBtn").disabled = disabled;
+  document.getElementById("clearBtn").disabled = disabled;
+  document.getElementById("mode").disabled = disabled;
+  document.getElementById("queryInput").disabled = disabled;
 }
+
+function isValidCve(s){ return /^CVE-\d{4}-\d{4,}$/i.test(String(s||"").trim()); }
+function isLikelyCpe(s){ return /^cpe:2\.3:/i.test(String(s||"").trim()); } // volontairement permissif
 
 async function fetchJson(url){
   if(cache.has(url)) return cache.get(url);
-  const p = fetch(url, {cache:"force-cache"}).then(r=>{
-    if(!r.ok) throw new Error(`HTTP ${r.status} sur ${url}`);
+  const p = fetch(url, {cache:"force-cache"}).then(async r=>{
+    if(!r.ok){
+      const txt = await r.text().catch(()=> "");
+      throw new Error(`HTTP ${r.status} sur ${url}${txt?` — ${txt}`:""}`);
+    }
     return r.json();
   });
   cache.set(url,p);
   return p;
 }
 
-async function fetchText(url){
-  if(cache.has(url)) return cache.get(url);
-  const p = fetch(url, {cache:"force-cache"}).then(r=>{
-    if(!r.ok) throw new Error(`HTTP ${r.status} sur ${url}`);
-    return r.text();
-  });
-  cache.set(url,p);
-  return p;
-}
-
-function esc(s){ return String(s ?? "").replace(/[&<>"']/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
-
 function pickCvss(metrics){
-  // Priorité: v4.0 puis v3.1 puis v3.0 puis v2
-  const m40 = metrics?.cvssMetricV40?.[0];
-  if(m40?.cvssData) return {version:"4.0", ...m40};
-  const m31 = metrics?.cvssMetricV31?.[0];
-  if(m31?.cvssData) return {version:"3.1", ...m31};
-  const m30 = metrics?.cvssMetricV30?.[0];
-  if(m30?.cvssData) return {version:"3.0", ...m30};
-  const m2  = metrics?.cvssMetricV2?.[0];
-  if(m2?.cvssData) return {version:"2.0", ...m2};
+  const m40 = metrics?.cvssMetricV40?.[0]; if(m40?.cvssData) return {version:"4.0", ...m40};
+  const m31 = metrics?.cvssMetricV31?.[0]; if(m31?.cvssData) return {version:"3.1", ...m31};
+  const m30 = metrics?.cvssMetricV30?.[0]; if(m30?.cvssData) return {version:"3.0", ...m30};
+  const m2  = metrics?.cvssMetricV2?.[0];  if(m2?.cvssData)  return {version:"2.0", ...m2};
   return null;
 }
-
 function parseVector(vector){
-  // retourne un objet {AV:"N", AC:"L", ...} depuis "CVSS:3.1/AV:N/AC:L/..."
   const out = {};
   if(!vector) return out;
   vector.split("/").forEach(part=>{
@@ -149,18 +208,7 @@ function parseVector(vector){
   });
   return out;
 }
-
-function severityColor(sev){
-  const s = (sev||"").toLowerCase();
-  if(s.includes("critical")) return "bad";
-  if(s.includes("high")) return "warn";
-  if(s.includes("medium")) return "warn";
-  if(s.includes("low")) return "ok";
-  return "muted";
-}
-
 function flattenCpes(config){
-  // extrait récursivement cpe23Uri d'une structure NVD
   const out = [];
   function walk(node){
     if(!node) return;
@@ -176,9 +224,7 @@ function flattenCpes(config){
   if(Array.isArray(config)) config.forEach(walk);
   return [...new Set(out)];
 }
-
 function getCwesFromNvd(weaknesses){
-  // weaknesses: [{type:"Primary", description:[{lang:"en", value:"CWE-522"}]}]
   const cwes = [];
   (weaknesses || []).forEach(w=>{
     (w.description||[]).forEach(d=>{
@@ -186,7 +232,6 @@ function getCwesFromNvd(weaknesses){
       if(m) cwes.push({id:m[1], label:`CWE-${m[1]}`, type:w.type || "Unknown"});
     });
   });
-  // dédoublonne par id en conservant un type "Primary" si présent
   const byId = new Map();
   for(const c of cwes){
     if(!byId.has(c.id)) byId.set(c.id, c);
@@ -196,10 +241,409 @@ function getCwesFromNvd(weaknesses){
 }
 
 function capecTechniquesFromTaxonomy(taxonomy){
-  // même logique que capec2technique.py : split "NAME:ATTACK:ENTRY " et extraction de l'ID
   const out = new Set();
   if(!taxonomy) return [];
   const parts = taxonomy.split("NAME:ATTACK:ENTRY ").slice(1);
   for(const p of parts){
     const infos = p.split(":");
-    // attendu: ... :<ID>: ... avec ID = 1007 ou 1036.005 etc (sans "T")
+    const id = infos?.[1]?.trim();
+    if(id && /^[0-9]{4}(\.[0-9]{3})?$/.test(id)) out.add(id);
+  }
+  return [...out].sort();
+}
+function classifyTechniqueDomains(platforms){
+  const p = (platforms || []).map(x=>String(x).toLowerCase());
+  const isMobile = p.some(x=>x.includes("android") || x.includes("ios"));
+  const isEnterprise = p.some(x=>x.includes("windows") || x.includes("linux") || x.includes("macos") || x.includes("azure") || x.includes("office") || x.includes("saas"));
+  return {isMobile, isEnterprise};
+}
+
+async function loadMappingDbs(){
+  log("Chargement des bases locales (resources/*.json)…");
+  const [cweDb, capecDb, techniquesDb] = await Promise.all([
+    fetchJson(`${RESOURCES_BASE}/cwe_db.json`),
+    fetchJson(`${RESOURCES_BASE}/capec_db.json`),
+    fetchJson(`${RESOURCES_BASE}/techniques_db.json`)
+  ]);
+  log("Bases locales chargées.", "ok");
+  return {cweDb, capecDb, techniquesDb};
+}
+
+async function computeCweCapecAttack(cweId){
+  const {cweDb, capecDb, techniquesDb} = await loadMappingDbs();
+
+  const rel = cweDb?.[cweId];
+  const capecIds = (rel?.RelatedAttackPatterns || []).map(String);
+
+  const capecs = capecIds.map(id=>{
+    const meta = capecDb?.[id];
+    return { id, name: meta?.name || "", taxonomy: meta?.techniques || "" };
+  });
+
+  const techniqueNums = new Set();
+  for(const c of capecs){
+    capecTechniquesFromTaxonomy(c.taxonomy).forEach(t=>techniqueNums.add(t));
+  }
+
+  const techniques = [...techniqueNums].sort().map(num=>{
+    const tid = "T" + num;
+    const platforms = techniquesDb?.[tid] || [];
+    const domains = classifyTechniqueDomains(platforms);
+    return {
+      num, tid,
+      platforms,
+      ...domains,
+      url: `https://attack.mitre.org/techniques/${tid}/`
+    };
+  });
+
+  return {capecs, techniques};
+}
+
+/* ---------- RENDER ---------- */
+
+function renderCveDetail(vulnCveObject){
+  const wrap = document.getElementById("results");
+  wrap.innerHTML = "";
+
+  const cve = vulnCveObject;
+  const id = cve?.id || "";
+
+  const desc = (cve?.descriptions || []).find(d=>d.lang==="en")?.value
+            || (cve?.descriptions || [])[0]?.value || "";
+
+  const metrics = pickCvss(cve?.metrics);
+  const cvssData = metrics?.cvssData || null;
+  const vector = cvssData?.vectorString || "";
+  const vec = parseVector(vector);
+
+  const baseScore = cvssData?.baseScore;
+  const baseSeverity = cvssData?.baseSeverity || metrics?.baseSeverity || "";
+
+  const published = cve?.published;
+  const lastModified = cve?.lastModified;
+
+  const cwes = getCwesFromNvd(cve?.weaknesses);
+
+  const nvdUrl = `https://nvd.nist.gov/vuln/detail/${encodeURIComponent(id)}`;
+  const euvdUrl = `https://euvd.enisa.europa.eu/vulnerability/${encodeURIComponent(id)}`;
+
+  const cpes = flattenCpes(cve?.configurations);
+
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `
+    <h2>Détails CVE <span class="mono">${escapeHtml(id)}</span></h2>
+    <div class="grid">
+      <div>
+        <div class="kv">
+          <div class="k">Description</div><div class="v">${escapeHtml(desc)}</div>
+
+          <div class="k">Dates</div>
+          <div class="v"><span class="mono">Published:</span> ${escapeHtml(published || "n/a")} &nbsp; | &nbsp;
+              <span class="mono">Last modified:</span> ${escapeHtml(lastModified || "n/a")}</div>
+
+          <div class="k">Liens</div>
+          <div class="v">
+            <a href="${nvdUrl}" target="_blank" rel="noreferrer">NVD</a> ·
+            <a href="${euvdUrl}" target="_blank" rel="noreferrer">EUVD</a>
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div>
+          <div class="k">CVSS (Base)</div>
+          <div class="v">
+            ${cvssData ? `
+              <span class="pill"><b>${escapeHtml(baseScore)}</b> <span class="tag">v${escapeHtml(metrics.version)}</span>
+              <span class="tag">${escapeHtml(baseSeverity)}</span></span>
+              <div class="small muted mono">${escapeHtml(vector)}</div>
+              <div class="small muted">Détail: AV=${escapeHtml(vec.AV||"-")} AC=${escapeHtml(vec.AC||"-")} PR=${escapeHtml(vec.PR||"-")} UI=${escapeHtml(vec.UI||"-")}
+                S=${escapeHtml(vec.S||"-")} C=${escapeHtml(vec.C||"-")} I=${escapeHtml(vec.I||"-")} A=${escapeHtml(vec.A||"-")}</div>
+            ` : `<span class="muted">Pas de métrique CVSS trouvée dans NVD.</span>`}
+          </div>
+        </div>
+
+        <div class="hr"></div>
+
+        <div>
+          <div class="k">CWE associées (depuis NVD)</div>
+          <div class="v" id="cweList"></div>
+        </div>
+      </div>
+
+      <div>
+        <details ${cpes.length ? "" : "open"}>
+          <summary>CPE / Produits affectés (NVD)</summary>
+          ${cpes.length
+            ? `<div class="small muted">${cpes.length} entrées CPE trouvées.</div>
+               <ul class="mono small">${cpes.slice(0, 60).map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>
+               ${cpes.length>60 ? `<div class="small muted">… (${cpes.length-60} autres)</div>` : ""}`
+            : `<div class="small muted">Aucune configuration CPE listée dans NVD pour cette CVE.</div>`
+          }
+        </details>
+
+        <div style="height:10px"></div>
+
+        <details open>
+          <summary>Références (NVD)</summary>
+          <ul class="small">
+            ${(cve?.references || []).slice(0, 40).map(r=>`<li><a href="${escapeHtml(r.url)}" target="_blank" rel="noreferrer">${escapeHtml(r.url)}</a></li>`).join("") || "<li class='muted'>Aucune référence listée.</li>"}
+          </ul>
+          ${(cve?.references || []).length > 40 ? `<div class="small muted">… (${(cve?.references || []).length-40} autres)</div>` : ""}
+        </details>
+
+      </div>
+    </div>
+
+    <div class="hr"></div>
+
+    <div id="drilldown" class="card" style="background:rgba(15,22,48,.6); border-style:dashed;">
+      <div class="muted">Clique sur une CWE (↳) pour afficher CAPEC + TTP ATT&CK.</div>
+    </div>
+  `;
+  wrap.appendChild(card);
+
+  // CWE pills + click
+  const cweList = card.querySelector("#cweList");
+  if(!cwes.length){
+    cweList.innerHTML = `<span class="muted">Aucune CWE fournie par NVD sur cette CVE.</span>`;
+  }else{
+    cweList.innerHTML = cwes.map(c=>{
+      const cweUrl = `https://cwe.mitre.org/data/definitions/${c.id}.html`;
+      return `
+        <span class="pill">
+          <a href="${cweUrl}" target="_blank" rel="noreferrer" class="mono">${escapeHtml(c.label)}</a>
+          <span class="tag">${escapeHtml(c.type)}</span>
+          <button data-cwe="${escapeHtml(c.id)}" title="Voir CAPEC + ATT&CK">↳</button>
+        </span>
+      `;
+    }).join("");
+  }
+
+  card.querySelectorAll("button[data-cwe]").forEach(btn=>{
+    btn.addEventListener("click", async ()=>{
+      const cweId = btn.getAttribute("data-cwe");
+      await renderDrilldown(id, cweId);
+    });
+  });
+}
+
+async function renderDrilldown(cveId, cweId){
+  const drill = document.getElementById("drilldown");
+  drill.innerHTML = `<div class="muted"><span class="spinner"></span>Mapping pour <span class="mono">CWE-${escapeHtml(cweId)}</span>…</div>`;
+
+  try{
+    log(`Drilldown: CWE-${cweId} → CAPEC → ATT&CK (chargement + calcul)…`);
+    const {capecs, techniques} = await computeCweCapecAttack(cweId);
+    log(`Drilldown prêt: ${capecs.length} CAPEC, ${techniques.length} techniques ATT&CK.`, "ok");
+
+    const capecHtml = capecs.length ? `
+      <ul>
+        ${capecs.map(c=>{
+          const url = `https://capec.mitre.org/data/definitions/${c.id}.html`;
+          const label = c.name ? `CAPEC-${c.id} — ${escapeHtml(c.name)}` : `CAPEC-${c.id}`;
+          return `<li><a href="${url}" target="_blank" rel="noreferrer">${label}</a></li>`;
+        }).join("")}
+      </ul>
+    ` : `<div class="muted small">Aucun CAPEC relié à CWE-${escapeHtml(cweId)}.</div>`;
+
+    const techHtml = techniques.length ? `
+      <div class="small muted">${techniques.length} techniques ATT&CK (dérivées via CAPEC).</div>
+      <ul class="mono small">
+        ${techniques.slice(0, 120).map(t=>{
+          const tags = [
+            t.isEnterprise ? "Enterprise" : null,
+            t.isMobile ? "Mobile" : null
+          ].filter(Boolean);
+          const platformInfo = (t.platforms && t.platforms.length) ? ` — platforms: ${escapeHtml(t.platforms.join(", "))}` : "";
+          return `
+            <li>
+              <a href="${t.url}" target="_blank" rel="noreferrer">${t.tid}</a>
+              ${tags.map(x=>`<span class="tag">${x}</span>`).join("")}
+              <span class="muted">${platformInfo}</span>
+            </li>`;
+        }).join("")}
+      </ul>
+      ${techniques.length>120 ? `<div class="small muted">… (${techniques.length-120} autres)</div>` : ""}
+    ` : `<div class="muted small">Aucune technique ATT&CK trouvée pour CWE-${escapeHtml(cweId)}.</div>`;
+
+    drill.innerHTML = `
+      <h2>Drilldown : <span class="mono">CWE-${escapeHtml(cweId)}</span> → CAPEC → ATT&CK</h2>
+      <div class="twoCol">
+        <div>
+          <div class="k">CAPEC reliés</div>
+          ${capecHtml}
+        </div>
+        <div>
+          <div class="k">TTP / Techniques MITRE ATT&CK</div>
+          ${techHtml}
+        </div>
+      </div>
+      <div class="hr"></div>
+      <div class="small muted">
+        Liens : <a href="https://nvd.nist.gov/vuln/detail/${encodeURIComponent(cveId)}" target="_blank" rel="noreferrer">NVD</a> ·
+        <a href="https://euvd.enisa.europa.eu/vulnerability/${encodeURIComponent(cveId)}" target="_blank" rel="noreferrer">EUVD</a> ·
+        <a href="https://cwe.mitre.org/data/definitions/${encodeURIComponent(cweId)}.html" target="_blank" rel="noreferrer">CWE</a>
+      </div>
+    `;
+  }catch(e){
+    log(`Erreur drilldown: ${e.message}`, "bad");
+    drill.innerHTML = `<div class="bad">Erreur: ${escapeHtml(e.message)}</div>`;
+  }
+}
+
+function renderCpeResults(cpe, nvdJson){
+  const wrap = document.getElementById("results");
+  wrap.innerHTML = "";
+
+  const total = nvdJson?.totalResults ?? 0;
+  const vulns = nvdJson?.vulnerabilities || [];
+
+  const card = document.createElement("div");
+  card.className = "card";
+  card.innerHTML = `
+    <h2>Résultats CPE <span class="mono">${escapeHtml(cpe)}</span></h2>
+    <div class="small muted">Total NVD: <b>${escapeHtml(total)}</b> (affiché: ${escapeHtml(vulns.length)}).</div>
+    <div class="hr"></div>
+    <ul id="cveList"></ul>
+    <div class="small muted">Clic sur une CVE → ouverture du détail CVE.</div>
+  `;
+  wrap.appendChild(card);
+
+  const list = card.querySelector("#cveList");
+  if(!vulns.length){
+    list.innerHTML = `<li class="muted">Aucune CVE renvoyée par NVD pour ce CPE (ou rate-limit).</li>`;
+    return;
+  }
+
+  list.innerHTML = vulns.map(v=>{
+    const cve = v.cve;
+    const id = cve?.id || "";
+    const m = pickCvss(cve?.metrics);
+    const base = m?.cvssData?.baseScore;
+    const sev = m?.cvssData?.baseSeverity || m?.baseSeverity || "";
+    const tag = (base!==undefined) ? `<span class="tag">CVSS ${escapeHtml(base)} ${escapeHtml(sev)}</span>` : `<span class="tag">CVSS n/a</span>`;
+    return `
+      <li class="mono">
+        <a href="#" data-cve="${escapeHtml(id)}">${escapeHtml(id)}</a>
+        ${tag}
+      </li>
+    `;
+  }).join("");
+
+  list.querySelectorAll("a[data-cve]").forEach(a=>{
+    a.addEventListener("click", async (e)=>{
+      e.preventDefault();
+      const cveId = a.getAttribute("data-cve");
+      // Bascule automatique vers mode CVE + détail
+      document.getElementById("mode").value = "cve";
+      document.getElementById("queryInput").value = cveId;
+      await searchCve(cveId);
+      window.scrollTo({top:0, behavior:"smooth"});
+    });
+  });
+}
+
+/* ---------- SEARCH ---------- */
+
+async function searchCve(cveId){
+  log(`Recherche CVE lancée: ${cveId}`);
+  setStatus(`Recherche CVE: ${cveId}`, "muted", true);
+  disableUI(true);
+
+  try{
+    log("Étape 1/3 — Validation du format CVE…");
+    if(!isValidCve(cveId)) throw new Error("Format CVE invalide (ex: CVE-2023-48010).");
+
+    log("Étape 2/3 — Requête NVD (cveId)…");
+    const url = `${NVD_CVE_API_BASE}?cveId=${encodeURIComponent(cveId)}`;
+    const json = await fetchJson(url);
+
+    const vuln = json?.vulnerabilities?.[0]?.cve;
+    if(!vuln) throw new Error("CVE introuvable dans la réponse NVD.");
+
+    log("Étape 3/3 — Rendu du détail + liens NVD/EUVD + CWE…");
+    renderCveDetail(vuln);
+
+    setStatus("OK. Clique sur ↳ d’une CWE pour CAPEC + ATT&CK.", "ok", false);
+    log("Recherche CVE terminée.", "ok");
+  }catch(e){
+    setStatus(`Erreur: ${e.message}`, "bad", false);
+    log(`Erreur recherche CVE: ${e.message}`, "bad");
+    document.getElementById("results").innerHTML = "";
+  }finally{
+    disableUI(false);
+  }
+}
+
+async function searchCpe(cpe){
+  log(`Recherche CPE lancée: ${cpe}`);
+  setStatus(`Recherche CPE: ${cpe}`, "muted", true);
+  disableUI(true);
+
+  try{
+    log("Étape 1/3 — Validation du format CPE (cpe:2.3:…)…");
+    if(!isLikelyCpe(cpe)) throw new Error("Format CPE attendu: commence par cpe:2.3:...");
+
+    log("Étape 2/3 — Requête NVD (cpeName)…");
+    // resultsPerPage max 2000, on garde 50 pour une page “human-friendly”
+    const url = `${NVD_CVE_API_BASE}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=50&startIndex=0`;
+    const json = await fetchJson(url);
+
+    log("Étape 3/3 — Rendu liste de CVE (clic => détail CVE)…");
+    renderCpeResults(cpe, json);
+
+    setStatus("OK. Clique sur une CVE pour voir le détail.", "ok", false);
+    log("Recherche CPE terminée.", "ok");
+  }catch(e){
+    setStatus(`Erreur: ${e.message}`, "bad", false);
+    log(`Erreur recherche CPE: ${e.message}`, "bad");
+    document.getElementById("results").innerHTML = "";
+  }finally{
+    disableUI(false);
+  }
+}
+
+async function search(){
+  const mode = document.getElementById("mode").value;
+  const q = document.getElementById("queryInput").value.trim();
+
+  log("────────────────────────────────────────");
+  log(`Bouton Rechercher cliqué. Mode=${mode.toUpperCase()} Query="${q}"`);
+
+  if(mode === "cve") return searchCve(q.toUpperCase());
+  return searchCpe(q);
+}
+
+/* ---------- UI Events ---------- */
+
+document.getElementById("searchBtn").addEventListener("click", search);
+document.getElementById("clearBtn").addEventListener("click", ()=>{
+  document.getElementById("queryInput").value = "";
+  document.getElementById("results").innerHTML = "";
+  setStatus("Prêt.", "muted", false);
+  log("Écran effacé.");
+});
+document.getElementById("clearLogBtn").addEventListener("click", ()=>{
+  document.getElementById("log").innerHTML = "";
+  log("Moniteur vidé.");
+});
+document.getElementById("mode").addEventListener("change", ()=>{
+  const mode = document.getElementById("mode").value;
+  document.getElementById("queryInput").value = (mode==="cve") ? "CVE-2023-48010" : "cpe:2.3:o:microsoft:windows_10:1607:*:*:*:*:*:*:*";
+  document.getElementById("results").innerHTML = "";
+  setStatus("Prêt.", "muted", false);
+  log(`Mode changé: ${mode.toUpperCase()}`);
+});
+document.getElementById("queryInput").addEventListener("keydown", (e)=>{
+  if(e.key==="Enter") search();
+});
+
+// auto-run sur l’exemple (CVE)
+log("Page chargée. Lancement auto de l’exemple CVE.");
+search();
+</script>
+</body>
+</html>
