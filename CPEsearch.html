@@ -3,29 +3,35 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Recherche CVE par CPE – Liste simple (tri + CVSS)</title>
+<title>Recherche CVE par CPE – Tri date, CVSS, badge CISA KEV</title>
 
 <style>
 :root{
   --bg:#0b1020; --card:#121a33; --txt:#e9ecff; --muted:#aab3da;
   --accent:#7aa2ff; --line:#26325f;
+  --ok:#36d399; --bad:#f87171;
   --mono: ui-monospace, Menlo, Consolas, monospace;
   --sans: system-ui, Segoe UI, Roboto, Arial, sans-serif;
 }
 body{margin:0;font-family:var(--sans);background:linear-gradient(160deg,#070a15,var(--bg));color:var(--txt);}
-header,main{max-width:1100px;margin:auto;padding:18px}
+header,main,.monitor{max-width:1100px;margin:auto;padding:18px}
 h1{margin:0 0 8px;font-size:22px}
 .card{background:rgba(18,26,51,.95);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:14px}
-.row{display:flex;gap:10px;align-items:center}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 input,button{padding:10px;border-radius:10px;border:1px solid var(--line);background:#0a0f22;color:var(--txt)}
 button{cursor:pointer}
 button:hover{border-color:#3b4aa0}
 .mono{font-family:var(--mono)}
 .muted{color:var(--muted)}
-.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 6px;font-size:11px;margin-left:6px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
 ul{margin:6px 0 0 18px}
 li{margin:6px 0}
 .hr{height:1px;background:var(--line);margin:12px 0}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 6px;font-size:11px;margin-left:6px}
+.tag.ok{color:var(--ok)}
+.tag.bad{color:var(--bad)}
+.log{font-family:var(--mono);font-size:12px;max-height:200px;overflow:auto}
 </style>
 </head>
 
@@ -33,8 +39,8 @@ li{margin:6px 0}
 <header>
   <h1>Recherche de CVE à partir d’un CPE</h1>
   <p class="muted">
-    Liste des CVE NVD pour un CPE donné,<br/>
-    triées du <b>plus récent au plus ancien</b> avec affichage du <b>CVSS base</b>.
+    CVE NVD pour un CPE donné,<br/>
+    triées du <b>plus récent au plus ancien</b>, avec <b>CVSS base</b> et badge <b>CISA KEV</b>.
   </p>
 </header>
 
@@ -51,30 +57,50 @@ li{margin:6px 0}
   <div id="results"></div>
 </main>
 
-<script>
-/* =====================
-   CONFIG
-   ===================== */
-const NVD_API = "https://services.nvd.nist.gov/rest/json/cves/2.0";
+<div class="monitor">
+  <div class="card">
+    <b>Moniteur d’activité</b>
+    <div id="log" class="log"></div>
+  </div>
+</div>
 
-/* =====================
-   UTILS
-   ===================== */
+<script>
+/* ================= CONFIG ================= */
+const NVD_API = "https://services.nvd.nist.gov/rest/json/cves/2.0";
+const CISA_KEV_JSON =
+  "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json";
+
+/* ================= UTILS ================= */
 function escapeHtml(s){
-  return String(s ?? "").replace(/[&<>"']/g,c=>({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  return String(s ?? "").replace(/[&<>'"]/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"
   }[c]));
 }
-function setStatus(t){
-  document.getElementById("status").textContent = t;
+function setStatus(t){document.getElementById("status").textContent=t}
+function log(msg){
+  const l=document.getElementById("log");
+  l.innerHTML+=`<div>${escapeHtml(msg)}</div>`;
+  l.scrollTop=l.scrollHeight;
 }
-function isLikelyCpe(x){
-  return /^cpe:2\.3:/i.test(x);
+function isLikelyCpe(x){return /^cpe:2\.3:/i.test(x)}
+
+/* ================= CISA KEV ================= */
+let KEV_SET=null;
+async function loadKev(){
+  if(KEV_SET) return KEV_SET;
+  try{
+    log("Chargement CISA KEV…");
+    const j = await fetch(CISA_KEV_JSON).then(r=>r.json());
+    KEV_SET = new Set((j.vulnerabilities||[]).map(v=>v.cveID));
+    log(`CISA KEV chargé (${KEV_SET.size} CVE)`);
+  }catch(e){
+    log("⚠ CISA KEV non accessible (CORS navigateur)");
+    KEV_SET = new Set();
+  }
+  return KEV_SET;
 }
 
-/* =====================
-   SEARCH CPE → CVE
-   ===================== */
+/* ================= SEARCH ================= */
 async function searchCPE(cpe){
   if(!isLikelyCpe(cpe)){
     alert("CPE invalide (doit commencer par cpe:2.3:)");
@@ -82,19 +108,19 @@ async function searchCPE(cpe){
   }
 
   setStatus("Recherche en cours…");
+  log(`Recherche CPE: ${cpe}`);
 
-  const url =
-    `${NVD_API}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=50`;
+  const url = `${NVD_API}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=50`;
+  log(`Appel NVD: ${url}`);
 
-  const json = await fetch(url).then(r => r.json());
-  renderResults(cpe, json);
+  const kevSet = await loadKev();
+  const json = await fetch(url).then(r=>r.json());
 
+  renderResults(cpe, json, kevSet);
   setStatus("Résultats affichés");
 }
 
-/* =====================
-   CVSS BASE (LOCAL)
-   ===================== */
+/* ================= CVSS BASE ================= */
 function getCvssBase(cve){
   const m40 = cve.metrics?.cvssMetricV40?.[0]?.cvssData;
   if(m40) return {score:m40.baseScore, sev:m40.baseSeverity, v:"4.0"};
@@ -103,14 +129,12 @@ function getCvssBase(cve){
   const m30 = cve.metrics?.cvssMetricV30?.[0]?.cvssData;
   if(m30) return {score:m30.baseScore, sev:m30.baseSeverity, v:"3.0"};
   const m2  = cve.metrics?.cvssMetricV2?.[0]?.cvssData;
-  if(m2)  return {score:m2.baseScore, sev:m2.baseSeverity || "", v:"2.0"};
+  if(m2)  return {score:m2.baseScore, sev:m2.baseSeverity||"", v:"2.0"};
   return null;
 }
 
-/* =====================
-   RENDER + TRI PAR DATE
-   ===================== */
-function renderResults(cpe, json){
+/* ================= RENDER ================= */
+function renderResults(cpe, json, kevSet){
   const vulns = json.vulnerabilities || [];
   const wrap = document.getElementById("results");
 
@@ -120,10 +144,9 @@ function renderResults(cpe, json){
     return;
   }
 
-  // Tri par date décroissante
   vulns.sort((a,b)=>{
-    const da = new Date(a.cve.published || 0);
-    const db = new Date(b.cve.published || 0);
+    const da = new Date(a.cve.published||0);
+    const db = new Date(b.cve.published||0);
     return db - da;
   });
 
@@ -136,31 +159,31 @@ function renderResults(cpe, json){
     <div class="hr"></div>
     <ul>
       ${vulns.map(v=>{
-        const c = v.cve;
-        const date = c.published ? c.published.split("T")[0] : "n/a";
-        const cvss = getCvssBase(c);
-
-        // 🔗 Lien vers ta page de détail CVE
-        const link = `CVEsearch.htm?cve=${c.id}`;
+        const c=v.cve;
+        const date=c.published?c.published.split("T")[0]:"n/a";
+        const cvss=getCvssBase(c);
+        const isKev=kevSet.has(c.id);
+        const link=`CVEsearch.htm?cve=${c.id}`;
 
         return `
         <li>
-          ${link}<b>${c.id}</b></a>
+          <a href="${link}"><b>${}</b></a>
           <span class="muted">(${date})</span>
-          ${cvss ? `<span class="tag">CVSS ${cvss.score} ${cvss.sev} v${cvss.v}</span>` : ``}
-          <div class="muted">${escapeHtml(c.descriptions?.[0]?.value || "")}</div>
+          ${cvss?`<span class="tag">CVSS ${cvss.score} ${cvss.sev} v${cvss.v}</span>`:""}
+          ${isKev?`<span class="tag bad">CISA KEV</span>`:`<span class="tag ok">Non KEV</span>`}
+          <div class="muted">${escapeHtml(c.descriptions?.[0]?.value||"")}</div>
         </li>`;
       }).join("")}
     </ul>
   </div>`;
 }
-  
-/* =====================
-   UI
-   ===================== */
-document.getElementById("searchBtn").onclick = ()=>{
+
+/* ================= UI ================= */
+document.getElementById("searchBtn").onclick=()=>{
   searchCPE(document.getElementById("cpeInput").value.trim());
 };
+
+log("Page chargée ✅");
 </script>
 </body>
 </html>
