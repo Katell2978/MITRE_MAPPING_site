@@ -1,0 +1,207 @@
+DOC Technique pour comprendre le mode de focntionnement de la page index.html
+
+Index.html est une page web  (HTML + CSS + JavaScript pur) qui fonctionne **entièrement côté navigateur**.
+Elle implémente un **pipeline d’analyse de vulnérabilité** :
+    Entrée utilisateur
+       │
+       ├─ Recherche CVE (ou CPE)
+       │
+       ├─ NVD API (CVE / CPE)
+       │
+       ├─ Extraction CWE
+       │
+       ├─ Mapping CWE → CAPEC (local)
+       │
+       ├─ Mapping CAPEC → ATT&CK (local)
+       │
+       ├─ Mapping ATT&CK → ATM (CSV)
+       │
+       ├─ Détection (DET / DC / onboard / offboard)
+       │
+       └─ Visualisation (texte + graphe SVG)
+
+👉 **Aucun backend**, aucun stockage serveur.\
+
+# 2️⃣ Organisation des zones HTML (DIV) et leur rôle
+## 🧭 2.1 Structure principale
+### `<header>`
+*   Présentation de l’outil
+*   Contexte fonctionnel (ce que fait la page)
+*   Pré-requis de données
+***
+### `<main>`
+Contient **tout le flux interactif**.
+***
+## 🧩 2.2 Bloc de recherche (contrôle utilisateur)
+### Rôle des éléments :
+| Élément       | Rôle                                                         |
+| ------------- | ------------------------------------------------------------ |
+| `#mode`       | Sélection du **type de recherche** (CVE ou CPE)              |
+| `#queryInput` | Saisie libre de l’identifiant                                |
+| `#searchBtn`  | Déclenche la recherche                                       |
+| `#status`     | Feedback utilisateur (état, erreurs, filtrage 12 mois, etc.) |
+
+👉 **Aucune logique métier ici**, seulement des **déclencheurs**.
+***
+## 📦 2.3 Zone de résultats principale
+### Rôle
+C’est le **conteneur dynamique principal**.\
+Il est **entièrement reconstruit** à chaque recherche.
+Il peut contenir :
+*   soit une **liste de CVE** (mode CPE)
+*   soit une **vue détaillée CVE** (mode CVE)
+👉 Cela évite la complexité d’un DOM partiellement mis à jour.
+***
+## 🔬 2.4 Vue détaillée CVE (injectée dynamiquement)
+Créée par la fonction `renderCveDetail()`.
+### Sous-blocs importants :
+#### ✅ Informations CVE
+*   Description
+*   Dates
+*   Liens NVD / EUVD
+*   CVSS (toutes versions supportées)
+*   CPE impactés
+👉 Source : **NVD uniquement**
+***
+#### ✅ Liste des CWE
+Chaque CWE devient un **pivot interactif** :
+*   lien MITRE CWE (documentation)
+*   bouton `↳` = **déclenchement du drilldown**
+***
+#### ✅ Bloc Drilldown
+C’est **le cœur analytique**.
+Il est vide par défaut, puis rempli après clic sur une CWE.
+***
+# 3️⃣ Fonctions JavaScript — rôle et responsabilité
+## 🧱 3.1 Fonctions utilitaires (fondation)
+### `escapeHtml()`
+*   Empêche toute injection HTML
+*   Sécurise les contenus dynamiques
+### `log()`
+*   Écrit dans le **moniteur d’activité**
+*   Sert de **trace d’exécution**
+### `setStatus()`
+*   Met à jour l’état utilisateur (chargement, erreur, filtrage)
+***
+## 🔍 3.2 Fonctions de recherche (entrée du pipeline)
+### `search()`
+**Point d’entrée principal**\
+Décide :
+*   CVE → `searchCve()`
+*   CPE → `searchCpe()`
+***
+### `searchCve(cveId)`
+**Responsabilité :**
+*   Valider le format CVE
+*   Interroger NVD (`?cveId=`)
+*   Afficher le détail CVE
+👉 **Une seule CVE, un seul objet**, pas de pagination.
+***
+### `searchCpe(cpe)`
+**Responsabilité :**
+1.  Validation du format CPE
+2.  **Sondage du volume NVD**
+3.  Si trop de résultats :
+    *   appliquer automatiquement un **filtre temporel 12 mois**
+4.  Afficher une **liste de CVE cliquables**
+👉 C’est volontairement **une vue d’exploration**, pas une vue exhaustive.
+***
+## 🧠 3.3 Chargement des bases locales
+### `loadSecurityBases()`
+Charge **une seule fois** :
+*   `cwe_db.json`
+*   `capec_db.json`
+*   `techniques_db.json`
+👉 Ces fichiers sont **tes tables de correspondance**.
+***
+### `loadATM()`
+Charge et parse :
+*   `ATM-matrix-TTP.csv`
+Produit une structure exploitable :
+```js
+{
+  tactic,
+  atmId,
+  label,
+  mitreEnt[],
+  mitreMob[],
+  det[],
+  dc[],
+  onboard,
+  offboard,
+  rmq
+}
+```
+👉 C’est ton **référentiel métier automotive**.
+***
+## 🔗 3.4 Chaînage sémantique (le cœur du moteur)
+### `computeCapecAndTechniquesFromCWE(cweId)`
+Pipeline interne :
+    CWE
+     └─ RelatedAttackPatterns[]
+          └─ CAPEC
+               └─ taxonomy
+                    └─ ATT&CK techniques (Txxxx)
+
+Retourne :
+
+*   Liste de CAPEC
+*   Liste **déduite** de techniques ATT\&CK
+👉 **Aucune hypothèse**, tout est issu des données MITRE.
+***
+### `matchATMByTechniques(techniques, atmRows)`
+**Jointure métier** :
+    ATT&CK Txxxx
+       └─ ATM-matrix-TTP.csv
+            └─ ATM-Txxxx
+Permet de répondre à :
+> *“Quels scénarios ATM sont concernés par ces techniques ?”*
+***
+## 🧪 3.5 Drilldown (analyse approfondie)
+### `renderDrilldown(cveId, cweId)`
+C’est la **fonction clé**.
+Elle :
+1.  Calcule CAPEC + ATT\&CK
+2.  Joint avec ATM
+3.  Affiche :
+    *   CAPEC
+    *   ATT\&CK
+    *   ATM + détection
+4.  Génère le **visuel SVG**
+***
+
+# 4️⃣ Le visuel SVG : rôle et logique
+## 🎨 Objectif
+Montrer **les pivots et les liens**, pas un graphe décoratif.
+    CWE → CAPEC → ATT&CK → ATM → DET / DC
+***
+## 🧩 Élément HTML
+### Pourquoi SVG ?
+*   Natif navigateur
+*   Exportable
+*   Lisible
+*   Pas de dépendance externe
+***
+## 🧠 Fonction `renderPivotGraph()`
+Elle :
+*   Crée des **colonnes logiques**
+*   Place des **nœuds**
+*   Trace des **liens courbes**
+*   Tronque intelligemment pour lisibilité
+👉 Le graphe **reflète exactement les données calculées**, rien de plus.
+***
+# 5️⃣ Moniteur d’activité
+### Rôle
+*   Debug
+*   Compréhension du flux
+*   Traçabilité analyste
+Exemples :
+*   Filtrage 12 mois appliqué
+*   Volume CPE
+*   Nombre de CAPEC / ATT\&CK / ATM trouvés
+***
+# 6️⃣ Philosophie générale du code
+✅ **Séparation claire des responsabilités**\
+✅ **Aucune magie cachée**\
+✅ **Tout est déterministe et traçable**\
+✅ **Pensé pour l’analyse sécurité**, pas pour le marketing
