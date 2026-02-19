@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CVE → CWE → CAPEC → ATT&CK (Enterprise/Mobile) + NVD/EUVD</title>
+  <style>
+    :root{
+      --bg:#0b1020; --card:#121a33; --card2:#0f1630; --txt:#e9ecff; --muted:#aab3da;
+      --accent:#7aa2ff; --ok:#36d399; --warn:#fbbf24; --bad:#f87171; --line:#26325f;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+    body{margin:0; font-family:var(--sans); background:linear-gradient(160deg, #070a15, var(--bg)); color:var(--txt);}
+    header{padding:28px 18px 12px; max-width:1100px; margin:0 auto;}
+    h1{margin:0 0 8px; font-size:22px;}
+    p{margin:6px 0; color:var(--muted); line-height:1.4;}
+    main{max-width:1100px; margin:0 auto; padding: 0 18px 40px;}
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+    input[type="text"]{
+      flex:1; min-width:260px; padding:12px 12px; border-radius:10px;
+      border:1px solid var(--line); background:#0a0f22; color:var(--txt);
+      font-family:var(--mono); font-size:14px;
+    }
+    button{
+      padding:12px 14px; border-radius:10px; border:1px solid var(--line);
+      background: #182454; color: var(--txt); cursor:pointer; font-weight:600;
+    }
+    button:hover{border-color:#3b4aa0;}
+    .card{
+      background: rgba(18,26,51,.9); border:1px solid var(--line); border-radius:14px;
+      padding:14px; margin-top:14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    .card h2{margin:0 0 10px; font-size:16px;}
+    .grid{display:grid; grid-template-columns: 1.1fr .9fr; gap:12px;}
+    @media (max-width: 920px){ .grid{grid-template-columns:1fr;} }
+    .kv{display:grid; grid-template-columns: 160px 1fr; gap:6px 12px; font-size:14px;}
+    .k{color:var(--muted);}
+    .v{color:var(--txt);}
+    .pill{display:inline-flex; gap:6px; align-items:center; padding:4px 10px; border-radius:999px;
+      border:1px solid var(--line); background: #0b1333; margin:4px 6px 0 0; font-size:12px;}
+    .pill a{color:var(--accent); text-decoration:none;}
+    .pill button{padding:0; margin:0; border:none; background:transparent; color:var(--accent); font-weight:700;}
+    a{color:var(--accent);}
+    .mono{font-family:var(--mono);}
+    .muted{color:var(--muted);}
+    .status{font-size:13px; margin-top:10px;}
+    .status.ok{color:var(--ok);}
+    .status.warn{color:var(--warn);}
+    .status.bad{color:var(--bad);}
+    details{border:1px solid var(--line); border-radius:12px; padding:10px 12px; background: rgba(15,22,48,.8);}
+    details summary{cursor:pointer; font-weight:700;}
+    ul{margin:8px 0 0 18px;}
+    li{margin:4px 0;}
+    .twoCol{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+    @media (max-width: 920px){ .twoCol{grid-template-columns:1fr;} }
+    .small{font-size:12px;}
+    .hr{height:1px; background:var(--line); margin:12px 0;}
+    .tag{display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; margin-left:6px; border:1px solid var(--line); color:var(--muted);}
+  </style>
+</head>
+<body>
+<header>
+  <h1>CVE → CWE → CAPEC → ATT&CK (Enterprise/Mobile) + liens NVD / EUVD</h1>
+  <p>
+    Les CWE/CAPEC/TTP sont calculés avec les mêmes bases que <a href="https://galeax.github.io/CVE2CAPEC/" target="_blank" rel="noreferrer">CVE2CAPEC</a>.
+    Les infos CVSS/CVE viennent de l’API NVD 2.0 (utilisée par CVE2CAPEC). 
+  </p>
+  <p class="small muted">
+    Conseil : mets ce fichier dans <span class="mono">/docs/index.html</span> puis active GitHub Pages sur le dossier <span class="mono">/docs</span>.
+  </p>
+</header>
+
+<main>
+  <div class="card">
+    <div class="row">
+      <input id="cveInput" type="text" placeholder="Ex: CVE-2023-48010" value="CVE-2023-48010" />
+      <button id="searchBtn">Rechercher</button>
+      <button id="clearBtn" title="Effacer">Effacer</button>
+    </div>
+    <div id="status" class="status muted">Prêt.</div>
+  </div>
+
+  <div id="results"></div>
+</main>
+
+<script>
+/**
+ * --- Sources utilisées ---
+ * NVD API 2.0 (cf. retrieve_cve.py dans CVE2CAPEC) : https://services.nvd.nist.gov/rest/json/cves/2.0/
+ * EUVD (page par CVE) : https://euvd.enisa.europa.eu/vulnerability/<CVE>
+ * CVE2CAPEC resources : https://galeax.github.io/CVE2CAPEC/resources/{cwe_db.json,capec_db.json,techniques_db.json}
+ */
+
+const GALEAX_BASE = "https://galeax.github.io/CVE2CAPEC";
+const NVD_API = "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=";
+
+const cache = new Map();
+
+function setStatus(msg, level="muted"){
+  const el = document.getElementById("status");
+  el.className = "status " + level;
+  el.textContent = msg;
+}
+
+function isValidCve(s){
+  return /^CVE-\d{4}-\d{4,}$/i.test(s.trim());
+}
+
+async function fetchJson(url){
+  if(cache.has(url)) return cache.get(url);
+  const p = fetch(url, {cache:"force-cache"}).then(r=>{
+    if(!r.ok) throw new Error(`HTTP ${r.status} sur ${url}`);
+    return r.json();
+  });
+  cache.set(url,p);
+  return p;
+}
+
+async function fetchText(url){
+  if(cache.has(url)) return cache.get(url);
+  const p = fetch(url, {cache:"force-cache"}).then(r=>{
+    if(!r.ok) throw new Error(`HTTP ${r.status} sur ${url}`);
+    return r.text();
+  });
+  cache.set(url,p);
+  return p;
+}
+
+function esc(s){ return String(s ?? "").replace(/[&<>"']/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+
+function pickCvss(metrics){
+  // Priorité: v4.0 puis v3.1 puis v3.0 puis v2
+  const m40 = metrics?.cvssMetricV40?.[0];
+  if(m40?.cvssData) return {version:"4.0", ...m40};
+  const m31 = metrics?.cvssMetricV31?.[0];
+  if(m31?.cvssData) return {version:"3.1", ...m31};
+  const m30 = metrics?.cvssMetricV30?.[0];
+  if(m30?.cvssData) return {version:"3.0", ...m30};
+  const m2  = metrics?.cvssMetricV2?.[0];
+  if(m2?.cvssData) return {version:"2.0", ...m2};
+  return null;
+}
+
+function parseVector(vector){
+  // retourne un objet {AV:"N", AC:"L", ...} depuis "CVSS:3.1/AV:N/AC:L/..."
+  const out = {};
+  if(!vector) return out;
+  vector.split("/").forEach(part=>{
+    const [k,v] = part.split(":");
+    if(v && k && k !== "CVSS") out[k]=v;
+  });
+  return out;
+}
+
+function severityColor(sev){
+  const s = (sev||"").toLowerCase();
+  if(s.includes("critical")) return "bad";
+  if(s.includes("high")) return "warn";
+  if(s.includes("medium")) return "warn";
+  if(s.includes("low")) return "ok";
+  return "muted";
+}
+
+function flattenCpes(config){
+  // extrait récursivement cpe23Uri d'une structure NVD
+  const out = [];
+  function walk(node){
+    if(!node) return;
+    if(Array.isArray(node.cpeMatch)){
+      for(const m of node.cpeMatch){
+        if(m?.criteria) out.push(m.criteria);
+        if(m?.cpe23Uri) out.push(m.cpe23Uri);
+      }
+    }
+    if(Array.isArray(node.nodes)) node.nodes.forEach(walk);
+  }
+  if(Array.isArray(config?.nodes)) config.nodes.forEach(walk);
+  if(Array.isArray(config)) config.forEach(walk);
+  return [...new Set(out)];
+}
+
+function getCwesFromNvd(weaknesses){
+  // weaknesses: [{type:"Primary", description:[{lang:"en", value:"CWE-522"}]}]
+  const cwes = [];
+  (weaknesses || []).forEach(w=>{
+    (w.description||[]).forEach(d=>{
+      const m = (d.value||"").match(/CWE-(\d{1,5})/);
+      if(m) cwes.push({id:m[1], label:`CWE-${m[1]}`, type:w.type || "Unknown"});
+    });
+  });
+  // dédoublonne par id en conservant un type "Primary" si présent
+  const byId = new Map();
+  for(const c of cwes){
+    if(!byId.has(c.id)) byId.set(c.id, c);
+    else if((c.type||"").toLowerCase()==="primary") byId.set(c.id, c);
+  }
+  return [...byId.values()];
+}
+
+function capecTechniquesFromTaxonomy(taxonomy){
+  // même logique que capec2technique.py : split "NAME:ATTACK:ENTRY " et extraction de l'ID
+  const out = new Set();
+  if(!taxonomy) return [];
+  const parts = taxonomy.split("NAME:ATTACK:ENTRY ").slice(1);
+  for(const p of parts){
+    const infos = p.split(":");
+    // attendu: ... :<ID>: ... avec ID = 1007 ou 1036.005 etc (sans "T")
