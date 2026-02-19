@@ -1,79 +1,180 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <title>CWE → STRIDE Mapping (EMB3D)</title>
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Recherche CVE / CPE / ATM → CWE → CAPEC → ATT&CK + ATM & Détection</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 2rem;
-      background: #f8f9fa;
+    :root{
+      --bg:#0b1020; --card:#121a33; --card2:#0f1630; --txt:#e9ecff; --muted:#aab3da;
+      --accent:#7aa2ff; --ok:#36d399; --warn:#fbbf24; --bad:#f87171; --line:#26325f;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     }
-    h1 { color: #222; }
-    input { padding: 8px; width: 320px; }
-    button { padding: 8px 12px; margin-left: 6px; }
-    .card {
-      background: #fff;
-      padding: 1rem;
-      margin: 1rem 0;
-      border-left: 5px solid #0078d4;
-      box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    body{margin:0; font-family:var(--sans); background:linear-gradient(160deg, #070a15, var(--bg)); color:var(--txt);}
+    header{padding:28px 18px 12px; max-width:1100px; margin:0 auto;}
+    h1{margin:0 0 8px; font-size:22px;}
+    p{margin:6px 0; color:var(--muted); line-height:1.4;}
+    main{max-width:1100px; margin:0 auto; padding: 0 18px 20px;}
+    .row{display:flex; gap:10px; flex-wrap:wrap; align-items:center;}
+    input[type="text"]{
+      flex:1; min-width:260px; padding:12px 12px; border-radius:10px;
+      border:1px solid var(--line); background:#0a0f22; color:var(--txt);
+      font-family:var(--mono); font-size:14px;
     }
-    .stride { font-weight: bold; }
+    select{
+      padding:12px 12px; border-radius:10px; border:1px solid var(--line);
+      background:#0a0f22; color:var(--txt);
+      font-family:var(--sans); font-size:14px;
+    }
+    button{
+      padding:12px 14px; border-radius:10px; border:1px solid var(--line);
+      background: #182454; color: var(--txt); cursor:pointer; font-weight:600;
+    }
+    button:hover{border-color:#3b4aa0;}
+    button:disabled{opacity:.55; cursor:not-allowed;}
+    .card{
+      background: rgba(18,26,51,.9); border:1px solid var(--line); border-radius:14px;
+      padding:14px; margin-top:14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    .card h2{margin:0 0 10px; font-size:16px;}
+    .grid{display:grid; grid-template-columns: 1.1fr .9fr; gap:12px;}
+    @media (max-width: 920px){ .grid{grid-template-columns:1fr;} }
+    .kv{display:grid; grid-template-columns: 160px 1fr; gap:6px 12px; font-size:14px;}
+    .k{color:var(--muted);}
+    .v{color:var(--txt);}
+    .pill{display:inline-flex; gap:6px; align-items:center; padding:4px 10px; border-radius:999px;
+      border:1px solid var(--line); background: #0b1333; margin:4px 6px 0 0; font-size:12px;}
+    .pill a{color:var(--accent); text-decoration:none;}
+    .pill button{padding:0; margin:0; border:none; background:transparent; color:var(--accent); font-weight:700; cursor:pointer;}
+    a{color:var(--accent);}
+    .mono{font-family:var(--mono);}
+    .muted{color:var(--muted);}
+    .status{font-size:13px; margin-top:10px;}
+    .status.ok{color:var(--ok);}
+    .status.warn{color:var(--warn);}
+    .status.bad{color:var(--bad);}
+    details{border:1px solid var(--line); border-radius:12px; padding:10px 12px; background: rgba(15,22,48,.8);}
+    details summary{cursor:pointer; font-weight:700;}
+    ul{margin:8px 0 0 18px;}
+    li{margin:4px 0;}
+    .twoCol{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+    @media (max-width: 920px){ .twoCol{grid-template-columns:1fr;} }
+    .threeCol{display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px;}
+    @media (max-width: 920px){ .threeCol{grid-template-columns:1fr;} }
+    .small{font-size:12px;}
+    .hr{height:1px; background:var(--line); margin:12px 0;}
+    .tag{display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; margin-left:6px; border:1px solid var(--line); color:var(--muted);}
+    .badge-ok{border-color:rgba(54,211,153,.6); color:var(--ok);}
+    .badge-warn{border-color:rgba(251,191,36,.6); color:var(--warn);}
+    .badge-bad{border-color:rgba(248,113,113,.6); color:var(--bad);}
+    .spinner{
+      display:inline-block; width:12px; height:12px; border:2px solid rgba(255,255,255,.25);
+      border-top-color: rgba(255,255,255,.9); border-radius:999px; margin-right:6px;
+      animation: spin .9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Table ATM */
+    table{width:100%; border-collapse:collapse; font-size:12px;}
+    th, td{border-top:1px solid var(--line); padding:8px 8px; vertical-align:top;}
+    th{color:var(--muted); text-align:left; font-weight:700;}
+    tr:hover td{background:rgba(122,162,255,.06);}
+    .nowrap{white-space:nowrap;}
+
+    /* Monitor */
+    .monitor{max-width:1100px; margin:0 auto; padding:0 18px 24px;}
+    .monitorBox{margin-top:14px; border:1px solid var(--line); border-radius:14px; background: rgba(10,15,34,.85); padding:10px 12px;}
+    .monitorHead{display:flex; justify-content:space-between; align-items:center; gap:10px;}
+    .monitorHead b{font-size:13px;}
+    .log{margin-top:10px; font-family:var(--mono); font-size:12px; color:var(--txt); white-space:pre-wrap; max-height:210px; overflow:auto; border-top:1px solid var(--line); padding-top:10px;}
+    .log .t{color:var(--muted);}
+    .log .ok{color:var(--ok);}
+    .log .warn{color:var(--warn);}
+    .log .bad{color:var(--bad);}
   </style>
 </head>
-
 <body>
+<header>
+  <h1>Recherche CVE / CPE / ATM → CWE → CAPEC → ATT&CK + ATM & Détection</h1>
+  <p>
+    <b>CVE</b> : détail (CVSS, CWE, références, CPE si disponibles) + drilldown CWE→CAPEC→ATT&amp;CK + enrichissement ATM/DET/DC.<br/>
+    <b>CPE</b> : liste de CVE via NVD, clic sur une CVE = détail.<br/>
+    <b>ATM</b> : recherche par Txxxx / ATM-Txxxx / DETxxxx / DCxxxx / mots-clés dans la matrice ATM.
+  </p>
+  <p class="small muted">
+    Prérequis: <span class="mono">./data/cwe_db.json</span>, <span class="mono">./data/capec_db.json</span>, <span class="mono">./data/techniques_db.json</span>, <span class="mono">./data/ATM-matrix-TTP.csv</span>.
+  </p>
+</header>
 
-<h1>CWE → STRIDE Mapping (MITRE EMB3D)</h1>
+<main>
+  <div class="card">
+    <div class="row">
+      <select id="mode">
+        <option value="cve">Recherche par CVE</option>
+        <option value="cpe">Recherche par CPE</option>
+        <option value="atm">Recherche ATM / DET / DC / Technique</option>
+      </select>
+      <input id="queryInput" type="text" placeholder="Ex: CVE-2023-48010" value="CVE-2023-48010" />
+      <button id="searchBtn">Rechercher</button>
+      <button id="clearBtn" title="Effacer">Effacer</button>
+    </div>
+    <div id="status" class="status muted">Prêt.</div>
+  </div>
 
-<p>
-Recherche par <b>CWE</b> (ex: <code>CWE-1191</code>) ou par
-<b>STRIDE</b> (ex: <code>Information Disclosure</code>)
-</p>
+  <div id="results"></div>
+</main>
 
-<input id="searchInput" placeholder="CWE-1191 ou Information Disclosure">
-<button onclick="search()">Rechercher</button>
-
-<div id="results"></div>
-
-<!-- ✅ Chargement des données -->
-<script src="data/data.js"></script>
+<div class="monitor">
+  <div class="monitorBox">
+    <div class="monitorHead">
+      <b>Moniteur d’activité</b>
+      <button id="clearLogBtn" style="padding:6px 10px;">Vider</button>
+    </div>
+    <div id="log" class="log"></div>
+  </div>
+</div>
 
 <script>
-function search() {
-  const query = document.getElementById("searchInput").value.toLowerCase();
-  const results = document.getElementById("results");
-  results.innerHTML = "";
+/**
+ * NVD CVE API 2.0:
+ * - Recherche CVE:  ?cveId=CVE-...
+ * - Recherche CPE:  ?cpeName=cpe:2.3:...
+ */
+const NVD_CVE_API_BASE = "https://services.nvd.nist.gov/rest/json/cves/2.0";
+const DATA_BASE = "./data"; // data/cwe_db.json, capec_db.json, techniques_db.json, ATM-matrix-TTP.csv
 
-  if (!query) return;
+const cache = new Map();
 
-  let found = false;
-
-  Object.entries(CWE_DATA).forEach(([cwe, data]) => {
-    const matchCWE = cwe.toLowerCase().includes(query);
-    const matchStride = data.stride.some(s => s.toLowerCase().includes(query));
-
-    if (matchCWE || matchStride) {
-      found = true;
-      results.innerHTML += `
-        <div class="card">
-          <h3>${cwe}</h3>
-          <p class="stride">STRIDE : ${data.stride.join(", ")}</p>
-          <p>
-            <a href="${data.lien}" target="_blank">Lien CWE officiel</a>
-          </p>
-        </div>
-      `;
-    }
-  });
-
-  if (!found) {
-    results.innerHTML = "<p>Aucun résultat trouvé.</p>";
-  }
+// ---------- Monitor ----------
+function now(){ return new Date().toLocaleTimeString("fr-FR", {hour12:false}); }
+function escapeHtml(s){ return String(s ?? "").replace(/[&<>"']/g, c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+function log(msg, level="t"){
+  const el = document.getElementById("log");
+  const line = document.createElement("div");
+  line.innerHTML = `<span class="t">[${now()}]</span> <span class="${level}">${escapeHtml(msg)}</span>`;
+  el.appendChild(line);
+  el.scrollTop = el.scrollHeight;
 }
-</script>
+function setStatus(msg, level="muted", busy=false){
+  const el = document.getElementById("status");
+  el.className = "status " + level;
+  el.innerHTML = busy ? `<span class="spinner"></span>${escapeHtml(msg)}` : escapeHtml(msg);
+}
+function disableUI(disabled){
+  ["searchBtn","clearBtn","mode","queryInput"].forEach(id=>document.getElementById(id).disabled = disabled);
+}
 
-</body>
-</html>
+// ---------- Helpers ----------
+function isValidCve(s){ return /^CVE-\d{4}-\d{4,}$/i.test(String(s||"").trim()); }
+function isLikelyCpe(s){ return /^cpe:2\.3:/i.test(String(s||"").trim()); }
+function isTid(s){ return /^T\d{4}(\.\d{3})?$/i.test(String(s||"").trim()); }
+function isAtmId(s){ return /^ATM-T\d{4}$/i.test(String(s||"").trim()); }
+function isDetId(s){ return /^DET\d{4}$/i.test(String(s||"").trim()); }
+function isDcId(s){ return /^DC\d{4}$/i.test(String(s||"").trim()); }
+
+async function fetchJson(url){
+  if(cache.has(url)) return cache.get(url);
+  const p = fetch(url, {cache:"force-cache"}).then(async r=>{
+    if(!r.ok){
