@@ -152,6 +152,7 @@ console.log("JS chargé ✅");
    ======================= */
 const NVD_CVE_API_BASE = "https://services.nvd.nist.gov/rest/json/cves/2.0";
 const DATA_BASE = "./data"; // tes fichiers locaux
+const CPE_RESULT_THRESHOLD = 200; // au-delà de 200 CVE, on limite à celle des 12 derniers mois
 
 /* =======================
    Monitor / UI helpers
@@ -698,6 +699,18 @@ async function renderDrilldown(cveId, cweId){
 /* =======================
    Render CPE results
    ======================= */
+
+function last12MonthsWindow(){
+  const end = new Date();
+  const start = new Date();
+  start.setMonth(start.getMonth() - 12);
+
+  const iso = d => d.toISOString().split(".")[0] + "Z";
+  return {
+    pubStartDate: iso(start),
+    pubEndDate: iso(end)
+  }
+
 function renderCpeResults(cpe, nvdJson){
   const wrap = document.getElementById("results");
   wrap.innerHTML = "";
@@ -788,26 +801,73 @@ async function searchCpe(cpe){
   disableUI(true);
 
   try{
-    log("Étape 1/3 — Validation CPE…");
-    if(!isLikelyCpe(cpe)) throw new Error("Format CPE attendu: commence par cpe:2.3:...");
+    log("Étape 1/4 — Validation du format CPE…");
+    if(!isLikelyCpe(cpe)){
+      throw new Error("Format CPE attendu: commence par cpe:2.3:...");
+    }
 
-    log("Étape 2/3 — Requête NVD (cpeName)…");
-    const url = `${NVD_CVE_API_BASE}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=50&startIndex=0`;
-    const json = await fetchJson(url);
+    /* ===============================
+       Étape 2 — Requête initiale (sondage)
+       =============================== */
+    log("Étape 2/4 — Requête NVD (sondage du volume)…");
+    const probeUrl =
+      `${NVD_CVE_API_BASE}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=1`;
 
-    log("Étape 3/3 — Rendu liste de CVE…");
-    renderCpeResults(cpe, json);
+    const probeJson = await fetchJson(probeUrl);
+    const total = probeJson?.totalResults ?? 0;
 
-    setStatus("OK. Clique sur une CVE pour voir le détail.", "ok", false);
+    log(`Volume total NVD pour ce CPE: ${total}`);
+
+    /* ===============================
+       Étape 3 — Décision de filtrage
+       =============================== */
+    let finalUrl;
+    let note = "";
+
+    if(total > CPE_RESULT_THRESHOLD){
+      const {pubStartDate, pubEndDate} = last12MonthsWindow();
+      note = " (filtré sur les 12 derniers mois)";
+      log(`Trop de résultats → application filtre temporel ${pubStartDate} → ${pubEndDate}`, "warn");
+
+      finalUrl =
+        `${NVD_CVE_API_BASE}?cpeName=${encodeURIComponent(cpe)}` +
+        `&pubStartDate=${encodeURIComponent(pubStartDate)}` +
+        `&pubEndDate=${encodeURIComponent(pubEndDate)}` +
+        `&resultsPerPage=50&startIndex=0`;
+    } else {
+      finalUrl =
+        `${NVD_CVE_API_BASE}?cpeName=${encodeURIComponent(cpe)}` +
+        `&resultsPerPage=50&startIndex=0`;
+    }
+
+    /* ===============================
+       Étape 4 — Requête finale
+       =============================== */
+    log("Étape 4/4 — Requête NVD finale…");
+    const json = await fetchJson(finalUrl);
+
+    renderCpeResults(cpe + note, json);
+
+    setStatus(
+      total > CPE_RESULT_THRESHOLD
+        ? "OK. Résultats limités aux 12 derniers mois."
+        : "OK. Résultats complets.",
+      "ok",
+      false
+    );
+
     log("Recherche CPE terminée ✅", "ok");
-  }catch(e){
+  }
+  catch(e){
     setStatus(`Erreur: ${e.message}`, "bad", false);
     log(`Erreur recherche CPE: ${e.message}`, "bad");
     document.getElementById("results").innerHTML = "";
-  }finally{
+  }
+  finally{
     disableUI(false);
   }
 }
+  
 
 async function search(){
   const mode = document.getElementById("mode").value;
