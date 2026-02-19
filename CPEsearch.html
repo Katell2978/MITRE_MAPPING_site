@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Recherche CVE par CPE – Liste simple</title>
-/*------------ DEBUT : GESTION DU CSS STYLE ------------------*/
+<title>Recherche CVE par CPE – Liste simple (tri + CVSS)</title>
+
 <style>
 :root{
   --bg:#0b1020; --card:#121a33; --txt:#e9ecff; --muted:#aab3da;
@@ -12,51 +12,29 @@
   --mono: ui-monospace, Menlo, Consolas, monospace;
   --sans: system-ui, Segoe UI, Roboto, Arial, sans-serif;
 }
-body{
-  margin:0;
-  font-family:var(--sans);
-  background:linear-gradient(160deg,#070a15,var(--bg));
-  color:var(--txt);
-}
-header,main{
-  max-width:1100px;
-  margin:auto;
-  padding:18px;
-}
+body{margin:0;font-family:var(--sans);background:linear-gradient(160deg,#070a15,var(--bg));color:var(--txt);}
+header,main{max-width:1100px;margin:auto;padding:18px}
 h1{margin:0 0 8px;font-size:22px}
-.card{
-  background:rgba(18,26,51,.95);
-  border:1px solid var(--line);
-  border-radius:14px;
-  padding:14px;
-  margin-top:14px;
-}
+.card{background:rgba(18,26,51,.95);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:14px}
 .row{display:flex;gap:10px;align-items:center}
-input,button{
-  padding:10px;
-  border-radius:10px;
-  border:1px solid var(--line);
-  background:#0a0f22;
-  color:var(--txt);
-}
+input,button{padding:10px;border-radius:10px;border:1px solid var(--line);background:#0a0f22;color:var(--txt)}
 button{cursor:pointer}
 button:hover{border-color:#3b4aa0}
 .mono{font-family:var(--mono)}
 .muted{color:var(--muted)}
-ul{margin:8px 0 0 18px}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:2px 6px;font-size:11px;margin-left:6px}
+ul{margin:6px 0 0 18px}
 li{margin:6px 0}
 .hr{height:1px;background:var(--line);margin:12px 0}
 </style>
-  /*------------ FIN : GESTION DU CSS STYLE ------------------*/
 </head>
 
 <body>
-
 <header>
   <h1>Recherche de CVE à partir d’un CPE</h1>
   <p class="muted">
-    Version <b>simple et stable</b> : CVE retournées par le NVD pour un CPE donné,<br/>
-    triées du <b>plus récent au plus ancien</b> (date NVD).
+    Liste des CVE NVD pour un CPE donné,<br/>
+    triées du <b>plus récent au plus ancien</b> avec affichage du <b>CVSS base</b>.
   </p>
 </header>
 
@@ -106,12 +84,27 @@ async function searchCPE(cpe){
   setStatus("Recherche en cours…");
 
   const url =
-    `${NVD_API}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=150`;
+    `${NVD_API}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=50`;
 
   const json = await fetch(url).then(r => r.json());
   renderResults(cpe, json);
 
   setStatus("Résultats affichés");
+}
+
+/* =====================
+   CVSS BASE (LOCAL)
+   ===================== */
+function getCvssBase(cve){
+  const m40 = cve.metrics?.cvssMetricV40?.[0]?.cvssData;
+  if(m40) return {score:m40.baseScore, sev:m40.baseSeverity, v:"4.0"};
+  const m31 = cve.metrics?.cvssMetricV31?.[0]?.cvssData;
+  if(m31) return {score:m31.baseScore, sev:m31.baseSeverity, v:"3.1"};
+  const m30 = cve.metrics?.cvssMetricV30?.[0]?.cvssData;
+  if(m30) return {score:m30.baseScore, sev:m30.baseSeverity, v:"3.0"};
+  const m2  = cve.metrics?.cvssMetricV2?.[0]?.cvssData;
+  if(m2)  return {score:m2.baseScore, sev:m2.baseSeverity || "", v:"2.0"};
+  return null;
 }
 
 /* =====================
@@ -122,12 +115,10 @@ function renderResults(cpe, json){
   const wrap = document.getElementById("results");
 
   if(!vulns.length){
-    wrap.innerHTML =
-      `<div class="card muted">Aucune CVE trouvée.</div>`;
+    wrap.innerHTML = `<div class="card muted">Aucune CVE trouvée.</div>`;
     return;
   }
 
-  // Tri du plus récent au plus ancien
   vulns.sort((a,b)=>{
     const da = new Date(a.cve.published || 0);
     const db = new Date(b.cve.published || 0);
@@ -135,36 +126,32 @@ function renderResults(cpe, json){
   });
 
   wrap.innerHTML = `
-    <div class="card">
-      <h2>Résultats pour <span class="mono">${escapeHtml(cpe)}</span></h2>
-      <div class="muted">${vulns.length} CVE affichées</div>
-      <div class="hr"></div>
-      <ul>
-        ${vulns.map(v=>{
-          const c = v.cve;
-          const date = c.published
-            ? c.published.split("T")[0]
-            : "n/a";
-          return `
-            <li>
-              <b>${c.id}</b>
-              <span class="muted">(${date})</span>
-              <div class="muted">
-                ${escapeHtml(c.descriptions?.[0]?.value || "")}
-              </div>
-            </li>`;
-        }).join("")}
-      </ul>
-    </div>`;
+  <div class="card">
+    <h2>Résultats pour <span class="mono">${escapeHtml(cpe)}</span></h2>
+    <div class="muted">${vulns.length} CVE affichées</div>
+    <div class="hr"></div>
+    <ul>
+      ${vulns.map(v=>{
+        const c = v.cve;
+        const date = c.published ? c.published.split("T")[0] : "n/a";
+        const cvss = getCvssBase(c);
+        return `
+        <li>
+          <b>${c.id}</b>
+          <span class="muted">(${date})</span>
+          ${cvss ? `<span class="tag">CVSS ${cvss.score} ${cvss.sev} v${cvss.v}</span>` : ``}
+          <div class="muted">${escapeHtml(c.descriptions?.[0]?.value || "")}</div>
+        </li>`;
+      }).join("")}
+    </ul>
+  </div>`;
 }
 
 /* =====================
    UI
    ===================== */
 document.getElementById("searchBtn").onclick = ()=>{
-  searchCPE(
-    document.getElementById("cpeInput").value.trim()
-  );
+  searchCPE(document.getElementById("cpeInput").value.trim());
 };
 </script>
 </body>
