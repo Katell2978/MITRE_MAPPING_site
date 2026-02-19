@@ -18,3 +18,13 @@ En cible à long terme : identifier chaine complete d'un ID avec l'ensemble des 
 Ce petit outil devrait pouvoir aussi faire le lien pour un CVE (mais ça on a déja par ailleurs)
 
 Kat
+
+
+Index.html fonctionnalitées :
+✅ Recherche par CVE (NVD API v2.0)
+✅ Recherche par CPE (NVD API v2.0 cpeName=...)
+✅ Drilldown CWE → CAPEC → vraies Techniques MITRE ATT&CK (via tes fichiers data/cwe_db.json, data/capec_db.json, data/techniques_db.json)
+✅ Jointure ATT&CK → ATM (via data/ATM-matrix-TTP.csv)
+✅ Affiche ATM / DET / DC / Onboard / Offboard / rmq
+✅ Ajoute un visuel SVG “pivots & liens” (CWE→CAPEC→ATT&CK→ATM→DET/DC)
+✅ Inclut un moniteur d’activité en bas de page (log détaillé)
