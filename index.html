@@ -3,6 +3,199 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>CVE → CWE → CAPEC → ATT&CK → ATM</title>
+
+<style>
+:root{
+  --bg:#0b1020; --card:#121a33; --txt:#e9ecff; --muted:#aab3da;
+  --accent:#7aa2ff; --ok:#36d399; --bad:#f87171; --line:#26325f;
+  --mono: ui-monospace, Menlo, Consolas, monospace;
+  --sans: system-ui, Segoe UI, Roboto, Arial, sans-serif;
+}
+body{margin:0;font-family:var(--sans);background:linear-gradient(160deg,#070a15,var(--bg));color:var(--txt);}
+header,main{max-width:1100px;margin:auto;padding:18px}
+h1{margin:0 0 6px;font-size:22px}
+.card{background:rgba(18,26,51,.95);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:14px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+input,select,button{
+  padding:10px;border-radius:10px;border:1px solid var(--line);
+  background:#0a0f22;color:var(--txt)
+}
+button{cursor:pointer}
+button:hover{border-color:#3b4aa0}
+.mono{font-family:var(--mono)}
+.muted{color:var(--muted)}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:3px 8px;font-size:12px;margin:2px}
+.tag{border:1px solid var(--line);border-radius:999px;padding:2px 6px;font-size:11px;margin-left:4px}
+.spinner{width:12px;height:12px;border:2px solid #fff3;border-top-color:#fff;border-radius:50%;display:inline-block;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>CVE → CWE → CAPEC → ATT&CK → ATM</h1>
+<p class="muted">Chaînage complet vulnérabilité → menace → détection automotive</p>
+</header>
+
+<main>
+<div class="card">
+  <div class="row">
+    <select id="mode">
+      <option value="cve">Recherche CVE</option>
+      <option value="cpe">Recherche CPE</option>
+    </select>
+    <input id="queryInput" value="CVE-2023-48010"/>
+    <button id="searchBtn">Rechercher</button>
+  </div>
+  <div id="status" class="muted">Prêt.</div>
+</div>
+
+<div id="results"></div>
+</main>
+
+<script>
+/* ================= UTILS ================= */
+function escapeHtml(s){
+  return String(s ?? "").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+function setStatus(t){document.getElementById("status").textContent=t}
+
+/* ================= DATA LOADERS ================= */
+let CWE_DB=null, CAPEC_DB=null, TECH_DB=null, ATM_DB=null;
+
+async function loadBases(){
+  if(CWE_DB) return;
+  [CWE_DB,CAPEC_DB,TECH_DB]=await Promise.all([
+    fetch("./data/cwe_db.json").then(r=>r.json()),
+    fetch("./data/capec_db.json").then(r=>r.json()),
+    fetch("./data/techniques_db.json").then(r=>r.json())
+  ]);
+}
+
+async function loadATM(){
+  if(ATM_DB) return ATM_DB;
+  const txt=await fetch("./data/ATM-matrix-TTP.csv").then(r=>r.text());
+  ATM_DB=txt.split(/\r?\n/).slice(1).filter(Boolean).map(l=>{
+    const c=l.split(";").map(x=>x.trim());
+    return{
+      tactic:c[0],atm:c[1],label:c[2],
+      ent:(c[3]||"").split(",").map(x=>x.trim()).filter(Boolean),
+      mob:(c[4]||"").split(",").map(x=>x.trim()).filter(Boolean),
+      det:(c[5]||"").split(",").map(x=>x.trim()).filter(Boolean),
+      dc:(c[6]||"").match(/DC\d{4}/g)||[],
+      on:c[12]==="Y",off:c[13]==="Y",rmq:c[14]||""
+    };
+  });
+  return ATM_DB;
+}
+
+/* ================= CWE → CAPEC → ATT&CK ================= */
+function extractTechniques(taxonomy){
+  const out=new Set();
+  taxonomy?.split("NAME:ATTACK:ENTRY ").slice(1).forEach(p=>{
+    const m=p.match(/:(\d{4}(?:\.\d{3})?)/);
+    if(m) out.add("T"+m[1]);
+  });
+  return [...out];
+}
+
+async function computeATTACKfromCWE(cwe){
+  await loadBases();
+  const rel=CWE_DB[cwe];
+  if(!rel?.RelatedAttackPatterns) return [];
+  const t=new Set();
+  rel.RelatedAttackPatterns.forEach(id=>{
+    const cap=CAPEC_DB[id];
+    extractTechniques(cap?.techniques).forEach(x=>t.add(x));
+  });
+  return [...t].map(tid=>({
+    tid,platforms:TECH_DB[tid]||[],
+    url:`https://attack.mitre.org/techniques/${tid}/`
+  }));
+}
+
+/* ================= NVD ================= */
+const NVD="https://services.nvd.nist.gov/rest/json/cves/2.0";
+
+async function searchCVE(id){
+  setStatus("Recherche CVE…");
+  const j=await fetch(`${NVD}?cveId=${id}`).then(r=>r.json());
+  const cve=j.vulnerabilities?.[0]?.cve;
+  if(!cve){setStatus("CVE introuvable");return;}
+  renderCVE(cve);
+}
+
+function renderCVE(cve){
+  const div=document.getElementById("results");
+  const cwes=(cve.weaknesses||[]).flatMap(w=>w.description||[])
+    .map(d=>d.value.match(/CWE-(\d+)/)?.[1]).filter(Boolean);
+
+  div.innerHTML=`
+<div class="card">
+<h2>${cve.id}</h2>
+<p>${escapeHtml(cve.descriptions?.[0]?.value||"")}</p>
+<div>
+${cwes.map(c=>`<span class="pill"><button onclick="drill('${c}')">CWE-${c}</button></span>`).join("")}
+</div>
+<div id="drill" class="card muted">Clique sur une CWE</div>
+</div>`;
+}
+
+/* ================= DRILLDOWN ================= */
+async function drill(cwe){
+  const d=document.getElementById("drill");
+  d.innerHTML='<span class="spinner"></span> Calcul CAPEC → ATT&CK → ATM…';
+
+  const techniques=await computeATTACKfromCWE(cwe);
+  const atm=await loadATM();
+  const tids=techniques.map(t=>t.tid);
+
+  const hits=atm.filter(r=>
+    r.ent.some(t=>tids.includes(t))||
+    r.mob.some(t=>tids.includes(t))
+  );
+
+  d.innerHTML=`
+<h3>ATT&CK dérivées de CAPEC</h3>
+<ul class="mono">
+${techniques.map(t=>`
+<li><a href="${t.url}" target="_blank">${t.tid}</a>
+<span class="muted">${t.platforms.join(", ")}</span></li>`).join("")}
+</ul>
+
+<h3>ATM & Détection</h3>
+${hits.length?`
+<ul>
+${hits.map(h=>`
+<li>
+<b>${h.atm}</b> – ${escapeHtml(h.label)}
+<span class="tag">${h.tactic}</span>
+${h.on?'<span class="tag">Onboard</span>':''}
+${h.off?'<span class="tag">Offboard</span>':''}
+<div class="muted">DET: ${h.det.join(", ")||"—"} | DC: ${h.dc.join(", ")||"—"}</div>
+${h.rmq?`<div class="muted">⚠ ${escapeHtml(h.rmq)}</div>`:""}
+</li>`).join("")}
+</ul>`:`<div class="muted">Aucun mapping ATM</div>`}
+`;
+}
+
+/* ================= UI ================= */
+document.getElementById("searchBtn").onclick=()=>{
+  const q=document.getElementById("queryInput").value.trim();
+  searchCVE(q);
+};
+</script>
+
+</body>
+</html><!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Analyse CVE complète – CVE / CPE → CWE → CAPEC → ATT&CK → ATM</title>
 
 <style>
