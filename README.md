@@ -10,7 +10,11 @@ referentiel TTP --> DET --> DATA
 
 Le reve serait j'ai une CVE, j'ai un asset avec une proprieté exemple de l'emb3d et j'ai oui ou non la mesure de protection alors est-ce que la vuln est exploitable - mais bon la je reve un peu.
 
+A etudier : si Technique dans les ADR - elemtary steps on peut aussi faire un fichier TechID --> ElementarySteps --> AdRID
+pour retouver l'ADR a regarder (pour commencer)
+
 Sur la Detection, il faudrait faire le lien avec les DET et savoir les lier au TUC dans une base confidentielle
+
 
 
 En cible à long terme : identifier chaine complete d'un ID avec l'ensemble des element y c Data components et DET du Mitre Att&ck
