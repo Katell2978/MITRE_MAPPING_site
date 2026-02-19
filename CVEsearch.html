@@ -1,0 +1,318 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Analyse CVE complète – NVD → CWE → CAPEC → ATT&CK → ATM (+ CISA KEV / EUVD)</title>
+
+<style>
+:root{
+  --bg:#0b1020; --card:#121a33; --txt:#e9ecff; --muted:#aab3da;
+  --accent:#7aa2ff; --ok:#36d399; --warn:#fbbf24; --bad:#f87171; --line:#26325f;
+  --mono: ui-monospace, Menlo, Consolas, monospace;
+  --sans: system-ui, Segoe UI, Roboto, Arial, sans-serif;
+}
+body{margin:0;font-family:var(--sans);background:linear-gradient(160deg,#070a15,var(--bg));color:var(--txt);}
+header,main,.monitor{max-width:1200px;margin:auto;padding:18px}
+h1{margin:0 0 8px;font-size:22px}
+.card{background:rgba(18,26,51,.95);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:14px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+input,button{padding:10px;border-radius:10px;border:1px solid var(--line);background:#0a0f22;color:var(--txt)}
+button{cursor:pointer}
+button:hover{border-color:#3b4aa0}
+.mono{font-family:var(--mono)}
+.muted{color:var(--muted)}
+.pill{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:999px;padding:3px 8px;font-size:12px;margin:2px}
+.tag{border:1px solid var(--line);border-radius:999px;padding:2px 6px;font-size:11px;margin-left:6px;color:var(--muted)}
+.tag.ok{color:var(--ok)} .tag.warn{color:var(--warn)} .tag.bad{color:var(--bad)}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.hr{height:1px;background:var(--line);margin:12px 0}
+ul{margin:6px 0 0 18px}
+li{margin:4px 0}
+#pivotSvg{width:100%;height:420px}
+.log{font-family:var(--mono);font-size:12px;max-height:220px;overflow:auto}
+.log .ok{color:var(--ok)} .log .warn{color:var(--warn)} .log .bad{color:var(--bad)}
+.spinner{width:12px;height:12px;border:2px solid #fff3;border-top-color:#fff;border-radius:50%;display:inline-block;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+
+<body>
+<header>
+  <h1>Analyse CVE complète</h1>
+  <p class="muted">
+    Chaînage complet :
+    <span class="mono">NVD → CWE → CAPEC → ATT&CK → ATM → Détection</span><br/>
+    Enrichi avec statut <b>CISA KEV</b> et <b>EUVD (ENISA)</b>.
+  </p>
+</header>
+
+<main>
+  <div class="card">
+    <div class="row">
+      <input id="cveInput" class="mono" style="flex:1" placeholder="CVE-YYYY-NNNNN" />
+      <button id="searchBtn">Analyser la CVE</button>
+      <span id="status" class="muted">Prêt.</span>
+    </div>
+  </div>
+
+  <div id="results"></div>
+</main>
+
+<div class="monitor">
+  <div class="card">
+    <b>Moniteur d’activité</b>
+    <div id="log" class="log"></div>
+  </div>
+</div>
+
+<script>
+/* ================= CONFIG ================= */
+const NVD_API = "https://services.nvd.nist.gov/rest/json/cves/2.0";
+const DATA = "./data";
+const CISA_KEV_JSON =
+  "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json";
+const EUVD_EXPLOITED_API =
+  "https://euvdservices.enisa.europa.eu/api/exploitedvulnerabilities";
+
+/* ================= UTILS ================= */
+function escapeHtml(s){
+  return String(s ?? "").replace(/[&<>"']/g,c=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+  }[c]));
+}
+function log(msg,cls=""){
+  const l=document.getElementById("log");
+  l.innerHTML+=`<div class="${cls}">${escapeHtml(msg)}</div>`;
+  l.scrollTop=l.scrollHeight;
+}
+function setStatus(t){document.getElementById("status").textContent=t}
+function isValidCve(x){return /^CVE-\d{4}-\d{4,}$/i.test(x)}
+
+/* ================= KEV / EUVD ================= */
+async function getKevStatus(cveId){
+  try{
+    const j = await fetch(CISA_KEV_JSON).then(r=>r.json());
+    return j.vulnerabilities?.find(v=>v.cveID===cveId) || null;
+  }catch(e){ return null; }
+}
+async function getEuvdStatus(cveId){
+  try{
+    const list = await fetch(EUVD_EXPLOITED_API).then(r=>r.json());
+    return list.find(v=>v.aliases?.includes(cveId)) || null;
+  }catch(e){ return null; }
+}
+
+/* ================= BASES LOCALES ================= */
+let CWE_DB=null, CAPEC_DB=null, TECH_DB=null, ATM_DB=null;
+
+async function loadSecurityBases(){
+  if(CWE_DB) return;
+  log("Chargement bases CWE / CAPEC / ATT&CK…");
+  [CWE_DB,CAPEC_DB,TECH_DB]=await Promise.all([
+    fetch(`${DATA}/cwe_db.json`).then(r=>r.json()),
+    fetch(`${DATA}/capec_db.json`).then(r=>r.json()),
+    fetch(`${DATA}/techniques_db.json`).then(r=>r.json())
+  ]);
+  log("Bases MITRE chargées ✅","ok");
+}
+
+async function loadATM(){
+  if(ATM_DB) return ATM_DB;
+  log("Chargement mapping ATM…");
+  const txt=await fetch(`${DATA}/ATM-matrix-TTP.csv`).then(r=>r.text());
+  ATM_DB=txt.split(/\r?\n/).slice(1).filter(Boolean).map(l=>{
+    const c=l.split(";").map(x=>x.trim());
+    return{
+      tactic:c[0], atmId:c[1], label:c[2],
+      ent:(c[3]||"").split(",").filter(Boolean),
+      mob:(c[4]||"").split(",").filter(Boolean),
+      det:(c[5]||"").split(",").filter(Boolean),
+      dc:(c[6]||"").match(/DC\d{4}/g)||[],
+      onboard:c[12]==="Y", offboard:c[13]==="Y", rmq:c[14]||""
+    };
+  });
+  log(`ATM chargé (${ATM_DB.length} lignes) ✅`,"ok");
+  return ATM_DB;
+}
+
+/* ================= CVSS ================= */
+function pickCvss(metrics){
+  const m40 = metrics?.cvssMetricV40?.[0]; if(m40?.cvssData) return {v:"4.0",...m40};
+  const m31 = metrics?.cvssMetricV31?.[0]; if(m31?.cvssData) return {v:"3.1",...m31};
+  const m30 = metrics?.cvssMetricV30?.[0]; if(m30?.cvssData) return {v:"3.0",...m30};
+  const m2  = metrics?.cvssMetricV2?.[0];  if(m2?.cvssData)  return {v:"2.0",...m2};
+  return null;
+}
+function parseVector(v){
+  const o={}; if(!v) return o;
+  v.split("/").forEach(p=>{
+    const[k,val]=p.split(":");
+    if(val && k!=="CVSS") o[k]=val;
+  });
+  return o;
+}
+
+/* ================= CWE → CAPEC → ATT&CK ================= */
+function extractTechFromCapec(tax){
+  const s=new Set();
+  tax?.split("NAME:ATTACK:ENTRY ").slice(1).forEach(p=>{
+    const m=p.match(/:(\d{4}(?:\.\d{3})?)/);
+    if(m) s.add("T"+m[1]);
+  });
+  return [...s];
+}
+async function computeFromCWE(cwe){
+  await loadSecurityBases();
+  const capecs=(CWE_DB[cwe]?.RelatedAttackPatterns||[])
+    .map(id=>CAPEC_DB[id]).filter(Boolean);
+  const techSet=new Set();
+  capecs.forEach(c=>extractTechFromCapec(c.techniques).forEach(t=>techSet.add(t)));
+  return{
+    capecs,
+    techniques:[...techSet].map(t=>({tid:t,url:`https://attack.mitre.org/techniques/${t}/`}))
+  };
+}
+
+/* ================= VISUEL PIVOTS ================= */
+function renderPivotGraph({cwe,capecs,techniques,atmHits}){
+  const svg=document.getElementById("pivotSvg"); if(!svg) return; svg.innerHTML="";
+  const ns="http://www.w3.org/2000/svg";
+  const cols=[
+    {x:20,  items:[`CWE-${cwe}`]},
+    {x:200, items:capecs.map(c=>`CAPEC-${c.id}`).slice(0,6)},
+    {x:400, items:techniques.map(t=>t.tid).slice(0,8)},
+    {x:600, items:atmHits.map(a=>a.atmId).slice(0,6)},
+    {x:820, items:[...new Set(atmHits.flatMap(a=>a.det.concat(a.dc)))].slice(0,8)}
+  ];
+  const step=i=>60+i*40;
+  const add=(t,a,tx)=>{
+    const e=document.createElementNS(ns,t);
+    Object.entries(a).forEach(([k,v])=>e.setAttribute(k,v));
+    if(tx) e.textContent=tx;
+    svg.appendChild(e);
+  };
+  cols.forEach(c=>c.items.forEach((it,i)=>{
+    add("rect",{x:c.x,y:step(i)-14,width:160,height:22,rx:6,
+      fill:"#121a33",stroke:"#26325f"});
+    add("text",{x:c.x+6,y:step(i)+4,fill:"#e9ecff","font-size":"12"},it);
+  }));
+}
+
+/* ================= RENDU CVE ================= */
+async function renderCveDetail(cve){
+  const kev = await getKevStatus(cve.id);
+  const euvd = await getEuvdStatus(cve.id);
+
+  const kevTag  = kev  ? '<span class="tag bad">CISA KEV</span>'
+                       : '<span class="tag ok">Non KEV</span>';
+  const euvdTag = euvd ? '<span class="tag warn">EUVD exploité</span>'
+                       : '<span class="tag ok">EUVD non exploité</span>';
+
+  const cwes=(cve.weaknesses||[]).flatMap(w=>w.description||[])
+    .map(d=>d.value.match(/CWE-(\d+)/)?.[1]).filter(Boolean);
+
+  const cvss=pickCvss(cve.metrics);
+  const vec=parseVector(cvss?.cvssData?.vectorString);
+
+  document.getElementById("results").innerHTML=`
+  <div class="card">
+    <h2>${cve.id} ${kevTag} ${euvdTag}</h2>
+    <p>${escapeHtml(cve.descriptions?.[0]?.value||"")}</p>
+
+    <div class="grid">
+      <div>
+        <div class="muted">CVSS Base</div>
+        ${cvss?`
+          <div class="pill">
+            <b>${cvss.cvssData.baseScore}</b>
+            <span class="tag">v${cvss.v}</span>
+            <span class="tag">${cvss.cvssData.baseSeverity}</span>
+          </div>
+          <div class="mono muted">${escapeHtml(cvss.cvssData.vectorString)}</div>
+          <div class="muted">
+            AV=${vec.AV||"-"} AC=${vec.AC||"-"} PR=${vec.PR||"-"}
+            UI=${vec.UI||"-"} S=${vec.S||"-"}
+            C=${vec.C||"-"} I=${vec.I||"-"} A=${vec.A||"-"}
+          </div>`:`<span class="muted">N/A</span>`}
+      </div>
+      <div>
+        <div class="muted">CWE associées</div>
+        <div>
+          ${cwes.map(c=>`
+            <span class="pill">
+              <button onclick="drill('${c}')">CWE-${c}</button>
+            </span>`).join("")}
+        </div>
+      </div>
+    </div>
+
+    <div id="drill" class="card muted">
+      Clique sur une CWE pour le drilldown complet
+    </div>
+  </div>`;
+}
+
+/* ================= DRILLDOWN ================= */
+async function drill(cwe){
+  const d=document.getElementById("drill");
+  d.innerHTML='<span class="spinner"></span> Analyse CWE → CAPEC → ATT&CK → ATM…';
+
+  const {capecs,techniques}=await computeFromCWE(cwe);
+  const atm=await loadATM();
+  const tids=techniques.map(t=>t.tid);
+  const hits=atm.filter(a =>
+    a.ent.some(t=>tids.includes(t)) ||
+    a.mob.some(t=>tids.includes(t))
+  );
+
+  d.innerHTML=`
+    <h3>ATT&CK dérivées</h3>
+    <ul>
+      ${techniques.map(t=>`
+        <li><a href="${t.url}" target="_blank">${t.tid}</a></li>`).join("")}
+    </ul>
+
+    <h3>ATM & Détection</h3>
+    <ul>
+      ${hits.map(h=>`
+        <li>
+          <b>${h.atmId}</b> – ${escapeHtml(h.label)}
+          <span class="tag">${h.tactic}</span>
+          ${h.onboard?'<span class="tag">Onboard</span>':''}
+          ${h.offboard?'<span class="tag">Offboard</span>':''}
+          <div class="muted">
+            DET: ${h.det.join(",")||"—"} |
+            DC: ${h.dc.join(",")||"—"}
+          </div>
+        </li>`).join("")}
+    </ul>
+
+    <svg id="pivotSvg"></svg>
+  `;
+
+  renderPivotGraph({cwe,capecs,techniques,atmHits:hits});
+}
+
+/* ================= RECHERCHE CVE ================= */
+async function searchCVE(id){
+  if(!isValidCve(id)) return alert("CVE invalide");
+  setStatus("Analyse CVE en cours…");
+  log(`Recherche CVE: ${id}`);
+  const j=await fetch(`${NVD_API}?cveId=${id}`).then(r=>r.json());
+  const cve=j.vulnerabilities?.[0]?.cve;
+  if(cve) renderCveDetail(cve);
+}
+
+/* ================= UI ================= */
+document.getElementById("searchBtn").onclick=()=>{
+  searchCVE(document.getElementById("cveInput").value.trim());
+};
+
+log("Page chargée ✅");
+</script>
+</body>
+</html>
