@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Recherche CVE par CPE – Liste simple</title>
-
+/*------------ DEBUT : GESTION DU CSS STYLE ------------------*/
 <style>
 :root{
   --bg:#0b1020; --card:#121a33; --txt:#e9ecff; --muted:#aab3da;
@@ -47,6 +47,7 @@ ul{margin:8px 0 0 18px}
 li{margin:6px 0}
 .hr{height:1px;background:var(--line);margin:12px 0}
 </style>
+  /*------------ FIN : GESTION DU CSS STYLE ------------------*/
 </head>
 
 <body>
@@ -105,7 +106,7 @@ async function searchCPE(cpe){
   setStatus("Recherche en cours…");
 
   const url =
-    `${NVD_API}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=50`;
+    `${NVD_API}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=150`;
 
   const json = await fetch(url).then(r => r.json());
   renderResults(cpe, json);
