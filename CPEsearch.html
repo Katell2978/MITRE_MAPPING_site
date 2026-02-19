@@ -116,14 +116,18 @@ function renderResults(cpe, json){
 
   if(!vulns.length){
     wrap.innerHTML = `<div class="card muted">Aucune CVE trouvée.</div>`;
+    log("Aucune CVE retournée par le NVD");
     return;
   }
 
+  // Tri par date décroissante
   vulns.sort((a,b)=>{
     const da = new Date(a.cve.published || 0);
     const db = new Date(b.cve.published || 0);
     return db - da;
   });
+
+  log(`${vulns.length} CVE reçues, triées par date`);
 
   wrap.innerHTML = `
   <div class="card">
@@ -135,9 +139,13 @@ function renderResults(cpe, json){
         const c = v.cve;
         const date = c.published ? c.published.split("T")[0] : "n/a";
         const cvss = getCvssBase(c);
+
+        // 🔗 Lien vers ta page de détail CVE
+        const link = `CVEsearch.htm?cve=${c.id}`;
+
         return `
         <li>
-          <b>${c.id}</b>
+          ${link}<b>${c.id}</b></a>
           <span class="muted">(${date})</span>
           ${cvss ? `<span class="tag">CVSS ${cvss.score} ${cvss.sev} v${cvss.v}</span>` : ``}
           <div class="muted">${escapeHtml(c.descriptions?.[0]?.value || "")}</div>
@@ -146,7 +154,7 @@ function renderResults(cpe, json){
     </ul>
   </div>`;
 }
-
+  
 /* =====================
    UI
    ===================== */
