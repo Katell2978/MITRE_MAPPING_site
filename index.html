@@ -125,41 +125,79 @@ async function searchCVE() {
 }
 
 function renderUI(cve, isKev) {
+    // 1. Extraction du Score et des Métriques CVSS 3.1
+    const metrics = cve.metrics?.cvssMetricV31?.[0]?.cvssData || 
+                    cve.metrics?.cvssMetricV30?.[0]?.cvssData || {};
+    const score = metrics.baseScore || "N/A";
+    const severity = metrics.baseSeverity || "UNKNOWN";
+    const vector = metrics.vectorString || "Non spécifié";
+
+    // 2. Extraction des CWE
     const cwes = (cve.weaknesses || []).flatMap(w => w.description.map(d => d.value.split('-')[1])).filter(Boolean);
-    const desc = cve.descriptions.find(d => d.lang === 'en')?.value || "Pas de description.";
+    
+    // 3. Extraction des CPE (Configurations affectées)
+    const cpes = (cve.configurations || []).flatMap(conf => 
+        conf.nodes.flatMap(node => node.cpeMatch.map(m => m.criteria))
+    ).slice(0, 5); // On limite à 5 pour ne pas surcharger
+
+    // 4. Extraction des liens Sources
+    const refs = (cve.references || []).slice(0, 5);
 
     document.getElementById("results").innerHTML = `
         <div class="card">
-            <h2>${cve.id} ${isKev ? '<span class="badge kev-active">⚠️ KEV</span>' : ''}</h2>
-            <p style="font-style:italic; margin-bottom:15px;">${desc}</p>
-            
-            <div class="grid-3" style="display:grid; grid-template-columns: 1fr 2fr; gap:20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+                <h2>${cve.id} ${isKev ? '<span class="badge kev-active">⚠️ KEV</span>' : ''}</h2>
+                <div class="badge sev-${severity}" style="font-size:1.2em; padding:10px 20px;">
+                    CVSS ${score} (${severity})
+                </div>
+            </div>
+
+            <p style="color:var(--accent); font-size:0.9em; margin-bottom:15px;"><strong>Vector:</strong> ${vector}</p>
+            <p style="background:rgba(255,255,255,0.05); padding:15px; border-radius:5px; border-left:4px solid var(--accent);">
+                ${cve.descriptions.find(d => d.lang === 'en')?.value || "Pas de description."}
+            </p>
+
+            <div class="grid-3" style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:15px; margin-top:20px;">
                 <div class="matrix-card">
-                    <h3>CWE Détectées</h3>
+                    <h3>CWE Faiblesses</h3>
                     <div id="cwe-area"></div>
                 </div>
+                
                 <div class="matrix-card">
-                    <h3>Matrices ATT&CK</h3>
-                    <div id="matrix-badges" style="margin-bottom:10px;"></div>
-                    <ul id="capec-list" style="font-size:0.9em; max-height:200px; overflow-y:auto;"></ul>
+                    <h3>CPE Affectés</h3>
+                    <ul style="font-size:0.8em; color:#bbb; padding-left:15px;">
+                        ${cpes.map(c => `<li>${c}</li>`).join('') || "Aucun CPE listé"}
+                        ${cpes.length >= 5 ? '<li>...</li>' : ''}
+                    </ul>
+                </div>
+
+                <div class="matrix-card">
+                    <h3>Sources & Liens</h3>
+                    <ul style="font-size:0.8em; padding-left:15px;">
+                        ${refs.map(r => `<li><a href="${r.url}" target="_blank" style="color:var(--link)">${r.source || 'Lien'}</a></li>`).join('')}
+                    </ul>
                 </div>
             </div>
-            
-            <div id="atm-area" style="margin-top:20px;"></div>
-            <div id="graph-area" style="margin-top:20px;">
-                 <h3>Visualisation Pivot</h3>
-                 <svg id="pivotSvg" style="width:100%; height:300px; background:#1a1a1a; border-radius:8px;"></svg>
+
+            <div class="matrix-card" style="margin-top:20px;">
+                <h3>Matrices ATT&CK</h3>
+                <div id="matrix-badges" style="margin:10px 0;"></div>
+                <ul id="capec-list" style="font-size:0.9em; column-count: 2;"></ul>
             </div>
+            
+            <div id="atm-area"></div>
         </div>
     `;
 
+    // Génération des boutons CWE pour le drill-down
+    const cweArea = document.getElementById("cwe-area");
     cwes.forEach(c => {
         const btn = document.createElement("button");
         btn.textContent = "CWE-" + c;
         btn.className = "badge";
-        btn.style.cursor = "pointer";
+        btn.style.margin = "2px";
         btn.onclick = () => drill(c);
-        document.getElementById("cwe-area").appendChild(btn);
+        cweArea.appendChild(btn);
     });
 
     if(cwes.length > 0) drill(cwes[0]);
