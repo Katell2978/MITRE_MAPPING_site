@@ -263,7 +263,27 @@ function updateBadges(tids) {
         <span class="badge" style="background:#f1c40f; color:#000">ICS: ${counts.ics}</span>
     `;
 }
+function updateMatrixCounts(tids) {
+    const area = document.getElementById("matrix-badges");
+    const counts = { enterprise: 0, mobile: 0, ics: 0 };
+    
+    tids.forEach(t => {
+        const info = MITRE_INDEX[t];
+        if(info && info.m) {
+            info.m.forEach(m => {
+                if(m.includes("enterprise")) counts.enterprise++;
+                if(m.includes("mobile")) counts.mobile++;
+                if(m.includes("ics")) counts.ics++;
+            });
+        }
+    });
 
+    area.innerHTML = `
+        <span class="badge" style="background:#e74c3c; padding:5px 10px; margin-right:5px;">Enterprise: ${counts.enterprise}</span>
+        <span class="badge" style="background:#3498db; padding:5px 10px; margin-right:5px;">Mobile: ${counts.mobile}</span>
+        <span class="badge" style="background:#f1c40f; color:black; padding:5px 10px;">ICS: ${counts.ics}</span>
+    `;
+}
 function renderATM(tids) {
     const area = document.getElementById("atm-area");
     if(!area) return;
