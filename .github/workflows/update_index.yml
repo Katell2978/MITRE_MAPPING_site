@@ -1,9 +1,10 @@
-name: Update MITRE Index
+name: Update MITRE Index #genere un fichier complet apres chargement des json
 on:
   push:
     paths:
-      - 'matrices/**' # Se déclenche si on change un fichier dans ce dossier
+      - 'matrices/**'
       - 'build_index.py'
+  workflow_dispatch: # <--- Ajoutez cette ligne ici
 
 jobs:
   build:
