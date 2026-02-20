@@ -4,9 +4,9 @@ import os
 def generate_mitre_index():
     # Configuration des sources
     matrices = {
-        "enterprise": "matrices/enterprise-attack.json",
-        "mobile": "matrices/mobile-attack.json",
-        "ics": "matrices/ics-attack.json"
+        "enterprise": "matrices/enterprise.json",
+        "mobile": "matrices/mobile.json",
+        "ics": "matrices/ics.json"
     }
     
     master_index = {}
