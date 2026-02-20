@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>X-Force Analyser | Visual Multi-Matrix Pivot</title>
+    <title>X-Force Analyser | Multi-Matrix Pivot</title>
     <style>
         :root {
             --bg: #0d1117; --card: #161b22; --txt: #c9d1d9; --muted: #8b949e;
@@ -14,75 +14,89 @@
         header { border-bottom: 1px solid var(--line); padding: 1.5rem; text-align: center; background: #161b22; }
         .container { max-width: 1200px; margin: auto; padding: 20px; }
         
+        /* Search Area */
         .search-box { display: flex; gap: 10px; background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--line); }
         input { flex: 1; background: #0d1117; border: 1px solid var(--line); color: white; padding: 12px; border-radius: 6px; font-family: var(--mono); }
         button { background: var(--ok); color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: bold; }
         
+        /* Layout Results */
         .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 20px; margin-top: 20px; }
-        
-        /* Visual Graph Area */
-        #canvas-container { width: 100%; overflow-x: auto; background: #07090d; border-radius: 10px; border: 1px solid var(--line); margin-top: 20px; position: relative; }
-        svg { display: block; margin: auto; }
-        .node-text { font-size: 11px; fill: var(--txt); font-family: var(--mono); pointer-events: none; }
-        .link { fill: none; stroke: var(--line); stroke-width: 1.5; opacity: 0.4; transition: 0.3s; }
-        .link.active { stroke: var(--accent); opacity: 1; stroke-width: 2; }
-
         .matrix-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
+        @media (max-width: 900px) { .matrix-grid { grid-template-columns: 1fr; } }
+
+        /* Badges & Tags */
         .m-header { font-weight: 800; font-size: 12px; padding: 5px; border-radius: 4px; text-align: center; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.1); }
         .ent-h { color: var(--ent); background: rgba(122, 162, 255, 0.1); border-color: var(--ent); }
         .mob-h { color: var(--mob); background: rgba(210, 153, 255, 0.1); border-color: var(--mob); }
         .ics-h { color: var(--ics); background: rgba(57, 211, 83, 0.1); border-color: var(--ics); }
         
-        .tech-item { background: #0d1117; padding: 10px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid transparent; font-size: 12px; }
+        .tech-item { background: #0d1117; padding: 10px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid transparent; }
         .ent-l { border-left-color: var(--ent); }
         .mob-l { border-left-color: var(--mob); }
         .ics-l { border-left-color: var(--ics); }
 
-        .tag { font-size: 9px; background: #21262d; border: 1px solid var(--line); padding: 1px 4px; border-radius: 3px; color: var(--muted); margin-right: 2px; }
-        .pill { display: inline-block; padding: 5px 12px; border-radius: 20px; background: #21262d; border: 1px solid var(--line); font-size: 13px; margin: 4px; cursor: pointer; }
-        #log { font-family: var(--mono); font-size: 11px; color: var(--muted); padding: 10px; }
+        .tag { font-size: 10px; background: #21262d; border: 1px solid var(--line); padding: 2px 6px; border-radius: 4px; color: var(--muted); margin-right: 3px; }
+        .pill { display: inline-block; padding: 5px 12px; border-radius: 20px; background: #21262d; border: 1px solid var(--line); font-size: 13px; margin: 4px; cursor: pointer; transition: 0.2s; }
+        .pill:hover { border-color: var(--accent); background: #30363d; }
+        
+        .spinner { border: 3px solid rgba(255,255,255,.1); border-top: 3px solid var(--accent); border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        #log { font-family: var(--mono); font-size: 11px; margin-top: 20px; color: var(--muted); padding: 10px; background: #000; border-radius: 5px; max-height: 80px; overflow-y: auto; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>X-Force Graph Analyser</h1>
-    <p style="color:var(--muted)">Visualisation du chaînage : CVE → CWE → ATT&CK Matrices</p>
+    <h1>X-Force CVE Analyser</h1>
+    <p style="color:var(--muted)">Pivotement : CVE → CWE → CAPEC → MITRE ATT&CK (Enterprise, Mobile, ICS)</p>
 </header>
 
 <div class="container">
     <div class="search-box">
-        <input id="cveInput" type="text" placeholder="CVE-2023-34362" value="CVE-2023-34362">
-        <button id="searchBtn">Analyser & Tracer</button>
+        <input id="cveInput" type="text" placeholder="Entrez une CVE (ex: CVE-2023-34362)" value="CVE-2023-34362">
+        <button id="searchBtn">Lancer l'Analyse</button>
     </div>
 
     <div id="results"></div>
-
-    <div id="canvas-container" style="display:none">
-        <svg id="pivotGraph" width="1100" height="400"></svg>
-    </div>
-
-    <div id="drill-zone"></div>
-    <div id="log">Système prêt.</div>
+    <div id="log">Initialisation système...</div>
 </div>
 
 <script>
+/* ================= CONFIGURATION ================= */
+const NVD_API = "https://services.nvd.nist.gov/rest/json/cves/2.0";
 const BUILD_PATH = "./build/mitre_map_index.json";
 const DATA_PATH = "./data";
-const NVD_API = "https://services.nvd.nist.gov/rest/json/cves/2.0";
 
-let MITRE_INDEX = null, CWE_DB = null, CAPEC_DB = null;
+let MITRE_INDEX = null;
+let CWE_DB = null, CAPEC_DB = null;
 
-async function initBases() {
-    if (MITRE_INDEX) return;
-    const [m, cwe, capec] = await Promise.all([
-        fetch(BUILD_PATH).then(r => r.json()),
-        fetch(`${DATA_PATH}/cwe_db.json`).then(r => r.json()),
-        fetch(`${DATA_PATH}/capec_db.json`).then(r => r.json())
-    ]);
-    MITRE_INDEX = m; CWE_DB = cwe; CAPEC_DB = capec;
+/* ================= UTILS ================= */
+function log(msg, color="") {
+    const l = document.getElementById("log");
+    l.innerHTML += `<div style="color:${color}">${msg}</div>`;
+    l.scrollTop = l.scrollHeight;
 }
 
+/* ================= CHARGEMENT DES BASES ================= */
+async function initBases() {
+    if (MITRE_INDEX) return;
+    try {
+        log("Chargement de l'index optimisé depuis /build...");
+        const [m, cwe, capec] = await Promise.all([
+            fetch(BUILD_PATH).then(r => r.json()),
+            fetch(`${DATA_PATH}/cwe_db.json`).then(r => r.json()),
+            fetch(`${DATA_PATH}/capec_db.json`).then(r => r.json())
+        ]);
+        MITRE_INDEX = m;
+        CWE_DB = cwe;
+        CAPEC_DB = capec;
+        log("Toutes les bases sont prêtes ✅", "#39d353");
+    } catch (e) {
+        log("Erreur critique au chargement : " + e.message, "#f85149");
+    }
+}
+
+/* ================= LOGIQUE DE PIVOT ================= */
 function getTechniquesFromCWE(cweId) {
     const entry = CWE_DB[cweId];
     if (!entry) return [];
@@ -97,106 +111,83 @@ function getTechniquesFromCWE(cweId) {
     return Array.from(tids);
 }
 
-/* ================= MOTEUR GRAPHIQUE SVG ================= */
-function drawGraph(cveId, cwes) {
-    const svg = document.getElementById("pivotGraph");
-    const container = document.getElementById("canvas-container");
-    container.style.display = "block";
-    svg.innerHTML = ''; // Clear
-
-    const cols = { cve: 50, cwe: 300, matrix: 600, tech: 900 };
-    const getY = (index, total, height = 400) => (height / (total + 1)) * (index + 1);
-
-    // 1. Dessiner le Node CVE
-    drawNode(svg, cols.cve, 200, cveId, "var(--accent)");
-
-    // 2. Dessiner les CWE et liens vers CVE
-    cwes.forEach((cwe, i) => {
-        const y = getY(i, cwes.length);
-        drawNode(svg, cols.cwe, y, "CWE-"+cwe, "var(--txt)");
-        drawLink(svg, cols.cve, 200, cols.cwe, y);
-
-        // 3. Pour chaque CWE, chercher les techniques
-        const tids = getTechniquesFromCWE(cwe);
-        const matrixImpact = { enterprise: false, mobile: false, ics: false };
-        
-        tids.forEach(tid => {
-            const info = MITRE_INDEX[tid];
-            if(info) info.m.forEach(m => matrixImpact[m] = true);
-        });
-
-        // Liens vers colonnes Matrices
-        if (matrixImpact.enterprise) drawLink(svg, cols.cwe, y, cols.matrix, 100, "var(--ent)");
-        if (matrixImpact.mobile) drawLink(svg, cols.cwe, y, cols.matrix, 200, "var(--mob)");
-        if (matrixImpact.ics) drawLink(svg, cols.cwe, y, cols.matrix, 300, "var(--ics)");
-    });
-
-    // Node des Matrices
-    drawNode(svg, cols.matrix, 100, "ENTERPRISE", "var(--ent)");
-    drawNode(svg, cols.matrix, 200, "MOBILE", "var(--mob)");
-    drawNode(svg, cols.matrix, 300, "ICS", "var(--ics)");
-}
-
-function drawNode(svg, x, y, text, color) {
-    const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
-    rect.setAttribute("x", x - 60); rect.setAttribute("y", y - 15);
-    rect.setAttribute("width", 120); rect.setAttribute("height", 30);
-    rect.setAttribute("rx", 5); rect.setAttribute("fill", "#161b22");
-    rect.setAttribute("stroke", color);
-    
-    const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
-    txt.setAttribute("x", x); txt.setAttribute("y", y + 5);
-    txt.setAttribute("text-anchor", "middle"); txt.setAttribute("class", "node-text");
-    txt.textContent = text;
-    
-    group.appendChild(rect); group.appendChild(txt);
-    svg.appendChild(group);
-}
-
-function drawLink(svg, x1, y1, x2, y2, color = "var(--line)") {
-    const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-    const d = `M ${x1+60} ${y1} C ${(x1+x2)/2} ${y1}, ${(x1+x2)/2} ${y2}, ${x2-60} ${y2}`;
-    path.setAttribute("d", d);
-    path.setAttribute("class", "link");
-    path.setAttribute("stroke", color);
-    svg.appendChild(path);
-}
-
-/* ================= RECHERCHE & DRILLDOWN ================= */
+/* ================= RECHERCHE CVE ================= */
 async function searchCVE() {
     const id = document.getElementById("cveInput").value.trim().toUpperCase();
+    if (!id) return;
+
+    const resDiv = document.getElementById("results");
+    resDiv.innerHTML = `<div class="card"><span class="spinner"></span> Interrogation du NVD et calcul des pivots...</div>`;
+
     try {
         await initBases();
         const resp = await fetch(`${NVD_API}?cveId=${id}`);
         const data = await resp.json();
         const cve = data.vulnerabilities?.[0]?.cve;
+
+        if (!cve) throw new Error("CVE non trouvée dans la base NVD.");
+
         const cwes = (cve.weaknesses || []).flatMap(w => w.description || [])
                         .map(d => d.value.match(/CWE-(\d+)/)?.[1]).filter(Boolean);
 
-        drawGraph(id, cwes);
-        renderDetails(cve, cwes);
-    } catch (e) { console.error(e); }
+        const score = cve.metrics?.cvssMetricV31?.[0]?.cvssData?.baseScore || "N/A";
+
+        resDiv.innerHTML = `
+            <div class="card">
+                <div style="display:flex; justify-content:space-between">
+                    <h2>${cve.id}</h2>
+                    <span class="pill" style="border-color:var(--bad)">CVSS : ${score}</span>
+                </div>
+                <p style="color:var(--muted); font-size:14px">${cve.descriptions.find(d => d.lang === 'en')?.value}</p>
+                <div style="margin-top:15px">
+                    <b>CWE associées (Cliquez pour pivoter) :</b><br>
+                    ${cwes.map(c => `<span class="pill" onclick="drillDown('${c}')">CWE-${c}</span>`).join('')}
+                </div>
+            </div>
+            <div id="drill-zone"></div>
+        `;
+    } catch (e) {
+        resDiv.innerHTML = `<div class="card" style="border-color:var(--bad)">Erreur : ${e.message}</div>`;
+    }
 }
 
-function renderDetails(cve, cwes) {
-    const res = document.getElementById("results");
-    res.innerHTML = `<div class="card"><h2>${cve.id}</h2><p>${cwes.map(c => `<span class="pill" onclick="renderMatrix('${c}')">CWE-${c}</span>`).join('')}</p></div>`;
-}
-
-function renderMatrix(cweId) {
+/* ================= AFFICHAGE TECHNIQUES ================= */
+function drillDown(cweId) {
     const zone = document.getElementById("drill-zone");
-    const tids = getTechniquesFromCWE(cweId);
-    const mKeys = ['enterprise', 'mobile', 'ics'];
+    zone.innerHTML = `<div class="card">Analyse des matrices pour CWE-${cweId}...</div>`;
     
-    let html = `<div class="matrix-grid">`;
-    mKeys.forEach(m => {
-        const found = tids.filter(t => MITRE_INDEX[t]?.m.includes(m));
-        html += `<div class="card"><div class="m-header ${m.substring(0,3)}-h">${m.toUpperCase()}</div>`;
-        html += found.map(t => `<div class="tech-item ${m.substring(0,3)}-l"><b>${t}</b> - ${MITRE_INDEX[t].n}</div>`).join('') || '<div class="muted">N/A</div>';
-        html += `</div>`;
+    const tids = getTechniquesFromCWE(cweId);
+    
+    const matrices = [
+        { id: 'enterprise', label: 'ENTERPRISE', class: 'ent' },
+        { id: 'mobile', label: 'MOBILE', class: 'mob' },
+        { id: 'ics', label: 'ICS', class: 'ics' }
+    ];
+
+    let html = `<h3>Résultats pour CWE-${cweId}</h3><div class="matrix-grid">`;
+
+    matrices.forEach(m => {
+        const found = tids.filter(tid => MITRE_INDEX[tid]?.m.includes(m.id));
+        
+        html += `
+            <div class="card" style="margin-top:0">
+                <div class="m-header ${m.class}-h">${m.label}</div>
+                ${found.length > 0 ? found.map(tid => {
+                    const info = MITRE_INDEX[tid];
+                    return `
+                        <div class="tech-item ${m.class}-l">
+                            <a href="https://attack.mitre.org/techniques/${tid}" target="_blank" style="color:var(--accent); text-decoration:none; font-weight:bold">${tid}</a>
+                            <div style="font-size:13px; margin:4px 0">${info.n}</div>
+                            <div>${info.t.map(tac => `<span class="tag">${tac}</span>`).join('')}</div>
+                        </div>
+                    `;
+                }).join('') : '<div class="muted" style="text-align:center; font-size:12px">Aucune technique</div>'}
+            </div>
+        `;
     });
-    zone.innerHTML = html + `</div>`;
+
+    html += `</div>`;
+    zone.innerHTML = html;
 }
 
 document.getElementById("searchBtn").onclick = searchCVE;
