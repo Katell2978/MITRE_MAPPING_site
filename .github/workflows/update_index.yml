@@ -1,68 +1,31 @@
-import json
-import os
-import sys
+name: Update MITRE Index
 
-def generate_mitre_index():
-    # Définition des chemins
-    base_dir = os.getcwd()
-    matrices_dir = os.path.join(base_dir, "matrices")
-    build_dir = os.path.join(base_dir, "build")
-    
-    matrices = {
-        "enterprise": "enterprise.json",
-        "mobile": "mobile.json",
-        "ics": "ics.json"
-    }
-    
-    print(f"--- Diagnostic ---")
-    print(f"Dossier courant : {base_dir}")
-    if os.path.exists(matrices_dir):
-        print(f"Contenu de /matrices : {os.listdir(matrices_dir)}")
-    else:
-        print(f"❌ ERREUR : Le dossier /matrices n'existe pas à la racine.")
-        sys.exit(2)
+on:
+  push:
+    paths:
+      - 'matrices/**'
+      - 'build_index.py'
+  workflow_dispatch:
 
-    master_index = {}
+jobs:
+  build-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    # Créer le dossier build
-    if not os.path.exists(build_dir):
-        os.makedirs(build_dir)
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
-    for name, filename in matrices.items():
-        path = os.path.join(matrices_dir, filename)
-        
-        if not os.path.exists(path):
-            print(f"⚠️  Fichier manquant : {filename}. Vérifiez la casse !")
-            continue
-            
-        print(f"Traitement de {filename}...")
-        try:
-            with open(path, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-                for obj in data.get('objects', []):
-                    if obj.get('type') == 'attack-pattern' and not obj.get('x_mitre_deprecated'):
-                        tid = next((ref.get('external_id') for ref in obj.get('external_references', []) 
-                                  if ref.get('source_name') == 'mitre-attack'), None)
-                        if tid:
-                            if tid in master_index:
-                                if name not in master_index[tid]['m']:
-                                    master_index[tid]['m'].append(name)
-                            else:
-                                master_index[tid] = {
-                                    "n": obj.get('name'),
-                                    "m": [name],
-                                    "t": [p.get('phase_name') for p in obj.get('kill_chain_phases', [])]
-                                }
-        except Exception as e:
-            print(f"❌ Erreur lors de la lecture de {filename} : {e}")
+      - name: Execute build script
+        run: python build_index.py
 
-    # Sauvegarde
-    output = os.path.join(build_dir, "mitre_map_index.json")
-    with open(output, 'w', encoding='utf-8') as f:
-        json.dump(master_index, f, separators=(',', ':'))
-    
-    print(f"--- Fin ---")
-    print(f"Index généré avec succès dans {output}")
-
-if __name__ == "__main__":
-    generate_mitre_index()
+      - name: Commit and Push results
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add build/mitre_map_index.json
+          git commit -m "Automated update of MITRE index" || echo "No changes to commit"
+          git push
