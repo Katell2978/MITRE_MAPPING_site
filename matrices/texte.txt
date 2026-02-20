@@ -1,0 +1,2 @@
+Pour l'instant récup des fichiers json en manuel via les navigator du mitre
+a optimiser
