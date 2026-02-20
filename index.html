@@ -153,17 +153,34 @@ function renderUI(cve, isKev) {
 }
 
 async function drill(cweId) {
+    log(`Analyse approfondie pour CWE-${cweId}...`);
     const tids = new Set();
-    const capecs = (CWE_DB[cweId]?.RelatedAttackPatterns || []).map(id => ({id: id, name: CAPEC_DB[id]?.name || "Inconnu"}));
     
-    // Extraction des TIDs depuis CAPEC
-    capecs.forEach(c => {
-        const text = CAPEC_DB[c.id]?.techniques || "";
-        const matches = text.match(/T\d{4}(\.\d{3})?/g);
-        if(matches) matches.forEach(t => tids.add(t));
+    // 1. Récupération des CAPEC liés
+    const capecIds = CWE_DB[cweId]?.RelatedAttackPatterns || [];
+    const capecs = [];
+
+    capecIds.forEach(id => {
+        const capecData = CAPEC_DB[id];
+        if (capecData) {
+            capecs.push({ id: id, name: capecData.name });
+            
+            // On récupère TOUT le texte disponible dans l'objet CAPEC pour chercher les T-IDs
+            // On cherche dans 'techniques', mais aussi dans 'description' au cas où
+            const fullText = (capecData.techniques || "") + " " + (capecData.description || "");
+            
+            // Expression régulière qui trouve tous les Txxxx ou Txxxx.xxx
+            const matches = fullText.match(/T\d{4}(\.\d{3})?/g);
+            if (matches) {
+                matches.forEach(t => tids.add(t));
+            }
+        }
     });
 
     const listTids = Array.from(tids);
+    log(`${capecs.length} CAPEC trouvés. ${listTids.length} techniques ATT&CK extraites.`);
+
+    // 2. Mise à jour de l'affichage et du graphique
     renderMatrices(listTids);
     renderATM(listTids);
     drawPivot(cweId, capecs, listTids);
