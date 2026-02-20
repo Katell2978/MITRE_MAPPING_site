@@ -1,196 +1,243 @@
 <!doctype html>
 <html lang="fr">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>X-Force Analyser | Multi-Matrix Pivot</title>
+    <meta charset="utf-8">
+    <title>X-Force Intelligence Analyser</title>
     <style>
         :root {
             --bg: #0d1117; --card: #161b22; --txt: #c9d1d9; --muted: #8b949e;
             --accent: #58a6ff; --ent: #7aa2ff; --mob: #d299ff; --ics: #39d353;
-            --bad: #f85149; --ok: #238636; --line: #30363d; --mono: ui-monospace, SFMono-Regular, monospace;
+            --critical: #f85149; --high: #f97316; --medium: #fbbf24; --low: #4ade80;
+            --line: #30363d; --mono: ui-monospace, SFMono-Regular, monospace;
         }
-        body { margin: 0; font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--txt); }
-        header { border-bottom: 1px solid var(--line); padding: 1.5rem; text-align: center; background: #161b22; }
-        .container { max-width: 1200px; margin: auto; padding: 20px; }
+        body { margin: 0; font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--txt); font-size: 14px; }
+        .container { max-width: 1300px; margin: auto; padding: 20px; }
         
-        /* Search Area */
-        .search-box { display: flex; gap: 10px; background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--line); }
+        /* Barre de recherche */
+        .search-area { display: flex; gap: 10px; background: var(--card); padding: 20px; border-radius: 12px; border: 1px solid var(--line); position: sticky; top: 10px; z-index: 100; }
         input { flex: 1; background: #0d1117; border: 1px solid var(--line); color: white; padding: 12px; border-radius: 6px; font-family: var(--mono); }
-        button { background: var(--ok); color: white; border: none; padding: 12px 24px; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        
-        /* Layout Results */
-        .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 20px; margin-top: 20px; }
-        .matrix-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-top: 20px; }
-        @media (max-width: 900px) { .matrix-grid { grid-template-columns: 1fr; } }
+        button { background: var(--accent); color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-weight: bold; }
 
-        /* Badges & Tags */
-        .m-header { font-weight: 800; font-size: 12px; padding: 5px; border-radius: 4px; text-align: center; margin-bottom: 10px; border: 1px solid rgba(255,255,255,0.1); }
-        .ent-h { color: var(--ent); background: rgba(122, 162, 255, 0.1); border-color: var(--ent); }
-        .mob-h { color: var(--mob); background: rgba(210, 153, 255, 0.1); border-color: var(--mob); }
-        .ics-h { color: var(--ics); background: rgba(57, 211, 83, 0.1); border-color: var(--ics); }
-        
-        .tech-item { background: #0d1117; padding: 10px; border-radius: 6px; margin-bottom: 10px; border-left: 3px solid transparent; }
-        .ent-l { border-left-color: var(--ent); }
-        .mob-l { border-left-color: var(--mob); }
-        .ics-l { border-left-color: var(--ics); }
+        /* Badges et Tags */
+        .badge { padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 11px; text-transform: uppercase; }
+        .sev-CRITICAL { background: rgba(248, 81, 73, 0.2); color: var(--critical); border: 1px solid var(--critical); }
+        .sev-HIGH { background: rgba(249, 115, 22, 0.2); color: var(--high); border: 1px solid var(--high); }
+        .kev-badge { background: #f85149; color: white; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% {opacity:1} 50% {opacity:0.6} 100% {opacity:1} }
 
-        .tag { font-size: 10px; background: #21262d; border: 1px solid var(--line); padding: 2px 6px; border-radius: 4px; color: var(--muted); margin-right: 3px; }
-        .pill { display: inline-block; padding: 5px 12px; border-radius: 20px; background: #21262d; border: 1px solid var(--line); font-size: 13px; margin: 4px; cursor: pointer; transition: 0.2s; }
-        .pill:hover { border-color: var(--accent); background: #30363d; }
+        /* Grilles et Layout */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-top: 15px; }
+        .card { background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 15px; }
+        .matrix-col { border-top: 3px solid var(--accent); }
         
-        .spinner { border: 3px solid rgba(255,255,255,.1); border-top: 3px solid var(--accent); border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        #log { font-family: var(--mono); font-size: 11px; margin-top: 20px; color: var(--muted); padding: 10px; background: #000; border-radius: 5px; max-height: 80px; overflow-y: auto; }
+        /* Graphique */
+        #canvas-container { background: #07090d; border-radius: 10px; border: 1px solid var(--line); margin-top: 20px; overflow: hidden; }
+        .link { fill: none; stroke: var(--line); stroke-width: 1.5; opacity: 0.5; }
+        .node-label { font-size: 10px; fill: var(--txt); font-family: var(--mono); }
+
+        .cpe-list { font-family: var(--mono); font-size: 11px; max-height: 100px; overflow-y: auto; background: #0d1117; padding: 10px; border-radius: 4px; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>X-Force CVE Analyser</h1>
-    <p style="color:var(--muted)">Pivotement : CVE → CWE → CAPEC → MITRE ATT&CK (Enterprise, Mobile, ICS)</p>
-</header>
-
 <div class="container">
-    <div class="search-box">
-        <input id="cveInput" type="text" placeholder="Entrez une CVE (ex: CVE-2023-34362)" value="CVE-2023-34362">
-        <button id="searchBtn">Lancer l'Analyse</button>
+    <div class="search-area">
+        <input id="cveInput" type="text" placeholder="CVE-2023-34362" value="CVE-2023-34362">
+        <button onclick="analyze()">Lancer l'Analyse Totale</button>
     </div>
 
-    <div id="results"></div>
-    <div id="log">Initialisation système...</div>
+    <div id="main-view"></div>
+    
+    <div id="canvas-container" style="display:none">
+        <h3 style="padding:15px 15px 0">Mapping Visuel des Menaces</h3>
+        <svg id="pivotGraph" width="1260" height="500"></svg>
+    </div>
 </div>
 
 <script>
-/* ================= CONFIGURATION ================= */
-const NVD_API = "https://services.nvd.nist.gov/rest/json/cves/2.0";
-const BUILD_PATH = "./build/mitre_map_index.json";
-const DATA_PATH = "./data";
+/* CONFIGURATION DES SOURCES */
+const APIS = {
+    nvd: "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=",
+    kev: "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
+};
 
-let MITRE_INDEX = null;
-let CWE_DB = null, CAPEC_DB = null;
+let MITRE_INDEX, CWE_DB, CAPEC_DB, ATM_DB;
 
-/* ================= UTILS ================= */
-function log(msg, color="") {
-    const l = document.getElementById("log");
-    l.innerHTML += `<div style="color:${color}">${msg}</div>`;
-    l.scrollTop = l.scrollHeight;
-}
-
-/* ================= CHARGEMENT DES BASES ================= */
-async function initBases() {
+/* CHARGEMENT DES BASES */
+async function loadBases() {
     if (MITRE_INDEX) return;
+    const [m, cwe, capec, atmText] = await Promise.all([
+        fetch('build/mitre_map_index.json').then(r => r.json()),
+        fetch('data/cwe_db.json').then(r => r.json()),
+        fetch('data/capec_db.json').then(r => r.json()),
+        fetch('ATM-matrix-TTP.csv').then(r => r.text())
+    ]);
+    MITRE_INDEX = m; CWE_DB = cwe; CAPEC_DB = capec;
+    ATM_DB = parseATM(atmText);
+}
+
+function parseATM(csv) {
+    return csv.split('\n').slice(1).map(line => {
+        const cols = line.split(',');
+        return { id: cols[0], name: cols[1], tactics: cols[2], techniques: cols[3]?.split(';') || [] };
+    }).filter(row => row.id);
+}
+
+/* LOGIQUE D'ANALYSE */
+async function analyze() {
+    const cveId = document.getElementById('cveInput').value.trim().toUpperCase();
+    const view = document.getElementById('main-view');
+    view.innerHTML = "<p>⏳ Analyse multicritères en cours...</p>";
+
     try {
-        log("Chargement de l'index optimisé depuis /build...");
-        const [m, cwe, capec] = await Promise.all([
-            fetch(BUILD_PATH).then(r => r.json()),
-            fetch(`${DATA_PATH}/cwe_db.json`).then(r => r.json()),
-            fetch(`${DATA_PATH}/capec_db.json`).then(r => r.json())
+        await loadBases();
+        const [nvdRes, kevRes] = await Promise.all([
+            fetch(APIS.nvd + cveId).then(r => r.json()),
+            fetch(APIS.kev).then(r => r.json())
         ]);
-        MITRE_INDEX = m;
-        CWE_DB = cwe;
-        CAPEC_DB = capec;
-        log("Toutes les bases sont prêtes ✅", "#39d353");
+
+        const cveData = nvdRes.vulnerabilities[0].cve;
+        const isKev = kevRes.vulnerabilities.some(v => v.cveID === cveId);
+        renderFullUI(cveData, isKev);
+        drawGraph(cveId, cveData);
     } catch (e) {
-        log("Erreur critique au chargement : " + e.message, "#f85149");
+        view.innerHTML = `<p style="color:red">Erreur : ${e.message}</p>`;
     }
 }
 
-/* ================= LOGIQUE DE PIVOT ================= */
-function getTechniquesFromCWE(cweId) {
-    const entry = CWE_DB[cweId];
-    if (!entry) return [];
-    const tids = new Set();
-    (entry.RelatedAttackPatterns || []).forEach(capecId => {
-        const capec = CAPEC_DB[capecId];
-        if (capec?.techniques) {
-            const matches = capec.techniques.match(/T\d{4}(\.\d{3})?/g);
-            if (matches) matches.forEach(t => tids.add(t));
-        }
-    });
-    return Array.from(tids);
+function getSeverityColor(score) {
+    if (score >= 9) return 'CRITICAL';
+    if (score >= 7) return 'HIGH';
+    if (score >= 4) return 'MEDIUM';
+    return 'LOW';
 }
 
-/* ================= RECHERCHE CVE ================= */
-async function searchCVE() {
-    const id = document.getElementById("cveInput").value.trim().toUpperCase();
-    if (!id) return;
+function renderFullUI(cve, isKev) {
+    const score = cve.metrics?.cvssMetricV31?.[0]?.cvssData?.baseScore || "N/A";
+    const vector = cve.metrics?.cvssMetricV31?.[0]?.cvssData?.vectorString || "";
+    const sev = getSeverityColor(score);
+    const cwes = cve.weaknesses?.flatMap(w => w.description.map(d => d.value.split('-')[1])) || [];
+    const cpes = cve.configurations?.flatMap(c => c.nodes.flatMap(n => n.cpeMatch.map(m => m.criteria))) || [];
 
-    const resDiv = document.getElementById("results");
-    resDiv.innerHTML = `<div class="card"><span class="spinner"></span> Interrogation du NVD et calcul des pivots...</div>`;
-
-    try {
-        await initBases();
-        const resp = await fetch(`${NVD_API}?cveId=${id}`);
-        const data = await resp.json();
-        const cve = data.vulnerabilities?.[0]?.cve;
-
-        if (!cve) throw new Error("CVE non trouvée dans la base NVD.");
-
-        const cwes = (cve.weaknesses || []).flatMap(w => w.description || [])
-                        .map(d => d.value.match(/CWE-(\d+)/)?.[1]).filter(Boolean);
-
-        const score = cve.metrics?.cvssMetricV31?.[0]?.cvssData?.baseScore || "N/A";
-
-        resDiv.innerHTML = `
-            <div class="card">
+    document.getElementById('main-view').innerHTML = `
+        <div class="grid">
+            <div class="card" style="grid-column: span 2">
                 <div style="display:flex; justify-content:space-between">
-                    <h2>${cve.id}</h2>
-                    <span class="pill" style="border-color:var(--bad)">CVSS : ${score}</span>
+                    <h2>${cve.id} ${isKev ? '<span class="badge kev-badge">⚠ KEV EXPLOITED</span>' : ''}</h2>
+                    <span class="badge sev-${sev}">CVSS ${score} (${sev})</span>
                 </div>
-                <p style="color:var(--muted); font-size:14px">${cve.descriptions.find(d => d.lang === 'en')?.value}</p>
-                <div style="margin-top:15px">
-                    <b>CWE associées (Cliquez pour pivoter) :</b><br>
-                    ${cwes.map(c => `<span class="pill" onclick="drillDown('${c}')">CWE-${c}</span>`).join('')}
-                </div>
+                <p>${cve.descriptions.find(d => d.lang === 'en').value}</p>
+                <code style="color:var(--accent)">${vector}</code>
             </div>
-            <div id="drill-zone"></div>
-        `;
-    } catch (e) {
-        resDiv.innerHTML = `<div class="card" style="border-color:var(--bad)">Erreur : ${e.message}</div>`;
-    }
+
+            <div class="card">
+                <h3>Logiciels Affectés (CPE)</h3>
+                <div class="cpe-list">${cpes.map(c => `<div>${c}</div>`).join('')}</div>
+            </div>
+        </div>
+
+        <div class="grid">
+            <div class="card">
+                <h3>Faiblesses (CWE)</h3>
+                ${cwes.map(c => `<div class="pill">CWE-${c}: ${CWE_DB[c]?.Name || 'Inconnu'}</div>`).join('')}
+            </div>
+            <div id="mitre-results" style="grid-column: span 2" class="grid"></div>
+        </div>
+        
+        <div class="card" style="margin-top:20px">
+            <h3>Matrice ATM (Auto-ISAC) Mapping</h3>
+            <div id="atm-list" class="grid"></div>
+        </div>
+    `;
+
+    renderMitreLogic(cwes);
 }
 
-/* ================= AFFICHAGE TECHNIQUES ================= */
-function drillDown(cweId) {
-    const zone = document.getElementById("drill-zone");
-    zone.innerHTML = `<div class="card">Analyse des matrices pour CWE-${cweId}...</div>`;
-    
-    const tids = getTechniquesFromCWE(cweId);
-    
-    const matrices = [
-        { id: 'enterprise', label: 'ENTERPRISE', class: 'ent' },
-        { id: 'mobile', label: 'MOBILE', class: 'mob' },
-        { id: 'ics', label: 'ICS', class: 'ics' }
-    ];
+function renderMitreLogic(cwes) {
+    const tids = new Set();
+    cwes.forEach(c => {
+        CWE_DB[c]?.RelatedAttackPatterns?.forEach(capecId => {
+            CAPEC_DB[capecId]?.techniques?.match(/T\d{4}(\.\d{3})?/g)?.forEach(t => tids.add(t));
+        });
+    });
 
-    let html = `<h3>Résultats pour CWE-${cweId}</h3><div class="matrix-grid">`;
+    const mitreView = document.getElementById('mitre-results');
+    const atmView = document.getElementById('atm-list');
+    const list = Array.from(tids);
 
-    matrices.forEach(m => {
-        const found = tids.filter(tid => MITRE_INDEX[tid]?.m.includes(m.id));
-        
-        html += `
-            <div class="card" style="margin-top:0">
-                <div class="m-header ${m.class}-h">${m.label}</div>
-                ${found.length > 0 ? found.map(tid => {
-                    const info = MITRE_INDEX[tid];
-                    return `
-                        <div class="tech-item ${m.class}-l">
-                            <a href="https://attack.mitre.org/techniques/${tid}" target="_blank" style="color:var(--accent); text-decoration:none; font-weight:bold">${tid}</a>
-                            <div style="font-size:13px; margin:4px 0">${info.n}</div>
-                            <div>${info.t.map(tac => `<span class="tag">${tac}</span>`).join('')}</div>
-                        </div>
-                    `;
-                }).join('') : '<div class="muted" style="text-align:center; font-size:12px">Aucune technique</div>'}
+    ['enterprise', 'mobile', 'ics'].forEach(m => {
+        const found = list.filter(t => MITRE_INDEX[t]?.m.includes(m));
+        mitreView.innerHTML += `
+            <div class="card matrix-col">
+                <b style="color:var(--accent)">MATRICE ${m.toUpperCase()}</b>
+                <div style="margin-top:10px; font-size:12px">
+                    ${found.map(t => `<div><b>${t}</b> ${MITRE_INDEX[t].n}</div>`).join('') || 'Aucune'}
+                </div>
             </div>
         `;
     });
 
-    html += `</div>`;
-    zone.innerHTML = html;
+    // Mapping ATM
+    const atmHits = ATM_DB.filter(row => row.techniques.some(t => tids.has(t)));
+    atmView.innerHTML = atmHits.map(h => `
+        <div class="card" style="border-left:4px solid var(--medium)">
+            <b>${h.id}</b><br><small>${h.name}</small><br>
+            <span class="tag">${h.tactics}</span>
+        </div>
+    `).join('') || 'Aucune correspondance ATM trouvée.';
 }
 
-document.getElementById("searchBtn").onclick = searchCVE;
+/* GRAPHIC ENGINE */
+function drawGraph(cveId, cve) {
+    const svg = document.getElementById('pivotGraph');
+    document.getElementById('canvas-container').style.display = 'block';
+    svg.innerHTML = '';
+    
+    const cwes = cve.weaknesses?.flatMap(w => w.description.map(d => d.value.split('-')[1])) || [];
+    const x = { cve: 100, cwe: 400, matrix: 800, atm: 1100 };
+    
+    // Draw Nodes
+    drawBox(svg, x.cve, 250, cveId, "var(--accent)");
+    
+    cwes.forEach((c, i) => {
+        const y = 100 + (i * 100);
+        drawBox(svg, x.cwe, y, "CWE-"+c, "var(--txt)");
+        drawLine(svg, x.cve, 250, x.cwe, y);
+        
+        // Link to matrices
+        drawLine(svg, x.cwe, y, x.matrix, 150, "var(--ent)");
+        drawLine(svg, x.cwe, y, x.matrix, 250, "var(--mob)");
+        drawLine(svg, x.cwe, y, x.matrix, 350, "var(--ics)");
+    });
+
+    drawBox(svg, x.matrix, 150, "ENTERPRISE", "var(--ent)");
+    drawBox(svg, x.matrix, 250, "MOBILE", "var(--mob)");
+    drawBox(svg, x.matrix, 350, "ICS", "var(--ics)");
+    drawBox(svg, x.atm, 250, "ATM PERSO", "var(--medium)");
+}
+
+function drawBox(svg, x, y, txt, color) {
+    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    const r = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    r.setAttribute("x", x-60); r.setAttribute("y", y-15);
+    r.setAttribute("width", 120); r.setAttribute("height", 30);
+    r.setAttribute("fill", "#161b22"); r.setAttribute("stroke", color); r.setAttribute("rx", 4);
+    
+    const t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    t.setAttribute("x", x); t.setAttribute("y", y+5);
+    t.setAttribute("text-anchor", "middle"); t.setAttribute("class", "node-label");
+    t.textContent = txt;
+    
+    g.appendChild(r); g.appendChild(t);
+    svg.appendChild(g);
+}
+
+function drawLine(svg, x1, y1, x2, y2, color="var(--line)") {
+    const p = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    const d = `M ${x1+60} ${y1} C ${(x1+x2)/2} ${y1}, ${(x1+x2)/2} ${y2}, ${x2-60} ${y2}`;
+    p.setAttribute("d", d); p.setAttribute("class", "link"); p.setAttribute("stroke", color);
+    svg.appendChild(p);
+}
 </script>
 </body>
 </html>
