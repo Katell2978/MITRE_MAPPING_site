@@ -204,9 +204,9 @@ function renderUI(cve, isKev) {
 }
 
 async function drill(cweId) {
-    console.log(`🔍 Exploration de CWE-${cweId}`);
     const listElt = document.getElementById("capec-list");
     const tids = new Set();
+    const capecsWithNames = []; // Pour le graphique
     
     const cweKey = CWE_DB[cweId] ? cweId : `CWE-${cweId}`;
     const cweData = CWE_DB[cweKey];
@@ -217,11 +217,12 @@ async function drill(cweId) {
     capecIds.forEach(id => {
         const cap = CAPEC_DB[id];
         if(cap) {
+            capecsWithNames.push({ id: id, name: cap.name });
             const li = document.createElement("li");
             li.innerHTML = `<strong>CAPEC-${id}</strong>: ${cap.name}`;
             listElt.appendChild(li);
 
-            // Extraction des techniques (Txxxx)
+            // Extraction des techniques Txxxx
             const txt = JSON.stringify(cap);
             const matches = txt.match(/T\d{4}(\.\d{3})?/g);
             if(matches) matches.forEach(t => tids.add(t));
@@ -229,11 +230,15 @@ async function drill(cweId) {
     });
 
     const finalTids = Array.from(tids);
-    console.log(`🎯 Techniques trouvées : ${finalTids.length}`, finalTids);
     
-    updateBadges(finalTids);
+    // Mise à jour des compteurs de matrices (Badges)
+    updateMatrixCounts(finalTids);
+    
+    // Rendu du graphique visuel
+    drawPivotGraph(cweId, capecsWithNames, finalTids);
+    
+    // Rendu ATM
     renderATM(finalTids);
-    if(window.drawPivot) drawPivot(cweId, capecIds, finalTids); // Si vous avez gardé la fonction D3.js
 }
 
 function updateBadges(tids) {
@@ -278,7 +283,64 @@ function renderATM(tids) {
             </div>`;
     });
 }
+function drawPivotGraph(cweId, capecs, tids) {
+    const svg = document.getElementById("pivotSvg");
+    if(!svg) return;
+    svg.innerHTML = ""; // On nettoie
 
+    const width = svg.clientWidth;
+    const xStep = width / 4;
+    
+    // 1. Dessiner la CWE (à gauche)
+    const cweNode = createNode(50, 150, `CWE-${cweId}`, "#3498db");
+    svg.appendChild(cweNode);
+
+    // 2. Dessiner les CAPEC (au milieu) - Max 5 pour la lisibilité
+    capecs.slice(0, 5).forEach((cap, i) => {
+        const y = 50 + (i * 60);
+        const capNode = createNode(xStep * 1.5, y, `CAPEC-${cap.id}`, "#f1c40f");
+        svg.appendChild(capNode);
+        svg.appendChild(createLine(80, 150, xStep * 1.5, y));
+    });
+
+    // 3. Dessiner les Techniques ATT&CK (à droite) - Max 8
+    tids.slice(0, 8).forEach((t, i) => {
+        const y = 30 + (i * 40);
+        const tNode = createNode(xStep * 3, y, t, "#e74c3c");
+        svg.appendChild(tNode);
+        
+        // On lie chaque technique au premier CAPEC pour le visuel (simplifié)
+        if(capecs.length > 0) {
+            svg.appendChild(createLine(xStep * 1.5 + 30, 50, xStep * 3, y, "#444"));
+        }
+    });
+}
+
+// Helpers pour le SVG
+function createNode(x, y, text, color) {
+    const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    rect.setAttribute("x", x); rect.setAttribute("y", y - 15);
+    rect.setAttribute("width", "100"); rect.setAttribute("height", "30");
+    rect.setAttribute("rx", "5"); rect.setAttribute("fill", color);
+    
+    const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+    txt.setAttribute("x", x + 10); txt.setAttribute("y", y + 5);
+    txt.setAttribute("fill", "#000"); txt.setAttribute("font-size", "12");
+    txt.textContent = text;
+    
+    g.appendChild(rect); g.appendChild(txt);
+    return g;
+}
+
+function createLine(x1, y1, x2, y2, color="#666") {
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", x1); line.setAttribute("y1", y1);
+    line.setAttribute("x2", x2); line.setAttribute("y2", y2);
+    line.setAttribute("stroke", color); line.setAttribute("stroke-width", "1");
+    return line;
+}
+  
 document.getElementById("searchBtn").onclick = searchCVE;
 </script>
 </body>
