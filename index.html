@@ -91,10 +91,10 @@ async function analyze() {
 
     try {
         await loadBases();
-        const [nvdRes, kevRes] = await Promise.all([
-            fetch(APIS.nvd + cveId).then(r => r.json()),
-            fetch(APIS.kev).then(r => r.json())
-        ]);
+        const APIS = {
+            nvd: "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=",
+            kev: "build/kev.json" // On pointe maintenant vers votre fichier local généré par Python
+        };
 
         const cveData = nvdRes.vulnerabilities[0].cve;
         const isKev = kevRes.vulnerabilities.some(v => v.cveID === cveId);
