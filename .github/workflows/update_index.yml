@@ -1,0 +1,29 @@
+name: Update MITRE Index
+on:
+  push:
+    paths:
+      - 'matrices/**' # Se déclenche si on change un fichier dans ce dossier
+      - 'build_index.py'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Run script
+        run: python build_index.py
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add build/mitre_map_index.json
+          git commit -m "Auto-update mitre_map_index.json" || echo "No changes to commit"
+          git push
