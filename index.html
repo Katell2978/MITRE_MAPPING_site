@@ -156,8 +156,13 @@ async function drill(cweId) {
     log(`Analyse approfondie pour CWE-${cweId}...`);
     const tids = new Set();
     
-    // 1. Récupération des CAPEC liés
-    const capecIds = CWE_DB[cweId]?.RelatedAttackPatterns || [];
+    // 1. Récupération des CAPEC
+    // On gère le fait que la clé puisse être "79" ou "CWE-79"
+    const lookupId = cweId.startsWith('CWE-') ? cweId : `CWE-${cweId}`;
+    const cleanId = cweId.replace('CWE-', '');
+    const cweData = CWE_DB[lookupId] || CWE_DB[cleanId];
+    
+    const capecIds = cweData?.RelatedAttackPatterns || [];
     const capecs = [];
 
     capecIds.forEach(id => {
@@ -165,18 +170,50 @@ async function drill(cweId) {
         if (capecData) {
             capecs.push({ id: id, name: capecData.name });
             
-            // On récupère TOUT le texte disponible dans l'objet CAPEC pour chercher les T-IDs
-            // On cherche dans 'techniques', mais aussi dans 'description' au cas où
-            const fullText = (capecData.techniques || "") + " " + (capecData.description || "");
-            
-            // Expression régulière qui trouve tous les Txxxx ou Txxxx.xxx
-            const matches = fullText.match(/T\d{4}(\.\d{3})?/g);
+            // On cherche l'ID technique (Txxxx) dans TOUS les champs possibles
+            const textToSearch = JSON.stringify(capecData); 
+            const matches = textToSearch.match(/T\d{4}(\.\d{3})?/g);
             if (matches) {
                 matches.forEach(t => tids.add(t));
             }
         }
     });
 
+    const listTids = Array.from(tids);
+    log(`${capecs.length} CAPEC trouvés. ${listTids.length} techniques extraites.`);
+
+    // 2. Mise à jour forcée des compteurs
+    updateMatrixCounts(listTids);
+    
+    // 3. Rendu ATM et Graphique
+    renderATM(listTids);
+    drawPivot(cweId, capecs, listTids);
+}
+
+function updateMatrixCounts(tids) {
+    const area = document.getElementById("matrix-badges");
+    if(!area) return;
+
+    const counts = { enterprise: 0, mobile: 0, ics: 0 };
+    
+    tids.forEach(t => {
+        // On vérifie si la technique existe dans notre SUPER INDEX
+        const info = MITRE_INDEX[t];
+        if(info && info.m) {
+            info.m.forEach(m => counts[m]++);
+        } else {
+            // Si la technique n'est pas dans l'index, on la compte par défaut en enterprise 
+            // pour voir si le mapping fonctionne au moins partiellement
+            counts.enterprise++; 
+        }
+    });
+
+    area.innerHTML = `
+        <span class="badge" style="background:var(--ent); color:#000">Ent: ${counts.enterprise}</span>
+        <span class="badge" style="background:var(--mob); color:#000">Mob: ${counts.mobile}</span>
+        <span class="badge" style="background:var(--ics); color:#000">ICS: ${counts.ics}</span>
+    `;
+}
     const listTids = Array.from(tids);
     log(`${capecs.length} CAPEC trouvés. ${listTids.length} techniques ATT&CK extraites.`);
 
