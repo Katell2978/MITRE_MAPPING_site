@@ -37,3 +37,4 @@ Index.html fonctionnalitées :
 
 Note pour regenerer listes des Tactiques et technqiues du Mitre avec recuperation des datas sur le site :
 --> lancer le script  build/build_index.py depuis Codespaces via le bouton play.
+--> si ok validate dans le source controle, puit commit(lebleu)
