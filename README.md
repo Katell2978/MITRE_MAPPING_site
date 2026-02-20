@@ -32,3 +32,8 @@ Index.html fonctionnalitées :
 ✅ Affiche ATM / DET / DC / Onboard / Offboard / rmq
 ✅ Ajoute un visuel SVG “pivots & liens” (CWE→CAPEC→ATT&CK→ATM→DET/DC)
 ✅ Inclut un moniteur d’activité en bas de page (log détaillé)
+
+
+
+Note pour regenerer listes des Tactiques et technqiues du Mitre avec recuperation des datas sur le site :
+--> lancer le script  build/build_index.py depuis Codespaces via le bouton play.
