@@ -70,7 +70,7 @@ async function loadBases() {
         fetch('build/mitre_map_index.json').then(r => r.json()),
         fetch('data/cwe_db.json').then(r => r.json()),
         fetch('data/capec_db.json').then(r => r.json()),
-        fetch('ATM-matrix-TTP.csv').then(r => r.text())
+        fetch('data/ATM-matrix-TTP.csv').then(r => r.text())
     ]);
     MITRE_INDEX = m; CWE_DB = cwe; CAPEC_DB = capec;
     ATM_DB = parseATM(atmText);
