@@ -1,10 +1,9 @@
 name: Update MITRE Index
-
 on:
   push:
     paths:
       - 'matrices/**'
-      - 'build_index.py'
+      - 'build/build_index.py'
   workflow_dispatch:
 
 jobs:
