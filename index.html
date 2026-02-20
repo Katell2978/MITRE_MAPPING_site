@@ -66,63 +66,98 @@ let MITRE_INDEX = {}, CWE_DB = {}, CAPEC_DB = {}, ATM_DB = [];
 /* ================= CHARGEMENT ================= */
 async function loadAllBases() {
     if (Object.keys(CWE_DB).length > 0) return;
-    console.log("Chargement des bases...");
+    console.log("🚀 Tentative de chargement des bases...");
     try {
         const [m, cwe, capec, atmText] = await Promise.all([
-            fetch('build/mitre_map_index.json').then(r => r.json()).catch(()=>({})),
+            fetch('build/mitre_map_index.json').then(r => r.json()).catch(e => { console.error("Index MITRE manquant"); return {}; }),
             fetch('data/cwe_db.json').then(r => r.json()),
             fetch('data/capec_db.json').then(r => r.json()),
-            fetch('data/ATM-matrix-TTP.csv').then(r => r.text()).catch(()=>"")
+            fetch('data/ATM-matrix-TTP.csv').then(r => r.text()).catch(() => "")
         ]);
+        
         MITRE_INDEX = m; CWE_DB = cwe; CAPEC_DB = capec;
         ATM_DB = parseATM(atmText);
-        console.log("Bases chargées :", {mitre: Object.keys(m).length, cwe: Object.keys(cwe).length});
+        
+        console.log("✅ Bases chargées !", {
+            mitre: Object.keys(MITRE_INDEX).length, 
+            cwe: Object.keys(CWE_DB).length,
+            capec: Object.keys(CAPEC_DB).length,
+            atm: ATM_DB.length
+        });
     } catch (e) {
-        console.error("Erreur chargement:", e);
+        console.error("❌ Erreur critique lors du chargement:", e);
     }
 }
 
 function parseATM(csv) {
-    if(!csv) return [];
+    if(!csv || csv.length < 10) return [];
     return csv.split(/\r?\n/).slice(1).filter(l => l.trim()).map(line => {
         const c = line.split(";").map(x => x.trim());
-        return { tactic: c[0], id: c[1], name: c[2], techniques: (c[3]||"").split(",").map(t=>t.trim()) };
+        return { tactic: c[0], id: c[1], name: c[2], techniques: (c[3]||"").split(",").map(t=>t.trim()).filter(Boolean) };
     });
 }
 
 /* ================= ANALYSE ================= */
 async function searchCVE() {
     const id = document.getElementById('cveInput').value.trim().toUpperCase();
+    if(!id) return;
+    
+    document.getElementById("status").textContent = "Analyse en cours...";
     await loadAllBases();
+
     try {
         const nvdRes = await fetch(APIS.nvd + id).then(r => r.json());
         const kevRes = await fetch(APIS.kev).then(r => r.json()).catch(() => ({ vulnerabilities: [] }));
+        
         const cve = nvdRes.vulnerabilities?.[0]?.cve;
-        if(!cve) return alert("CVE introuvable");
+        if(!cve) {
+            document.getElementById("status").textContent = "CVE non trouvée.";
+            return;
+        }
+        
         const isKev = (kevRes.vulnerabilities || []).some(v => v.cveID === id);
+        document.getElementById("status").textContent = "Analyse terminée.";
         renderUI(cve, isKev);
-    } catch (e) { console.error(e); }
+    } catch (e) { 
+        console.error(e);
+        document.getElementById("status").textContent = "Erreur de recherche.";
+    }
 }
 
 function renderUI(cve, isKev) {
     const cwes = (cve.weaknesses || []).flatMap(w => w.description.map(d => d.value.split('-')[1])).filter(Boolean);
-    
+    const desc = cve.descriptions.find(d => d.lang === 'en')?.value || "Pas de description.";
+
     document.getElementById("results").innerHTML = `
         <div class="card">
-            <h2>${cve.id} ${isKev ? '⚠️ KEV' : ''}</h2>
-            <div id="cwe-area"></div>
-            <div id="capec-area" class="card" style="background:rgba(255,255,255,0.05)">
-                <h3>CAPEC & Techniques</h3>
-                <div id="matrix-badges"></div>
-                <ul id="capec-list"></ul>
+            <h2>${cve.id} ${isKev ? '<span class="badge kev-active">⚠️ KEV</span>' : ''}</h2>
+            <p style="font-style:italic; margin-bottom:15px;">${desc}</p>
+            
+            <div class="grid-3" style="display:grid; grid-template-columns: 1fr 2fr; gap:20px;">
+                <div class="matrix-card">
+                    <h3>CWE Détectées</h3>
+                    <div id="cwe-area"></div>
+                </div>
+                <div class="matrix-card">
+                    <h3>Matrices ATT&CK</h3>
+                    <div id="matrix-badges" style="margin-bottom:10px;"></div>
+                    <ul id="capec-list" style="font-size:0.9em; max-height:200px; overflow-y:auto;"></ul>
+                </div>
             </div>
-            <div id="atm-area"></div>
+            
+            <div id="atm-area" style="margin-top:20px;"></div>
+            <div id="graph-area" style="margin-top:20px;">
+                 <h3>Visualisation Pivot</h3>
+                 <svg id="pivotSvg" style="width:100%; height:300px; background:#1a1a1a; border-radius:8px;"></svg>
+            </div>
         </div>
     `;
 
     cwes.forEach(c => {
         const btn = document.createElement("button");
         btn.textContent = "CWE-" + c;
+        btn.className = "badge";
+        btn.style.cursor = "pointer";
         btn.onclick = () => drill(c);
         document.getElementById("cwe-area").appendChild(btn);
     });
@@ -131,26 +166,24 @@ function renderUI(cve, isKev) {
 }
 
 async function drill(cweId) {
+    console.log(`🔍 Exploration de CWE-${cweId}`);
     const listElt = document.getElementById("capec-list");
-    listElt.innerHTML = "Chargement...";
     const tids = new Set();
     
-    // Support dictionnaire ou tableau
     const cweKey = CWE_DB[cweId] ? cweId : `CWE-${cweId}`;
     const cweData = CWE_DB[cweKey];
     const capecIds = cweData?.RelatedAttackPatterns || [];
 
-    if(capecIds.length === 0) listElt.innerHTML = "<li>Aucun CAPEC lié trouvé.</li>";
-    else listElt.innerHTML = "";
+    listElt.innerHTML = capecIds.length === 0 ? "<li>Aucun CAPEC lié.</li>" : "";
 
     capecIds.forEach(id => {
         const cap = CAPEC_DB[id];
         if(cap) {
             const li = document.createElement("li");
-            li.innerHTML = `<b>CAPEC-${id}</b>: ${cap.name}`;
+            li.innerHTML = `<strong>CAPEC-${id}</strong>: ${cap.name}`;
             listElt.appendChild(li);
 
-            // Extraction des T-IDs (Techniques)
+            // Extraction des techniques (Txxxx)
             const txt = JSON.stringify(cap);
             const matches = txt.match(/T\d{4}(\.\d{3})?/g);
             if(matches) matches.forEach(t => tids.add(t));
@@ -158,30 +191,53 @@ async function drill(cweId) {
     });
 
     const finalTids = Array.from(tids);
+    console.log(`🎯 Techniques trouvées : ${finalTids.length}`, finalTids);
+    
     updateBadges(finalTids);
     renderATM(finalTids);
+    if(window.drawPivot) drawPivot(cweId, capecIds, finalTids); // Si vous avez gardé la fonction D3.js
 }
 
 function updateBadges(tids) {
+    const area = document.getElementById("matrix-badges");
+    if(!area) return;
+    
     const counts = { enterprise: 0, mobile: 0, ics: 0 };
     tids.forEach(t => {
         const info = MITRE_INDEX[t];
-        if(info && info.m) info.m.forEach(m => counts[m]++);
-        else counts.enterprise++; // Fallback si mapping incomplet
+        if(info && info.m) {
+            info.m.forEach(m => counts[m]++);
+        } else {
+            // Si on ne trouve pas dans l'index, on log pour debugger
+            console.warn(`Technique ${t} non trouvée dans mitre_map_index.json`);
+            counts.enterprise++; 
+        }
     });
-    document.getElementById("matrix-badges").innerHTML = `
-        <b style="color:var(--accent)">Enterprise: ${counts.enterprise}</b> | 
-        <b style="color:var(--mob)">Mobile: ${counts.mobile}</b> | 
-        <b style="color:var(--ics)">ICS: ${counts.ics}</b>
+
+    area.innerHTML = `
+        <span class="badge" style="background:#e74c3c">Ent: ${counts.enterprise}</span>
+        <span class="badge" style="background:#3498db">Mob: ${counts.mobile}</span>
+        <span class="badge" style="background:#f1c40f; color:#000">ICS: ${counts.ics}</span>
     `;
 }
 
 function renderATM(tids) {
     const area = document.getElementById("atm-area");
+    if(!area) return;
+    
     const hits = ATM_DB.filter(a => a.techniques.some(t => tids.includes(t)));
-    area.innerHTML = `<h3>ATM Mapping (${hits.length})</h3>`;
+    area.innerHTML = `<h3>ATM Mapping (${hits.length} correspondances)</h3>`;
+    
+    if(hits.length === 0) {
+        area.innerHTML += "<p>Aucune technique ATM ne correspond à ces TTPs.</p>";
+        return;
+    }
+
     hits.forEach(h => {
-        area.innerHTML += `<div class="card" style="border-left:3px solid var(--warn)">${h.id} - ${h.name} <br><small>Tactic: ${h.tactic}</small></div>`;
+        area.innerHTML += `
+            <div class="card" style="border-left:4px solid #2ecc71; margin-bottom:5px; padding:10px; background:rgba(46,204,113,0.1)">
+                <strong>${h.id} - ${h.name}</strong> (Tactique: ${h.tactic})
+            </div>`;
     });
 }
 
