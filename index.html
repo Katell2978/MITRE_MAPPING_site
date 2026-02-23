@@ -175,7 +175,7 @@ async function checkMitreCampaigns(cveId) {
 }
 // >fin fonction checkmitre comapign - en cours de debug
 
-
+// fonction RenderUI
 function renderUI(cve, isKev) {
     // 1. Extraction du Score et des Métriques CVSS 3.1
     const metrics = cve.metrics?.cvssMetricV31?.[0]?.cvssData || 
@@ -270,61 +270,52 @@ function renderUI(cve, isKev) {
 
     if(cwes.length > 0) drill(cwes[0]);
 }
-
+// Function DRILL
 function drill(cweId) {
   // reset affichage
-  const listElt = document.getElementById("capecList");
+  var listElt = document.getElementById("capecList");
   listElt.innerHTML = "";
-  const tids = new Set();
+
+  var tids = new Set();
 
   // normalisation de la CWE
-  const cweKey = cweId.startsWith("CWE-") ? cweId : `CWE-${cweId}`;
+  var cweKey = cweId.indexOf("CWE-") === 0 ? cweId : "CWE-" + cweId;
 
-  // récupération des CAPEC liés via l’index fiable
-  const capecIds = CWE_TO_CAPEC[cweKey] || [];
+  // récupération des CAPEC liés
+  var capecIds = CWE_TO_CAPEC[cweKey] || [];
 
   if (capecIds.length === 0) {
     listElt.innerHTML = "<li>Aucun CAPEC associé à cette CWE.</li>";
-    updateMatrixCounts(tids); // matrice vide
+    updateMatrixCounts(tids);
     return;
   }
 
   // parcours des CAPEC
-  capecIds.forEach(capecId => {
-    const cap = CAPEC_MAP[capecId];
+  capecIds.forEach(function (capecId) {
+    var cap = CAPEC_MAP[capecId];
     if (!cap) return;
 
     // affichage CAPEC
-    const li = document.createElement("li");
-    li.innerHTML = `
-      <strong>CAPEC-${capecId}</strong>
-      ${cap.name ? "– " + cap.name : ""}
-    `;
+    var li = document.createElement("li");
+    var label = "CAPEC-" + capecId;
+    if (cap.name) {
+      label += " – " + cap.name;
+    }
+    li.innerHTML = "<strong>" + label + "</strong>";
     listElt.appendChild(li);
 
-    // récupération directe et fiable des TTP
-    const ttps = cap.ttps || {};
-    Object.keys(ttps).forEach(tid => {
+    // récupération des TTP
+    var ttps = cap.ttps || {};
+    Object.keys(ttps).forEach(function (tid) {
       tids.add(normTid(tid));
     });
   });
 
-  // mise à jour des matrices MITRE (Enterprise / Mobile / ICS)
+  // mise à jour des matrices MITRE
   updateMatrixCounts(tids);
 }
-
-    const finalTids = Array.from(tids);
-    
-    // Mise à jour des compteurs de matrices (Badges)
-    updateMatrixCounts(finalTids);
-    
-    // Rendu du graphique visuel
-    drawPivotGraph(cweId, capecsWithNames, finalTids);
-    
-    // Rendu ATM
-    renderATM(finalTids);
-}
-
+//fin Drill
+//Fonction UpdateBadges
 function updateBadges(tids) {
     const area = document.getElementById("matrix-badges");
     if(!area) return;
@@ -347,6 +338,7 @@ function updateBadges(tids) {
         <span class="badge" style="background:#f1c40f; color:#000">ICS: ${counts.ics}</span>
     `;
 }
+// fonction UpdateMatrixCounts
 function updateMatrixCounts(tids) {
     const area = document.getElementById("matrix-badges");
     const counts = { enterprise: 0, mobile: 0, ics: 0 };
@@ -369,6 +361,7 @@ function updateMatrixCounts(tids) {
         <span class="badge" style="background:#f1c40f; color:black; padding:5px 10px;">ICS: ${counts.ics}</span>
     `;
 }
+//function renderATM - amrche pas
 function renderATM(tids) {
     const area = document.getElementById("atm-area");
     if(!area) return;
@@ -388,6 +381,7 @@ function renderATM(tids) {
             </div>`;
     });
 }
+//Function drawPivotGraph
 function drawPivotGraph(cweId, capecs, tids) {
     const svg = document.getElementById("pivotSvg");
     if(!svg) return;
