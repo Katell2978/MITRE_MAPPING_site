@@ -271,48 +271,80 @@ function renderUI(cve, isKev) {
     if(cwes.length > 0) drill(cwes[0]);
 }
 // Function DRILL
-function drill(cweId) {
-  // reset affichage
-  var listElt = document.getElementById("capecList");
+async function drill(cweId) {
+  // 1) Cible UI correcte (dans ton HTML c'est "capec-list")
+  const listElt = document.getElementById("capec-list");
+  if (!listElt) {
+    console.error("Element #capec-list introuvable dans le DOM");
+    return;
+  }
   listElt.innerHTML = "";
 
-  var tids = new Set();
+  // 2) Normalisation CWE
+  const cweKey = (typeof cweId === "string" && cweId.startsWith("CWE-")) ? cweId : ("CWE-" + cweId);
+  const cweData = CWE_DB[cweId] || CWE_DB[cweKey] || null;
 
-  // normalisation de la CWE
-  var cweKey = cweId.indexOf("CWE-") === 0 ? cweId : "CWE-" + cweId;
-
-  // récupération des CAPEC liés
-  var capecIds = CWE_TO_CAPEC[cweKey] || [];
+  // 3) Récupération CAPEC IDs (méthode historique via cwe_db.json)
+  //    (fallback : si tu as construit CWE_TO_CAPEC plus tard, on s’en sert)
+  let capecIds = [];
+  if (cweData && Array.isArray(cweData.RelatedAttackPatterns)) {
+    capecIds = cweData.RelatedAttackPatterns.map(x => String(x));
+  } else if (typeof CWE_TO_CAPEC !== "undefined" && CWE_TO_CAPEC && Array.isArray(CWE_TO_CAPEC[cweKey])) {
+    capecIds = CWE_TO_CAPEC[cweKey].map(x => String(x));
+  }
 
   if (capecIds.length === 0) {
-    listElt.innerHTML = "<li>Aucun CAPEC associé à cette CWE.</li>";
-    updateMatrixCounts(tids);
+    listElt.innerHTML = "<li>Aucun CAPEC lié.</li>";
+    // reset badges ATT&CK
+    updateMatrixCounts([]); 
+    renderATM([]); 
+    drawPivotGraph(String(cweId).replace(/^CWE-/, ""), [], []);
     return;
   }
 
-  // parcours des CAPEC
-  capecIds.forEach(function (capecId) {
-    var cap = CAPEC_MAP[capecId];
+  // 4) Collecte des TTP + infos pour le graph
+  const tids = new Set();
+  const capecsWithNames = [];
+
+  // Regex robuste (évite les soucis de parsing regex literal)
+  const reTTP = new RegExp("T\\d{4}(?:\\.\\d{3})?", "g");
+
+  capecIds.forEach(id => {
+    // CAPEC peut venir soit de CAPEC_DB (ton chargement actuel),
+    // soit de CAPEC_MAP (si tu l’ajoutes plus tard)
+    const capFromDb = (CAPEC_DB && CAPEC_DB[id]) ? CAPEC_DB[id] : null;
+    const capFromMap = (typeof CAPEC_MAP !== "undefined" && CAPEC_MAP && CAPEC_MAP[id]) ? CAPEC_MAP[id] : null;
+    const cap = capFromDb || capFromMap;
+
     if (!cap) return;
 
-    // affichage CAPEC
-    var li = document.createElement("li");
-    var label = "CAPEC-" + capecId;
-    if (cap.name) {
-      label += " – " + cap.name;
-    }
-    li.innerHTML = "<strong>" + label + "</strong>";
+    // Nom CAPEC
+    const capName = cap.name || cap.Name || "(nom inconnu)";
+    capecsWithNames.push({ id: id, name: capName });
+
+    // Affichage CAPEC
+    const li = document.createElement("li");
+    li.innerHTML = "<strong>CAPEC-" + id + "</strong>: " + capName;
     listElt.appendChild(li);
 
-    // récupération des TTP
-    var ttps = cap.ttps || {};
-    Object.keys(ttps).forEach(function (tid) {
-      tids.add(normTid(tid));
-    });
+    // 5) Extraction techniques ATT&CK
+    // Priorité: si capec_to_ttp_cwe est disponible, prendre cap.ttps (fiable)
+    if (cap.ttps && typeof cap.ttps === "object") {
+      Object.keys(cap.ttps).forEach(t => tids.add(String(t).toUpperCase()));
+    } else {
+      // Fallback: extraction par regex sur l’objet CAPEC
+      const txt = JSON.stringify(cap);
+      const matches = txt.match(reTTP);
+      if (matches) matches.forEach(t => tids.add(String(t).toUpperCase()));
+    }
   });
 
-  // mise à jour des matrices MITRE
-  updateMatrixCounts(tids);
+  const finalTids = Array.from(tids);
+
+  // 6) Mise à jour UI ATT&CK / Graph / ATM
+  updateMatrixCounts(finalTids);
+  drawPivotGraph(String(cweId).replace(/^CWE-/, ""), capecsWithNames, finalTids);
+  renderATM(finalTids);
 }
 //fin Drill
 //Fonction UpdateBadges
