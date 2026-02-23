@@ -267,18 +267,21 @@ function renderUI(cve, isKev) {
         btn.onclick = () => drill(c);
         cweArea.appendChild(btn);
     });
-
-    if(cwes.length > 0) drill(cwes[0]);
+drill(currentCWE);
+   // if(cwes.length > 0) drill(cwes[0]);
 }
-// Function DRILL
-async function drill(cweId) {
-  // 1) Cible UI correcte (dans ton HTML c'est "capec-list")
+// Function DRILL  
+function drill(cweId) {
   const listElt = document.getElementById("capec-list");
+
+  // ✅ garde-fou ABSOLU
   if (!listElt) {
-    console.error("Element #capec-list introuvable dans le DOM");
+    console.warn("drill() appelée avant création de #capec-list");
     return;
   }
+
   listElt.innerHTML = "";
+
 
   // 2) Normalisation CWE
   const cweKey = (typeof cweId === "string" && cweId.startsWith("CWE-")) ? cweId : ("CWE-" + cweId);
