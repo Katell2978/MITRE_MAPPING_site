@@ -144,7 +144,7 @@ async function checkMitreCampaigns(cveId) {
     );
 
     if (hits.length === 0) {
-      area.innerHTML = `<span class="badge" style="background:#2ecc71">Aucune campagne connue</span>`;
+      area.innerHTML = `<span class="badge" style="background:#2ecc71">Aucune campagne trouvée dans la base du Mitre Att&ck</span>`;
       return;
     }
 
@@ -189,7 +189,7 @@ async function checkCertFR(cveId) {
 
     if (matches.length === 0) {
       area.innerHTML =
-        `<span class="badge" style="background:#2ecc71">Aucun bulletin CERT‑FR</span>`;
+        `<span class="badge" style="background:#2ecc71">Aucun bulletin CERT‑FR trouvé</span>`;
       return;
     }
 
