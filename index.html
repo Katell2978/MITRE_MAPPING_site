@@ -169,34 +169,28 @@ async function checkMitreCampaigns(cveId) {
 // Debut fonction check certFR - pas validée 
 async function checkCertFR(cveId) {
   const area = document.getElementById("certfr-area");
+  if (!area) return;
+
   area.innerHTML = `<span class="badge" style="background:#555">CERT‑FR : analyse…</span>`;
 
   try {
-    const feeds = [
-      "https://www.cert.ssi.gouv.fr/alerte/feed/",
-      "https://www.cert.ssi.gouv.fr/avis/feed/"
-    ];
+    const res = await fetch(`https://vulnerability.circl.lu/api/cve/${cveId}`);
+    const data = await res.json();
 
-    const matches = [];
+    const certRefs = (data.references || []).filter(r =>
+      r.source && r.source.includes("CERT-FR")
+    );
 
-    for (const url of feeds) {
-      const res = await fetch(url);
-      const text = await res.text();
-      if (text.includes(cveId)) {
-        matches.push(url.replace("/feed/", "/"));
-      }
-    }
-
-    if (matches.length === 0) {
+    if (certRefs.length === 0) {
       area.innerHTML =
-        `<span class="badge" style="background:#2ecc71">Aucun bulletin CERT‑FR trouvé</span>`;
+        `<span class="badge" style="background:#2ecc71">Aucun bulletin CERT‑FR touvé</span>`;
       return;
     }
 
-    area.innerHTML = matches.map(u => `
+    area.innerHTML = certRefs.map(r => `
       <div class="card" style="border-left:4px solid #fbbf24; padding:10px; margin-bottom:5px;">
-        <strong>Bulletin CERT‑FR</strong><br/>
-        <a href="${u}" target="_blank">Consulter</a>
+        <strong>${r.id || "CERT‑FR"}</strong><br/>
+        <a href="${r.url}" target="_blank">Consulter le bulletin</a>
       </div>
     `).join("");
 
