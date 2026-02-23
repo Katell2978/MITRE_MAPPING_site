@@ -74,7 +74,8 @@ async function loadAllBases() {
             fetch('build/mitre_map_index.json').then(r => r.json()).catch(e => { console.error("Index MITRE manquant"); return {}; }),
             fetch('data/cwe_db.json').then(r => r.json()),
             fetch('data/capec_db.json').then(r => r.json()),
-            fetch('data/ATM-matrix-TTP.csv').then(r => r.text()).catch(() => "")
+            fetch('data/ATM-matrix-TTP.csv').then(r => r.text()).catch(() => ""),
+            fetch('data/capec_to_ttp_cwe.json').then(r => r.json())
         ]);
         
         MITRE_INDEX = m; CWE_DB = cwe; CAPEC_DB = capec;
@@ -99,6 +100,14 @@ function parseATM(csv) {
     });
 }
 // fin fonction parseATM  
+
+//fonction pour normaliser les ID des technqiue Mitre avac ou sans le T
+function normTid(t) {
+  t = (t || "").trim().toUpperCase();
+  if (/^\d/.test(t)) t = "T" + t;     // si on reçoit "1059" -> "T1059"
+  return t;
+}
+
 /* ================= ANALYSE ================= */
 async function searchCVE() {
     const id = document.getElementById('cveInput').value.trim().toUpperCase();
@@ -262,31 +271,47 @@ function renderUI(cve, isKev) {
     if(cwes.length > 0) drill(cwes[0]);
 }
 
-async function drill(cweId) {
-    const listElt = document.getElementById("capec-list");
-    const tids = new Set();
-    const capecsWithNames = []; // Pour le graphique
-    
-    const cweKey = CWE_DB[cweId] ? cweId : `CWE-${cweId}`;
-    const cweData = CWE_DB[cweKey];
-    const capecIds = cweData?.RelatedAttackPatterns || [];
+function drill(cweId) {
+  // reset affichage
+  const listElt = document.getElementById("capecList");
+  listElt.innerHTML = "";
+  const tids = new Set();
 
-    listElt.innerHTML = capecIds.length === 0 ? "<li>Aucun CAPEC lié.</li>" : "";
+  // normalisation de la CWE
+  const cweKey = cweId.startsWith("CWE-") ? cweId : `CWE-${cweId}`;
 
-    capecIds.forEach(id => {
-        const cap = CAPEC_DB[id];
-        if(cap) {
-            capecsWithNames.push({ id: id, name: cap.name });
-            const li = document.createElement("li");
-            li.innerHTML = `<strong>CAPEC-${id}</strong>: ${cap.name}`;
-            listElt.appendChild(li);
+  // récupération des CAPEC liés via l’index fiable
+  const capecIds = CWE_TO_CAPEC[cweKey] || [];
 
-            // Extraction des techniques Txxxx
-            const txt = JSON.stringify(cap);
-            const matches = txt.match(/T\d{4}(\.\d{3})?/g);
-            if(matches) matches.forEach(t => tids.add(t));
-        }
+  if (capecIds.length === 0) {
+    listElt.innerHTML = "<li>Aucun CAPEC associé à cette CWE.</li>";
+    updateMatrixCounts(tids); // matrice vide
+    return;
+  }
+
+  // parcours des CAPEC
+  capecIds.forEach(capecId => {
+    const cap = CAPEC_MAP[capecId];
+    if (!cap) return;
+
+    // affichage CAPEC
+    const li = document.createElement("li");
+    li.innerHTML = `
+      <strong>CAPEC-${capecId}</strong>
+      ${cap.name ? "– " + cap.name : ""}
+    `;
+    listElt.appendChild(li);
+
+    // récupération directe et fiable des TTP
+    const ttps = cap.ttps || {};
+    Object.keys(ttps).forEach(tid => {
+      tids.add(normTid(tid));
     });
+  });
+
+  // mise à jour des matrices MITRE (Enterprise / Mobile / ICS)
+  updateMatrixCounts(tids);
+}
 
     const finalTids = Array.from(tids);
     
@@ -325,9 +350,10 @@ function updateBadges(tids) {
 function updateMatrixCounts(tids) {
     const area = document.getElementById("matrix-badges");
     const counts = { enterprise: 0, mobile: 0, ics: 0 };
-    
-    tids.forEach(t => {
-        const info = MITRE_INDEX[t];
+    tids.forEach(raw => {
+      const t = normTid(raw);
+      const base = t.split(".")[0];
+      const info = MITRE_INDEX[t] || MITRE_INDEX[base];
         if(info && info.m) {
             info.m.forEach(m => {
                 if(m.includes("enterprise")) counts.enterprise++;
