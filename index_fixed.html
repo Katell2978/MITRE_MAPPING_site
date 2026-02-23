@@ -74,7 +74,8 @@ async function loadAllBases(){ if(Object.keys(CWE_DB).length>0) return; console.
  MITRE_INDEX=m; CWE_DB=cwe; CAPEC_DB=capec; ATM_DB=parseATM(atmText);
  console.log('✅ Bases chargées !',{mitre:Object.keys(MITRE_INDEX).length,cwe:Object.keys(CWE_DB).length,capec:Object.keys(CAPEC_DB).length,atm:ATM_DB.length});
  }catch(e){console.error('❌ Erreur critique lors du chargement:',e);} }
-function parseATM(csv){ if(!csv||csv.length<10) return []; return csv.split(/?
+function parseATM(csv){ if(!csv||csv.length<10) return []; return csv.split(/
+?
 /).slice(1).filter(l=>l.trim()).map(line=>{const c=line.split(';').map(x=>x.trim()); return {tactic:c[0],id:c[1],name:c[2],techniques:(c[3]||'').split(',').map(t=>t.trim()).filter(Boolean)};}); }
 async function searchCVE(){ const id=document.getElementById('cveInput').value.trim().toUpperCase(); if(!id) return; document.getElementById('status').textContent='Analyse en cours...';
  await loadAllBases();
