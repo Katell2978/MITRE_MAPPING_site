@@ -1,0 +1,1703 @@
+{
+  "1": {
+    "name": "Accessing Functionality Not Properly Constrained by ACLs",
+    "ttps": {},
+    "related_weaknesses": []
+  },
+  "2": {
+    "name": "Inducing Account Lockout",
+    "ttps": {},
+    "related_weaknesses": []
+  },
+  "11": {
+    "name": "Cause Web Server Misclassification",
+    "ttps": {
+      "T1036.006": "Masquerading"
+    },
+    "related_weaknesses": [
+      "CWE-430"
+    ]
+  },
+  "13": {
+    "name": "Subverting Environment Variable Values",
+    "ttps": {
+      "T1562.003": "Impair Defenses"
+    },
+    "related_weaknesses": [
+      "CWE-15",
+      "CWE-20",
+      "CWE-73",
+      "CWE-74",
+      "CWE-200",
+      "CWE-285",
+      "CWE-302",
+      "CWE-353"
+    ]
+  },
+  "17": {
+    "name": "Using Malicious Files",
+    "ttps": {},
+    "related_weaknesses": []
+  },
+  "19": {
+    "name": "Embedding Scripts within Scripts",
+    "ttps": {},
+    "related_weaknesses": []
+  },
+  "21": {
+    "name": "Exploitation of Trusted Identifiers",
+    "ttps": {
+      "T1134": "Access Token Manipulation"
+    },
+    "related_weaknesses": [
+      "CWE-6",
+      "CWE-290",
+      "CWE-302",
+      "CWE-346",
+      "CWE-384",
+      "CWE-539",
+      "CWE-602",
+      "CWE-642",
+      "CWE-664"
+    ]
+  },
+  "25": {
+    "name": "Forced Deadlock",
+    "ttps": {
+      "T1499.004": "Endpoint Denial of Service"
+    },
+    "related_weaknesses": [
+      "CWE-412",
+      "CWE-567",
+      "CWE-662",
+      "CWE-667",
+      "CWE-833",
+      "CWE-1322"
+    ]
+  },
+  "30": {
+    "name": "Hijacking a Privileged Thread of Execution",
+    "ttps": {
+      "T1055.003": "Process Injection"
+    },
+    "related_weaknesses": [
+      "CWE-270"
+    ]
+  },
+  "31": {
+    "name": "Accessing/Intercepting/Modifying HTTP Cookies",
+    "ttps": {
+      "T1539": "Steal Web Session Cookie"
+    },
+    "related_weaknesses": [
+      "CWE-20",
+      "CWE-113",
+      "CWE-302",
+      "CWE-311",
+      "CWE-315",
+      "CWE-384",
+      "CWE-472",
+      "CWE-539",
+      "CWE-565",
+      "CWE-602",
+      "CWE-642"
+    ]
+  },
+  "35": {
+    "name": "Leverage Executable Code in Non-Executable Files",
+    "ttps": {
+      "T1027.006": "Obfuscated Files or Information"
+    },
+    "related_weaknesses": [
+      "CWE-59",
+      "CWE-94",
+      "CWE-95",
+      "CWE-96",
+      "CWE-97",
+      "CWE-270",
+      "CWE-272",
+      "CWE-282"
+    ]
+  },
+  "37": {
+    "name": "Retrieve Embedded Sensitive Data",
+    "ttps": {
+      "T1005": "Data from Local System"
+    },
+    "related_weaknesses": [
+      "CWE-226",
+      "CWE-311",
+      "CWE-312",
+      "CWE-314",
+      "CWE-315",
+      "CWE-318",
+      "CWE-525",
+      "CWE-1239",
+      "CWE-1258",
+      "CWE-1266",
+      "CWE-1272",
+      "CWE-1278",
+      "CWE-1301",
+      "CWE-1330"
+    ]
+  },
+  "38": {
+    "name": "Leveraging/Manipulating Configuration File Search Paths",
+    "ttps": {
+      "T1574.007": "Hijack Execution Flow"
+    },
+    "related_weaknesses": [
+      "CWE-426",
+      "CWE-427"
+    ]
+  },
+  "49": {
+    "name": "Password Brute Forcing",
+    "ttps": {
+      "T1110.001": "Brute Force"
+    },
+    "related_weaknesses": [
+      "CWE-257",
+      "CWE-262",
+      "CWE-263",
+      "CWE-307",
+      "CWE-308",
+      "CWE-309",
+      "CWE-521",
+      "CWE-654"
+    ]
+  },
+  "55": {
+    "name": "Rainbow Table Password Cracking",
+    "ttps": {
+      "T1110.002": "Brute Force"
+    },
+    "related_weaknesses": [
+      "CWE-261",
+      "CWE-262",
+      "CWE-263",
+      "CWE-308",
+      "CWE-309",
+      "CWE-521",
+      "CWE-654",
+      "CWE-916"
+    ]
+  },
+  "57": {
+    "name": "Utilizing REST's Trust in the System Resource to Obtain Sensitive Data",
+    "ttps": {
+      "T1040": "Network Sniffing"
+    },
+    "related_weaknesses": [
+      "CWE-287",
+      "CWE-300",
+      "CWE-693"
+    ]
+  },
+  "60": {
+    "name": "Reusing Session IDs (aka Session Replay)",
+    "ttps": {
+      "T1134.001": "Access Token Manipulation"
+    },
+    "related_weaknesses": [
+      "CWE-200",
+      "CWE-285",
+      "CWE-290",
+      "CWE-294",
+      "CWE-346",
+      "CWE-384",
+      "CWE-488",
+      "CWE-539",
+      "CWE-664",
+      "CWE-732"
+    ]
+  },
+  "65": {
+    "name": "Sniff Application Code",
+    "ttps": {},
+    "related_weaknesses": []
+  },
+  "68": {
+    "name": "Subvert Code-signing Facilities",
+    "ttps": {
+      "T1553.002": "Subvert Trust Controls"
+    },
+    "related_weaknesses": [
+      "CWE-325",
+      "CWE-328",
+      "CWE-1326"
+    ]
+  },
+  "70": {
+    "name": "Try Common or Default Usernames and Passwords",
+    "ttps": {
+      "T1078.001": "Valid Accounts"
+    },
+    "related_weaknesses": [
+      "CWE-262",
+      "CWE-263",
+      "CWE-308",
+      "CWE-309",
+      "CWE-521",
+      "CWE-654",
+      "CWE-798"
+    ]
+  },
+  "94": {
+    "name": "Adversary in the Middle (AiTM)",
+    "ttps": {
+      "T1557": "Adversary-in-the-Middle"
+    },
+    "related_weaknesses": [
+      "CWE-287",
+      "CWE-290",
+      "CWE-294",
+      "CWE-300",
+      "CWE-593"
+    ]
+  },
+  "98": {
+    "name": "Phishing",
+    "ttps": {
+      "T1566": "Phishing"
+    },
+    "related_weaknesses": [
+      "CWE-451"
+    ]
+  },
+  "112": {
+    "name": "Brute Force",
+    "ttps": {
+      "T1110": "Brute Force"
+    },
+    "related_weaknesses": [
+      "CWE-326",
+      "CWE-330",
+      "CWE-521"
+    ]
+  },
+  "114": {
+    "name": "Authentication Abuse",
+    "ttps": {
+      "T1548": "Abuse Elevation Control Mechanism"
+    },
+    "related_weaknesses": [
+      "CWE-287",
+      "CWE-1244"
+    ]
+  },
+  "115": {
+    "name": "Authentication Bypass",
+    "ttps": {
+      "T1548": "Abuse Elevation Control Mechanism"
+    },
+    "related_weaknesses": [
+      "CWE-287"
+    ]
+  },
+  "122": {
+    "name": "Privilege Abuse",
+    "ttps": {
+      "T1548": "Abuse Elevation Control Mechanism"
+    },
+    "related_weaknesses": [
+      "CWE-269",
+      "CWE-732",
+      "CWE-1317"
+    ]
+  },
+  "125": {
+    "name": "Flooding",
+    "ttps": {
+      "T1498.001": "Network Denial of Service"
+    },
+    "related_weaknesses": [
+      "CWE-404",
+      "CWE-770"
+    ]
+  },
+  "127": {
+    "name": "Directory Indexing",
+    "ttps": {
+      "T1083": "File and Directory Discovery"
+    },
+    "related_weaknesses": [
+      "CWE-276",
+      "CWE-285",
+      "CWE-288",
+      "CWE-424",
+      "CWE-425",
+      "CWE-693",
+      "CWE-732"
+    ]
+  },
+  "130": {
+    "name": "Excessive Allocation",
+    "ttps": {
+      "T1499.003": "Endpoint Denial of Service"
+    },
+    "related_weaknesses": [
+      "CWE-404",
+      "CWE-770",
+      "CWE-1325"
+    ]
+  },
+  "131": {
+    "name": "Resource Leak Exposure",
+    "ttps": {
+      "T1499": "Endpoint Denial of Service"
+    },
+    "related_weaknesses": [
+      "CWE-404"
+    ]
+  },
+  "132": {
+    "name": "Symlink Attack",
+    "ttps": {
+      "T1547.009": "Boot or Logon Autostart Execution"
+    },
+    "related_weaknesses": [
+      "CWE-59"
+    ]
+  },
+  "141": {
+    "name": "Cache Poisoning",
+    "ttps": {
+      "T1557.002": "Adversary-in-the-Middle"
+    },
+    "related_weaknesses": [
+      "CWE-345",
+      "CWE-346",
+      "CWE-348",
+      "CWE-349"
+    ]
+  },
+  "142": {
+    "name": "DNS Cache Poisoning",
+    "ttps": {
+      "T1584.002": "Compromise Infrastructure"
+    },
+    "related_weaknesses": [
+      "CWE-345",
+      "CWE-346",
+      "CWE-348",
+      "CWE-349",
+      "CWE-350"
+    ]
+  },
+  "148": {
+    "name": "Content Spoofing",
+    "ttps": {
+      "T1491": "Defacement"
+    },
+    "related_weaknesses": [
+      "CWE-345"
+    ]
+  },
+  "150": {
+    "name": "Collect Data from Common Resource Locations",
+    "ttps": {
+      "T1003": "OS Credential Dumping"
+    },
+    "related_weaknesses": [
+      "CWE-552",
+      "CWE-1239",
+      "CWE-1258",
+      "CWE-1266",
+      "CWE-1272",
+      "CWE-1323",
+      "CWE-1330"
+    ]
+  },
+  "158": {
+    "name": "Sniffing Network Traffic",
+    "ttps": {
+      "T1040": "Network Sniffing"
+    },
+    "related_weaknesses": [
+      "CWE-311"
+    ]
+  },
+  "159": {
+    "name": "Redirect Access to Libraries",
+    "ttps": {
+      "T1574.008": "Hijack Execution Flow"
+    },
+    "related_weaknesses": [
+      "CWE-706"
+    ]
+  },
+  "163": {
+    "name": "Spear Phishing",
+    "ttps": {
+      "T1534": "Internal Spearfishing"
+    },
+    "related_weaknesses": [
+      "CWE-451"
+    ]
+  },
+  "165": {
+    "name": "File Manipulation",
+    "ttps": {
+      "T1036.003": "Masquerading"
+    },
+    "related_weaknesses": []
+  },
+  "169": {
+    "name": "Footprinting",
+    "ttps": {
+      "T1217": "Browser Bookmark Discovery"
+    },
+    "related_weaknesses": [
+      "CWE-200"
+    ]
+  },
+  "177": {
+    "name": "Create files with the same name as files protected with a higher classification",
+    "ttps": {
+      "T1036": "Masquerading"
+    },
+    "related_weaknesses": [
+      "CWE-706"
+    ]
+  },
+  "180": {
+    "name": "Exploiting Incorrectly Configured Access Control Security Levels",
+    "ttps": {
+      "T1574.010": "Hijack Execution Flow"
+    },
+    "related_weaknesses": [
+      "CWE-732",
+      "CWE-1190",
+      "CWE-1191",
+      "CWE-1193",
+      "CWE-1220",
+      "CWE-1268",
+      "CWE-1280",
+      "CWE-1297",
+      "CWE-1311",
+      "CWE-1315",
+      "CWE-1318",
+      "CWE-1320",
+      "CWE-1321"
+    ]
+  },
+  "186": {
+    "name": "Malicious Software Update",
+    "ttps": {
+      "T1195.002": "Supply Chain Compromise"
+    },
+    "related_weaknesses": [
+      "CWE-494"
+    ]
+  },
+  "187": {
+    "name": "Malicious Automated Software Update via Redirection",
+    "ttps": {
+      "T1072": "Software Deployment Tools"
+    },
+    "related_weaknesses": [
+      "CWE-494"
+    ]
+  },
+  "191": {
+    "name": "Read Sensitive Constants Within an Executable",
+    "ttps": {
+      "T1552.001": "Unsecured Credentials"
+    },
+    "related_weaknesses": [
+      "CWE-798"
+    ]
+  },
+  "196": {
+    "name": "Session Credential Falsification through Forging",
+    "ttps": {},
+    "related_weaknesses": []
+  },
+  "203": {
+    "name": "Manipulate Registry Information",
+    "ttps": {
+      "T1112": "Modify Registry"
+    },
+    "related_weaknesses": [
+      "CWE-15"
+    ]
+  },
+  "204": {
+    "name": "Lifting Sensitive Data Embedded in Cache",
+    "ttps": {
+      "T1005": "Data from Local System"
+    },
+    "related_weaknesses": [
+      "CWE-311",
+      "CWE-524",
+      "CWE-1239",
+      "CWE-1258"
+    ]
+  },
+  "206": {
+    "name": "Signing Malicious Code",
+    "ttps": {
+      "T1553.002": "Subvert Trust Controls"
+    },
+    "related_weaknesses": [
+      "CWE-732"
+    ]
+  },
+  "227": {
+    "name": "Sustained Client Engagement",
+    "ttps": {},
+    "related_weaknesses": []
+  },
+  "233": {
+    "name": "Privilege Escalation",
+    "ttps": {
+      "T1548": "Abuse Elevation Control Mechanism"
+    },
+    "related_weaknesses": [
+      "CWE-269",
+      "CWE-1264",
+      "CWE-1311"
+    ]
+  },
+  "251": {
+    "name": "Local Code Inclusion",
+    "ttps": {
+      "T1055": "Process Injection"
+    },
+    "related_weaknesses": [
+      "CWE-829"
+    ]
+  },
+  "267": {
+    "name": "Leverage Alternate Encoding",
+    "ttps": {},
+    "related_weaknesses": []
+  },
+  "268": {
+    "name": "Audit Log Manipulation",
+    "ttps": {
+      "T1070": "Indicator Removal on Host"
+    },
+    "related_weaknesses": [
+      "CWE-117"
+    ]
+  },
+  "270": {
+    "name": "Modification of Registry Run Keys",
+    "ttps": {
+      "T1547.001": "Boot or Logon Autostart Execution"
+    },
+    "related_weaknesses": [
+      "CWE-15"
+    ]
+  },
+  "292": {
+    "name": "Host Discovery",
+    "ttps": {
+      "T1018": "Remote System Discovery"
+    },
+    "related_weaknesses": [
+      "CWE-200"
+    ]
+  },
+  "295": {
+    "name": "Timestamp Request",
+    "ttps": {
+      "T1124": "System Time Discovery"
+    },
+    "related_weaknesses": [
+      "CWE-200"
+    ]
+  },
+  "300": {
+    "name": "Port Scanning",
+    "ttps": {
+      "T1046": "Network Service Scanning"
+    },
+    "related_weaknesses": [
+      "CWE-200"
+    ]
+  },
+  "309": {
+    "name": "Network Topology Mapping",
+    "ttps": {
+      "T1016": "System Network Configuration Discovery"
+    },
+    "related_weaknesses": [
+      "CWE-200"
+    ]
+  },
+  "312": {
+    "name": "Active OS Fingerprinting",
+    "ttps": {
+      "T1082": "System Information Discovery"
+    },
+    "related_weaknesses": [
+      "CWE-200"
+    ]
+  },
+  "313": {
+    "name": "Passive OS Fingerprinting",
+    "ttps": {
+      "T1082": "System Information Discovery"
+    },
+    "related_weaknesses": [
+      "CWE-200"
+    ]
+  },
+  "383": {
+    "name": "Harvesting Information via API Event Monitoring",
+    "ttps": {
+      "T1056.004": "Input Capture"
+    },
+    "related_weaknesses": [
+      "CWE-311",
+      "CWE-319",
+      "CWE-419",
+      "CWE-602"
+    ]
+  },
+  "407": {
+    "name": "Pretexting",
+    "ttps": {},
+    "related_weaknesses": []
+  },
+  "438": {
+    "name": "Modification During Manufacture",
+    "ttps": {
+      "T1195": "Supply Chain Compromise"
+    },
+    "related_weaknesses": []
+  },
+  "439": {
+    "name": "Manipulation During Distribution",
+    "ttps": {
+      "T1195": "Supply Chain Compromise"
+    },
+    "related_weaknesses": [
+      "CWE-1269"
+    ]
+  },
+  "440": {
+    "name": "Hardware Integrity Attack",
+    "ttps": {
+      "T1195.003": "Supply Chain Compromise"
+    },
+    "related_weaknesses": []
+  },
+  "442": {
+    "name": "Infected Software",
+    "ttps": {
+      "T1195.001": "Supply Chain Compromise"
+    },
+    "related_weaknesses": [
+      "CWE-506"
+    ]
+  },
+  "443": {
+    "name": "Malicious Logic Inserted Into Product by Authorized Developer",
+    "ttps": {
+      "T1195.002": "Supply Chain Compromise"
+    },
+    "related_weaknesses": []
+  },
+  "445": {
+    "name": "Malicious Logic Insertion into Product Software via Configuration Management Manipulation",
+    "ttps": {
+      "T1195.001": "Supply Chain Compromise"
+    },
+    "related_weaknesses": []
+  },
+  "446": {
+    "name": "Malicious Logic Insertion into Product via Inclusion of Third-Party Component",
+    "ttps": {
+      "T1195": "Supply Chain Compromise"
+    },
+    "related_weaknesses": []
+  },
+  "448": {
+    "name": "Embed Virus into DLL",
+    "ttps": {
+      "T1027.009": "Obfuscated Files or Information"
+    },
+    "related_weaknesses": [
+      "CWE-506"
+    ]
+  },
+  "457": {
+    "name": "USB Memory Attacks",
+    "ttps": {
+      "T1091": "Replication Through Removable Media"
+    },
+    "related_weaknesses": [
+      "CWE-1299"
+    ]
+  },
+  "464": {
+    "name": "Evercookie",
+    "ttps": {
+      "T1606.001": "Forge Web Credentials"
+    },
+    "related_weaknesses": [
+      "CWE-359"
+    ]
+  },
+  "465": {
+    "name": "Transparent Proxy Abuse",
+    "ttps": {
+      "T1090.001": "Proxy"
+    },
+    "related_weaknesses": [
+      "CWE-441"
+    ]
+  },
+  "469": {
+    "name": "HTTP DoS",
+    "ttps": {
+      "T1499.002": "Endpoint Denial of Service"
+    },
+    "related_weaknesses": [
+      "CWE-770",
+      "CWE-772"
+    ]
+  },
+  "471": {
+    "name": "Search Order Hijacking",
+    "ttps": {
+      "T1574.001": "Hijack Execution Flow"
+    },
+    "related_weaknesses": [
+      "CWE-427"
+    ]
+  },
+  "473": {
+    "name": "Signature Spoof",
+    "ttps": {
+      "T1036.001": "Masquerading"
+    },
+    "related_weaknesses": [
+      "CWE-20",
+      "CWE-290",
+      "CWE-327"
+    ]
+  },
+  "474": {
+    "name": "Signature Spoofing by Key Theft",
+    "ttps": {
+      "T1552.004": "Unsecured Credentials"
+    },
+    "related_weaknesses": [
+      "CWE-522"
+    ]
+  },
+  "478": {
+    "name": "Modification of Windows Service Configuration",
+    "ttps": {
+      "T1574.011": "Hijack Execution Flow"
+    },
+    "related_weaknesses": [
+      "CWE-284"
+    ]
+  },
+  "479": {
+    "name": "Malicious Root Certificate",
+    "ttps": {
+      "T1553.004": "Subvert Trust Controls"
+    },
+    "related_weaknesses": [
+      "CWE-284"
+    ]
+  },
+  "480": {
+    "name": "Escaping Virtualization",
+    "ttps": {
+      "T1611": "Escape to Host"
+    },
+    "related_weaknesses": [
+      "CWE-693"
+    ]
+  },
+  "481": {
+    "name": "Contradictory Destinations in Traffic Routing Schemes",
+    "ttps": {
+      "T1090.004": "Proxy"
+    },
+    "related_weaknesses": [
+      "CWE-923"
+    ]
+  },
+  "482": {
+    "name": "TCP Flood",
+    "ttps": {
+      "T1498.001": "Network Denial of Service"
+    },
+    "related_weaknesses": [
+      "CWE-770"
+    ]
+  },
+  "485": {
+    "name": "Signature Spoofing by Key Recreation",
+    "ttps": {
+      "T1552.004": "Unsecure Credentials"
+    },
+    "related_weaknesses": [
+      "CWE-330"
+    ]
+  },
+  "488": {
+    "name": "HTTP Flood",
+    "ttps": {
+      "T1499.002": "Endpoint Denial of Service"
+    },
+    "related_weaknesses": [
+      "CWE-770"
+    ]
+  },
+  "489": {
+    "name": "SSL Flood",
+    "ttps": {
+      "T1499.002": "Endpoint Denial of Service"
+    },
+    "related_weaknesses": [
+      "CWE-770"
+    ]
+  },
+  "490": {
+    "name": "Amplification",
+    "ttps": {
+      "T1498.002": "Network Denial of Service"
+    },
+    "related_weaknesses": [
+      "CWE-770"
+    ]
+  },
+  "497": {
+    "name": "File Discovery",
+    "ttps": {
+      "T1083": "File and Directory Discovery"
+    },
+    "related_weaknesses": [
+      "CWE-200"
+    ]
+  },
+  "504": {
+    "name": "Task Impersonation",
+    "ttps": {
+      "T1036.004": "Masquerading"
+    },
+    "related_weaknesses": [
+      "CWE-1021"
+    ]
+  },
+  "509": {
+    "name": "Kerberoasting",
+    "ttps": {
+      "T1558.003": "Steal or Forge Kerberos Tickets"
+    },
+    "related_weaknesses": [
+      "CWE-262",
+      "CWE-263",
+      "CWE-294",
+      "CWE-308",
+      "CWE-309",
+      "CWE-521",
+      "CWE-522"
+    ]
+  },
+  "511": {
+    "name": "Infiltration of Software Development Environment",
+    "ttps": {
+      "T1195.001": "Supply Chain Compromise"
+    },
+    "related_weaknesses": []
+  },
+  "516": {
+    "name": "Hardware Component Substitution During Baselining",
+    "ttps": {
+      "T1195.003": "Supply Chain Compromise"
+    },
+    "related_weaknesses": []
+  },
+  "520": {
+    "name": "Counterfeit Hardware Component Inserted During Product Assembly",
+    "ttps": {
+      "T1195.003": "Supply Chain Compromise"
+    },
+    "related_weaknesses": []
+  },
+  "522": {
+    "name": "Malicious Hardware Component Replacement",
+    "ttps": {
+      "T1195.003": "Supply Chain Compromise"
+    },
+    "related_weaknesses": []
+  },
+  "523": {
+    "name": "Malicious Software Implanted",
+    "ttps": {
+      "T1195.002": "Supply Chain Compromise"
+    },
+    "related_weaknesses": []
+  },
+  "528": {
+    "name": "XML Flood",
+    "ttps": {
+      "T1499.002": "Endpoint Denial of Service"
+    },
+    "related_weaknesses": [
+      "CWE-770"
+    ]
+  },
+  "531": {
+    "name": "Hardware Component Substitution",
+    "ttps": {
+      "T1195.003": "Supply Chain Compromise"
+    },
+    "related_weaknesses": []
+  },
+  "532": {
+    "name": "Altered Installed BIOS",
+    "ttps": {
+      "T1495": "Firmware Corruption"
+    },
+    "related_weaknesses": []
+  },
+  "537": {
+    "name": "Infiltration of Hardware Development Environment",
+    "ttps": {
+      "T1195.003": "Supply Chain Compromise"
+    },
+    "related_weaknesses": []
+  },
+  "538": {
+    "name": "Open-Source Library Manipulation",
+    "ttps": {
+      "T1195.001": "Supply Chain Compromise"
+    },
+    "related_weaknesses": [
+      "CWE-494",
+      "CWE-829"
+    ]
+  },
+  "539": {
+    "name": "ASIC With Malicious Functionality",
+    "ttps": {
+      "T1195.003": "Supply Chain Compromise"
+    },
+    "related_weaknesses": []
+  },
+  "541": {
+    "name": "Application Fingerprinting",
+    "ttps": {
+      "T1592.002": "Gather Victim Host Information"
+    },
+    "related_weaknesses": [
+      "CWE-204",
+      "CWE-205",
+      "CWE-208"
+    ]
+  },
+  "542": {
+    "name": "Targeted Malware",
+    "ttps": {
+      "T1587.001": "Develop Capabilities"
+    },
+    "related_weaknesses": []
+  },
+  "543": {
+    "name": "Counterfeit Websites",
+    "ttps": {
+      "T1036.005": "Masquerading"
+    },
+    "related_weaknesses": []
+  },
+  "545": {
+    "name": "Pull Data from System Resources",
+    "ttps": {
+      "T1005": "Data from Local System"
+    },
+    "related_weaknesses": [
+      "CWE-1239",
+      "CWE-1243",
+      "CWE-1258",
+      "CWE-1266",
+      "CWE-1272",
+      "CWE-1278",
+      "CWE-1323",
+      "CWE-1330"
+    ]
+  },
+  "550": {
+    "name": "Install New Service",
+    "ttps": {
+      "T1543": "Create or Modify System Process"
+    },
+    "related_weaknesses": [
+      "CWE-284"
+    ]
+  },
+  "551": {
+    "name": "Modify Existing Service",
+    "ttps": {
+      "T1543": "Create or Modify System Process"
+    },
+    "related_weaknesses": [
+      "CWE-284",
+      "CWE-522"
+    ]
+  },
+  "552": {
+    "name": "Install Rootkit",
+    "ttps": {
+      "T1014": "Rootkit"
+    },
+    "related_weaknesses": [
+      "CWE-284"
+    ]
+  },
+  "555": {
+    "name": "Remote Services with Stolen Credentials",
+    "ttps": {
+      "T1021": "Remote Services"
+    },
+    "related_weaknesses": [
+      "CWE-262",
+      "CWE-263",
+      "CWE-294",
+      "CWE-308",
+      "CWE-309",
+      "CWE-521",
+      "CWE-522"
+    ]
+  },
+  "556": {
+    "name": "Replace File Extension Handlers",
+    "ttps": {
+      "T1546.001": "Event Triggered Execution"
+    },
+    "related_weaknesses": [
+      "CWE-284"
+    ]
+  },
+  "558": {
+    "name": "Replace Trusted Executable",
+    "ttps": {
+      "T1505.005": "Server Software Component"
+    },
+    "related_weaknesses": [
+      "CWE-284"
+    ]
+  },
+  "560": {
+    "name": "Use of Known Domain Credentials",
+    "ttps": {
+      "T1078": "Valid Accounts"
+    },
+    "related_weaknesses": [
+      "CWE-262",
+      "CWE-263",
+      "CWE-307",
+      "CWE-308",
+      "CWE-309",
+      "CWE-522",
+      "CWE-654",
+      "CWE-1273"
+    ]
+  },
+  "561": {
+    "name": "Windows Admin Shares with Stolen Credentials",
+    "ttps": {
+      "T1021.002": "Remote Services"
+    },
+    "related_weaknesses": [
+      "CWE-262",
+      "CWE-263",
+      "CWE-294",
+      "CWE-308",
+      "CWE-309",
+      "CWE-521",
+      "CWE-522"
+    ]
+  },
+  "562": {
+    "name": "Modify Shared File",
+    "ttps": {
+      "T1080": "Taint shared content"
+    },
+    "related_weaknesses": [
+      "CWE-284"
+    ]
+  },
+  "564": {
+    "name": "Run Software at Logon",
+    "ttps": {
+      "T1037": "Boot or Logon Initialization Scripts"
+    },
+    "related_weaknesses": [
+      "CWE-284"
+    ]
+  },
+  "565": {
+    "name": "Password Spraying",
+    "ttps": {
+      "T1110.003": "Brute Force"
+    },
+    "related_weaknesses": [
+      "CWE-262",
+      "CWE-263",
+      "CWE-307",
+      "CWE-308",
+      "CWE-309",
+      "CWE-521",
+      "CWE-654"
+    ]
+  },
+  "568": {
+    "name": "Capture Credentials via Keylogger",
+    "ttps": {
+      "T1056.001": "Input Capture"
+    },
+    "related_weaknesses": []
+  },
+  "569": {
+    "name": "Collect Data as Provided by Users",
+    "ttps": {
+      "T1056": "Input Capture"
+    },
+    "related_weaknesses": []
+  },
+  "571": {
+    "name": "Block Logging to Central Repository",
+    "ttps": {
+      "T1562.002": "Impair Defenses"
+    },
+    "related_weaknesses": []
+  },
+  "572": {
+    "name": "Artificially Inflate File Sizes",
+    "ttps": {
+      "T1027.001": "Obfuscated Files or Information"
+    },
+    "related_weaknesses": []
+  },
+  "573": {
+    "name": "Process Footprinting",
+    "ttps": {
+      "T1057": "Process Discovery"
+    },
+    "related_weaknesses": [
+      "CWE-200"
+    ]
+  },
+  "574": {
+    "name": "Services Footprinting",
+    "ttps": {
+      "T1007": "System Service Discovery"
+    },
+    "related_weaknesses": [
+      "CWE-200"
+    ]
+  },
+  "575": {
+    "name": "Account Footprinting",
+    "ttps": {
+      "T1087": "Account Discovery"
+    },
+    "related_weaknesses": [
+      "CWE-200"
+    ]
+  },
+  "576": {
+    "name": "Group Permission Footprinting",
+    "ttps": {
+      "T1069": "Permission Groups Discovery"
+    },
+    "related_weaknesses": [
+      "CWE-200"
+    ]
+  },
+  "577": {
+    "name": "Owner Footprinting",
+    "ttps": {
+      "T1033": "System Owner/User Discovery"
+    },
+    "related_weaknesses": [
+      "CWE-200"
+    ]
+  },
+  "578": {
+    "name": "Disable Security Software",
+    "ttps": {
+      "T1556.006": "Modify Authentication Process"
+    },
+    "related_weaknesses": [
+      "CWE-284"
+    ]
+  },
+  "579": {
+    "name": "Replace Winlogon Helper DLL",
+    "ttps": {
+      "T1547.004": "Boot or Logon Autostart Execution"
+    },
+    "related_weaknesses": [
+      "CWE-15"
+    ]
+  },
+  "580": {
+    "name": "System Footprinting",
+    "ttps": {
+      "T1082": "System Information Discovery"
+    },
+    "related_weaknesses": [
+      "CWE-204",
+      "CWE-205",
+      "CWE-208"
+    ]
+  },
+  "581": {
+    "name": "Security Software Footprinting",
+    "ttps": {
+      "T1518.001": "Software Discovery"
+    },
+    "related_weaknesses": []
+  },
+  "593": {
+    "name": "Session Hijacking",
+    "ttps": {
+      "T1185": "Browser Session Hijacking"
+    },
+    "related_weaknesses": [
+      "CWE-287"
+    ]
+  },
+  "600": {
+    "name": "Credential Stuffing",
+    "ttps": {
+      "T1110.004": "Brute Force"
+    },
+    "related_weaknesses": [
+      "CWE-262",
+      "CWE-263",
+      "CWE-307",
+      "CWE-308",
+      "CWE-309",
+      "CWE-522",
+      "CWE-654"
+    ]
+  },
+  "609": {
+    "name": "Cellular Traffic Intercept",
+    "ttps": {
+      "T1111": "Multi-Factor Authentication Interception"
+    },
+    "related_weaknesses": [
+      "CWE-311"
+    ]
+  },
+  "616": {
+    "name": "Establish Rogue Location",
+    "ttps": {
+      "T1036.005": "Masquerading"
+    },
+    "related_weaknesses": [
+      "CWE-200"
+    ]
+  },
+  "620": {
+    "name": "Drop Encryption Level",
+    "ttps": {
+      "T1600": "Weaken Encryption"
+    },
+    "related_weaknesses": [
+      "CWE-757"
+    ]
+  },
+  "633": {
+    "name": "Token Impersonation",
+    "ttps": {
+      "T1134": "Access Token Manipulation"
+    },
+    "related_weaknesses": [
+      "CWE-287",
+      "CWE-1270"
+    ]
+  },
+  "634": {
+    "name": "Probe Audio and Video Peripherals",
+    "ttps": {
+      "T1123": "Audio Capture"
+    },
+    "related_weaknesses": [
+      "CWE-267"
+    ]
+  },
+  "635": {
+    "name": "Alternative Execution Due to Deceptive Filenames",
+    "ttps": {
+      "T1036.007": "Masquerading"
+    },
+    "related_weaknesses": [
+      "CWE-162"
+    ]
+  },
+  "636": {
+    "name": "Hiding Malicious Data or Code within Files",
+    "ttps": {
+      "T1001.002": "Data Obfuscation"
+    },
+    "related_weaknesses": [
+      "CWE-506"
+    ]
+  },
+  "637": {
+    "name": "Collect Data from Clipboard",
+    "ttps": {
+      "T1115": "Clipboard Data"
+    },
+    "related_weaknesses": [
+      "CWE-267"
+    ]
+  },
+  "638": {
+    "name": "Altered Component Firmware",
+    "ttps": {
+      "T1542.002": "Pre-OS Boot"
+    },
+    "related_weaknesses": []
+  },
+  "639": {
+    "name": "Probe System Files",
+    "ttps": {
+      "T1039": "Data from Network Shared Drive"
+    },
+    "related_weaknesses": [
+      "CWE-552"
+    ]
+  },
+  "640": {
+    "name": "Inclusion of Code in Existing Process",
+    "ttps": {
+      "T1505.005": "Server Software Component"
+    },
+    "related_weaknesses": [
+      "CWE-114",
+      "CWE-829"
+    ]
+  },
+  "641": {
+    "name": "DLL Side-Loading",
+    "ttps": {
+      "T1574.002": "Hijack Execution Flow"
+    },
+    "related_weaknesses": [
+      "CWE-706"
+    ]
+  },
+  "642": {
+    "name": "Replace Binaries",
+    "ttps": {
+      "T1505.005": "Server Software Component"
+    },
+    "related_weaknesses": [
+      "CWE-732"
+    ]
+  },
+  "643": {
+    "name": "Identify Shared Files/Directories on System",
+    "ttps": {
+      "T1135": "Network Share Discovery"
+    },
+    "related_weaknesses": [
+      "CWE-200",
+      "CWE-267"
+    ]
+  },
+  "644": {
+    "name": "Use of Captured Hashes (Pass The Hash)",
+    "ttps": {
+      "T1550.002": "Use Alternate Authentication Material"
+    },
+    "related_weaknesses": [
+      "CWE-294",
+      "CWE-308",
+      "CWE-522",
+      "CWE-836"
+    ]
+  },
+  "645": {
+    "name": "Use of Captured Tickets (Pass The Ticket)",
+    "ttps": {
+      "T1550.003": "Use Alternate Authentication Material"
+    },
+    "related_weaknesses": [
+      "CWE-294",
+      "CWE-308",
+      "CWE-522"
+    ]
+  },
+  "646": {
+    "name": "Peripheral Footprinting",
+    "ttps": {
+      "T1120": "Peripheral Device Discovery"
+    },
+    "related_weaknesses": [
+      "CWE-200"
+    ]
+  },
+  "647": {
+    "name": "Collect Data from Registries",
+    "ttps": {
+      "T1005": "Data from Local System"
+    },
+    "related_weaknesses": [
+      "CWE-285"
+    ]
+  },
+  "648": {
+    "name": "Collect Data from Screen Capture",
+    "ttps": {
+      "T1113": "Screen Capture"
+    },
+    "related_weaknesses": [
+      "CWE-267"
+    ]
+  },
+  "649": {
+    "name": "Adding a Space to a File Extension",
+    "ttps": {
+      "T1036.006": "Masquerading"
+    },
+    "related_weaknesses": [
+      "CWE-46"
+    ]
+  },
+  "650": {
+    "name": "Upload a Web Shell to a Web Server",
+    "ttps": {
+      "T1505.003": "Server Software Component"
+    },
+    "related_weaknesses": [
+      "CWE-287",
+      "CWE-553"
+    ]
+  },
+  "651": {
+    "name": "Eavesdropping",
+    "ttps": {
+      "T1111": "Multi-Factor Authentication Interception"
+    },
+    "related_weaknesses": [
+      "CWE-200"
+    ]
+  },
+  "652": {
+    "name": "Use of Known Kerberos Credentials",
+    "ttps": {
+      "T1558": "Steal or Forge Kerberos Tickets"
+    },
+    "related_weaknesses": [
+      "CWE-262",
+      "CWE-263",
+      "CWE-294",
+      "CWE-307",
+      "CWE-308",
+      "CWE-309",
+      "CWE-522",
+      "CWE-654",
+      "CWE-836"
+    ]
+  },
+  "654": {
+    "name": "Credential Prompt Impersonation",
+    "ttps": {
+      "T1056": "Input Capture"
+    },
+    "related_weaknesses": [
+      "CWE-1021"
+    ]
+  },
+  "655": {
+    "name": "Avoid Security Tool Identification by Adding Data",
+    "ttps": {
+      "T1027.001": "Obfuscated Files or Information"
+    },
+    "related_weaknesses": []
+  },
+  "657": {
+    "name": "Malicious Automated Software Update via Spoofing",
+    "ttps": {
+      "T1072": "Software Deployment Tools"
+    },
+    "related_weaknesses": [
+      "CWE-494"
+    ]
+  },
+  "660": {
+    "name": "Root/Jailbreak Detection Evasion via Hooking",
+    "ttps": {
+      "T1055": "Process Injection"
+    },
+    "related_weaknesses": [
+      "CWE-829"
+    ]
+  },
+  "662": {
+    "name": "Adversary in the Browser (AiTB)",
+    "ttps": {
+      "T1185": "Man in the Browser"
+    },
+    "related_weaknesses": [
+      "CWE-300",
+      "CWE-494"
+    ]
+  },
+  "665": {
+    "name": "Exploitation of Thunderbolt Protection Flaws",
+    "ttps": {
+      "T1211": "Exploitation for Defensive Evasion"
+    },
+    "related_weaknesses": [
+      "CWE-288",
+      "CWE-345",
+      "CWE-353",
+      "CWE-862",
+      "CWE-1188"
+    ]
+  },
+  "666": {
+    "name": "BlueSmacking",
+    "ttps": {
+      "T1498.001": "Network Denial of Service"
+    },
+    "related_weaknesses": [
+      "CWE-404"
+    ]
+  },
+  "668": {
+    "name": "Key Negotiation of Bluetooth Attack (KNOB)",
+    "ttps": {
+      "T1565.002": "Data Manipulation"
+    },
+    "related_weaknesses": [
+      "CWE-285",
+      "CWE-425",
+      "CWE-693"
+    ]
+  },
+  "669": {
+    "name": "Alteration of a Software Update",
+    "ttps": {},
+    "related_weaknesses": []
+  },
+  "670": {
+    "name": "Software Development Tools Maliciously Altered",
+    "ttps": {
+      "T1127": "Trusted Developer Utilities Proxy Execution"
+    },
+    "related_weaknesses": []
+  },
+  "671": {
+    "name": "Requirements for ASIC Functionality Maliciously Altered",
+    "ttps": {
+      "T1195.003": "Supply Chain Compromise"
+    },
+    "related_weaknesses": []
+  },
+  "672": {
+    "name": "Malicious Code Implanted During Chip Programming",
+    "ttps": {
+      "T1195.003": "Supply Chain Compromise"
+    },
+    "related_weaknesses": []
+  },
+  "673": {
+    "name": "Developer Signing Maliciously Altered Software",
+    "ttps": {},
+    "related_weaknesses": []
+  },
+  "674": {
+    "name": "Design for FPGA Maliciously Altered",
+    "ttps": {
+      "T1195.003": "Supply Chain Compromise"
+    },
+    "related_weaknesses": []
+  },
+  "675": {
+    "name": "Retrieve Data from Decommissioned Devices",
+    "ttps": {
+      "T1052": "Exfiltration Over Physical Medium"
+    },
+    "related_weaknesses": [
+      "CWE-1266"
+    ]
+  },
+  "677": {
+    "name": "Server Motherboard Compromise",
+    "ttps": {
+      "T1195.003": "Supply Chain Compromise"
+    },
+    "related_weaknesses": []
+  },
+  "678": {
+    "name": "System Build Data Maliciously Altered",
+    "ttps": {
+      "T1195.002": "Supply Chain Compromise"
+    },
+    "related_weaknesses": []
+  },
+  "691": {
+    "name": "Spoof Open-Source Software Metadata",
+    "ttps": {
+      "T1195.001": "Supply Chain Compromise"
+    },
+    "related_weaknesses": [
+      "CWE-494"
+    ]
+  },
+  "694": {
+    "name": "System Location Discovery",
+    "ttps": {
+      "T1614": "System Language Discovery"
+    },
+    "related_weaknesses": [
+      "CWE-497"
+    ]
+  },
+  "695": {
+    "name": "Repo Jacking",
+    "ttps": {
+      "T1195.001": "Supply Chain Compromise"
+    },
+    "related_weaknesses": [
+      "CWE-494",
+      "CWE-829"
+    ]
+  },
+  "697": {
+    "name": "DHCP Spoofing",
+    "ttps": {
+      "T1557.003": "Adversary-in-the-Middle"
+    },
+    "related_weaknesses": [
+      "CWE-923"
+    ]
+  },
+  "698": {
+    "name": "Install Malicious Extension",
+    "ttps": {
+      "T1176": "Browser Extensions"
+    },
+    "related_weaknesses": [
+      "CWE-507",
+      "CWE-829"
+    ]
+  },
+  "700": {
+    "name": "Network Boundary Bridging",
+    "ttps": {
+      "T1599": "Network Boundary Bridging"
+    },
+    "related_weaknesses": []
+  }
+}
