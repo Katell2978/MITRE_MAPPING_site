@@ -124,7 +124,71 @@ async function searchCVE() {
         document.getElementById("status").textContent = "Erreur de recherche.";
     }
 }
+async function checkMitreCampaigns(cveId) {
+  const area = document.getElementById("campaign-area");
+  area.innerHTML = `<span class="badge" style="background:#555">MITRE ATT&CK : recherche…</span>`;
 
+  try {
+    const res = await fetch("https://attack.mitre.org/api/v2/campaigns/");
+    const data = await res.json();
+
+    const hits = data.data.filter(c =>
+      JSON.stringify(c).includes(cveId)
+    );
+
+    if (hits.length === 0) {
+      area.innerHTML = `<span class="badge" style="background:#2ecc71">Aucune campagne connue</span>`;
+      return;
+    }
+
+    area.innerHTML = hits.map(c => `
+      <div class="card" style="border-left:4px solid #e74c3c; margin-bottom:5px; padding:10px;">
+        <strong>${c.name}</strong><br/>
+        <a href="https://attack.mitre.org/campaigns/${c.id}/" target="_blank">
+          Voir la campagne ATT&CK
+        </a>
+      </div>
+    `).join("");
+
+  } catch (e) {
+    console.error(e);
+    area.innerHTML = `<span class="badge" style="background:#f87171">Erreur MITRE</span>`;
+  }
+}
+
+async function checkCertFR(cveId) {
+  const area = document.getElementById("certfr-area");
+  area.innerHTML = `<span class="badge" style="background:#555">CERT‑FR : recherche…</span>`;
+
+  try {
+    const res = await fetch("https://www.cert.ssi.gouv.fr/api/alerts/");
+    const data = await res.json();
+
+    const hits = data.results.filter(a =>
+      JSON.stringify(a).includes(cveId)
+    );
+
+    if (hits.length === 0) {
+      area.innerHTML = `<span class="badge" style="background:#2ecc71">Aucun bulletin CERT‑FR</span>`;
+      return;
+    }
+
+    area.innerHTML = hits.map(a => `
+      <div class="card" style="border-left:4px solid #fbbf24; margin-bottom:5px; padding:10px;">
+        <strong>${a.reference}</strong><br/>
+        <a href="https://www.cert.ssi.gouv.fr/${a.slug}/" target="_blank">
+          Consulter le bulletin
+        </a>
+      </div>
+    `).join("");
+
+  } catch (e) {
+    console.error(e);
+    area.innerHTML = `<span class="badge" style="background:#f87171">Erreur CERT‑FR</span>`;
+  }
+}
+
+  
 function renderUI(cve, isKev) {
     // 1. Extraction du Score et des Métriques CVSS 3.1
     const metrics = cve.metrics?.cvssMetricV31?.[0]?.cvssData || 
@@ -180,6 +244,20 @@ function renderUI(cve, isKev) {
                 </div>
             </div>
 
+<!-- Debut complement pour affichage comapgne et cert-fr -->
+<div class="matrix-card" style="margin-top:20px;">
+  <h3>Campagnes & Bulletins</h3>
+
+  <div id="campaign-area" style="margin-bottom:10px;">
+    <span class="badge" style="background:#555">MITRE ATT&CK : analyse…</span>
+  </div>
+
+  <div id="certfr-area">
+    <span class="badge" style="background:#555">CERT‑FR : analyse…</span>
+  </div>
+</div>
+<!-- Fin complement pour affichage comapgne et cert-fr -->
+
             <div class="matrix-card" style="margin-top:20px;">
                 <h3>Matrices ATT&CK</h3>
                 <div id="matrix-badges" style="margin:10px 0;"></div>
@@ -189,6 +267,9 @@ function renderUI(cve, isKev) {
             <div id="atm-area"></div>
         </div>
     `;
+   //ajout recherche campgn eet Cert-Ft
+  checkMitreCampaigns(cve.id);
+  checkCertFR(cve.id);
 
     // Génération des boutons CWE pour le drill-down
     const cweArea = document.getElementById("cwe-area");
