@@ -1,0 +1,521 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kat-Force Analyser – NVD → CWE → CAPEC → ATT&CK → ATM</title>
+  <style>
+    :root{
+      --bg:#0b1020; --card:#121a33; --txt:#e9ecff; --muted:#aab3da;
+      --accent:#7aa2ff; --ok:#36d399; --warn:#fbbf24; --bad:#f87171; --line:#26325f;
+      --ent:#7aa2ff; --mob:#d299ff; --ics:#39d353;
+      --link:#7aa2ff;
+      --mono: ui-monospace, Menlo, Consolas, monospace;
+    }
+    body{margin:0;font-family:system-ui,sans-serif;background:linear-gradient(160deg,#070a15,var(--bg));color:var(--txt);font-size:14px;}
+    header,main,.monitor{max-width:1300px;margin:auto;padding:18px}
+    .card{background:rgba(18,26,51,.95);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:14px}
+    .row{display:flex;gap:10px;align-items:center}
+    input,button{padding:12px;border-radius:10px;border:1px solid var(--line);background:#0a0f22;color:var(--txt)}
+    button{cursor:pointer;font-weight:bold;background:var(--accent);color:#000;border:none}
+    .badge{padding:4px 10px;border-radius:6px;font-weight:bold;font-size:11px;text-transform:uppercase;border:1px solid transparent;display:inline-block}
+    .sev-CRITICAL{background:rgba(248,113,113,0.2);color:var(--bad);border-color:var(--bad)}
+    .kev-active{background:var(--bad);color:white;animation:pulse 2s infinite}
+    @keyframes pulse { 0% {opacity:1} 50% {opacity:0.7} 100% {opacity:1} }
+    .grid-3{display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:15px;margin-top:15px}
+    .matrix-card{border-top:4px solid var(--accent);padding:10px;background:rgba(255,255,255,0.03);border-radius:8px}
+    #pivotSvg{width:100%;height:500px;background:rgba(0,0,0,0.2);border-radius:10px;border:1px solid var(--line);margin-top:20px}
+    .log{font-family:var(--mono);font-size:12px;max-height:180px;overflow:auto;background:#000;padding:10px;border-radius:8px}
+
+    /* ATT&CK mini-matrix */
+    .attack-toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0}
+    .pill{border:1px solid var(--line);background:#0a0f22;border-radius:999px;padding:6px 10px;color:var(--txt);font-size:12px}
+    .tabs{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+    .tab{cursor:pointer;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:#0a0f22;color:var(--txt);font-weight:700}
+    .tab.active{background:var(--accent);color:#000;border-color:transparent}
+    .attack-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:10px;margin-top:10px}
+    .tech{border:1px solid var(--line);background:rgba(0,0,0,.25);border-radius:12px;padding:10px}
+    .tech h4{margin:0 0 6px 0;font-size:13px}
+    .tech small{color:var(--muted)}
+    a{color:var(--link)}
+  </style>
+</head>
+<body>
+<header>
+  <h1>CVE Analyser By Katell2978</h1>
+  <p class="muted">Mapping complet : NVD (CVE) → CWE → CAPEC → ATT&CK (Matrices) → ATM Perso</p>
+</header>
+<main>
+  <div class="card">
+    <div class="row">
+      <input id="cveInput" class="mono" style="flex:1" placeholder="CVE-2023-34362" value="CVE-2023-34362" />
+      <button id="searchBtn">Lancer l'Analyse Totale</button>
+      <span id="status" class="muted">Prêt.</span>
+    </div>
+  </div>
+  <div id="results"></div>
+</main>
+<div class="monitor">
+  <div class="card">
+    <b>Logs d'exécution</b>
+    <div id="log" class="log"></div>
+  </div>
+</div>
+<div style="background:#111; padding:10px; margin-top:20px;">
+  <svg id="pivotSvg" width="100%" height="400px"></svg>
+</div>
+
+<script>
+/* ================= CONFIG ================= */
+const APIS = {
+  nvd: "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=",
+  kev: "build/kev.json"
+};
+
+let MITRE_INDEX = {}, CWE_DB = {}, CAPEC_DB = {}, ATM_DB = [];
+
+/* ================= LOG UI (console → #log) ================= */
+const logElt = () => document.getElementById('log');
+function uiLog(level, ...args){
+  const el = logElt();
+  if(!el) return;
+  const ts = new Date().toISOString().slice(11,19);
+  const msg = args.map(a => {
+    try { return (typeof a === 'string') ? a : JSON.stringify(a); }
+    catch(e){ return String(a); }
+  }).join(' ');
+  const color = level === 'error' ? '#ff6b6b' : (level === 'warn' ? '#fbbf24' : '#9ae6ff');
+  el.insertAdjacentHTML('beforeend', `<div><span style="color:${color}">[${ts}] ${level.toUpperCase()}</span> ${msg}</div>`);
+  el.scrollTop = el.scrollHeight;
+}
+['log','warn','error'].forEach(k => {
+  const orig = console[k].bind(console);
+  console[k] = (...args) => { orig(...args); uiLog(k, ...args); };
+});
+
+/* ================= HELPERS ================= */
+const normTid = (t) => (t || '').toString().trim().toUpperCase();
+const baseTid = (t) => normTid(t).split('.')[0];
+
+function getMatrices(info){
+  // Tolérant à plusieurs formats d'index (array, {m}, {matrices}, {matrix})
+  if(!info) return [];
+  if(Array.isArray(info)) return info;
+  if(Array.isArray(info.m)) return info.m;
+  if(Array.isArray(info.matrices)) return info.matrices;
+  if(typeof info.matrix === 'string') return [info.matrix];
+  return [];
+}
+
+function getTechniqueInfo(t){
+  const full = normTid(t);
+  const base = baseTid(full);
+  const direct = MITRE_INDEX[full];
+  const fallback = MITRE_INDEX[base];
+  const info = direct || fallback;
+  const matrices = getMatrices(info);
+  const name = info && info.name ? info.name : '';
+  const url = info && info.url ? info.url : (full.includes('.')
+      ? `https://attack.mitre.org/techniques/${base}/${full.split('.')[1].replace(/^0+/, '').padStart(3,'0')}/`
+      : `https://attack.mitre.org/techniques/${base}/`);
+  return { full, base, matrices, name, url, found: !!info };
+}
+
+/* ================= CHARGEMENT ================= */
+async function loadAllBases() {
+  if (Object.keys(CWE_DB).length > 0) return;
+  console.log("🚀 Tentative de chargement des bases...");
+  try {
+    const [m, cwe, capec, atmText] = await Promise.all([
+      fetch('build/mitre_map_index.json').then(r => r.json()).catch(e => { console.error("Index MITRE manquant ou invalide", e); return {}; }),
+      fetch('data/cwe_db.json').then(r => r.json()),
+      fetch('data/capec_db.json').then(r => r.json()),
+      fetch('data/ATM-matrix-TTP.csv').then(r => r.text()).catch(() => "")
+    ]);
+    MITRE_INDEX = m; CWE_DB = cwe; CAPEC_DB = capec;
+    ATM_DB = parseATM(atmText);
+    console.log("✅ Bases chargées !", {
+      mitre: Object.keys(MITRE_INDEX).length,
+      cwe: Object.keys(CWE_DB).length,
+      capec: Object.keys(CAPEC_DB).length,
+      atm: ATM_DB.length
+    });
+  } catch (e) {
+    console.error("❌ Erreur critique lors du chargement:", e);
+  }
+}
+
+function parseATM(csv) {
+  if(!csv || csv.length < 10) return [];
+  return csv.split(/?
+/).slice(1).filter(l => l.trim()).map(line => {
+    const c = line.split(";").map(x => x.trim());
+    return { tactic: c[0], id: c[1], name: c[2], techniques: (c[3] || "").split(",").map(t=>t.trim()).filter(Boolean) };
+  });
+}
+
+/* ================= ANALYSE ================= */
+async function searchCVE() {
+  const id = document.getElementById('cveInput').value.trim().toUpperCase();
+  if(!id) return;
+  document.getElementById("status").textContent = "Analyse en cours...";
+  await loadAllBases();
+  try {
+    const nvdRes = await fetch(APIS.nvd + id).then(r => r.json());
+    const kevRes = await fetch(APIS.kev).then(r => r.json()).catch(() => ({ vulnerabilities: [] }));
+    const cve = nvdRes.vulnerabilities?.[0]?.cve;
+    if(!cve) {
+      document.getElementById("status").textContent = "CVE non trouvée.";
+      return;
+    }
+    const isKev = (kevRes.vulnerabilities || []).some(v => v.cveID === id);
+    document.getElementById("status").textContent = "Analyse terminée.";
+    renderUI(cve, isKev);
+  } catch (e) {
+    console.error(e);
+    document.getElementById("status").textContent = "Erreur de recherche.";
+  }
+}
+
+function renderUI(cve, isKev) {
+  // 1. Score CVSS
+  const metrics = cve.metrics?.cvssMetricV31?.[0]?.cvssData || cve.metrics?.cvssMetricV30?.[0]?.cvssData || {};
+  const score = metrics.baseScore || "N/A";
+  const severity = metrics.baseSeverity || "UNKNOWN";
+  const vector = metrics.vectorString || "Non spécifié";
+
+  // 2. CWE
+  const cwes = (cve.weaknesses || []).flatMap(w => (w.description || []).map(d => (d.value || '').split('-')[1])).filter(Boolean);
+
+  // 3. CPE
+  const cpes = (cve.configurations || []).flatMap(conf =>
+    (conf.nodes || []).flatMap(node => (node.cpeMatch || []).map(m => m.criteria))
+  ).slice(0, 5);
+
+  // 4. Sources
+  const refs = (cve.references || []).slice(0, 5);
+
+  document.getElementById("results").innerHTML = `
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap">
+        <h2 style="margin:0">${cve.id} ${isKev ? '<span class="badge kev-active">⚠️ KEV</span>' : ''}</h2>
+        <div class="badge sev-${severity}" style="font-size:1.2em; padding:10px 20px;">
+          CVSS ${score} (${severity})
+        </div>
+      </div>
+      <p style="color:var(--accent); font-size:0.9em; margin-bottom:15px;"><strong>Vector:</strong> ${vector}</p>
+      <p style="background:rgba(255,255,255,0.05); padding:15px; border-radius:5px; border-left:4px solid var(--accent);">
+        ${(cve.descriptions || []).find(d => d.lang === 'en')?.value || "Pas de description."}
+      </p>
+
+      <div class="grid-3" style="grid-template-columns: 1fr 1fr 1fr;">
+        <div class="matrix-card">
+          <h3>CWE Faiblesses</h3>
+          <div id="cwe-area"></div>
+        </div>
+
+        <div class="matrix-card">
+          <h3>CPE Affectés</h3>
+          <ul style="font-size:0.8em; color:#bbb; padding-left:15px;">
+            ${cpes.length ? cpes.map(c => `<li>${c}</li>`).join('') : "Aucun CPE listé"}
+            ${cpes.length >= 5 ? '<li>...</li>' : ''}
+          </ul>
+        </div>
+
+        <div class="matrix-card">
+          <h3>Sources & Liens</h3>
+          <ul style="font-size:0.8em; padding-left:15px;">
+            ${refs.map(r => `<li><a href="${r.url}" target="_blank">${r.source || 'Lien'}</a></li>`).join('')}
+          </ul>
+        </div>
+      </div>
+
+      <div class="matrix-card" style="margin-top:20px;">
+        <h3>Matrices ATT&CK</h3>
+        <div id="matrix-badges" style="margin:10px 0;"></div>
+        <div id="attack-mini"></div>
+        <ul id="capec-list" style="font-size:0.9em; column-count: 2;"></ul>
+      </div>
+
+      <div id="atm-area"></div>
+    </div>
+  `;
+
+  // Boutons CWE
+  const cweArea = document.getElementById("cwe-area");
+  cwes.forEach(c => {
+    const btn = document.createElement("button");
+    btn.textContent = "CWE-" + c;
+    btn.className = "badge";
+    btn.style.margin = "2px";
+    btn.onclick = () => drill(c);
+    cweArea.appendChild(btn);
+  });
+
+  if(cwes.length > 0) drill(cwes[0]);
+}
+
+async function drill(cweId) {
+  const listElt = document.getElementById("capec-list");
+  const tids = new Set();
+  const capecsWithNames = [];
+
+  const cweKey = CWE_DB[cweId] ? cweId : `CWE-${cweId}`;
+  const cweData = CWE_DB[cweKey];
+  const capecIds = cweData?.RelatedAttackPatterns || [];
+
+  listElt.innerHTML = capecIds.length === 0 ? "<li>Aucun CAPEC lié.</li>" : "";
+
+  capecIds.forEach(id => {
+    const cap = CAPEC_DB[id];
+    if(cap) {
+      capecsWithNames.push({ id: id, name: cap.name });
+      const li = document.createElement("li");
+      li.innerHTML = `<strong>CAPEC-${id}</strong>: ${cap.name}`;
+      listElt.appendChild(li);
+
+      // Extraction des techniques (Txxxx ou Txxxx.xxx)
+      const txt = JSON.stringify(cap);
+      const matches = txt.match(/T\d{4}(?:\.\d{3})?/g);
+      if(matches) matches.forEach(t => tids.add(normTid(t)));
+    }
+  });
+
+  const finalTids = Array.from(tids);
+  console.log(`🧩 Techniques extraites via CAPEC: ${finalTids.length}`, finalTids.slice(0,20));
+
+  updateMatrixCounts(finalTids);
+  renderAttackMiniMatrix(finalTids);
+  drawPivotGraph(cweId, capecsWithNames, finalTids);
+  renderATM(finalTids);
+}
+
+function updateMatrixCounts(tids) {
+  const area = document.getElementById("matrix-badges");
+  if(!area) return;
+
+  const counts = { enterprise: 0, mobile: 0, ics: 0, unknown: 0 };
+  const missing = [];
+
+  tids.forEach(t => {
+    const info = getTechniqueInfo(t);
+    if(!info.found) missing.push(info.full);
+
+    const matrices = info.matrices;
+    if(!matrices || matrices.length === 0) {
+      counts.unknown++;
+      return;
+    }
+    matrices.forEach(m => {
+      const mm = (m || '').toString().toLowerCase();
+      if(mm.includes('enterprise')) counts.enterprise++;
+      if(mm.includes('mobile')) counts.mobile++;
+      if(mm.includes('ics')) counts.ics++;
+    });
+  });
+
+  if(missing.length) console.warn(`⚠️ ${missing.length} technique(s) absente(s) de mitre_map_index.json (ex: ${missing.slice(0,8).join(', ')})`);
+
+  area.innerHTML = `
+    <span class="badge" style="background:#e74c3c; padding:5px 10px; margin-right:5px;">Enterprise: ${counts.enterprise}</span>
+    <span class="badge" style="background:#3498db; padding:5px 10px; margin-right:5px;">Mobile: ${counts.mobile}</span>
+    <span class="badge" style="background:#2ecc71; color:#000; padding:5px 10px; margin-right:5px;">ICS: ${counts.ics}</span>
+    <span class="badge" style="background:#555; padding:5px 10px;">Unknown: ${counts.unknown}</span>
+  `;
+}
+
+function renderAttackMiniMatrix(tids){
+  const root = document.getElementById('attack-mini');
+  if(!root) return;
+
+  // Build grouped sets
+  const groups = {
+    'enterprise-attack': [],
+    'mobile-attack': [],
+    'ics-attack': [],
+    'unknown': []
+  };
+
+  tids.forEach(t => {
+    const info = getTechniqueInfo(t);
+    const mats = info.matrices.length ? info.matrices : ['unknown'];
+    mats.forEach(m => {
+      const key = (m && (m.includes('enterprise') ? 'enterprise-attack' : (m.includes('mobile') ? 'mobile-attack' : (m.includes('ics') ? 'ics-attack' : 'unknown')))) || 'unknown';
+      groups[key].push(info);
+    });
+  });
+
+  const total = tids.length;
+
+  root.innerHTML = `
+    <div class="attack-toolbar">
+      <span class="pill">Techniques détectées: <b>${total}</b></span>
+      <input id="attackFilter" placeholder="Filtrer (ex: T1059, PowerShell)" style="flex:1; min-width:220px" />
+      <button id="dlLayerEnt" title="Télécharger un layer Navigator (Enterprise)">⬇️ Layer Enterprise</button>
+      <button id="dlLayerMob" title="Télécharger un layer Navigator (Mobile)">⬇️ Layer Mobile</button>
+      <button id="dlLayerIcs" title="Télécharger un layer Navigator (ICS)">⬇️ Layer ICS</button>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" data-tab="enterprise-attack">Enterprise (${groups['enterprise-attack'].length})</div>
+      <div class="tab" data-tab="mobile-attack">Mobile (${groups['mobile-attack'].length})</div>
+      <div class="tab" data-tab="ics-attack">ICS (${groups['ics-attack'].length})</div>
+      <div class="tab" data-tab="unknown">Unknown (${groups['unknown'].length})</div>
+    </div>
+
+    <div id="attackTabContent"></div>
+  `;
+
+  const content = root.querySelector('#attackTabContent');
+  const filter = root.querySelector('#attackFilter');
+  const tabs = Array.from(root.querySelectorAll('.tab'));
+
+  let active = 'enterprise-attack';
+
+  function renderTab(){
+    const q = (filter.value || '').trim().toLowerCase();
+    const items = groups[active]
+      .filter(x => {
+        const s = (x.full + ' ' + x.name).toLowerCase();
+        return !q || s.includes(q);
+      })
+      .sort((a,b) => a.full.localeCompare(b.full));
+
+    if(!items.length){
+      content.innerHTML = `<p style="color:var(--muted)">Aucun résultat.</p>`;
+      return;
+    }
+
+    content.innerHTML = `
+      <div class="attack-grid">
+        ${items.map(x => `
+          <div class="tech">
+            <h4>${x.full}${x.name ? ` — ${x.name}` : ''}</h4>
+            <small>${x.matrices.length ? x.matrices.join(', ') : 'unknown'} · <a href="${x.url}" target="_blank">ouvrir sur attack.mitre.org</a></small>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  }
+
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    active = t.dataset.tab;
+    renderTab();
+  }));
+
+  filter.addEventListener('input', renderTab);
+
+  function downloadLayer(domain){
+    // minimal layer file per Navigator spec (domain required; techniques optional)
+    const domainKey = domain;
+    const items = groups[domainKey].length ? groups[domainKey] : [];
+    const techniques = Array.from(new Map(items.map(x => [x.base, x])).values())
+      .map(x => ({ techniqueID: x.base, score: 1 }));
+
+    const layer = {
+      name: `Kat-Force layer (${domainKey})`,
+      description: `Techniques dérivées CAPEC (score=1)`,
+      domain: domainKey,
+      techniques
+    };
+
+    const blob = new Blob([JSON.stringify(layer, null, 2)], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `kat-force_${domainKey}_layer.json`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(a.href);
+  }
+
+  root.querySelector('#dlLayerEnt').onclick = () => downloadLayer('enterprise-attack');
+  root.querySelector('#dlLayerMob').onclick = () => downloadLayer('mobile-attack');
+  root.querySelector('#dlLayerIcs').onclick = () => downloadLayer('ics-attack');
+
+  renderTab();
+}
+
+function renderATM(tids) {
+  const area = document.getElementById("atm-area");
+  if(!area) return;
+  const hits = ATM_DB.filter(a => a.techniques.some(t => tids.map(baseTid).includes(baseTid(t))));
+  area.innerHTML = `<h3>ATM Mapping (${hits.length} correspondances)</h3>`;
+  if(hits.length === 0) {
+    area.innerHTML += "<p>Aucune technique ATM ne correspond à ces TTPs.</p>";
+    return;
+  }
+  hits.forEach(h => {
+    area.innerHTML += `
+      <div class="card" style="border-left:4px solid #2ecc71; margin-bottom:5px; padding:10px; background:rgba(46,204,113,0.1)">
+        <strong>${h.id} - ${h.name}</strong> (Tactique: ${h.tactic})
+      </div>`;
+  });
+}
+
+function drawPivotGraph(cweId, capecs, tids) {
+  const svg = document.getElementById("pivotSvg");
+  if(!svg) return;
+  svg.innerHTML = "";
+  const width = svg.clientWidth || 1200;
+  const xStep = width / 4;
+
+  const cweNode = createNode(50, 150, `CWE-${cweId}`, "#3498db");
+  svg.appendChild(cweNode);
+
+  capecs.slice(0, 5).forEach((cap, i) => {
+    const y = 50 + (i * 60);
+    const capNode = createNode(xStep * 1.5, y, `CAPEC-${cap.id}`, "#f1c40f");
+    svg.appendChild(capNode);
+    svg.appendChild(createLine(80, 150, xStep * 1.5, y));
+  });
+
+  tids.slice(0, 8).forEach((t, i) => {
+    const y = 30 + (i * 40);
+    const tNode = createNode(xStep * 3, y, t, "#e74c3c");
+    svg.appendChild(tNode);
+    if(capecs.length > 0) {
+      svg.appendChild(createLine(xStep * 1.5 + 30, 50, xStep * 3, y, "#444"));
+    }
+  });
+}
+
+function createNode(x, y, text, color) {
+  const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+  const rect = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+  rect.setAttribute("x", x);
+  rect.setAttribute("y", y - 15);
+  rect.setAttribute("width", "140");
+  rect.setAttribute("height", "30");
+  rect.setAttribute("rx", "6");
+  rect.setAttribute("fill", color);
+
+  const txt = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  txt.setAttribute("x", x + 10);
+  txt.setAttribute("y", y + 5);
+  txt.setAttribute("fill", "#000");
+  txt.setAttribute("font-size", "12");
+  txt.textContent = text;
+
+  g.appendChild(rect);
+  g.appendChild(txt);
+  return g;
+}
+
+function createLine(x1, y1, x2, y2, color="#666") {
+  const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+  line.setAttribute("x1", x1);
+  line.setAttribute("y1", y1);
+  line.setAttribute("x2", x2);
+  line.setAttribute("y2", y2);
+  line.setAttribute("stroke", color);
+  line.setAttribute("stroke-width", "1");
+  return line;
+}
+
+document.getElementById("searchBtn").onclick = searchCVE;
+</script>
+</body>
+</html>

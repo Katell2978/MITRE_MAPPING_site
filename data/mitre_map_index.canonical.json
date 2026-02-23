@@ -1,0 +1,35 @@
+{
+  "_schema": "kat-force.mitre_map_index.v1",
+  "_description": "Mapping ATT&CK Technique ID -> domains (matrices). Field 'm' uses ATT&CK Navigator domains: enterprise-attack, mobile-attack, ics-attack.",
+  "T1059": {
+    "m": [
+      "enterprise-attack",
+      "mobile-attack"
+    ],
+    "name": "Command and Scripting Interpreter",
+    "url": "https://attack.mitre.org/techniques/T1059/"
+  },
+  "T1059.001": {
+    "m": [
+      "enterprise-attack"
+    ],
+    "parent": "T1059",
+    "name": "PowerShell",
+    "url": "https://attack.mitre.org/techniques/T1059/001/"
+  },
+  "T1566.002": {
+    "m": [
+      "enterprise-attack"
+    ],
+    "parent": "T1566",
+    "name": "Spearphishing Link",
+    "url": "https://attack.mitre.org/techniques/T1566/002/"
+  },
+  "T0800": {
+    "m": [
+      "ics-attack"
+    ],
+    "name": "Activate Firmware Update Mode",
+    "url": "https://attack.mitre.org/techniques/T0800/"
+  }
+}
