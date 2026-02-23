@@ -126,29 +126,38 @@ async function searchCVE() {
 }
 async function checkMitreCampaigns(cveId) {
   const area = document.getElementById("campaign-area");
-  area.innerHTML = `<span class="badge" style="background:#555">MITRE ATT&CK : recherche…</span>`;
+  area.innerHTML = `<span class="badge" style="background:#555">MITRE ATT&CK : analyse…</span>`;
 
   try {
-    const res = await fetch("https://attack.mitre.org/api/v2/campaigns/");
-    const data = await res.json();
+    const res = await fetch(
+      "https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json"
+    );
+    const stix = await res.json();
 
-    const hits = data.data.filter(c =>
-      JSON.stringify(c).includes(cveId)
+    const hits = stix.objects.filter(o =>
+      (o.type === "campaign" || o.type === "intrusion-set") &&
+      JSON.stringify(o).includes(cveId)
     );
 
     if (hits.length === 0) {
-      area.innerHTML = `<span class="badge" style="background:#2ecc71">Aucune campagne connue</span>`;
+      area.innerHTML =
+        `<span class="badge" style="background:#2ecc71">Aucune campagne connue</span>`;
       return;
     }
 
-    area.innerHTML = hits.map(c => `
-      <div class="card" style="border-left:4px solid #e74c3c; margin-bottom:5px; padding:10px;">
-        <strong>${c.name}</strong><br/>
-        <a href="https://attack.mitre.org/campaigns/${c.id}/" target="_blank">
-          Voir la campagne ATT&CK
-        </a>
+    area.innerHTML = hits.map(h => `
+      <div class="card" style="border-left:4px solid #e74c3c; padding:10px; margin-bottom:5px;">
+        <strong>${h.name}</strong><br/>
+        <span style="font-size:0.85em; color:#bbb">${h.type}</span>
       </div>
     `).join("");
+
+  } catch (e) {
+    console.error(e);
+    area.innerHTML =
+      `<span class="badge" style="background:#f87171">Erreur MITRE</span>`;
+  }
+}
 
   } catch (e) {
     console.error(e);
@@ -158,7 +167,7 @@ async function checkMitreCampaigns(cveId) {
 
 async function checkCertFR(cveId) {
   const area = document.getElementById("certfr-area");
-  area.innerHTML = `<span class="badge" style="background:#555">CERT‑FR : recherche…</span>`;
+  area.innerHTML = `<span class="badge" style="background:#555">CERT‑FR : analyse…</span>`;
 
   try {
     const feeds = [
@@ -166,37 +175,35 @@ async function checkCertFR(cveId) {
       "https://www.cert.ssi.gouv.fr/avis/feed/"
     ];
 
-    const results = [];
+    const matches = [];
 
     for (const url of feeds) {
       const res = await fetch(url);
       const text = await res.text();
       if (text.includes(cveId)) {
-        results.push(url);
+        matches.push(url.replace("/feed/", "/"));
       }
     }
 
-    if (results.length === 0) {
-      area.innerHTML = `<span class="badge" style="background:#2ecc71">Aucun bulletin CERT‑FR</span>`;
+    if (matches.length === 0) {
+      area.innerHTML =
+        `<span class="badge" style="background:#2ecc71">Aucun bulletin CERT‑FR</span>`;
       return;
     }
 
-    area.innerHTML = results.map(u => `
+    area.innerHTML = matches.map(u => `
       <div class="card" style="border-left:4px solid #fbbf24; padding:10px; margin-bottom:5px;">
         <strong>Bulletin CERT‑FR</strong><br/>
-        <a href="${u.replace('/feed','')}" target="_blank">
-          Voir sur cert.ssi.gouv.fr
-        </a>
+        <a href="${u}" target="_blank">Consulter</a>
       </div>
     `).join("");
 
   } catch (e) {
     console.error(e);
-    area.innerHTML = `<span class="badge" style="background:#f87171">Erreur CERT‑FR</span>`;
+    area.innerHTML =
+      `<span class="badge" style="background:#f87171">Erreur CERT‑FR</span>`;
   }
 }
-  
-
   
 function renderUI(cve, isKev) {
     // 1. Extraction du Score et des Métriques CVSS 3.1
