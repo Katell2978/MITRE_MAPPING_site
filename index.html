@@ -65,6 +65,7 @@ const APIS = {
 let MITRE_INDEX = {}, CWE_DB = {}, CAPEC_DB = {}, ATM_DB = [];
 
 /* ================= CHARGEMENT ================= */
+// debut fonction loadallbase
 async function loadAllBases() {
     if (Object.keys(CWE_DB).length > 0) return;
     console.log("🚀 Tentative de chargement des bases...");
@@ -88,8 +89,8 @@ async function loadAllBases() {
     } catch (e) {
         console.error("❌ Erreur critique lors du chargement:", e);
     }
-}
-
+}// fin fonction loadallbase
+// debut fonction parseATM  
 function parseATM(csv) {
     if(!csv || csv.length < 10) return [];
     return csv.split(/\r?\n/).slice(1).filter(l => l.trim()).map(line => {
@@ -97,7 +98,7 @@ function parseATM(csv) {
         return { tactic: c[0], id: c[1], name: c[2], techniques: (c[3]||"").split(",").map(t=>t.trim()).filter(Boolean) };
     });
 }
-
+// fin fonction parseATM  
 /* ================= ANALYSE ================= */
 async function searchCVE() {
     const id = document.getElementById('cveInput').value.trim().toUpperCase();
@@ -124,8 +125,11 @@ async function searchCVE() {
         document.getElementById("status").textContent = "Erreur de recherche.";
     }
 }
+//Debut check mitre campaign - en cours de debug
 async function checkMitreCampaigns(cveId) {
   const area = document.getElementById("campaign-area");
+  if (!area) return;
+
   area.innerHTML = `<span class="badge" style="background:#555">MITRE ATT&CK : analyse…</span>`;
 
   try {
@@ -134,37 +138,35 @@ async function checkMitreCampaigns(cveId) {
     );
     const stix = await res.json();
 
-    const hits = stix.objects.filter(o =>
+    const hits = (stix.objects || []).filter(o =>
       (o.type === "campaign" || o.type === "intrusion-set") &&
       JSON.stringify(o).includes(cveId)
     );
 
     if (hits.length === 0) {
-      area.innerHTML =
-        `<span class="badge" style="background:#2ecc71">Aucune campagne connue</span>`;
+      area.innerHTML = `<span class="badge" style="background:#2ecc71">Aucune campagne connue</span>`;
       return;
     }
 
-    area.innerHTML = hits.map(h => `
+    area.innerHTML = hits.slice(0, 6).map(h => `
       <div class="card" style="border-left:4px solid #e74c3c; padding:10px; margin-bottom:5px;">
-        <strong>${h.name}</strong><br/>
+        <strong>${h.name || "(sans nom)"}</strong><br/>
         <span style="font-size:0.85em; color:#bbb">${h.type}</span>
       </div>
     `).join("");
 
-  } catch (e) {
-    console.error(e);
-    area.innerHTML =
-      `<span class="badge" style="background:#f87171">Erreur MITRE</span>`;
-  }
-}
+    if (hits.length > 6) {
+      area.innerHTML += `<div class="muted" style="margin-top:6px">+${hits.length - 6} autre(s) résultat(s)…</div>`;
+    }
 
   } catch (e) {
     console.error(e);
     area.innerHTML = `<span class="badge" style="background:#f87171">Erreur MITRE</span>`;
   }
 }
+// >fin fonction checkmitre comapign - en cours de debug
 
+// Debut fonction check certFR - pas validée 
 async function checkCertFR(cveId) {
   const area = document.getElementById("certfr-area");
   area.innerHTML = `<span class="badge" style="background:#555">CERT‑FR : analyse…</span>`;
@@ -204,7 +206,7 @@ async function checkCertFR(cveId) {
       `<span class="badge" style="background:#f87171">Erreur CERT‑FR</span>`;
   }
 }
-  
+  // fin fonction check certFR - pas validée  
 function renderUI(cve, isKev) {
     // 1. Extraction du Score et des Métriques CVSS 3.1
     const metrics = cve.metrics?.cvssMetricV31?.[0]?.cvssData || 
