@@ -166,48 +166,7 @@ async function checkMitreCampaigns(cveId) {
 }
 // >fin fonction checkmitre comapign - en cours de debug
 
-// Debut fonction check certFR - pas validée 
 
-async function checkCertFR(cveId) {
-  const area = document.getElementById("certfr-area");
-  if (!area) return;
-
-  area.innerHTML = `<span class="badge" style="background:#555">CERT‑FR : analyse…</span>`;
-
-  try {
-    // API publique CIRCL / Vulnerability-Lookup (JSON, exploitable depuis GitHub Pages)
-    const res = await fetch(`https://vulnerability.circl.lu/api/cve/${encodeURIComponent(cveId)}`);
-    const data = await res.json();
-
-    // On filtre les références dont la source mentionne CERT-FR
-    const refs = Array.isArray(data.references) ? data.references : [];
-    const certRefs = refs.filter(r =>
-      r && typeof r.source === "string" && r.source.includes("CERT-FR")
-    );
-
-    if (certRefs.length === 0) {
-      area.innerHTML = `<span class="badge" style="background:#2ecc71">Aucun bulletin CERT‑FR</span>`;
-      return;
-    }
-
-    area.innerHTML = certRefs.slice(0, 6).map(r => `
-      <div class="card" style="border-left:4px solid #fbbf24; padding:10px; margin-bottom:5px;">
-        <strong>${(r.id || "CERT‑FR")}</strong><br/>
-        <a href="${r.url}" target="_blank" rel="noopener">Consulter le bulletin</a>
-      </div>
-    `).join("");
-
-    if (certRefs.length > 6) {
-      area.innerHTML += `<div class="muted" style="margin-top:6px">+${certRefs.length - 6} autre(s) bulletin(s)…</div>`;
-    }
-
-  } catch (e) {
-    console.error(e);
-    area.innerHTML = `<span class="badge" style="background:#f87171">Erreur CERT‑FR</span>`;
-  }
-}
-
-  // fin fonction check certFR - pas validée  
 function renderUI(cve, isKev) {
     // 1. Extraction du Score et des Métriques CVSS 3.1
     const metrics = cve.metrics?.cvssMetricV31?.[0]?.cvssData || 
@@ -286,9 +245,8 @@ function renderUI(cve, isKev) {
             <div id="atm-area"></div>
         </div>
     `;
-   //ajout recherche campgn eet Cert-Ft
+   //ajout recherche campgn
   checkMitreCampaigns(cve.id);
-  checkCertFR(cve.id)
 
     // Génération des boutons CWE pour le drill-down
     const cweArea = document.getElementById("cwe-area");
