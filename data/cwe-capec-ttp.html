@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CWE → CAPEC → TTP (MITRE ATT&CK)</title>
+
+  <!-- D3 + Sankey -->
+  <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#0b1220; --panel:#111b2e; --panel2:#0f1730;
+      --text:#e8eefc; --muted:#aab6d6; --accent:#66e3ff;
+      --border:rgba(255,255,255,.10); --chip:#1b2a4a;
+      --bad:#ff5b6e; --good:#6dffb5;
+    }
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial; background:var(--bg); color:var(--text);}
+    header{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+    header h1{font-size:16px;margin:0;font-weight:700}
+    header .meta{color:var(--muted);font-size:12px}
+    .layout{display:grid;grid-template-columns:320px 1fr 380px;gap:12px;padding:12px}
+    .card{background:var(--panel);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+    .card .hd{padding:10px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .card .hd h2{margin:0;font-size:13px}
+    .card .bd{padding:12px}
+    .input{width:100%;box-sizing:border-box;border:1px solid var(--border);background:var(--panel2);color:var(--text);
+      padding:10px 10px;border-radius:10px;outline:none}
+    .input:focus{border-color:rgba(102,227,255,.5);box-shadow:0 0 0 3px rgba(102,227,255,.12)}
+    .list{max-height:calc(100vh - 220px);overflow:auto;padding:8px 8px 12px}
+    .item{padding:10px 10px;border-radius:10px;cursor:pointer;border:1px solid transparent;display:flex;justify-content:space-between;gap:8px}
+    .item:hover{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.06)}
+    .item.active{background:rgba(102,227,255,.08);border-color:rgba(102,227,255,.25)}
+    .badge{background:var(--chip);border:1px solid rgba(255,255,255,.10);color:var(--muted);
+      font-size:11px;padding:2px 8px;border-radius:999px;white-space:nowrap}
+    .btn{background:rgba(102,227,255,.12);border:1px solid rgba(102,227,255,.35);color:var(--text);
+      padding:8px 10px;border-radius:10px;cursor:pointer;font-size:12px}
+    .btn:hover{background:rgba(102,227,255,.18)}
+    #chart{height:calc(100vh - 140px);min-height:520px}
+    .hint{color:var(--muted);font-size:12px;line-height:1.35;margin:0}
+    .kvs{display:grid;grid-template-columns:110px 1fr;gap:6px 10px;font-size:12px}
+    .kvs .k{color:var(--muted)}
+    .section{margin-top:12px}
+    .section h3{font-size:12px;margin:0 0 6px 0;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    .pill{display:inline-flex;gap:6px;align-items:center;padding:3px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.04);font-size:12px}
+    .pill b{color:var(--accent)}
+    .details-scroll{max-height:calc(100vh - 230px);overflow:auto;padding-right:6px}
+    .capec-block{border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:10px;margin:10px 0;background:rgba(255,255,255,.03)}
+    .capec-title{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+    .capec-title .left{min-width:0}
+    .capec-title .id{font-weight:800}
+    .capec-title .nm{color:var(--muted);font-size:12px}
+    .ttp-list{margin-top:8px;display:flex;flex-wrap:wrap;gap:8px}
+    .ttp{border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.03);border-radius:999px;padding:5px 10px;font-size:12px}
+    .ttp .tid{font-weight:700}
+    .ttp .tn{color:var(--muted);margin-left:6px}
+    .error{color:var(--bad);font-size:12px}
+    .ok{color:var(--good);font-size:12px}
+    svg text{user-select:none}
+    .tooltip{
+      position:fixed;z-index:1000;pointer-events:none;background:rgba(17,27,46,.98);
+      border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:10px 12px;
+      color:var(--text);font-size:12px;max-width:360px;display:none
+    }
+    .tooltip .t{font-weight:800;margin-bottom:4px}
+    .tooltip .s{color:var(--muted)}
+  </style>
+</head>
+
+<body>
+<header>
+  <h1>Mapping <span class="mono">CWE → CAPEC → TTP</span> (MITRE ATT&CK)</h1>
+  <div class="meta" id="metaLine">Chargement du dataset…</div>
+</header>
+
+<div class="layout">
+
+  <!-- LEFT: CWE list -->
+  <div class="card">
+    <div class="hd">
+      <h2>CWE (clic pour visualiser)</h2>
+      <button class="btn" id="resetBtn" title="Réinitialiser filtre/selection">Reset</button>
+    </div>
+    <div class="bd">
+      <input id="filter" class="input" placeholder="Filtrer (ex: CWE-79)" />
+      <p class="hint" style="margin-top:8px">
+        Astuce: passe <span class="mono">?cve=…&amp;cwes=CWE-79,CWE-352</span> dans l’URL pour limiter aux CWE de ta CVE.
+      </p>
+    </div>
+    <div class="list" id="cweList"></div>
+  </div>
+
+  <!-- CENTER: Chart -->
+  <div class="card">
+    <div class="hd">
+      <h2>Visuel (Sankey)</h2>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn" id="exportBtn" title="Exporter le mapping sélectionné en JSON">Exporter sélection</button>
+      </div>
+    </div>
+    <div class="bd" id="chart"></div>
+  </div>
+
+  <!-- RIGHT: Details -->
+  <div class="card">
+    <div class="hd">
+      <h2>Détails</h2>
+      <span class="badge" id="countBadge">—</span>
+    </div>
+    <div class="bd">
+      <div class="kvs">
+        <div class="k">CVE</div><div class="v" id="cveField">—</div>
+        <div class="k">CWE</div><div class="v" id="cweField">—</div>
+        <div class="k">CAPEC</div><div class="v" id="capecCount">—</div>
+        <div class="k">TTP</div><div class="v" id="ttpCount">—</div>
+      </div>
+
+      <div class="section">
+        <h3>CAPEC & TTP</h3>
+        <div class="details-scroll" id="details"></div>
+      </div>
+
+      <div class="section">
+        <p class="hint">
+          Note: cette page n’interroge pas Internet/NVD. Le chaînage “CVE → CWE” doit être fourni par la page d’appel (via <span class="mono">cwes=</span>).
+        </p>
+      </div>
+
+      <div id="loadStatus" class="hint"></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="tooltip" id="tt"></div>
+
+<script>
+/**
+ * Chemin du fichier JSON dans ton repo.
+ * Adapte si besoin (ex: "/data/capec_to_ttp_cwe.json")
+ */
+const DATA_URL = "./data/capec_to_ttp_cwe.json";
+
+/**
+ * Structure attendue (par CAPEC ID) :
+ * {
+ *   "11": {
+ *     "name": "Cause Web Server Misclassification",
+ *     "ttps": { "T1036.006": "Masquerading" },
+ *     "related_weaknesses": ["CWE-430"]
+ *   },
+ *   ...
+ * }
+ */
+
+const state = {
+  capecById: null,
+  cweIndex: new Map(),          // CWE -> Set(CAPEC IDs)
+  ttpIndex: new Map(),          // CAPEC -> Map(TTP ID -> TTP Name)
+  capecName: new Map(),         // CAPEC -> name
+  selectedCWE: null,
+  allowedCWEs: null,            // Set from URL params (CVE context)
+  cve: null
+};
+
+// --- Utils ---
+const $ = (id) => document.getElementById(id);
+
+function parseUrlParams() {
+  const p = new URLSearchParams(location.search);
+  state.cve = p.get("cve");
+  const cwes = p.get("cwes");
+  if (cwes) {
+    const set = new Set(cwes.split(",").map(x => x.trim()).filter(Boolean));
+    state.allowedCWEs = set.size ? set : null;
+  }
+  $("cveField").textContent = state.cve || "—";
+}
+
+function uniq(arr){ return Array.from(new Set(arr)); }
+
+function downloadText(filename, text) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([text], {type:"application/json"}));
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+}
+
+// --- Build indexes ---
+function buildIndexes(capecById) {
+  state.cweIndex.clear();
+  state.ttpIndex.clear();
+  state.capecName.clear();
+
+  for (const [capecId, obj] of Object.entries(capecById)) {
+    state.capecName.set(capecId, obj.name || "");
+
+    // related_weaknesses -> CWE index
+    const cwes = Array.isArray(obj.related_weaknesses) ? obj.related_weaknesses : [];
+    for (const cwe of cwes) {
+      if (!state.cweIndex.has(cwe)) state.cweIndex.set(cwe, new Set());
+      state.cweIndex.get(cwe).add(capecId);
+    }
+
+    // ttps -> map
+    const ttpsObj = obj.ttps && typeof obj.ttps === "object" ? obj.ttps : {};
+    const m = new Map();
+    for (const [tid, tname] of Object.entries(ttpsObj)) m.set(tid, tname || "");
+    state.ttpIndex.set(capecId, m);
+  }
+}
+
+// --- UI: CWE list ---
+function renderCWEList(filterText="") {
+  const list = $("cweList");
+  list.innerHTML = "";
+
+  let cwes = Array.from(state.cweIndex.keys()).sort((a,b) => {
+    // sort by numeric part if possible
+    const na = parseInt((a.match(/\d+/)||["999999"])[0],10);
+    const nb = parseInt((b.match(/\d+/)||["999999"])[0],10);
+    return na - nb || a.localeCompare(b);
+  });
+
+  if (state.allowedCWEs) cwes = cwes.filter(c => state.allowedCWEs.has(c));
+
+  const f = filterText.trim().toUpperCase();
+  if (f) cwes = cwes.filter(c => c.toUpperCase().includes(f));
+
+  if (!cwes.length) {
+    const div = document.createElement("div");
+    div.className = "bd";
+    div.innerHTML = `<div class="error">Aucune CWE ne correspond au filtre.</div>`;
+    list.appendChild(div);
+    return;
+  }
+
+  for (const cwe of cwes) {
+    const capecCount = state.cweIndex.get(cwe)?.size || 0;
+    const row = document.createElement("div");
+    row.className = "item" + (state.selectedCWE === cwe ? " active" : "");
+    row.innerHTML = `
+      <div class="mono">${cwe}</div>
+      <div class="badge">${capecCount} CAPEC</div>
+    `;
+    row.onclick = () => selectCWE(cwe);
+    list.appendChild(row);
+  }
+}
+
+// --- Sankey chart ---
+function sankeyDataForCWE(cwe) {
+  const capecs = Array.from(state.cweIndex.get(cwe) || []);
+  const capecNodes = capecs.map(id => ({
+    id: `CAPEC:${id}`,
+    label: `CAPEC-${id}`,
+    name: state.capecName.get(id) || ""
+  }));
+
+  // Collect TTPs across CAPECs
+  const ttpMap = new Map(); // tid -> name
+  for (const capecId of capecs) {
+    const tmap = state.ttpIndex.get(capecId) || new Map();
+    for (const [tid, tname] of tmap.entries()) {
+      if (!ttpMap.has(tid)) ttpMap.set(tid, tname || "");
+    }
+  }
+
+  const ttpNodes = Array.from(ttpMap.entries()).map(([tid, tname]) => ({
+    id: `TTP:${tid}`,
+    label: tid,
+    name: tname
+  }));
+
+  // Nodes: CWE + CAPEC + TTP
+  const nodes = [
+    { id:`CWE:${cwe}`, label:cwe, name:"" },
+    ...capecNodes,
+    ...ttpNodes
+  ];
+
+  const nodeIndex = new Map(nodes.map((n,i)=>[n.id,i]));
+
+  // Links
+  const links = [];
+
+  // CWE -> CAPEC (value 1 each)
+  for (const capecId of capecs) {
+    links.push({
+      source: nodeIndex.get(`CWE:${cwe}`),
+      target: nodeIndex.get(`CAPEC:${capecId}`),
+      value: 1,
+      type: "cwe-capec"
+    });
+  }
+
+  // CAPEC -> TTP (value 1 each)
+  for (const capecId of capecs) {
+    const tmap = state.ttpIndex.get(capecId) || new Map();
+    for (const [tid] of tmap.entries()) {
+      links.push({
+        source: nodeIndex.get(`CAPEC:${capecId}`),
+        target: nodeIndex.get(`TTP:${tid}`),
+        value: 1,
+        type: "capec-ttp"
+      });
+    }
+  }
+
+  return { nodes, links, capecs, ttpMap };
+}
+
+function renderSankey(cwe) {
+  const root = $("chart");
+  root.innerHTML = "";
+
+  const width = root.clientWidth;
+  const height = root.clientHeight;
+
+  const { nodes, links } = sankeyDataForCWE(cwe);
+
+  const svg = d3.select(root)
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+  const sankey = d3.sankey()
+    .nodeWidth(18)
+    .nodePadding(14)
+    .extent([[10, 10], [width - 10, height - 10]])
+    .nodeAlign(d3.sankeyLeft);
+
+  const graph = sankey({
+    nodes: nodes.map(d => Object.assign({}, d)),
+    links: links.map(d => Object.assign({}, d))
+  });
+
+  const tt = $("tt");
+
+  function showTip(html, x, y){
+    tt.innerHTML = html;
+    tt.style.left = (x + 12) + "px";
+    tt.style.top = (y + 12) + "px";
+    tt.style.display = "block";
+  }
+  function hideTip(){ tt.style.display = "none"; }
+
+  const link = svg.append("g")
+    .attr("fill", "none")
+    .selectAll("path")
+    .data(graph.links)
+    .join("path")
+    .attr("d", d3.sankeyLinkHorizontal())
+    .attr("stroke", d => d.type === "cwe-capec" ? "rgba(102,227,255,.35)" : "rgba(255,255,255,.18)")
+    .attr("stroke-width", d => Math.max(1, d.width))
+    .attr("opacity", 0.85);
+
+  const node = svg.append("g")
+    .selectAll("g")
+    .data(graph.nodes)
+    .join("g");
+
+  node.append("rect")
+    .attr("x", d => d.x0)
+    .attr("y", d => d.y0)
+    .attr("height", d => d.y1 - d.y0)
+    .attr("width", d => d.x1 - d.x0)
+    .attr("rx", 4).attr("ry", 4)
+    .attr("fill", d => {
+      if (String(d.id).startsWith("CWE:")) return "rgba(102,227,255,.45)";
+      if (String(d.id).startsWith("CAPEC:")) return "rgba(109,255,181,.35)";
+      return "rgba(255,255,255,.22)";
+    })
+    .attr("stroke", "rgba(255,255,255,.20)")
+    .on("mousemove", (ev, d) => {
+      const kind = d.id.split(":")[0];
+      const title = (kind === "CWE") ? d.label
+                  : (kind === "CAPEC") ? `${d.label}`
+                  : `${d.label}`;
+      const sub = (kind === "CAPEC") ? (d.name ? `<div class="s">${d.name}</div>` : "")
+                : (kind === "TTP") ? (d.name ? `<div class="s">${d.name}</div>` : "")
+                : "";
+      showTip(`<div class="t">${title}</div>${sub}`, ev.clientX, ev.clientY);
+    })
+    .on("mouseleave", hideTip);
+
+  node.append("text")
+    .attr("x", d => d.x0 < width / 2 ? d.x1 + 8 : d.x0 - 8)
+    .attr("y", d => (d.y0 + d.y1) / 2)
+    .attr("dy", "0.35em")
+    .attr("text-anchor", d => d.x0 < width / 2 ? "start" : "end")
+    .attr("fill", "rgba(232,238,252,.92)")
+    .style("font-size", "12px")
+    .text(d => {
+      const kind = d.id.split(":")[0];
+      if (kind === "CAPEC") return `${d.label}`;
+      if (kind === "TTP") return `${d.label}`;
+      return d.label;
+    });
+
+  // Footer label
+  svg.append("text")
+    .attr("x", 12).attr("y", height - 12)
+    .attr("fill", "rgba(170,182,214,.85)")
+    .style("font-size", "11px")
+    .text("Clic CWE (liste à gauche) → visualisation CWE→CAPEC→TTP (Sankey)");
+}
+
+// --- Details panel ---
+function renderDetails(cwe) {
+  const details = $("details");
+  details.innerHTML = "";
+
+  const capecs = Array.from(state.cweIndex.get(cwe) || []);
+  capecs.sort((a,b)=>parseInt(a,10)-parseInt(b,10));
+
+  // Collect unique TTPs
+  const allTTP = [];
+  for (const capecId of capecs) {
+    const tmap = state.ttpIndex.get(capecId) || new Map();
+    for (const tid of tmap.keys()) allTTP.push(tid);
+  }
+  const uniqTTP = uniq(allTTP);
+
+  $("cweField").textContent = cwe;
+  $("capecCount").textContent = `${capecs.length}`;
+  $("ttpCount").textContent = `${uniqTTP.length}`;
+  $("countBadge").textContent = `${capecs.length} CAPEC / ${uniqTTP.length} TTP`;
+
+  for (const capecId of capecs) {
+    const block = document.createElement("div");
+    block.className = "capec-block";
+    const capecNm = state.capecName.get(capecId) || "";
+    const tmap = state.ttpIndex.get(capecId) || new Map();
+
+    const ttpPills = Array.from(tmap.entries())
+      .sort((a,b)=>a[0].localeCompare(b[0]))
+      .map(([tid, tn]) => `
+        <span class="ttp"><span class="mono tid">${tid}</span><span class="tn">${tn ? tn : ""}</span></span>
+      `).join("");
+
+    block.innerHTML = `
+      <div class="capec-title">
+        <div class="left">
+          <div class="mono id">CAPEC-${capecId}</div>
+          <div class="nm">${capecNm}</div>
+        </div>
+        <span class="badge">${tmap.size} TTP</span>
+      </div>
+      <div class="ttp-list">${ttpPills || `<span class="hint">Aucune TTP associée dans le dataset.</span>`}</div>
+    `;
+
+    details.appendChild(block);
+  }
+
+  if (!capecs.length) {
+    details.innerHTML = `<div class="error">Aucun CAPEC trouvé pour ${cwe} dans ce dataset.</div>`;
+  }
+}
+
+// --- Selection ---
+function selectCWE(cwe) {
+  state.selectedCWE = cwe;
+  renderCWEList($("filter").value);
+  renderSankey(cwe);
+  renderDetails(cwe);
+  history.replaceState(null, "", updateUrlParam("cwe", cwe));
+}
+
+function updateUrlParam(key, val) {
+  const u = new URL(location.href);
+  u.searchParams.set(key, val);
+  return u.toString();
+}
+
+// --- Export selection ---
+function exportSelection() {
+  const cwe = state.selectedCWE;
+  if (!cwe) return;
+
+  const capecs = Array.from(state.cweIndex.get(cwe) || []).sort((a,b)=>parseInt(a,10)-parseInt(b,10));
+  const out = {
+    cve: state.cve || null,
+    cwe,
+    capecs: capecs.map(cid => {
+      const tmap = state.ttpIndex.get(cid) || new Map();
+      return {
+        id: `CAPEC-${cid}`,
+        name: state.capecName.get(cid) || "",
+        ttps: Array.from(tmap.entries()).map(([tid, tn]) => ({ id: tid, name: tn || "" }))
+      };
+    })
+  };
+
+  downloadText(`mapping_${cwe}${state.cve ? "_" + state.cve : ""}.json`, JSON.stringify(out, null, 2));
+}
+
+// --- Boot ---
+async function main() {
+  parseUrlParams();
+
+  const meta = $("metaLine");
+  const status = $("loadStatus");
+
+  try {
+    status.innerHTML = `Chargement: <span class="mono">${DATA_URL}</span>`;
+    const res = await fetch(DATA_URL, { cache: "no-store" });
+    if (!res.ok) throw new Error(`HTTP ${res.status} sur ${DATA_URL}`);
+    const capecById = await res.json();
+
+    state.capecById = capecById;
+    buildIndexes(capecById);
+
+    // Build meta info
+    const totalCapec = Object.keys(capecById).length;
+    const totalCwe = state.cweIndex.size;
+    meta.innerHTML = `<span class="ok">Dataset chargé</span> — ${totalCapec} CAPEC, ${totalCwe} CWE détectées`;
+    status.innerHTML = `<span class="ok">OK</span> — ${totalCapec} CAPEC indexés`;
+
+    // Wire UI
+    $("filter").addEventListener("input", (e) => renderCWEList(e.target.value));
+    $("resetBtn").addEventListener("click", () => {
+      $("filter").value = "";
+      state.selectedCWE = null;
+      renderCWEList("");
+      $("chart").innerHTML = `<p class="hint">Sélectionne une CWE à gauche.</p>`;
+      $("details").innerHTML = "";
+      $("cweField").textContent = "—";
+      $("capecCount").textContent = "—";
+      $("ttpCount").textContent = "—";
+      $("countBadge").textContent = "—";
+    });
+    $("exportBtn").addEventListener("click", exportSelection);
+
+    // Render list
+    renderCWEList("");
+
+    // Auto-selection:
+    const urlCwe = new URLSearchParams(location.search).get("cwe");
+    let auto = urlCwe;
+
+    // If CVE context given via cwes=..., pick first
+    if (!auto && state.allowedCWEs && state.allowedCWEs.size) {
+      auto = Array.from(state.allowedCWEs.values())[0];
+    }
+
+    if (auto && state.cweIndex.has(auto)) {
+      selectCWE(auto);
+    } else {
+      $("chart").innerHTML = `<p class="hint">Sélectionne une CWE à gauche pour afficher le mapping.</p>`;
+    }
+
+  } catch (e) {
+    meta.innerHTML = `<span class="error">Erreur de chargement</span>`;
+    status.innerHTML = `<div class="error">${String(e.message || e)}</div>
+      <div class="hint" style="margin-top:6px">
+        Vérifie le chemin <span class="mono">${DATA_URL}</span> (ou adapte DATA_URL en haut du fichier).
+      </div>`;
+    $("chart").innerHTML = `<p class="error">Impossible d’afficher le visuel sans dataset.</p>`;
+  }
+}
+
+main();
+</script>
+
+</body>
+</html>
