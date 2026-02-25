@@ -117,6 +117,8 @@ function normTid(t) {
 
 /* ================= ANALYSE ================= */
 async function searchCVE() {
+    const cweId = getSelectedCWE(); // ou ton extraction existante
+    currentCWE = cweId;
     const id = document.getElementById('cveInput').value.trim().toUpperCase();
     if(!id) return;
     
@@ -135,7 +137,7 @@ async function searchCVE() {
         
         const isKev = (kevRes.vulnerabilities || []).some(v => v.cveID === id);
         document.getElementById("status").textContent = "Analyse terminée.";
-        renderUI(cve, isKev);
+        renderUI(cve, isKev, cweId); //  renderUI(cweId);
     } catch (e) { 
         console.error(e);
         document.getElementById("status").textContent = "Erreur de recherche.";
