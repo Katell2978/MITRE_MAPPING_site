@@ -1,0 +1,32 @@
+name: CVE Monitoring Automation
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # S'exécute tous les jours à minuit
+  workflow_dispatch:      # Permet de lancer la mise à jour manuellement
+
+jobs:
+  update-vulnerabilities:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run Update Script
+        run: python scripts/update_cve.py
+
+      - name: Commit and Push if changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/vulnerability.json
+          git commit -m "🤖 Auto-update: CVE Monitoring $(date +'%Y-%m-%d')" || exit 0
+          git push
