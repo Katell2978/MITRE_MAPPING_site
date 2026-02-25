@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kat-Force Analyser – NVD → CWE → CAPEC → ATT&CK → ATM</title>
+
+    <style>
+        :root {
+            --bg: #070a15; --card: #121a33; --txt: #e9ecff; --muted: #aab3da;
+            --accent: #7aa2ff; --ok: #36d399; --warn: #fbbf24; --bad: #f87171; --line: #26325f;
+            --mono: ui-monospace, Menlo, Consolas, monospace;
+        }
+        body { margin: 0; font-family: system-ui, sans-serif; background: var(--bg); color: var(--txt); font-size: 14px; }
+        header, main, .monitor { max-width: 1300px; margin: auto; padding: 18px; }
+        .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 18px; margin-top: 14px; }
+        .row { display: flex; gap: 10px; align-items: center; }
+        input, button { padding: 12px; border-radius: 10px; border: 1px solid var(--line); background: #0a0f22; color: var(--txt); }
+        button { cursor: pointer; font-weight: bold; background: var(--accent); color: #000; border: none; transition: 0.2s; }
+        button:hover { opacity: 0.8; }
+        .badge { padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 11px; text-transform: uppercase; border: 1px solid transparent; display: inline-block; }
+        .sev-CRITICAL, .sev-HIGH { background: rgba(248,113,113,0.2); color: var(--bad); border-color: var(--bad); }
+        .kev-active { background: var(--bad); color: white; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% {opacity:1} 50% {opacity:0.7} 100% {opacity:1} }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-top: 15px; }
+        .matrix-card { border-top: 4px solid var(--accent); padding: 10px; background: rgba(255,255,255,0.03); border-radius: 8px; }
+        #pivotSvg { width: 100%; height: 400px; background: rgba(0,0,0,0.2); border-radius: 10px; border: 1px solid var(--line); margin-top: 20px; }
+        .log { font-family: var(--mono); font-size: 12px; max-height: 150px; overflow: auto; background: #000; padding: 10px; border-radius: 8px; }
+        code { background: rgba(255,255,255,0.1); padding: 2px 4px; border-radius: 4px; }
+    </style>
+</head>
+
+<body>
+<header>
+    <h1>CVE Analyser By Katell2978</h1>
+    <p class="muted">Mapping complet : NVD (CVE) → CWE → CAPEC → ATT&CK → ATM Perso</p>
+</header>
+
+<main>
+    <div class="card">
+        <div class="row">
+            <input id="cveInput" class="mono" style="flex:1" placeholder="CVE-2025-32058" value="CVE-2023-34362" />
+            <button id="searchBtn">Lancer l'Analyse Totale</button>
+            <span id="status" class="muted">Prêt.</span>
+        </div>
+    </div>
+    <div id="results"></div>
+</main>
+
+<div class="monitor">
+    <div class="card">
+        <b>Logs d'exécution & Visualisation</b>
+        <div id="log" class="log"></div>
+        <svg id="pivotSvg"></svg>
+    </div>
+</div>
+
+<script>
+/**
+ * ============================================================================
+ * CONFIGURATION & VARIABLES GLOBALES
+ * ============================================================================
+ */
+const APIS = {
+    nvd: "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=",
+    kev: "build/kev.json",
+    watchlist: "data/vulnerability.json"
+};
+
+let MITRE_INDEX = {}, CWE_DB = {}, CAPEC_DB = {}, ATM_DB = [], WATCHLIST = {};
+
+/**
+ * ============================================================================
+ * CHARGEMENT DES BASES DE DONNÉES
+ * ============================================================================
+ */
+async function loadAllBases() {
+    if (Object.keys(CWE_DB).length > 0) return;
+    try {
+        const [m, cwe, capec, atmText] = await Promise.all([
+            fetch('build/mitre_map_index.json').then(r => r.json()).catch(() => ({})),
+            fetch('data/cwe_db.json').then(r => r.json()),
+            fetch('data/capec_db.json').then(r => r.json()),
+            fetch('data/ATM-matrix-TTP.csv').then(r => r.text()).catch(() => "")
+        ]);
+        MITRE_INDEX = m; CWE_DB = cwe; CAPEC_DB = capec;
+        ATM_DB = parseATM(atmText);
+        console.log("✅ Bases de connaissances chargées.");
+    } catch (e) { console.error("❌ Erreur chargement bases:", e); }
+}
+
+async function loadWatchlist() {
+    try {
+        const r = await fetch(APIS.watchlist);
+        const data = await r.json();
+        WATCHLIST = data.vulnerabilities || {};
+    } catch (e) { WATCHLIST = {}; }
+}
+
+function parseATM(csv) {
+    if(!csv || csv.length < 10) return [];
+    return csv.split(/\r?\n/).slice(1).filter(l => l.trim()).map(line => {
+        const c = line.split(";").map(x => x.trim());
+        return { tactic: c[0], id: c[1], name: c[2], techniques: (c[3]||"").split(",").map(t=>t.trim()).filter(Boolean) };
+    });
+}
+
+/**
+ * ============================================================================
+ * LOGIQUE DE RECHERCHE (CVE)
+ * ============================================================================
+ */
+async function searchCVE() {
+    const id = document.getElementById('cveInput').value.trim().toUpperCase();
+    if(!id) return;
+    
+    document.getElementById("status").textContent = "Analyse en cours...";
+    await Promise.all([loadAllBases(), loadWatchlist()]);
+
+    try {
+        const nvdRes = await fetch(APIS.nvd + id).then(r => r.json());
+        const kevRes = await fetch(APIS.kev).then(r => r.json()).catch(() => ({ vulnerabilities: [] }));
+        
+        const cve = nvdRes.vulnerabilities?.[0]?.cve;
+        if(!cve) {
+            document.getElementById("status").textContent = "CVE non trouvée.";
+            return;
+        }
+        
+        const isKev = (kevRes.vulnerabilities || []).some(v => v.cveID === id);
+        document.getElementById("status").textContent = "Analyse terminée.";
+        renderUI(cve, isKev);
+    } catch (e) { 
+        console.error(e);
+        document.getElementById("status").textContent = "Erreur API.";
+    }
+}
+
+/**
+ * ============================================================================
+ * RENDU DE L'INTERFACE (UI)
+ * ============================================================================
+ */
+function renderUI(cve, isKev) {
+    const metrics = cve.metrics?.cvssMetricV31?.[0]?.cvssData || cve.metrics?.cvssMetricV30?.[0]?.cvssData || {};
+    const score = metrics.baseScore || "N/A";
+    const severity = metrics.baseSeverity || "UNKNOWN";
+    const vector = metrics.vectorString || "Non spécifié";
+    const cwes = (cve.weaknesses || []).flatMap(w => w.description.map(d => d.value.split('-')[1])).filter(Boolean);
+    const cpes = (cve.configurations || []).flatMap(conf => conf.nodes.flatMap(node => node.cpeMatch.map(m => m.criteria))).slice(0, 5);
+    const refs = (cve.references || []).slice(0, 5);
+
+    const isAlreadyWatched = WATCHLIST[cve.id] || localStorage.getItem(`watch_${cve.id}`);
+
+    document.getElementById("results").innerHTML = `
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:start;">
+                <div>
+                    <h2>${cve.id} ${isKev ? '<span class="badge kev-active">⚠️ KEV</span>' : ''}</h2>
+                    <button id="btn-watch" onclick="toggleWatch('${cve.id}', ${score}, '${severity}', ${isKev})"
+                            style="background:${isAlreadyWatched ? 'var(--ok)' : 'var(--accent)'}; margin-top:8px;">
+                        ${isAlreadyWatched ? '✅ En cours de veille' : '🔭 Suivre cette vulnérabilité'}
+                    </button>
+                </div>
+                <div class="badge sev-${severity}" style="font-size:1.2em; padding:15px; border-radius:12px;">
+                    CVSS ${score}<br><small>${severity}</small>
+                </div>
+            </div>
+
+            <p style="color:var(--accent); margin-top:15px;"><strong>Vecteur:</strong> <code>${vector}</code></p>
+            <p style="background:rgba(255,255,255,0.05); padding:15px; border-radius:8px;">
+                ${cve.descriptions.find(d => d.lang === 'en')?.value || "Pas de description."}
+            </p>
+
+            <div class="grid-3">
+                <div class="matrix-card"><h3>CWE Faiblesses</h3><div id="cwe-area"></div></div>
+                <div class="matrix-card"><h3>CPE Affectés</h3><ul style="font-size:0.8em;">${cpes.map(c => `<li>${c}</li>`).join('') || "Aucun CPE"}</ul></div>
+                <div class="matrix-card"><h3>Sources</h3><ul style="font-size:0.8em;">${refs.map(r => `<li><a href="${r.url}" target="_blank" style="color:var(--accent)">${r.source}</a></li>`).join('')}</ul></div>
+            </div>
+
+            <div class="matrix-card" style="margin-top:20px;">
+                <h3>Threat Intelligence & Matrices</h3>
+                <div id="campaign-area" style="margin-bottom:10px;"></div>
+                <div id="matrix-badges" style="margin:10px 0;"></div>
+                <ul id="capec-list" style="font-size:0.9em; column-count: 2;"></ul>
+            </div>
+            <div id="atm-area"></div>
+        </div>
+    `;
+
+    checkMitreCampaigns(cve.id);
+    const cweArea = document.getElementById("cwe-area");
+    cwes.forEach(c => {
+        const btn = document.createElement("button");
+        btn.textContent = "CWE-" + c; btn.className = "badge"; btn.style.margin = "2px";
+        btn.onclick = () => drill(c);
+        cweArea.appendChild(btn);
+    });
+    if(cwes.length > 0) drill(cwes[0]);
+}
+
+/**
+ * ============================================================================
+ * FONCTION DE VEILLE (WATCHLIST)
+ * ============================================================================
+ */
+function toggleWatch(cveId, score, severity, isKev) {
+    const entry = {
+        "cve_id": cveId, "status": "active",
+        "dates": { "monitoring_start": new Date().toISOString() },
+        "metrics": { "cvss": { "base_initial": score }, "kev_status": { "initial": isKev } }
+    };
+    localStorage.setItem(`watch_${cveId}`, JSON.stringify(entry));
+    const btn = document.getElementById("btn-watch");
+    btn.innerHTML = "✅ En cours de veille"; btn.style.background = "var(--ok)";
+    console.log("JSON de veille généré pour GitHub Action:", entry);
+}
+
+/**
+ * ============================================================================
+ * ANALYSE MITRE & DRILL-DOWN (CWE -> CAPEC -> ATT&CK)
+ * ============================================================================
+ */
+async function checkMitreCampaigns(cveId) {
+    const area = document.getElementById("campaign-area");
+    try {
+        const res = await fetch("https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json");
+        const stix = await res.json();
+        const hits = (stix.objects || []).filter(o => (o.type === "campaign") && JSON.stringify(o).includes(cveId));
+        area.innerHTML = hits.length ? hits.map(h => `<span class="badge" style="background:var(--bad)">🔥 Campagne: ${h.name}</span>`).join(' ') : `<span class="badge" style="background:var(--ok)">Aucune campagne MITRE connue</span>`;
+    } catch(e) { area.innerHTML = "Erreur MITRE Intel"; }
+}
+
+function drill(cweId) {
+    const listElt = document.getElementById("capec-list");
+    if (!listElt) return;
+    listElt.innerHTML = "";
+    
+    const cweKey = "CWE-" + cweId;
+    const cweData = CWE_DB[cweId] || CWE_DB[cweKey];
+    let capecIds = (cweData?.RelatedAttackPatterns) || [];
+
+    const tids = new Set();
+    capecIds.forEach(id => {
+        const cap = CAPEC_DB[id];
+        if (cap) {
+            const li = document.createElement("li");
+            li.innerHTML = `<strong>CAPEC-${id}</strong>: ${cap.name}`;
+            listElt.appendChild(li);
+            const matches = JSON.stringify(cap).match(/T\d{4}(?:\.\d{3})?/g);
+            if (matches) matches.forEach(t => tids.add(t));
+        }
+    });
+
+    const finalTids = Array.from(tids);
+    updateMatrixCounts(finalTids);
+    renderATM(finalTids);
+    drawPivotGraph(cweId, capecIds.slice(0,5), finalTids);
+}
+
+function updateMatrixCounts(tids) {
+    const counts = { ent: 0, mob: 0, ics: 0 };
+    tids.forEach(t => {
+        const info = MITRE_INDEX[t] || MITRE_INDEX[t.split('.')[0]];
+        if(info?.m) info.m.forEach(m => { if(m.includes("ent")) counts.ent++; if(m.includes("mob")) counts.mob++; if(m.includes("ics")) counts.ics++; });
+    });
+    document.getElementById("matrix-badges").innerHTML = `
+        <span class="badge" style="background:#e74c3c">Enterprise: ${counts.ent}</span>
+        <span class="badge" style="background:#3498db">Mobile: ${counts.mob}</span>
+        <span class="badge" style="background:#f1c40f; color:#000">ICS: ${counts.ics}</span>
+    `;
+}
+
+function renderATM(tids) {
+    const area = document.getElementById("atm-area");
+    const hits = ATM_DB.filter(a => a.techniques.some(t => tids.includes(t)));
+    area.innerHTML = hits.length ? `<h3>ATM Mapping</h3>` + hits.map(h => `<div class="card" style="border-left:4px solid var(--ok)"><strong>${h.id}</strong> - ${h.name}</div>`).join('') : "";
+}
+
+/**
+ * ============================================================================
+ * VISUALISATION (GRAPH SVG)
+ * ============================================================================
+ */
+function drawPivotGraph(cweId, capecs, tids) {
+    const svg = document.getElementById("pivotSvg");
+    svg.innerHTML = "";
+    const xStep = svg.clientWidth / 3;
+    
+    // Nœud CWE
+    svg.innerHTML += `<rect x="10" y="180" width="100" height="30" fill="var(--accent)" rx="5"/><text x="20" y="200" fill="#000">CWE-${cweId}</text>`;
+
+    // Nœuds CAPEC & Lignes
+    capecs.forEach((id, i) => {
+        const y = 50 + (i * 70);
+        svg.innerHTML += `<line x1="110" y1="195" x2="${xStep}" y2="${y+15}" stroke="#444" />`;
+        svg.innerHTML += `<rect x="${xStep}" y="${y}" width="110" height="30" fill="var(--warn)" rx="5"/><text x="${xStep+5}" y="${y+20}" fill="#000" font-size="10">CAPEC-${id}</text>`;
+    });
+}
+
+// Initialisation
+document.getElementById("searchBtn").onclick = searchCVE;
+</script>
+</body>
+</html>
