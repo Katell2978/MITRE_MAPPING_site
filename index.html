@@ -183,9 +183,169 @@ async function checkMitreCampaigns(cveId) {
   }
 }
 // >fin fonction checkmitre comapign - en cours de debug
+/* ================= GESTION DE LA VEILLE (NOUVEAU) ================= */
+let WATCHLIST = {};
 
+// Charger la watchlist au démarrage
+async function loadWatchlist() {
+    try {
+        const r = await fetch('data/vulnerability.json');
+        const data = await r.json();
+        // On crée un dictionnaire pour un accès rapide par CVE_ID
+        WATCHLIST = data.vulnerabilities || {}; 
+    } catch (e) {
+        console.warn("Watchlist non trouvée ou vide.");
+        WATCHLIST = {};
+    }
+}
+
+// Fonction pour ajouter/créer le JSON de suivi
+function toggleWatch(cveId, score, severity, isKev) {
+    const now = new Date().toISOString();
+    
+    // Structure du nouvel enregistrement
+    const newEntry = {
+        "cve_id": cveId,
+        "status": "active",
+        "dates": {
+            "published": now, // Idéalement à récupérer de l'objet cve
+            "updated": now,
+            "monitoring_start": now,
+            "last_check": now
+        },
+        "metrics": {
+            "cvss": { "base_initial": score, "base_current": score },
+            "epss": { "initial": 0, "current": 0 }, // Sera enrichi par le script Python
+            "kev_status": { "initial": isKev, "current": isKev }
+        }
+    };
+
+    console.log("Génération du JSON pour suivi :", JSON.stringify(newEntry, null, 2));
+    
+    // Notification visuelle (Simulation puisque JS côté client ne peut pas écrire sur GitHub directement)
+    alert(`CVE ${cveId} préparée pour le suivi.\n\nLe script GitHub Action l'ajoutera au fichier data/vulnerability.json lors du prochain cycle.`);
+    
+    // Optionnel : Déclencher un webhook ou sauvegarder en localstorage pour démo
+    localStorage.setItem(`watch_${cveId}`, JSON.stringify(newEntry));
+    document.getElementById("btn-watch").innerHTML = "✅ En cours de veille";
+    document.getElementById("btn-watch").style.background = "var(--ok)";
+}
+  // fin ajout
+//   /////////Fonction RENDERUI ////////////
 // fonction RenderUI
 function renderUI(cve, isKev) {
+function renderUI(cve, isKev) {
+    // 1. Extraction des Métriques CVSS (V3.1 ou V3.0)
+    const metrics = cve.metrics?.cvssMetricV31?.[0]?.cvssData || 
+                    cve.metrics?.cvssMetricV30?.[0]?.cvssData || {};
+    const score = metrics.baseScore || "N/A";
+    const severity = metrics.baseSeverity || "UNKNOWN";
+    const vector = metrics.vectorString || "Non spécifié";
+
+    // 2. Extraction des CWE
+    const cwes = (cve.weaknesses || []).flatMap(w => w.description.map(d => d.value.split('-')[1])).filter(Boolean);
+    
+    // 3. Extraction des CPE (Configurations affectées)
+    const cpes = (cve.configurations || []).flatMap(conf => 
+        conf.nodes.flatMap(node => node.cpeMatch.map(m => m.criteria))
+    ).slice(0, 5);
+
+    // 4. Extraction des liens Sources
+    const refs = (cve.references || []).slice(0, 5);
+
+    // 5. Vérification du statut de veille (Watchlist)
+    // On vérifie si la CVE est déjà enregistrée localement ou dans la base chargée
+    const isAlreadyWatched = WATCHLIST[cve.id] || localStorage.getItem(`watch_${cve.id}`);
+
+    // --- CONSTRUCTION DU HTML ---
+    document.getElementById("results").innerHTML = `
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:start;">
+                <div>
+                    <h2 style="margin:0;">${cve.id} ${isKev ? '<span class="badge kev-active">⚠️ KEV</span>' : ''}</h2>
+                    <div style="margin-top:10px;">
+                        <button id="btn-watch" 
+                                onclick="toggleWatch('${cve.id}', ${score}, '${severity}', ${isKev})"
+                                style="background:${isAlreadyWatched ? 'var(--ok)' : 'var(--accent)'}; color:#000; border:none; padding:8px 15px; border-radius:8px; cursor:pointer; font-weight:bold; transition: 0.3s;">
+                            ${isAlreadyWatched ? '✅ En cours de veille' : '🔭 Ajouter au suivi de vulnérabilité'}
+                        </button>
+                    </div>
+                </div>
+                <div class="badge sev-${severity}" style="font-size:1.2em; padding:15px 25px; border-radius:12px; text-align:center;">
+                    CVSS ${score}<br><small style="font-size:0.6em;">${severity}</small>
+                </div>
+            </div>
+
+            <p style="color:var(--accent); font-size:0.9em; margin: 15px 0 10px 0;"><strong>Vector:</strong> <code>${vector}</code></p>
+            
+            <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:10px; border-left:4px solid var(--accent); line-height:1.5;">
+                ${cve.descriptions.find(d => d.lang === 'en')?.value || "Aucune description disponible pour cette CVE."}
+            </div>
+
+            <div class="grid-3">
+                <div class="matrix-card">
+                    <h3>CWE Faiblesses</h3>
+                    <div id="cwe-area"></div>
+                </div>
+                
+                <div class="matrix-card">
+                    <h3>CPE Affectés</h3>
+                    <ul style="font-size:0.85em; color:var(--muted); padding-left:18px; margin:0;">
+                        ${cpes.map(c => `<li style="margin-bottom:4px;">${c}</li>`).join('') || "Aucun CPE listé"}
+                        ${cpes.length >= 5 ? '<li style="list-style:none; opacity:0.5;">...</li>' : ''}
+                    </ul>
+                </div>
+
+                <div class="matrix-card">
+                    <h3>Sources & Liens</h3>
+                    <ul style="font-size:0.85em; padding-left:18px; margin:0;">
+                        ${refs.map(r => `<li style="margin-bottom:4px;"><a href="${r.url}" target="_blank" style="color:var(--accent); text-decoration:none;">${r.source || 'Lien externe'} ↗</a></li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="matrix-card" style="margin-top:20px;">
+                <h3>Threat Intelligence : Campagnes & Bulletins</h3>
+                <div id="campaign-area" style="margin-bottom:12px;">
+                    <span class="badge" style="background:#333">Analyse MITRE ATT&CK en cours...</span>
+                </div>
+                <div id="certfr-area">
+                    <span class="badge" style="background:#333">Analyse CERT-FR en cours...</span>
+                </div>
+            </div>
+
+            <div class="matrix-card" style="margin-top:20px;">
+                <h3>Matrices ATT&CK & Tactiques</h3>
+                <div id="matrix-badges" style="margin:10px 0;"></div>
+                <ul id="capec-list" style="font-size:0.9em; column-count: 2; gap: 20px; padding-left:18px;"></ul>
+            </div>
+            
+            <div id="atm-area"></div>
+        </div>
+    `;
+
+    // --- POST-RENDU : LOGIQUE DE MAPPING ---
+    
+    // 1. Analyse des campagnes MITRE
+    checkMitreCampaigns(cve.id);
+
+    // 2. Génération des boutons CWE pour le drill-down
+    const cweArea = document.getElementById("cwe-area");
+    if (cwes.length > 0) {
+        cwes.forEach(c => {
+            const btn = document.createElement("button");
+            btn.textContent = "CWE-" + c;
+            btn.className = "badge";
+            btn.style.cssText = "margin:3px; cursor:pointer; background:rgba(122,162,255,0.1); border:1px solid var(--accent); color:var(--accent);";
+            btn.onclick = () => drill(c);
+            cweArea.appendChild(btn);
+        });
+        // Lancer le drill automatique sur la première CWE trouvée
+        drill(cwes[0]);
+    } else {
+        cweArea.innerHTML = "<span class='muted'>Aucun CWE associé.</span>";
+    }
+  /*
     // 1. Extraction du Score et des Métriques CVSS 3.1
     const metrics = cve.metrics?.cvssMetricV31?.[0]?.cvssData || 
                     cve.metrics?.cvssMetricV30?.[0]?.cvssData || {};
@@ -278,8 +438,9 @@ function renderUI(cve, isKev) {
     });
 drill(currentCWE);
    // if(cwes.length > 0) drill(cwes[0]);
+   */
 }
-// Function DRILL  
+// -------------------------- Function DRILL  ------------------------------
 function drill(cweId) {
   const listElt = document.getElementById("capec-list");
 
@@ -358,8 +519,8 @@ function drill(cweId) {
   drawPivotGraph(String(cweId).replace(/^CWE-/, ""), capecsWithNames, finalTids);
   renderATM(finalTids);
 }
-//fin Drill
-//Fonction UpdateBadges
+//--------------------fin Drill----------------
+//------------------Fonction UpdateBadges-------------------
 function updateBadges(tids) {
     const area = document.getElementById("matrix-badges");
     if(!area) return;
