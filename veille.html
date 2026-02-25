@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <title>Kat-Force – Security Watchtower</title>
+    <style>
+        :root {
+            --bg: #070a15; --card: #121a33; --txt: #e9ecff; --accent: #7aa2ff;
+            --bad: #f87171; --ok: #36d399; --line: #26325f;
+        }
+        body { background: var(--bg); color: var(--txt); font-family: sans-serif; padding: 20px; }
+        h1 { border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--card); border-radius: 10px; overflow: hidden; }
+        th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--line); }
+        th { background: rgba(122, 162, 255, 0.1); color: var(--accent); font-size: 0.8em; text-transform: uppercase; }
+        .delta-up { color: var(--bad); font-weight: bold; animation: blink 1.5s infinite; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; }
+        .bg-bad { background: var(--bad); color: #000; }
+        .bg-ok { background: var(--ok); color: #000; }
+        button { background: var(--accent); border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h1>🔭 Watchtower Intelligence</h1>
+        <button onclick="refreshData()">🔄 Forcer la mise à jour</button>
+    </div>
+
+    <div id="summary" style="margin-bottom: 20px; color: var(--accent);">Chargement de la veille...</div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>CVE ID</th>
+                <th>Status</th>
+                <th>CVSS (Init → Actuel)</th>
+                <th>EPSS (Init → Actuel)</th>
+                <th>KEV</th>
+                <th>Surveillance depuis</th>
+                <th>Dernier Check</th>
+            </tr>
+        </thead>
+        <tbody id="watch-body"></tbody>
+    </table>
+
+    <script>
+        const DATA_PATH = 'data/vulnerability.json'; // Assurez-vous que le nom correspond
+
+        async function refreshData() {
+            const btn = document.querySelector('button');
+            btn.textContent = "⌛ Chargement...";
+            
+            try {
+                const response = await fetch(DATA_PATH + '?t=' + Date.now()); // No-cache
+                const data = await response.json();
+                renderTable(data.vulnerabilities || {});
+                document.getElementById('summary').textContent = `Analyse de ${Object.keys(data.vulnerabilities).length} vulnérabilités en cours.`;
+            } catch (e) {
+                document.getElementById('summary').textContent = "⚠️ Erreur : Fichier data/vulnerability.json introuvable.";
+            } finally {
+                btn.textContent = "🔄 Forcer la mise à jour";
+            }
+        }
+
+        function renderTable(vulns) {
+            const body = document.getElementById('watch-body');
+            body.innerHTML = "";
+
+            Object.entries(vulns).forEach(([id, v]) => {
+                const cvssDelta = v.metrics.cvss.base_current > v.metrics.cvss.base_initial;
+                const epssDelta = v.metrics.epss.current > v.metrics.epss.initial;
+                const kevChange = v.metrics.kev_status.current && !v.metrics.kev_status.initial;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td style="font-weight:bold; color:var(--accent)">${id}</td>
+                    <td><span class="badge ${v.status === 'active' ? 'bg-ok' : ''}">${v.status}</span></td>
+                    <td class="${cvssDelta ? 'delta-up' : ''}">
+                        ${v.metrics.cvss.base_initial} ➔ ${v.metrics.cvss.base_current}
+                        ${cvssDelta ? ' 📈' : ''}
+                    </td>
+                    <td class="${epssDelta ? 'delta-up' : ''}">
+                        ${(v.metrics.epss.initial * 100).toFixed(2)}% ➔ ${(v.metrics.epss.current * 100).toFixed(2)}%
+                    </td>
+                    <td>
+                        <span class="badge ${v.metrics.kev_status.current ? 'bg-bad' : ''}">
+                            ${v.metrics.kev_status.current ? 'EXPLOITÉ' : 'Non répertorié'}
+                        </span>
+                        ${kevChange ? '<br><small class="delta-up">Nouveau KEV !</small>' : ''}
+                    </td>
+                    <td><small>${new Date(v.dates.monitoring_start).toLocaleDateString()}</small></td>
+                    <td><small>${new Date(v.dates.last_check).toLocaleString()}</small></td>
+                `;
+                body.appendChild(row);
+            });
+        }
+
+        // Initialisation
+        refreshData();
+    </script>
+</body>
+</html>
