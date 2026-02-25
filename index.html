@@ -234,7 +234,6 @@ function toggleWatch(cveId, score, severity, isKev) {
 //   /////////Fonction RENDERUI ////////////
 // fonction RenderUI
 function renderUI(cve, isKev) {
-function renderUI(cve, isKev) {
     // 1. Extraction des Métriques CVSS (V3.1 ou V3.0)
     const metrics = cve.metrics?.cvssMetricV31?.[0]?.cvssData || 
                     cve.metrics?.cvssMetricV30?.[0]?.cvssData || {};
