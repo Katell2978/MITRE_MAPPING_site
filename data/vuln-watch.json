@@ -1,0 +1,37 @@
+{
+  "vulnerability_watch": {
+    "cve_id": "CVE-2025-32058",
+    "status": "active",
+    "dates": {
+      "published": "2025-02-10T10:00:00Z",
+      "updated": "2025-02-25T14:30:00Z",
+      "monitoring_start": "2025-02-12T09:00:00Z",
+      "last_check": "2025-02-25T15:00:00Z"
+    },
+    "metrics": {
+      "cvss": {
+        "base_initial": 7.5,
+        "base_current": 8.8,
+        "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      },
+      "epss": {
+        "initial": 0.0012,
+        "current": 0.4520,
+        "percentile": 0.98
+      },
+      "kev_status": {
+        "initial": false,
+        "current": true,
+        "date_added": "2025-02-24"
+      }
+    },
+    "tracking_history": [
+      {
+        "date": "2025-02-24",
+        "change": "Added to CISA KEV",
+        "impact_level": "critical"
+      }
+    ],
+    "notification_targets": ["admin@example.com"]
+  }
+}
