@@ -5,53 +5,41 @@
   <title>Kat-Force – Security Watchtower</title>
 
   <style>
-    :root{
-      --bg:#070a15; --card:#121a33; --txt:#e9ecff; --accent:#7aa2ff;
-      --bad:#f87171; --ok:#36d399; --warn:#fbbf24; --line:#26325f;
+    :root {
+      --bg: #070a15; --card: #121a33; --txt: #e9ecff; --accent: #7aa2ff;
+      --bad: #f87171; --ok: #36d399; --warn: #fbbf24; --line: #26325f;
     }
-    body{background:var(--bg);color:var(--txt);font-family:sans-serif;padding:20px;}
-    h1{border-bottom:2px solid var(--accent);padding-bottom:10px;}
-    nav{margin-bottom:20px;}
-    nav a{color:var(--accent);margin-right:15px;text-decoration:none;font-weight:bold;}
-    nav a:hover{text-decoration:underline;}
-
-    table{width:100%;border-collapse:collapse;margin-top:20px;background:var(--card);border-radius:10px;overflow:hidden;box-shadow: 0 4px 15px rgba(0,0,0,0.3);}
-    th,td{padding:12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
-    th{
-      background:rgba(122,162,255,.1);
-      color:var(--accent);
-      font-size:.8em;
-      text-transform:uppercase;
-      cursor:pointer;
-      user-select:none;
-    }
-    th:hover{background:rgba(122,162,255,.2);}
-    th.sort-asc::after{content:" ▲";}
-    th.sort-desc::after{content:" ▼";}
-
-    .badge{padding:4px 8px;border-radius:4px;font-size:.75em;font-weight:bold;display:inline-block;}
-    .bg-ok{background:var(--ok);color:#000;}
-    .bg-bad{background:var(--bad);color:#000;}
-    .bg-warn{background:var(--warn);color:#000;}
-    .delta-up{color:var(--bad);font-weight:bold;}
-
-    .sources a{color:var(--accent);font-weight:bold;text-decoration:none;}
-    .sources a:hover{text-decoration:underline;}
-
-    /* Correction : Style du bouton de rafraîchissement */
-    #refreshBtn {
-      background: var(--accent);
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-      color: #000;
-      transition: transform 0.2s;
-    }
-    #refreshBtn:active { transform: scale(0.95); }
+    body { background: var(--bg); color: var(--txt); font-family: sans-serif; padding: 20px; line-height: 1.4; }
+    h1 { border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin: 0; }
     
-    small{opacity:.95; font-size: 0.85em;}
+    nav { margin-bottom: 20px; }
+    nav a { color: var(--accent); margin-right: 15px; text-decoration: none; font-weight: bold; }
+    nav a:hover { text-decoration: underline; }
+
+    .header-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--card); border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
+    th { background: rgba(122,162,255,0.1); color: var(--accent); font-size: 0.75em; text-transform: uppercase; cursor: pointer; user-select: none; }
+    th:hover { background: rgba(122,162,255,0.2); }
+    
+    .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.7em; font-weight: 900; display: inline-block; text-transform: uppercase; }
+    .bg-ok { background: var(--ok); color: #000; }
+    .bg-bad { background: var(--bad); color: #000; }
+    .bg-warn { background: var(--warn); color: #000; }
+    .delta-up { color: var(--bad); font-weight: bold; }
+    
+    .sources a { color: var(--accent); text-decoration: none; font-weight: bold; }
+    .sources a:hover { text-decoration: underline; }
+
+    button { background: var(--accent); border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 900; color: #000; }
+    button:disabled { opacity: 0.5; }
+
+    .muted { opacity: 0.6; font-size: 0.85em; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; }
+    .dot-green { background: var(--ok); box-shadow: 0 0 5px var(--ok); }
+
+    tr:hover { background: rgba(255,255,255,0.02); }
   </style>
 </head>
 
@@ -59,139 +47,169 @@
 
   <nav>
     <a href="index.html">🔍 Analyseur</a>
-    <a href="veille.html">🔭 Veille (Watchtower)</a>
+    <a href="veille.html" style="border-bottom: 2px solid var(--accent);">🔭 Veille (Watchtower)</a>
   </nav>
 
-  <div style="display:flex;justify-content:space-between;align-items:center;">
+  <div class="header-flex">
     <h1>🔭 Watchtower Intelligence</h1>
-    <button id="refreshBtn" onclick="refreshData()">🔄 Actualiser</button>
+    <button id="refreshBtn" onclick="refreshData()">🔄 Actualiser la veille</button>
   </div>
 
-  <div id="summary" style="margin:20px 0; color:var(--accent); font-weight: bold;">Chargement de la veille…</div>
+  <div id="summary" style="margin: 20px 0; color: var(--accent); font-weight: bold;">Initialisation...</div>
 
   <div style="overflow-x: auto;">
     <table>
       <thead>
         <tr>
-          <th data-key="cve_id">CVE</th>
+          <th data-key="cve_id">CVE & Évol.</th>
           <th data-key="status">Status</th>
           <th data-key="cvss">CVSS</th>
           <th data-key="epss">EPSS</th>
           <th data-key="kev">KEV</th>
           <th data-key="remote">Remote</th>
           <th data-key="components">Composants</th>
-          <th data-key="sources">Sources</th>
-          <th data-key="check">Dernier check</th>
+          <th data-key="dates">Chronologie</th>
+          <th data-key="check">Dernier Check</th>
         </tr>
       </thead>
-      <tbody id="watch-body"></tbody>
+      <tbody id="watch-body">
+        </tbody>
     </table>
   </div>
 
 <script>
-// NOTE : Assure-toi que ce fichier existe sur ton GitHub dans le dossier /data/
 const DATA_PATH = 'data/vuln-watch.json';
 let dataCache = [];
 let sortKey = null;
 let sortDir = "asc";
 
+/**
+ * Charge les données depuis le JSON
+ */
 async function refreshData() {
   const btn = document.getElementById('refreshBtn');
-  if (btn) btn.textContent = "⌛ Chargement...";
+  const summary = document.getElementById('summary');
+  
+  btn.disabled = true;
+  btn.textContent = "⌛ Chargement...";
+  summary.textContent = "Récupération du flux de vulnérabilités...";
 
   try {
-    // On ajoute un timestamp pour éviter le cache navigateur
     const res = await fetch(DATA_PATH + '?t=' + Date.now());
-    if (!res.ok) throw new Error("Fichier de données introuvable (404)");
+    if (!res.ok) throw new Error("Fichier data/vuln-watch.json introuvable.");
 
     const json = await res.json();
-
-    if (!json.vulnerabilities) {
-      throw new Error("Structure JSON invalide");
-    }
+    if (!json.vulnerabilities) throw new Error("Structure JSON invalide.");
 
     dataCache = Object.values(json.vulnerabilities);
     renderTable(applySort(dataCache));
 
-    document.getElementById('summary').textContent =
-      `Analyse de ${dataCache.length} vulnérabilité(s) active(s).`;
-
+    summary.textContent = `✅ Surveillance active : ${dataCache.length} vulnérabilités analysées.`;
   } catch (e) {
     console.error(e);
-    document.getElementById('summary').textContent =
-      "⚠️ Erreur : " + e.message;
+    summary.innerHTML = `<span style="color:var(--bad)">⚠️ Erreur : ${e.message}</span>`;
   } finally {
-    if (btn) btn.textContent = "🔄 Forcer la mise à jour";
+    btn.disabled = false;
+    btn.textContent = "🔄 Actualiser la veille";
   }
 }
 
-// ... Tes fonctions utilitaires (safeDateLabel, isRemoteExploitable, etc.) restent identiques ...
-
-function safeDateLabel(iso, mode) {
+/**
+ * Formate les dates proprement
+ */
+function safeDateLabel(iso, mode = "date") {
   if (!iso) return "—";
   const d = new Date(iso);
   if (isNaN(d.getTime())) return "—";
-  return mode === "datetime" ? d.toLocaleString('fr-FR') : d.toLocaleDateString('fr-FR');
+  return mode === "datetime" 
+    ? d.toLocaleString('fr-FR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }) 
+    : d.toLocaleDateString('fr-FR');
 }
 
+/**
+ * Détermine si l'attaque est à distance
+ */
 function isRemoteExploitable(v) {
-  const av = (v?.exploitation_conditions?.attack_vector || "").toString().toLowerCase();
+  const av = (v?.exploitation_conditions?.attack_vector || "").toLowerCase();
   return av.includes("remote") || av.includes("network");
 }
 
-function renderSources(publications) {
-  if (!Array.isArray(publications) || publications.length === 0) return "—";
-  return publications.map(p => {
-    const publisher = (p.publisher || p.type || "source").toString();
-    const url = (p.url || "").toString();
-    return url ? `<a href="${url}" target="_blank" rel="noopener">${publisher}</a>` : `<span>${publisher}</span>`;
-  }).join("<br>");
-}
-
-function escapeHtml(s){ 
-    if(!s) return "";
-    return String(s).replace(/[&<>"']/g,c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[c]));
-}
-
+/**
+ * Génère le tableau avec gestion des changements
+ */
 function renderTable(list) {
   const body = document.getElementById('watch-body');
   body.innerHTML = "";
 
   list.forEach(v => {
-    const cvss = v?.metrics?.cvss || {};
-    const epss = v?.metrics?.epss || {};
-    const kev  = v?.metrics?.kev_status || {};
+    // --- Logique des Dates & Changements ---
+    const datePub = new Date(v.dates.published);
+    const dateUpd = new Date(v.dates.updated);
+    const dateMon = new Date(v.dates.monitoring_start);
+    const dateChk = new Date(v.dates.last_check);
 
-    const cvssCurrent = cvss.base_current ?? null;
-    const epssCurrent = epss.current ?? null;
-    const kevCurrent = !!kev.current;
-    
+    let evolutionBadge = "";
+    const isNew = (Date.now() - datePub.getTime()) < (1000 * 60 * 60 * 24 * 7); // 7 jours
+
+    if (dateUpd > dateMon) {
+        evolutionBadge = '<br><span class="badge bg-bad" title="Modifié depuis le début de la surveillance">🔄 REVISÉ</span>';
+    } else if (dateUpd > datePub) {
+        evolutionBadge = '<br><span class="badge bg-warn">MODIFIÉ</span>';
+    } else if (isNew) {
+        evolutionBadge = '<br><span class="badge bg-ok">NOUVEAU</span>';
+    }
+
+    // --- Métriques ---
+    const cvss = v.metrics?.cvss?.base_current ?? "—";
+    const epss = v.metrics?.epss?.current ? (v.metrics.epss.current * 100).toFixed(2) + "%" : "—";
+    const kev  = !!v.metrics?.kev_status?.current;
+
+    // --- Rendu de la ligne ---
     const row = document.createElement('tr');
     row.innerHTML = `
-      <td style="font-weight:bold;color:var(--accent)">
-        <a href="index.html?cve=${v.cve_id}" style="color:inherit;text-decoration:none;">${escapeHtml(v.cve_id)}</a>
+      <td>
+        <strong style="color:var(--accent)">${v.cve_id}</strong>
+        ${evolutionBadge}
       </td>
-      <td><span class="badge ${v.status === 'active' ? 'bg-bad' : 'bg-ok'}">${escapeHtml(v.status)}</span></td>
-      <td>${cvssCurrent ?? "—"}</td>
-      <td>${epssCurrent ? (epssCurrent*100).toFixed(2) + "%" : "—"}</td>
-      <td><span class="badge ${kevCurrent ? 'bg-bad' : ''}">${kevCurrent ? "OUI" : "Non"}</span></td>
-      <td>${isRemoteExploitable(v) ? '<span class="badge bg-warn">OUI</span>' : 'Non'}</td>
-      <td><small>${escapeHtml(v.affected_components?.join(", ") || "—")}</small></td>
-      <td class="sources"><small>${renderSources(v.publications)}</small></td>
-      <td><small>${safeDateLabel(v?.dates?.last_check, "datetime")}</small></td>
+      <td>
+        <span class="badge ${v.status === 'active' ? 'bg-bad' : ''}">${v.status || 'inconnu'}</span>
+      </td>
+      <td style="font-weight:bold;">${cvss}</td>
+      <td>${epss}</td>
+      <td>
+        <span class="badge ${kev ? 'bg-bad' : ''}">${kev ? 'EXPLOITÉ' : 'Non'}</span>
+      </td>
+      <td>
+        ${isRemoteExploitable(v) ? '<span class="badge bg-warn">OUI</span>' : 'Non'}
+      </td>
+      <td><small>${v.affected_components?.join(", ") || "—"}</small></td>
+      <td>
+        <div class="muted">Pub : ${safeDateLabel(v.dates.published)}</div>
+        <div class="muted">MàJ : ${safeDateLabel(v.dates.updated)}</div>
+      </td>
+      <td>
+        <div style="font-size:0.85em;">
+          <span class="status-dot dot-green"></span>
+          ${safeDateLabel(v.dates.last_check, "datetime")}
+        </div>
+      </td>
     `;
     body.appendChild(row);
   });
 }
 
-// Logique de tri
+/**
+ * Gestion du Tri
+ */
 document.querySelectorAll("th[data-key]").forEach(th => {
   th.addEventListener("click", () => {
     const key = th.dataset.key;
     sortDir = (sortKey === key && sortDir === "asc") ? "desc" : "asc";
     sortKey = key;
-    document.querySelectorAll("th").forEach(t => t.classList.remove("sort-asc","sort-desc"));
+    
+    document.querySelectorAll("th").forEach(t => t.classList.remove("sort-asc", "sort-desc"));
     th.classList.add(sortDir === "asc" ? "sort-asc" : "sort-desc");
+    
     renderTable(applySort(dataCache));
   });
 });
@@ -199,14 +217,20 @@ document.querySelectorAll("th[data-key]").forEach(th => {
 function applySort(list) {
   if (!sortKey) return list;
   return [...list].sort((a, b) => {
-    let va = a[sortKey], vb = b[sortKey]; // Simplification pour l'exemple
+    let va, vb;
+    if (sortKey === "cvss") { va = a.metrics?.cvss?.base_current ?? 0; vb = b.metrics?.cvss?.base_current ?? 0; }
+    else if (sortKey === "epss") { va = a.metrics?.epss?.current ?? 0; vb = b.metrics?.epss?.current ?? 0; }
+    else { va = a[sortKey] || ""; vb = b[sortKey] || ""; }
+
     if (va < vb) return sortDir === "asc" ? -1 : 1;
     if (va > vb) return sortDir === "asc" ? 1 : -1;
     return 0;
   });
 }
 
+// Lancement au démarrage
 refreshData();
 </script>
+
 </body>
 </html>
