@@ -136,6 +136,14 @@
       padding: 15px;
       margin-top: 15px;
     }
+
+    /* Petit bouton secondaire (même style, taille adaptée) */
+    .btn-small {
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: 900;
+      margin-top: 10px;
+    }
   </style>
 </head>
 
@@ -160,10 +168,11 @@
     </div>
   </div>
 
+  <!-- Ligne 1 : Résumé + Détail -->
   <div class="row">
     <div class="col">
       <div class="card">
-        <h2 style="margin:0 0 8px 0;">Résumé & Scores</h2>
+        <h2 style="margin:0 0 8px 0;">Résumé &amp; Scores</h2>
         <div class="grid">
           <div class="kpi">
             <div class="title">CVSS v3.x Base</div>
@@ -190,8 +199,9 @@
             <div id="badges" class="sub">—</div>
           </div>
         </div>
+
         <div id="exploitBanner" class="banner" style="display:none;">
-          <h3>Conditions d’exploitation & impacts</h3>
+          <h3>Conditions d’exploitation &amp; impacts</h3>
           <div id="exploitPills" class="items"></div>
         </div>
       </div>
@@ -205,10 +215,19 @@
     </div>
   </div>
 
+  <!-- CPE : plein largeur (plus lisible, et évite les div mal fermés) -->
+  <div class="card">
+    <h2 style="margin:0 0 8px 0;">CPE (produits affectés)</h2>
+    <div id="cpe" class="muted">—</div>
+    <!-- Bouton toggle caché si <= 5 -->
+    <button id="cpeToggleBtn" class="btn-small" style="display:none;" onclick="toggleCpeView()">Voir tous</button>
+  </div>
+
+  <!-- Ligne 2 : CWE/EMB3D + CAPEC -->
   <div class="row">
     <div class="col">
       <div class="card">
-        <h2 style="margin:0 0 8px 0;">CWE & Mapping EMB3D- a verifier</h2>
+        <h2 style="margin:0 0 8px 0;">CWE &amp; Mapping EMB3D- a verifier</h2>
         <div id="cwe" class="muted">—</div>
         <div id="emb3d-info"></div>
       </div>
@@ -293,9 +312,137 @@ async function fetchKevStatus(cveId) {
 }
 
 /* ============================================================
+   AJOUT CPE : extraction + rendu + bouton "Voir tous"
+   ============================================================ */
+
+/**
+ * État UI CPE (persisté uniquement pendant la session/page)
+ * - cpeExpanded : false => affiche max 5 lignes
+ * - lastCpeList : mémorise la dernière liste pour rerender au toggle
+ */
+let cpeExpanded = false;
+let lastCpeList = [];
+
+/**
+ * Extraction robuste des CPE à partir de la structure NVD.
+ * - Selon le niveau où tu passes l'objet, ça peut être:
+ *   - nvd.vulnerabilities[0].cve.configurations
+ *   - ou directement cveObj.configurations
+ */
+function extractCpesFromNvd(cveObj) {
+  const configs = cveObj?.configurations || cveObj?.cve?.configurations || [];
+  const out = [];
+
+  function walkNodes(nodes) {
+    (nodes || []).forEach(node => {
+      // cpeMatch contient les CPE
+      (node.cpeMatch || []).forEach(m => {
+        const cpe = m.criteria || m.cpe23Uri || null;
+        if (!cpe) return;
+        out.push({
+          cpe,
+          vulnerable: m.vulnerable === true,
+          versionStartIncluding: m.versionStartIncluding || null,
+          versionStartExcluding: m.versionStartExcluding || null,
+          versionEndIncluding: m.versionEndIncluding || null,
+          versionEndExcluding: m.versionEndExcluding || null
+        });
+      });
+
+      // NVD peut imbriquer des nodes
+      if (node.children) walkNodes(node.children);
+      if (node.nodes) walkNodes(node.nodes);
+    });
+  }
+
+  configs.forEach(cfg => {
+    if (cfg.nodes) walkNodes(cfg.nodes);
+    if (cfg.children) walkNodes(cfg.children);
+  });
+
+  // Déduplication (CPE + vuln + bornes version)
+  const uniq = new Map();
+  out.forEach(x => {
+    const key = [
+      x.cpe,
+      x.vulnerable ? "vuln" : "nonvuln",
+      x.versionStartIncluding, x.versionStartExcluding,
+      x.versionEndIncluding, x.versionEndExcluding
+    ].join("|");
+    if (!uniq.has(key)) uniq.set(key, x);
+  });
+
+  return Array.from(uniq.values()).sort((a,b) => a.cpe.localeCompare(b.cpe));
+}
+
+/**
+ * Rendu de la liste CPE
+ * - Si > 5 : affiche 5 lignes + bouton toggle
+ * - Sinon : affiche tout et cache le bouton
+ */
+function renderCpes(cpeList) {
+  const box = document.getElementById("cpe");
+  const btn = document.getElementById("cpeToggleBtn");
+  if (!box || !btn) return;
+
+  lastCpeList = Array.isArray(cpeList) ? cpeList : [];
+
+  if (!lastCpeList.length) {
+    box.textContent = "—";
+    btn.style.display = "none";
+    return;
+  }
+
+  // Limite d'affichage
+  const limit = 5;
+  const showAll = cpeExpanded || lastCpeList.length <= limit;
+  const shown = showAll ? lastCpeList : lastCpeList.slice(0, limit);
+
+  // Bouton
+  if (lastCpeList.length > limit) {
+    btn.style.display = "inline-block";
+    btn.textContent = showAll ? "Voir moins" : `Voir tous (${lastCpeList.length})`;
+  } else {
+    btn.style.display = "none";
+  }
+
+  // Petite fonction pour afficher les bornes de version si présentes
+  function versionRange(c) {
+    const parts = [];
+    if (c.versionStartIncluding) parts.push(`>= ${c.versionStartIncluding}`);
+    if (c.versionStartExcluding) parts.push(`> ${c.versionStartExcluding}`);
+    if (c.versionEndIncluding) parts.push(`<= ${c.versionEndIncluding}`);
+    if (c.versionEndExcluding) parts.push(`< ${c.versionEndExcluding}`);
+    return parts.length ? ` (${parts.join(" ; ")})` : "";
+  }
+
+  box.innerHTML = `
+    <ul>
+      ${shown.map(c => `
+        <li>
+          <span class="mono">${c.cpe}</span>
+          ${c.vulnerable ? `<span class="badge bg-bad">vuln</span>` : `<span class="badge bg-info">non vuln</span>`}
+          <span class="muted">${versionRange(c)}</span>
+        </li>
+      `).join("")}
+    </ul>
+    ${(!showAll && lastCpeList.length > limit) ? `<div class="muted" style="margin-top:6px;">Affichage limité à ${limit}. Clique sur “Voir tous” pour afficher le reste.</div>` : ""}
+  `;
+}
+
+/**
+ * Toggle bouton "Voir tous / Voir moins"
+ * - relance simplement le rendu avec lastCpeList
+ */
+function toggleCpeView() {
+  cpeExpanded = !cpeExpanded;
+  renderCpes(lastCpeList);
+}
+
+/* ============================================================
    RENDU UI ET PIVOT EMB3D
    ============================================================ */
-function renderResults({ cveId, description, cvss3, cvss4, epss, epssPct, cweList, capecList, refs, kev }) {
+function renderResults({ cveId, description, cvss3, cvss4, epss, epssPct, cweList, capecList, cpeList, refs, kev }) {
   document.getElementById("desc").textContent = description || "—";
 
   // Scores CVSS
@@ -305,22 +452,27 @@ function renderResults({ cveId, description, cvss3, cvss4, epss, epssPct, cweLis
   document.getElementById("cvss4vec").textContent = cvss4?.vectorString ?? "—";
 
   // EPSS / KEV
-  document.getElementById("epss").textContent = epss ? `${(epss * 100).toFixed(2)}%` : "—";
-  document.getElementById("epssPct").textContent = epssPct ? `Percentile : ${(epssPct * 100).toFixed(0)}e` : "—";
+  document.getElementById("epss").textContent = (typeof epss === "number") ? `${(epss * 100).toFixed(2)}%` : "—";
+  document.getElementById("epssPct").textContent = (typeof epssPct === "number") ? `Percentile : ${(epssPct * 100).toFixed(0)}e` : "—";
   document.getElementById("kev").textContent = kev?.inKev ? "Oui" : "Non";
   document.getElementById("kevDate").textContent = kev?.inKev ? `Ajouté le : ${kev.dateAdded}` : "—";
 
   // Badges
   const badges = [];
   if (kev?.inKev) badges.push('<span class="badge bg-bad">KEV</span>');
-  if (epss >= 0.20) badges.push('<span class="badge bg-bad">EPSS élevé</span>');
+  if (typeof epss === "number" && epss >= 0.20) badges.push('<span class="badge bg-bad">EPSS élevé</span>');
   if (cvss3?.baseScore >= 9.0) badges.push('<span class="badge bg-bad">Critique</span>');
   document.getElementById("badges").innerHTML = badges.join(" ") || "—";
+
+  // CPE (avec bouton "Voir tous" si > 5)
+  renderCpes(cpeList);
 
   // CWE List
   const cweDiv = document.getElementById("cwe");
   if (cweList.length) {
-    cweDiv.innerHTML = `<ul>${cweList.map(c => `<li>${c} - <a href="https://cwe.mitre.org/data/definitions/${c.split('-')[1]}.html" target="_blank">Mitre</a></li>`).join("")}</ul>`;
+    cweDiv.innerHTML = `<ul>${
+      cweList.map(c => `<li>${c} - <a href="https://cwe.mitre.org/data/definitions/${c.split('-')[1]}.html" target="_blank">Mitre</a></li>`).join("")
+    }</ul>`;
   } else {
     cweDiv.textContent = "—";
   }
@@ -340,7 +492,7 @@ function renderResults({ cveId, description, cvss3, cvss4, epss, epssPct, cweLis
       </div>`;
   }
 
-  // CAPEC List
+  // CAPEC List (tu passes capecList: [] pour l'instant)
   const capecDiv = document.getElementById("capec");
   if (capecList.length) {
     capecDiv.innerHTML = `<ul>${capecList.map(c => `<li>CAPEC-${c.id} : ${c.name}</li>`).join("")}</ul>`;
@@ -349,7 +501,10 @@ function renderResults({ cveId, description, cvss3, cvss4, epss, epssPct, cweLis
   }
 
   // Références
-  document.getElementById("refs").innerHTML = `<ul>${refs.map(r => `<li><a href="${r}" target="_blank">${r}</a></li>`).join("")}</ul>`;
+  const safeRefs = Array.isArray(refs) ? refs.filter(Boolean) : [];
+  document.getElementById("refs").innerHTML = safeRefs.length
+    ? `<ul>${safeRefs.map(r => `<li><a href="${r}" target="_blank" rel="noopener">${r}</a></li>`).join("")}</ul>`
+    : "—";
 }
 
 /* ============================================================
@@ -358,7 +513,12 @@ function renderResults({ cveId, description, cvss3, cvss4, epss, epssPct, cweLis
 async function runAnalysis() {
   const btn = document.getElementById("runBtn");
   const cveId = document.getElementById("cveInput").value.trim().toUpperCase();
-  
+
+  // Reset UI état CPE à chaque nouvelle analyse
+  cpeExpanded = false;
+  lastCpeList = [];
+  renderCpes([]); // reset affichage
+
   if (!/^CVE-\d{4}-\d{4,}$/.test(cveId)) {
     alert("Format CVE invalide (ex: CVE-2023-1234)");
     return;
@@ -370,33 +530,55 @@ async function runAnalysis() {
 
   try {
     const nvd = await fetchNvdCve(cveId);
-    const item = nvd?.vulnerabilities?.[0]?.cve;
-    if (!item) throw new Error("CVE non trouvée.");
 
-    const desc = item.descriptions.find(d => d.lang === "fr")?.value || item.descriptions.find(d => d.lang === "en")?.value;
-    const metrics = item.metrics;
+    // Ici: on récupère l'objet "cve" + on garde aussi le conteneur si besoin
+    const vuln0 = nvd?.vulnerabilities?.[0];
+    const cve = vuln0?.cve;
+    if (!cve) throw new Error("CVE non trouvée.");
+
+    const desc =
+      cve.descriptions?.find(d => d.lang === "fr")?.value ||
+      cve.descriptions?.find(d => d.lang === "en")?.value ||
+      "—";
+
+    const metrics = cve.metrics;
     const cvss3 = metrics?.cvssMetricV31?.[0]?.cvssData || metrics?.cvssMetricV30?.[0]?.cvssData;
     const cvss4 = metrics?.cvssMetricV40?.[0]?.cvssData;
 
+    // CWE
     const cweList = [];
-    (item.weaknesses || []).forEach(w => {
-      w.description.forEach(d => { if (d.value.startsWith("CWE-")) cweList.push(d.value); });
+    (cve.weaknesses || []).forEach(w => {
+      (w.description || []).forEach(d => {
+        if (typeof d.value === "string" && d.value.startsWith("CWE-")) cweList.push(d.value);
+      });
     });
+
+    // CPE : extraction depuis cve.configurations
+    log("Extraction CPE (NVD configurations)...");
+    const cpeList = extractCpesFromNvd(cve);
 
     const epssData = await fetchEpss(cveId);
     const kev = await fetchKevStatus(cveId);
-    const refs = (item.references || []).map(r => r.url);
+    const refs = (cve.references || []).map(r => r.url);
 
     renderResults({
-      cveId, description: desc, cvss3, cvss4,
-      epss: epssData.epss, epssPct: epssData.percentile,
-      cweList, capecList: [], refs, kev
+      cveId,
+      description: desc,
+      cvss3,
+      cvss4,
+      epss: epssData.epss ? parseFloat(epssData.epss) : null,
+      epssPct: epssData.percentile ? parseFloat(epssData.percentile) : null,
+      cweList,
+      capecList: [],  // tu pourras remettre ton mapping CAPEC plus tard
+      cpeList,
+      refs,
+      kev
     });
 
     setStatus("✅ Analyse terminée.");
     log("Analyse terminée avec succès.");
   } catch (e) {
-    log(`ERREUR : ${e.message}`);
+    log(`ERREUR : ${e.message || e}`);
     setStatus("⚠️ Erreur lors de l'analyse.");
   } finally {
     btn.disabled = false;
