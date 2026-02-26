@@ -1,133 +1,91 @@
 {
-  "vulnerability_watch": {
-    "cve_id": "CVE-2025-32058",
-    "status": "active",
+  "vulnerabilities": {
+    "CVE-2025-32058": {
+      "cve_id": "CVE-2025-32058",
+      "status": "active",
 
-    "dates": {
-      "published": "2025-02-10T10:00:00Z",
-      "updated": "2025-02-25T14:30:00Z",
-      "monitoring_start": "2025-02-12T09:00:00Z",
-      "last_check": "2025-02-25T15:00:00Z"
-    },
-
-    "metrics": {
-      "cvss": {
-        "base_initial": 7.5,
-        "base_current": 8.8,
-        "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+      "dates": {
+        "published": "2025-02-10T10:00:00Z",
+        "updated": "2025-02-25T14:30:00Z",
+        "monitoring_start": "2025-02-12T09:00:00Z",
+        "last_check": "2025-02-25T15:00:00Z"
       },
-      "epss": {
-        "initial": 0.0012,
-        "current": 0.4520,
-        "percentile": 0.98
+
+      "metrics": {
+        "cvss": {
+          "base_initial": 7.5,
+          "base_current": 8.8,
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+        },
+        "epss": {
+          "initial": 0.0012,
+          "current": 0.452,
+          "percentile": 0.98
+        },
+        "kev_status": {
+          "initial": false,
+          "current": true,
+          "date_added": "2025-02-24"
+        }
       },
-      "kev_status": {
-        "initial": false,
-        "current": true,
-        "date_added": "2025-02-24"
-      }
-    },
 
-    "affected_components": [
-      "Infotainment (IVI)",
-      "Telematics Control Unit (TCU)",
-      "Connectivity stack"
-    ],
-
-    "exploitation_conditions": {
-      "attack_vector": "Local",
-      "attack_complexity": "Low",
-      "privileges_required": "None",
-      "user_interaction": "None",
-      "preconditions": [
-        "Compromise préalable du SoC principal de l’infotainment (exécution de code requise)",
-        "Capacité à envoyer des requêtes malformées via le protocole propriétaire INC",
-        "Absence ou insuffisance de validation des entrées côté microcontrôleur RH850"
+      "affected_components": [
+        "Infotainment (IVI)",
+        "Telematics Control Unit (TCU)",
+        "Connectivity stack"
       ],
-      "exploit_maturity": "Research-based",
-      "public_exploit_available": false,
-      "notes": "L’exploitation complète repose sur une chaîne d’attaque documentée dans des travaux de recherche (Black Hat Asia), sans exploit autonome public."
-    },
 
-    "vehicle_impact": {
-      "impact_scope": "Vehicle-wide (scope changed)",
-      "technical_impact": [
-        "Exécution de code arbitraire sur le microcontrôleur RH850",
-        "Injection de messages CAN arbitraires sur le bus véhicule"
-      ],
-      "safety_relevance": "High",
-      "potential_consequences": [
-        "Altération du comportement de systèmes véhicule connectés au CAN",
-        "Risque sur la sûreté de fonctionnement selon les ECU affectés",
-        "Perte de confiance dans l’isolement infotainment / fonctions critiques"
+      "exploitation_conditions": {
+        "attack_vector": "Remote → Local (pivot)",
+        "attack_complexity": "Low",
+        "privileges_required": "None",
+        "user_interaction": "None",
+        "exploit_maturity": "Research-based",
+        "public_exploit_available": false
+      },
+
+      "vehicle_impact": {
+        "impact_scope": "Vehicle-wide",
+        "technical_impact": [
+          "Exécution de code arbitraire",
+          "Injection CAN"
+        ],
+        "safety_relevance": "High"
+      },
+
+      "publications": [
+        {
+          "type": "conference",
+          "publisher": "Black Hat Asia",
+          "title": "Remote Exploitation of Nissan Leaf",
+          "url": "http://i.blackhat.com/Asia-25/Asia-25-Evdokimov-Remote-Exploitation-of-Nissan-Leaf.pdf",
+          "reliability": "official"
+        },
+        {
+          "type": "advisory",
+          "publisher": "Akaoma",
+          "title": "CVE-2025-32058 – Vulnerability & Exploit Details",
+          "url": "https://cve.akaoma.com/cve-2025-32058",
+          "reliability": "trusted"
+        }
       ]
     },
 
-    "publications": [
-      {
-        "type": "conference",
-        "title": "Remote Exploitation of Nissan Leaf",
-        "url": "http://i.blackhat.com/Asia-25/Asia-25-Evdokimov-Remote-Exploitation-of-Nissan-Leaf.pdf",
-        "publisher": "Black Hat Asia",
-        "published_at": null,
-        "reliability": "official",
-        "notes": "Présentation décrivant la chaîne d’exploitation infotainment → RH850 → CAN."
-      },
-      {
-        "type": "advisory",
-        "title": "CVE-2025-32058 – Vulnerability & Exploit Details",
-        "url": "https://cve.akaoma.com/cve-2025-32058",
-        "publisher": "Akaoma",
-        "published_at": null,
-        "reliability": "trusted",
-        "notes": "Analyse CVSS et conditions d’exploitation. Pas de PoC public."
-      },
-      {
-        "type": "vendor",
-        "title": "Nissan Infotainment Vulnerabilities Manufactured by Bosch",
-        "url": "https://pcacybersecurity.com/resources/advisory/vulnerabilities-in-nissan-infotainment-manufactured-by-bosch",
-        "publisher": "PCA Cyber Security",
-        "published_at": null,
-        "reliability": "trusted",
-        "notes": "Avis de sécurité industriel."
-      }
-    ],
-
-    "tracking_history": [
-      {
-        "date": "2025-02-24",
-        "change": "Added to CISA KEV",
-        "impact_level": "critical"
-      }
-    ],
-
-    "notification_targets": [
-      "admin@example.com"
-    ]
-  },
-  
-    {
+    "CVE-2024-47607": {
       "cve_id": "CVE-2024-47607",
       "status": "active",
+
+      "affected_components": [
+        "Multimedia pipeline",
+        "GStreamer (Opus parser)"
+      ],
 
       "exploitation_conditions": {
         "attack_vector": "Network",
         "attack_complexity": "Low",
         "privileges_required": "None",
         "user_interaction": "None",
-        "preconditions": [
-          "Traitement d’un flux ou fichier Opus malformé",
-          "Version vulnérable de GStreamer (< 1.24.10)"
-        ],
-        "exploit_maturity": "None",
         "public_exploit_available": false
-      },
-
-      "vehicle_impact": {
-        "impact_scope": null,
-        "technical_impact": [],
-        "safety_relevance": null,
-        "potential_consequences": []
       },
 
       "references": [
@@ -138,25 +96,8 @@
         {
           "type": "vendor_advisory",
           "url": "https://gstreamer.freedesktop.org/security/sa-2024-0024.html"
-        },
-        {
-          "type": "patch",
-          "url": "https://gitlab.freedesktop.org/gstreamer/gstreamer/-/merge_requests/8037.patch"
-        },
-        {
-          "type": "third_party_advisory",
-          "url": "https://securitylab.github.com/advisories/GHSL-2024-115_GHSL-2024-118_Gstreamer/"
-        },
-        {
-          "type": "aggregator",
-          "url": "https://app.opencve.io/cve/CVE-2024-47607"
-        },
-        {
-          "type": "analysis",
-          "url": "https://www.wiz.io/vulnerability-database/cve/cve-2024-47607"
         }
       ]
     }
-  ]
+  }
 }
-
