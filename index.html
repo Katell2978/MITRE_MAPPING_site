@@ -180,14 +180,7 @@
             <div id="kev" class="value">—</div>
             <div id="kevDate" class="sub">—</div>
           </div>
-
-          <div class="kpi">
-            <div class="title">EUVD (ENISA)</div>
-            <div id="euvd" class="value">—</div>
-            <div id="euvdInfo" class="sub">—</div>
-          </div>
-
-          <div class="kpi">
+<div class="kpi">
             <div class="title">Badges</div>
             <div id="badges" class="sub">—</div>
           </div>
@@ -256,13 +249,22 @@ function setStatus(msg) {
    Utilitaire : fetch JSON robuste
    - Ajoute gestion d’erreurs et message clair dans les logs
    ============================================================ */
-async function fetchJson(url) {
-  const r = await fetch(url, { cache: "no-store" });
-  if (!r.ok) {
-    const txt = await r.text().catch(() => "");
-    throw new Error(`HTTP ${r.status} sur ${url} | ${txt.slice(0,120)}`);
-  }
-  return r.json();
+async function fetchJson(url, timeoutMs = 12000) {
+ const ctrl = new AbortController();
+ const t = setTimeout(() => ctrl.abort(), timeoutMs);
+ let r;
+ try {
+   r = await fetch(url, { cache: "no-store", signal: ctrl.signal });
+ } catch (e) {
+   clearTimeout(t);
+   throw new Error(`FETCH échoué sur ${url} : ${e.name || e}`);
+ }
+ clearTimeout(t);
+ if (!r.ok) {
+   const txt = await r.text().catch(() => "");
+   throw new Error(`HTTP ${r.status} sur ${url} ${txt.slice(0,120)}`);
+ }
+ return r.json();
 }
 
 /* ============================================================
@@ -301,33 +303,6 @@ async function fetchKevStatus(cveId) {
     inKev: !!hit,
     dateAdded: hit?.dateAdded || null
   };
-}
-
-/* ============================================================
-   Récupération EUVD ENISA (Internet)
-   - API officielle: https://euvdservices.enisa.europa.eu/api/search [2](https://euvd.enisa.europa.eu/apidoc)
-   - On teste d’abord exploited=true, puis exploited=false
-   ============================================================ */
-async function fetchEuvdStatus(cveId) {
-  const base = "https://euvdservices.enisa.europa.eu/api/search";
-
-  // 1) Recherche "exploited=true"
-  const u1 = `${base}?text=${encodeURIComponent(cveId)}&exploited=true&page=0&size=10&fromScore=0&toScore=10&fromEpss=0&toEpss=100`;
-  const r1 = await fetchJson(u1);
-  const item1 = (r1?.items || []).find(it => (it?.aliases || "").includes(cveId));
-  if (item1) {
-    return { found: true, exploited: true, euvdId: item1.id || null };
-  }
-
-  // 2) Recherche "exploited=false"
-  const u2 = `${base}?text=${encodeURIComponent(cveId)}&exploited=false&page=0&size=10&fromScore=0&toScore=10&fromEpss=0&toEpss=100`;
-  const r2 = await fetchJson(u2);
-  const item2 = (r2?.items || []).find(it => (it?.aliases || "").includes(cveId));
-  if (item2) {
-    return { found: true, exploited: false, euvdId: item2.id || null };
-  }
-
-  return { found: false, exploited: null, euvdId: null };
 }
 
 /* ============================================================
@@ -402,7 +377,7 @@ function extractCvss(nvdItem) {
    - Conditions exploitabilité: AV/AC/PR/UI/S
    - Impacts v3: C/I/A
    ============================================================ */
-function buildExploitConditionsPills(cvss3, cvss4, kev, euvd) {
+function buildExploitConditionsPills(cvss3, cvss4, kev) {
   const pills = [];
 
   // Conditions (v3 prioritaire)
@@ -426,17 +401,9 @@ function buildExploitConditionsPills(cvss3, cvss4, kev, euvd) {
     if (cvss4.userInteraction) pills.push({ cls:"", k:"UI", v: cvss4.userInteraction });
   }
 
-  // Statuts (KEV / EUVD)
+  // Statut KEV
   if (kev?.inKev) pills.push({ cls:"crit", k:"KEV", v: "Oui" });
   else pills.push({ cls:"", k:"KEV", v: "Non" });
-
-  if (euvd?.found) {
-    const label = euvd.exploited ? "Présent (Exploited)" : "Présent";
-    pills.push({ cls: euvd.exploited ? "crit" : "", k:"EUVD", v: label });
-  } else {
-    pills.push({ cls:"", k:"EUVD", v: "Non trouvé" });
-  }
-
   return pills;
 }
 
@@ -454,7 +421,7 @@ function isRemote(cvss3, cvss4) {
    Rendu UI centralisé
    - Met à jour scores, badges, bandeau, CWE/CAPEC, refs
    ============================================================ */
-function renderResults({ cveId, description, cvss3, cvss4, epss, epssPct, cweList, capecList, refs, kev, euvd }) {
+function renderResults({ cveId, description, cvss3, cvss4, epss, epssPct, cweList, capecList, refs, kev }) {
   // Description
   document.getElementById("desc").textContent = description || "—";
 
@@ -482,28 +449,18 @@ function renderResults({ cveId, description, cvss3, cvss4, epss, epssPct, cweLis
     ? `Date ajout : ${kev.dateAdded || "—"}`
     : "—";
 
-  // EUVD
-  if (euvd?.found) {
-    document.getElementById("euvd").textContent = euvd.euvdId || "Présent";
-    document.getElementById("euvdInfo").textContent = euvd.exploited ? "Statut : Exploited" : "Statut : Non exploité";
-  } else {
-    document.getElementById("euvd").textContent = "Non";
-    document.getElementById("euvdInfo").textContent = "—";
-  }
 
   // Badges
   const badges = [];
   badges.push(`<span class="badge bg-info">${cveId}</span>`);
   if (isRemote(cvss3, cvss4)) badges.push(`<span class="badge bg-warn">REMOTE exploitable</span>`);
-  if (kev?.inKev) badges.push(`<span class="badge bg-bad">KEV</span>`);
-  if (euvd?.found && euvd.exploited) badges.push(`<span class="badge bg-bad">EUVD exploited</span>`);
-  if (typeof epss === "number" && epss >= 0.20) badges.push(`<span class="badge bg-bad">EPSS élevé</span>`);
+  if (kev?.inKev) badges.push(`<span class="badge bg-bad">KEV</span>`);  if (typeof epss === "number" && epss >= 0.20) badges.push(`<span class="badge bg-bad">EPSS élevé</span>`);
   if (typeof cvss3Score === "number" && cvss3Score >= 9.0) badges.push(`<span class="badge bg-bad">CVSS v3 Critique</span>`);
   if (typeof cvss4Score === "number" && cvss4Score >= 9.0) badges.push(`<span class="badge bg-bad">CVSS v4 Critique</span>`);
   document.getElementById("badges").innerHTML = badges.join(" ") || "—";
 
   // Bandeau conditions d’exploitation + impacts CIA
-  const pills = buildExploitConditionsPills(cvss3, cvss4, kev, euvd);
+  const pills = buildExploitConditionsPills(cvss3, cvss4, kev);
   const banner = document.getElementById("exploitBanner");
   const pillBox = document.getElementById("exploitPills");
   banner.style.display = pills.length ? "block" : "none";
@@ -586,17 +543,22 @@ async function runAnalysis() {
     const refs = (item?.cve?.references || []).map(r => r?.url).filter(Boolean);
 
     // --- EPSS
-    log("Récupération EPSS…");
-    const epssData = await fetchEpss(cveId);
+ log("Récupération EPSS…");
+ let epssData = { epss: null, percentile: null };
+ try {
+   epssData = await fetchEpss(cveId);
+ } catch (e) {
+   log("EPSS indisponible : " + (e.message || e));
+ }
 
     // --- KEV
-    log("Récupération KEV (CISA)…");
-    const kev = await fetchKevStatus(cveId);
-
-    // --- EUVD
-    log("Récupération EUVD (ENISA)…");
-    const euvd = await fetchEuvdStatus(cveId);
-
+ log("Récupération KEV (CISA)…");
+ let kev = { inKev: false, dateAdded: null };
+ try {
+   kev = await fetchKevStatus(cveId);
+ } catch (e) {
+   log("KEV indisponible : " + (e.message || e));
+ }
     // --- Mapping CWE → CAPEC
     log("Chargement DB CWE→CAPEC…");
     const cweDb = await loadCweDb();
@@ -618,9 +580,8 @@ async function runAnalysis() {
       cweList: cweUniq,
       capecList,
       refs,
-      kev,
-      euvd
-    });
+      kev
+ });
 
     setStatus("✅ Analyse terminée.");
     log("Analyse terminée.");
