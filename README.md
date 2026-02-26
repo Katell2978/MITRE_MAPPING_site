@@ -26,6 +26,7 @@ Kat
 
 Index.html fonctionnalitées :
 ✅ Recherche par CVE (NVD API v2.0)
+TOFO : Ajouter condition d'exploitation critere
 ✅ Recherche par CPE (NVD API v2.0 cpeName=...)
 ✅ Drilldown CWE → CAPEC → vraies Techniques MITRE ATT&CK (via tes fichiers data/cwe_db.json, data/capec_db.json, data/techniques_db.json)
 TODO : Jointure ATT&CK → ATM (via data/ATM-matrix-TTP.csv) Pas 
