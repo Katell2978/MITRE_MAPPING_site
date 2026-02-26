@@ -106,10 +106,17 @@
         }
       ],
       "dates": {
+        "published": "2024-12-11",
+        "updated": "2025-03-11",
         "monitoring_start": "2026-02-26T13:13:04Z",
         "last_check": "2026-02-26T13:13:04Z"
       },
       "metrics": {
+          "cvss": {
+          "base_initial": 9.8,
+          "base_current": 9.8,
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+        },
         "epss": {
           "initial": 0.0011,
           "current": 0.0011,
