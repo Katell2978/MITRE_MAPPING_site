@@ -27,9 +27,7 @@
         }
       },
       "affected_components": [
-        "Infotainment (IVI)",
-        "Telematics Control Unit (TCU)",
-        "Connectivity stack"
+        "Infotainment (IVI)"
       ],
       "exploitation_conditions": {
         "attack_vector": "Remote → Local (pivot)",
