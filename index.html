@@ -2,7 +2,11 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Kat-Force Analyser – NVD → CWE → EMB3D</title>
+
+  <!-- Génération PDF côté navigateur -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
     :root {
@@ -27,7 +31,7 @@
     .row { display:flex; gap: 14px; flex-wrap: wrap; align-items: stretch; }
     .col { flex: 1 1 340px; min-width: 320px; }
 
-    label { font-size: 0.9em; opacity: 0.9; }
+    label { font-size: 0.92em; opacity: 0.92; }
     input[type="text"] {
       width: min(520px, 100%);
       padding: 10px 12px;
@@ -40,6 +44,17 @@
       letter-spacing: 0.3px;
     }
 
+    select {
+      width: min(520px, 100%);
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--txt);
+      outline: none;
+      font-weight: 800;
+    }
+
     button {
       background: var(--accent);
       border: none;
@@ -50,6 +65,14 @@
       color: #000;
     }
     button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .btn-small {
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-weight: 900;
+      margin-top: 10px;
+      margin-right: 8px;
+    }
 
     .badge {
       display:inline-block;
@@ -73,12 +96,8 @@
       grid-template-columns: repeat(3, minmax(240px, 1fr));
       gap: 10px;
     }
-    @media (max-width: 980px) {
-      .grid { grid-template-columns: repeat(2, minmax(240px, 1fr)); }
-    }
-    @media (max-width: 680px) {
-      .grid { grid-template-columns: 1fr; }
-    }
+    @media (max-width: 980px) { .grid { grid-template-columns: repeat(2, minmax(240px, 1fr)); } }
+    @media (max-width: 680px) { .grid { grid-template-columns: 1fr; } }
 
     .kpi {
       background: rgba(255,255,255,0.03);
@@ -99,6 +118,7 @@
     }
     .banner h3 { margin: 0 0 8px 0; font-size: 0.9em; color: var(--accent); text-transform: uppercase; letter-spacing: 0.8px; }
     .banner .items { display:flex; flex-wrap: wrap; gap: 8px; }
+
     .pill {
       border: 1px solid rgba(122,162,255,0.35);
       background: rgba(122,162,255,0.10);
@@ -137,18 +157,11 @@
       margin-top: 15px;
     }
 
-    /* Petit bouton secondaire (même style, taille adaptée) */
-    .btn-small {
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-weight: 900;
-      margin-top: 10px;
-    }
+    .small-note { font-size: 0.85em; opacity: 0.9; margin-top: 6px; }
   </style>
 </head>
 
 <body>
-
   <nav>
     <a href="index.html">🔍 Analyseur</a>
     <a href="veille.html">🔭 Veille (Watchtower)</a>
@@ -156,7 +169,7 @@
 
   <div class="topbar">
     <h1>🧠 Kat-Force Analyser</h1>
-    <div class="muted">Mapping : <b>CVE</b> → <b>CWE</b> → <b>EMB3D</b></div>
+    <div class="muted">Mapping : <b>CVE</b> → <b>CWE</b> → <b>EMB3D</b> + <b>CPE</b> + <b>Suivi/Triage</b></div>
   </div>
 
   <div class="card">
@@ -168,11 +181,11 @@
     </div>
   </div>
 
-  <!-- Ligne 1 : Résumé + Détail -->
+  <!-- Ligne 1 -->
   <div class="row">
     <div class="col">
       <div class="card">
-        <h2 style="margin:0 0 8px 0;">Résumé &amp; Scores</h2>
+        <h2 style="margin:0 0 8px 0;">Résumé & Scores</h2>
         <div class="grid">
           <div class="kpi">
             <div class="title">CVSS v3.x Base</div>
@@ -201,7 +214,7 @@
         </div>
 
         <div id="exploitBanner" class="banner" style="display:none;">
-          <h3>Conditions d’exploitation &amp; impacts</h3>
+          <h3>Conditions d’exploitation & impacts</h3>
           <div id="exploitPills" class="items"></div>
         </div>
       </div>
@@ -215,19 +228,134 @@
     </div>
   </div>
 
-  <!-- CPE : plein largeur (plus lisible, et évite les div mal fermés) -->
+  <!-- CPE -->
   <div class="card">
     <h2 style="margin:0 0 8px 0;">CPE (produits affectés)</h2>
     <div id="cpe" class="muted">—</div>
-    <!-- Bouton toggle caché si <= 5 -->
     <button id="cpeToggleBtn" class="btn-small" style="display:none;" onclick="toggleCpeView()">Voir tous</button>
+  </div>
+
+  <!-- Suivi / Triage -->
+  <div class="card">
+    <h2 style="margin:0 0 8px 0;">📋 Suivi d’analyse & décision</h2>
+    <button onclick="toggleFollowUp()" class="btn-small">🧾 Suivi d’analyse</button>
+
+    <div id="followupPanel" style="display:none; margin-top:15px;">
+
+      <!-- Reco automatique -->
+      <div class="banner" id="fuRecoBanner" style="display:none;">
+        <h3>Recommandation automatique</h3>
+        <div id="fuRecoText" class="muted">—</div>
+        <div id="fuRecoPills" class="items" style="margin-top:10px;"></div>
+      </div>
+
+      <!-- Mode semi-auto -->
+      <div class="banner" id="fuCpeHintBanner" style="display:none;">
+        <h3>Mode semi-automatique (CPE → périmètre véhicule)</h3>
+        <div class="muted" id="fuCpeHintText">—</div>
+        <div id="fuCpeHintList" style="margin-top:10px;"></div>
+        <div class="small-note">
+          Les indices ci‑dessous sont des <b>suggestions</b> basées sur des mots clés dans les CPE.
+          Coche uniquement ce que tu confirmes.
+        </div>
+      </div>
+
+      <div class="row" style="margin-top:10px;">
+        <div class="col">
+          <h3 style="margin:0 0 6px 0;">1️⃣ Applicabilité & signaux</h3>
+
+          <label class="muted"><b>Vehicle’s assets impacted</b></label><br/>
+          <select id="fu_assetsImpacted" onchange="onFollowUpChanged()">
+            <option value="unknown">Inconnu</option>
+            <option value="yes">Oui</option>
+            <option value="no">Non</option>
+          </select>
+
+          <div style="height:10px;"></div>
+
+          <label class="muted"><b>Cybersecurity feature impacted</b></label><br/>
+          <select id="fu_cyberFeature" onchange="onFollowUpChanged()">
+            <option value="unknown">Inconnu</option>
+            <option value="no">Non</option>
+            <option value="partial">Partiel</option>
+            <option value="yes">Oui</option>
+          </select>
+
+          <div style="height:10px;"></div>
+
+          <label class="muted"><b>Exploitation</b> (auto KEV/EPSS)</label><br/>
+          <select id="fu_exploitation" onchange="onFollowUpChanged()">
+            <option value="none">None</option>
+            <option value="poc">PoC / Probable</option>
+            <option value="active">Active</option>
+          </select>
+
+          <div style="height:10px;"></div>
+
+          <label class="muted"><b>System Exposure</b> (auto si AV=NETWORK)</label><br/>
+          <select id="fu_exposure" onchange="onFollowUpChanged()">
+            <option value="none">None</option>
+            <option value="open_controlled">Open &amp; controlled</option>
+          </select>
+        </div>
+
+        <div class="col">
+          <h3 style="margin:0 0 6px 0;">2️⃣ Impacts & fournisseur</h3>
+
+          <label class="muted"><b>Technical Impact</b></label><br/>
+          <select id="fu_techImpact" onchange="onFollowUpChanged()">
+            <option value="unknown">Inconnu</option>
+            <option value="none">None</option>
+            <option value="partial">Partial</option>
+            <option value="total">Total</option>
+          </select>
+
+          <div style="height:10px;"></div>
+
+          <label class="muted"><b>Safety Impact</b></label><br/>
+          <select id="fu_safetyImpact" onchange="onFollowUpChanged()">
+            <option value="unknown">Inconnu</option>
+            <option value="none">None</option>
+            <option value="nm">N &amp; M</option>
+            <option value="rc">R &amp; C</option>
+          </select>
+
+          <div style="height:10px;"></div>
+
+          <label class="muted"><b>Supplier Involvement</b></label><br/>
+          <select id="fu_supplier" onchange="onFollowUpChanged()">
+            <option value="unknown">Inconnu</option>
+            <option value="none">None</option>
+            <option value="fix_ready">Fix Ready &amp; Cooperative</option>
+            <option value="unresponsive">UU : Unresponsive</option>
+          </select>
+        </div>
+      </div>
+
+      <h3 style="margin-top:12px;">3️⃣ Décision finale (auto‑sélectionnée)</h3>
+      <div id="fuDecisionBox">
+        <label><input type="radio" name="fu_decision" value="No action – Track for change" onchange="onDecisionManualChange()"> No action – Track for change</label><br/>
+        <label><input type="radio" name="fu_decision" value="ACT Cyber Analysis" onchange="onDecisionManualChange()"> ACT Cyber Analysis</label><br/>
+        <label><input type="radio" name="fu_decision" value="ACT : Request countermeasure (no patch)" onchange="onDecisionManualChange()"> ACT : Request countermeasure (no patch)</label><br/>
+        <label><input type="radio" name="fu_decision" value="Patch – Schedule" onchange="onDecisionManualChange()"> Patch – Schedule</label><br/>
+        <label><input type="radio" name="fu_decision" value="Patch – Defer" onchange="onDecisionManualChange()"> Patch – Defer</label><br/>
+        <label><input type="radio" name="fu_decision" value="Patch – Out-of-cycle / Immediate" onchange="onDecisionManualChange()"> Patch – Out-of-cycle / Immediate</label><br/>
+        <label><input type="radio" name="fu_decision" value="Dismiss to SOC" onchange="onDecisionManualChange()"> Dismiss to SOC</label>
+      </div>
+
+      <div style="margin-top:15px;">
+        <button onclick="applyAutoRecommendation()" class="btn-small">🤖 Appliquer la recommandation</button>
+        <button onclick="generateFollowUpPdf()" class="btn-small">📄 Générer PDF de suivi</button>
+      </div>
+
+    </div>
   </div>
 
   <!-- Ligne 2 : CWE/EMB3D + CAPEC -->
   <div class="row">
     <div class="col">
       <div class="card">
-        <h2 style="margin:0 0 8px 0;">CWE &amp; Mapping EMB3D- a verifier</h2>
+        <h2 style="margin:0 0 8px 0;">CWE &amp; Mapping EMB3D (à vérifier)</h2>
         <div id="cwe" class="muted">—</div>
         <div id="emb3d-info"></div>
       </div>
@@ -253,8 +381,8 @@
 
 <script>
 /* ============================================================
-   DICTIONNAIRE EMB3D INTÉGRÉ (Évite l'erreur Unexpected Token)
-   ============================================================ */
+   DICTIONNAIRE EMB3D INTÉGRÉ
+============================================================ */
 const emb3dMapping = {
   "CWE-787": { tid: "T1.1", threat: "Memory Corruption", category: "Application Software", iot_impact: "Permet souvent l'exécution de code arbitraire (RCE) sur le périphérique." },
   "CWE-121": { tid: "T1.1", threat: "Stack-based Buffer Overflow", category: "Application Software", iot_impact: "Très fréquent dans les firmwares C/C++ sans protections de pile." },
@@ -267,17 +395,17 @@ const emb3dMapping = {
 };
 
 /* ============================================================
-   FONCTIONS UTILITAIRES
-   ============================================================ */
+   UTILITAIRES
+============================================================ */
+function $(id){ return document.getElementById(id); }
+
 function log(msg) {
-  const el = document.getElementById("logs");
+  const el = $("logs");
   if (el.textContent.trim() === "—") el.textContent = "";
   el.textContent += `[${new Date().toLocaleTimeString()}] ${msg}\n`;
   el.scrollTop = el.scrollHeight;
 }
-function setStatus(msg) {
-  document.getElementById("status").textContent = msg;
-}
+function setStatus(msg) { $("status").textContent = msg; }
 
 async function fetchJson(url, timeoutMs = 12000) {
   const ctrl = new AbortController();
@@ -285,7 +413,10 @@ async function fetchJson(url, timeoutMs = 12000) {
   try {
     const r = await fetch(url, { cache: "no-store", signal: ctrl.signal });
     clearTimeout(t);
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    if (!r.ok) {
+      const txt = await r.text().catch(() => "");
+      throw new Error(`HTTP ${r.status} ${txt.slice(0,120)}`);
+    }
     return await r.json();
   } catch (e) {
     clearTimeout(t);
@@ -294,17 +425,15 @@ async function fetchJson(url, timeoutMs = 12000) {
 }
 
 /* ============================================================
-   RÉCUPÉRATION DES DONNÉES
-   ============================================================ */
+   SOURCES
+============================================================ */
 async function fetchNvdCve(cveId) {
   return fetchJson(`https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=${encodeURIComponent(cveId)}`);
 }
-
 async function fetchEpss(cveId) {
   const data = await fetchJson(`https://api.first.org/data/v1/epss?cve=${encodeURIComponent(cveId)}`);
   return data?.data?.[0] || { epss: null, percentile: null };
 }
-
 async function fetchKevStatus(cveId) {
   const kev = await fetchJson("https://raw.githubusercontent.com/cisagov/kev-data/main/known_exploited_vulnerabilities.json");
   const hit = (kev?.vulnerabilities || []).find(v => v?.cveID === cveId);
@@ -312,30 +441,17 @@ async function fetchKevStatus(cveId) {
 }
 
 /* ============================================================
-   AJOUT CPE : extraction + rendu + bouton "Voir tous"
-   ============================================================ */
-
-/**
- * État UI CPE (persisté uniquement pendant la session/page)
- * - cpeExpanded : false => affiche max 5 lignes
- * - lastCpeList : mémorise la dernière liste pour rerender au toggle
- */
+   CPE : extraction + rendu + bouton "Voir tous"
+============================================================ */
 let cpeExpanded = false;
 let lastCpeList = [];
 
-/**
- * Extraction robuste des CPE à partir de la structure NVD.
- * - Selon le niveau où tu passes l'objet, ça peut être:
- *   - nvd.vulnerabilities[0].cve.configurations
- *   - ou directement cveObj.configurations
- */
 function extractCpesFromNvd(cveObj) {
-  const configs = cveObj?.configurations || cveObj?.cve?.configurations || [];
+  const configs = cveObj?.configurations || [];
   const out = [];
 
   function walkNodes(nodes) {
     (nodes || []).forEach(node => {
-      // cpeMatch contient les CPE
       (node.cpeMatch || []).forEach(m => {
         const cpe = m.criteria || m.cpe23Uri || null;
         if (!cpe) return;
@@ -348,8 +464,6 @@ function extractCpesFromNvd(cveObj) {
           versionEndExcluding: m.versionEndExcluding || null
         });
       });
-
-      // NVD peut imbriquer des nodes
       if (node.children) walkNodes(node.children);
       if (node.nodes) walkNodes(node.nodes);
     });
@@ -360,31 +474,24 @@ function extractCpesFromNvd(cveObj) {
     if (cfg.children) walkNodes(cfg.children);
   });
 
-  // Déduplication (CPE + vuln + bornes version)
+  // dedup
   const uniq = new Map();
   out.forEach(x => {
-    const key = [
+    const k = [
       x.cpe,
       x.vulnerable ? "vuln" : "nonvuln",
       x.versionStartIncluding, x.versionStartExcluding,
       x.versionEndIncluding, x.versionEndExcluding
     ].join("|");
-    if (!uniq.has(key)) uniq.set(key, x);
+    if (!uniq.has(k)) uniq.set(k, x);
   });
 
   return Array.from(uniq.values()).sort((a,b) => a.cpe.localeCompare(b.cpe));
 }
 
-/**
- * Rendu de la liste CPE
- * - Si > 5 : affiche 5 lignes + bouton toggle
- * - Sinon : affiche tout et cache le bouton
- */
 function renderCpes(cpeList) {
-  const box = document.getElementById("cpe");
-  const btn = document.getElementById("cpeToggleBtn");
-  if (!box || !btn) return;
-
+  const box = $("cpe");
+  const btn = $("cpeToggleBtn");
   lastCpeList = Array.isArray(cpeList) ? cpeList : [];
 
   if (!lastCpeList.length) {
@@ -393,12 +500,10 @@ function renderCpes(cpeList) {
     return;
   }
 
-  // Limite d'affichage
   const limit = 5;
   const showAll = cpeExpanded || lastCpeList.length <= limit;
   const shown = showAll ? lastCpeList : lastCpeList.slice(0, limit);
 
-  // Bouton
   if (lastCpeList.length > limit) {
     btn.style.display = "inline-block";
     btn.textContent = showAll ? "Voir moins" : `Voir tous (${lastCpeList.length})`;
@@ -406,7 +511,6 @@ function renderCpes(cpeList) {
     btn.style.display = "none";
   }
 
-  // Petite fonction pour afficher les bornes de version si présentes
   function versionRange(c) {
     const parts = [];
     if (c.versionStartIncluding) parts.push(`>= ${c.versionStartIncluding}`);
@@ -430,60 +534,423 @@ function renderCpes(cpeList) {
   `;
 }
 
-/**
- * Toggle bouton "Voir tous / Voir moins"
- * - relance simplement le rendu avec lastCpeList
- */
 function toggleCpeView() {
   cpeExpanded = !cpeExpanded;
   renderCpes(lastCpeList);
 }
 
 /* ============================================================
-   RENDU UI ET PIVOT EMB3D
-   ============================================================ */
+   Helpers CVSS / Remote / Pills
+============================================================ */
+function isRemote(cvss3, cvss4) {
+  const av3 = (cvss3?.attackVector || "").toString().toUpperCase();
+  const av4 = (cvss4?.attackVector || "").toString().toUpperCase();
+  return av3 === "NETWORK" || av4 === "NETWORK";
+}
+
+function buildExploitPills(cvss3, cvss4, kev) {
+  const pills = [];
+  const src = cvss3 || cvss4 || {};
+  if (src.attackVector) pills.push({cls:"", k:"AV", v: src.attackVector});
+  if (src.attackComplexity) pills.push({cls:"", k:"AC", v: src.attackComplexity});
+  if (src.privilegesRequired) pills.push({cls:"", k:"PR", v: src.privilegesRequired});
+  if (src.userInteraction) pills.push({cls:"", k:"UI", v: src.userInteraction});
+  if (cvss3?.scope) pills.push({cls:"", k:"S", v: cvss3.scope});
+
+  if (cvss3?.confidentialityImpact) pills.push({cls:"warn", k:"C", v: cvss3.confidentialityImpact});
+  if (cvss3?.integrityImpact) pills.push({cls:"warn", k:"I", v: cvss3.integrityImpact});
+  if (cvss3?.availabilityImpact) pills.push({cls:"warn", k:"A", v: cvss3.availabilityImpact});
+
+  pills.push({cls: kev?.inKev ? "crit" : "", k:"KEV", v: kev?.inKev ? "Oui" : "Non"});
+  return pills;
+}
+
+/* ============================================================
+   SUIVI / TRIAGE : contexte + règles + semi-auto CPE + PDF
+============================================================ */
+const followUpCtx = {
+  cveId: null, cvss3: null, cvss4: null,
+  epss: null, epssPct: null,
+  kev: { inKev:false, dateAdded:null },
+  isRemote:false,
+  cpeList: [], cpeCount: 0,
+  cpeHints: [],
+  cpeHintsSelected: new Set(),
+  lastRecommendation: null
+};
+
+let userLockedDecision = false;
+
+function getDecisionSelected(){
+  return document.querySelector('input[name="fu_decision"]:checked')?.value || null;
+}
+function setDecisionSelected(val){
+  const r = document.querySelector(`input[name="fu_decision"][value="${val}"]`);
+  if (r) r.checked = true;
+}
+function pill(html){ return `<span class="pill">${html}</span>`; }
+function pillCrit(html){ return `<span class="pill crit">${html}</span>`; }
+function pillWarn(html){ return `<span class="pill warn">${html}</span>`; }
+
+function toggleFollowUp() {
+  const p = $("followupPanel");
+  p.style.display = (p.style.display === "none") ? "block" : "none";
+  if (p.style.display === "block") onFollowUpChanged();
+}
+
+function onDecisionManualChange(){
+  userLockedDecision = true;
+  onFollowUpChanged();
+}
+function applyAutoRecommendation(){
+  const reco = computeRecommendation();
+  setDecisionSelected(reco.decision);
+  userLockedDecision = false;
+  onFollowUpChanged();
+}
+
+/* --- semi-auto : hints CPE (mots-clés) --- */
+const cpeHintRules = [
+  { id:"qnx",        label:"Onboard OS (QNX)",                re:/\bblackberry:qnx\b|\bqnx\b/i },
+  { id:"android",    label:"IVI / Android",                   re:/\bandroid\b/i },
+  { id:"autosar",    label:"Middleware (AUTOSAR)",            re:/\bautosar\b/i },
+  { id:"qualcomm",   label:"SoC / Modem (Qualcomm)",          re:/\bqualcomm\b/i },
+  { id:"nvidia",     label:"SoC / GPU (NVIDIA)",              re:/\bnvidia\b/i },
+  { id:"renesas",    label:"MCU/SoC (Renesas)",               re:/\brenesas\b/i },
+  { id:"bosch",      label:"Supplier (Bosch)",                re:/\bbosch\b/i },
+  { id:"continental",label:"Supplier (Continental)",          re:/\bcontinental\b/i },
+  { id:"valeo",      label:"Supplier (Valeo)",                re:/\bvaleo\b/i },
+  { id:"forvia",     label:"Supplier (Forvia)",               re:/\bforvia\b/i },
+  { id:"lge",        label:"Supplier (LG Electronics)",       re:/\blg\b|\blge\b|\blg_electronics\b/i }
+];
+
+function buildCpeHintsFromList(cpeList){
+  const hints = [];
+  const blob = (cpeList || []).map(x => x.cpe).join("\n");
+  cpeHintRules.forEach(rule => {
+    if (rule.re.test(blob)) hints.push({ id: rule.id, label: rule.label });
+  });
+  return hints;
+}
+
+function renderCpeHintBanner(){
+  const banner = $("fuCpeHintBanner");
+  const txt = $("fuCpeHintText");
+  const list = $("fuCpeHintList");
+  if (!banner || !txt || !list) return;
+
+  if (!followUpCtx.cpeHints.length) {
+    banner.style.display = "none";
+    return;
+  }
+
+  banner.style.display = "block";
+  txt.textContent = `Indices détectés (${followUpCtx.cpeHints.length}) à partir des CPE : coche ceux que tu confirmes.`;
+
+  list.innerHTML =
+    followUpCtx.cpeHints.map(h => {
+      const checked = followUpCtx.cpeHintsSelected.has(h.id) ? "checked" : "";
+      return `
+        <label style="display:block; margin:6px 0;">
+          <input type="checkbox" data-hint="${h.id}" ${checked} onchange="onCpeHintChanged(event)"> ${h.label}
+        </label>`;
+    }).join("")
+    + `<button class="btn-small" onclick="applyCpeHintsToAssets()">Appliquer la suggestion (assets impacted=Oui si >=1 coche)</button>`;
+}
+
+function onCpeHintChanged(ev){
+  const id = ev.target.getAttribute("data-hint");
+  if (!id) return;
+  if (ev.target.checked) followUpCtx.cpeHintsSelected.add(id);
+  else followUpCtx.cpeHintsSelected.delete(id);
+  onFollowUpChanged();
+}
+
+function applyCpeHintsToAssets(){
+  if (followUpCtx.cpeHintsSelected.size > 0) $("fu_assetsImpacted").value = "yes";
+  onFollowUpChanged();
+}
+
+/* --- auto-fill des decision points --- */
+function autoFillDecisionPoints(){
+  // Exploitation auto
+  if (followUpCtx.kev?.inKev) $("fu_exploitation").value = "active";
+  else if (typeof followUpCtx.epss === "number" && followUpCtx.epss >= 0.20) $("fu_exploitation").value = "poc";
+  else $("fu_exploitation").value = "none";
+
+  // Exposure auto
+  $("fu_exposure").value = followUpCtx.isRemote ? "open_controlled" : "none";
+
+  // Assets impacted semi-auto : uniquement si unknown et hints confirmés
+  if ($("fu_assetsImpacted").value === "unknown" && followUpCtx.cpeHintsSelected.size > 0) {
+    $("fu_assetsImpacted").value = "yes";
+  }
+}
+
+/* --- moteur de recommandation --- */
+function computeRecommendation(){
+  autoFillDecisionPoints();
+
+  const assets   = $("fu_assetsImpacted").value;
+  const cyberFeat= $("fu_cyberFeature").value;
+  const exploit  = $("fu_exploitation").value;
+  const exposure = $("fu_exposure").value;
+  const tech     = $("fu_techImpact").value;
+  const safety   = $("fu_safetyImpact").value;
+  const supplier = $("fu_supplier").value;
+
+  const why = [];
+  if (followUpCtx.kev?.inKev) why.push(pillCrit(`KEV: Oui (${followUpCtx.kev.dateAdded || "date?"})`));
+  else why.push(pill(`KEV: Non`));
+  if (typeof followUpCtx.epss === "number") why.push(pill(`EPSS: ${(followUpCtx.epss*100).toFixed(2)}%`));
+  if (followUpCtx.isRemote) why.push(pillWarn(`Remote (AV=NETWORK)`));
+  if (followUpCtx.cpeCount) why.push(pill(`CPE: ${followUpCtx.cpeCount}`));
+  if (followUpCtx.cpeHintsSelected.size) why.push(pillWarn(`Hints confirmés: ${Array.from(followUpCtx.cpeHintsSelected).join(", ")}`));
+
+  // Règles "dures"
+  if (assets === "no") {
+    return { decision:"Dismiss to SOC", severity:"info", pills: why,
+      reason:"Les actifs véhicule ne sont pas impactés → orienter SOC / clôture périmètre véhicule." };
+  }
+  if (cyberFeat === "yes") {
+    return { decision:"ACT Cyber Analysis", severity:"warn", pills: why,
+      reason:"Cybersecurity feature impactée → déclencher analyse cyber (ACT)." };
+  }
+
+  const exposureHigh = (exposure === "open_controlled");
+  const exploitHigh  = (exploit === "active");
+  const exploitSome  = (exploit === "active" || exploit === "poc");
+  const safetyHigh   = (safety === "rc");
+  const techHigh     = (tech === "total");
+  const techSome     = (tech === "partial" || tech === "total");
+
+  if (supplier === "unresponsive" && (exploitSome || exposureHigh || safetyHigh || techSome)) {
+    return { decision:"ACT : Request countermeasure (no patch)", severity:"warn", pills: why,
+      reason:"Fournisseur non réactif + signaux de risque → demander contre‑mesure (pas de patch)." };
+  }
+
+  if ((exploitHigh && exposureHigh) || safetyHigh || (techHigh && exposureHigh && exploitSome)) {
+    return { decision:"Patch – Out-of-cycle / Immediate", severity:"crit", pills: why,
+      reason:"Signaux forts (exploitation active / exposition / safety / impact total) → remédiation hors cycle / immédiate." };
+  }
+
+  if ((exploit === "poc" && exposureHigh) || (techSome && exposureHigh)) {
+    return { decision:"Patch – Schedule", severity:"warn", pills: why,
+      reason:"Risque non négligeable mais pas 'immédiat' → planification de patch (campagne)." };
+  }
+
+  if (!exploitSome && !exposureHigh && (tech === "none" || tech === "unknown") && (safety === "none" || safety === "unknown")) {
+    return { decision:"No action – Track for change", severity:"info", pills: why,
+      reason:"Pas d’exploitation / faible exposition / impacts non confirmés → suivi (track for change)." };
+  }
+
+  return { decision:"ACT Cyber Analysis", severity:"warn", pills: why,
+    reason:"Information incomplète ou combinaison ambiguë → analyse cyber pour statuer." };
+}
+
+function renderRecommendation(reco){
+  const banner = $("fuRecoBanner");
+  const txt = $("fuRecoText");
+  const pillsBox = $("fuRecoPills");
+
+  banner.style.display = "block";
+
+  const chosen = getDecisionSelected();
+  const badgeCls = (reco.severity === "crit") ? "bg-bad" : (reco.severity === "warn" ? "bg-warn" : "bg-info");
+
+  followUpCtx.lastRecommendation = reco;
+
+  txt.innerHTML = `
+    <div style="font-weight:900; margin-bottom:6px;">
+      Recommandé : <span class="badge ${badgeCls}">${reco.decision}</span>
+      ${chosen && chosen !== reco.decision ? `<span class="muted"> (sélection actuelle : ${chosen})</span>` : ""}
+    </div>
+    <div class="muted">${reco.reason}</div>
+  `;
+
+  pillsBox.innerHTML = (reco.pills || []).join("");
+}
+
+function enforceDecisionConstraints(){
+  const assets = $("fu_assetsImpacted").value;
+  const radios = Array.from(document.querySelectorAll('input[name="fu_decision"]'));
+  radios.forEach(r => r.disabled = false);
+
+  if (assets === "no") {
+    radios.forEach(r => r.disabled = (r.value !== "Dismiss to SOC"));
+    setDecisionSelected("Dismiss to SOC");
+  }
+}
+
+function onFollowUpChanged(){
+  renderCpeHintBanner();
+  const reco = computeRecommendation();
+  renderRecommendation(reco);
+
+  if (!userLockedDecision) setDecisionSelected(reco.decision);
+  enforceDecisionConstraints();
+}
+
+function updateFollowUpContext({ cveId, cvss3, cvss4, epss, epssPct, kev, cpeList }){
+  followUpCtx.cveId = cveId || null;
+  followUpCtx.cvss3 = cvss3 || null;
+  followUpCtx.cvss4 = cvss4 || null;
+  followUpCtx.epss = (typeof epss === "number") ? epsof epssPct === "number") ? epssPct : null;
+  followUpCtx.kev = kev || { inKev:false, dateAdded:null };
+  followUpCtx.isRemote = isRemote(cvss3, cvss4);
+
+  followUpCtx.cpeList = Array.isArray(cpeList) ? cpeList : [];
+  followUpCtx.cpeCount = followUpCtx.cpeList.length;
+
+  // rebuild hints à chaque analyse
+  followUpCtx.cpeHints = buildCpeHintsFromList(followUpCtx.cpeList);
+  followUpCtx.cpeHintsSelected = new Set(); // confirmation user requise
+
+  // refresh si panel ouvert
+  if ($("followupPanel")?.style.display === "block") onFollowUpChanged();
+}
+
+/* --- PDF avec rationnel --- */
+function safeText(pdf, text, x, y, maxWidth){
+  const lines = pdf.splitTextToSize(String(text), maxWidth);
+  pdf.text(lines, x, y);
+  return y + (lines.length * 6);
+}
+
+function generateFollowUpPdf(){
+  if (!window.jspdf || !window.jspdf.jsPDF) {
+    alert("jsPDF n'est pas disponible. Vérifie que la librairie est chargée.");
+    return;
+  }
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({ unit: "mm", format: "a4" });
+
+  const cveId = $("cveInput").value || followUpCtx.cveId || "—";
+  const now = new Date();
+
+  const dp = {
+    assetsImpacted: $("fu_assetsImpacted").value,
+    cyberFeature: $("fu_cyberFeature").value,
+    exploitation: $("fu_exploitation").value,
+    exposure: $("fu_exposure").value,
+    techImpact: $("fu_techImpact").value,
+    safetyImpact: $("fu_safetyImpact").value,
+    supplier: $("fu_supplier").value,
+    cpeHintsConfirmed: Array.from(followUpCtx.cpeHintsSelected)
+  };
+
+  const selectedDecision = getDecisionSelected() || "Non défini";
+  const reco = followUpCtx.lastRecommendation || computeRecommendation();
+
+  let y = 14;
+  pdf.setFontSize(14);
+  pdf.text("Kat-Force – Preuve de suivi vulnérabilité", 10, y);
+  y += 8;
+
+  pdf.setFontSize(10);
+  y = safeText(pdf, `CVE : ${cveId}`, 10, y, 190);
+  y = safeText(pdf, `Date : ${now.toLocaleString()}`, 10, y, 190);
+  y = safeText(pdf, `Décision sélectionnée : ${selectedDecision}`, 10, y, 190);
+  y = safeText(pdf, `Décision recommandée : ${reco.decision}`, 10, y, 190);
+
+  y += 4;
+  pdf.setFontSize(11);
+  pdf.text("1) Decision points (inputs)", 10, y); y += 6;
+  pdf.setFontSize(10);
+  y = safeText(pdf, `- Vehicle’s assets impacted : ${dp.assetsImpacted}`, 12, y, 188);
+  y = safeText(pdf, `- Cybersecurity feature impacted : ${dp.cyberFeature}`, 12, y, 188);
+  y = safeText(pdf, `- Exploitation : ${dp.exploitation}`, 12, y, 188);
+  y = safeText(pdf, `- System exposure : ${dp.exposure}`, 12, y, 188);
+  y = safeText(pdf, `- Technical impact : ${dp.techImpact}`, 12, y, 188);
+  y = safeText(pdf, `- Safety impact : ${dp.safetyImpact}`, 12, y, 188);
+  y = safeText(pdf, `- Supplier involvement : ${dp.supplier}`, 12, y, 188);
+  y = safeText(pdf, `- CPE hints confirmés : ${dp.cpeHintsConfirmed.length ? dp.cpeHintsConfirmed.join(", ") : "Aucun"}`, 12, y, 188);
+
+  y += 4;
+  pdf.setFontSize(11);
+  pdf.text("2) Signaux automatiques (evidence)", 10, y); y += 6;
+  pdf.setFontSize(10);
+
+  const epssTxt = (typeof followUpCtx.epss === "number") ? `${(followUpCtx.epss*100).toFixed(2)}%` : "—";
+  const epssPctTxt = (typeof followUpCtx.epssPct === "number") ? `${(followUpCtx.epssPct*100).toFixed(0)}e` : "—";
+
+  y = safeText(pdf, `- CVSS v3 : ${followUpCtx.cvss3?.baseScore ?? "—"} (${followUpCtx.cvss3?.vectorString ?? "—"})`, 12, y, 188);
+  y = safeText(pdf, `- CVSS v4 : ${followUpCtx.cvss4?.baseScore ?? "—"} (${followUpCtx.cvss4?.vectorString ?? "—"})`, 12, y, 188);
+  y = safeText(pdf, `- EPSS : ${epssTxt} (Percentile ${epssPctTxt})`, 12, y, 188);
+  y = safeText(pdf, `- KEV : ${followUpCtx.kev?.inKev ? "Oui" : "Non"} ${followUpCtx.kev?.dateAdded ? "(date ajout: " + followUpCtx.kev.dateAdded + ")" : ""}`, 12, y, 188);
+  y = safeText(pdf, `- Remote (AV=NETWORK) : ${followUpCtx.isRemote ? "Oui" : "Non"}`, 12, y, 188);
+  y = safeText(pdf, `- Nombre de CPE : ${followUpCtx.cpeCount}`, 12, y, 188);
+
+  const cpePreview = (followUpCtx.cpeList || []).slice(0, 8).map(x => x.cpe);
+  y = safeText(pdf, `- Extrait CPE (max 8) :`, 12, y, 188);
+  cpePreview.forEach(c => { y = safeText(pdf, `  • ${c}`, 14, y, 186); });
+  if ((followUpCtx.cpeList || []).length > 8) {
+    y = safeText(pdf, `  … (${followUpCtx.cpeList.length - 8} autres CPE non listés)`, 14, y, 186);
+  }
+
+  y += 4;
+  pdf.setFontSize(11);
+  pdf.text("3) Rationnel (règle déclenchée)", 10, y); y += 6;
+  pdf.setFontSize(10);
+  y = safeText(pdf, reco.reason, 12, y, 188);
+
+  const pillsText = (reco.pills || []).map(p => p.replace(/<[^>]+>/g,'')).join(" | ");
+  y = safeText(pdf, `Signaux synthèse : ${pillsText}`, 12, y + 2, 188);
+
+  pdf.save(`Suivi_${cveId}.pdf`);
+}
+
+/* ============================================================
+   RENDU UI
+============================================================ */
 function renderResults({ cveId, description, cvss3, cvss4, epss, epssPct, cweList, capecList, cpeList, refs, kev }) {
-  document.getElementById("desc").textContent = description || "—";
+  $("desc").textContent = description || "—";
 
-  // Scores CVSS
-  document.getElementById("cvss3").textContent = cvss3?.baseScore ?? "—";
-  document.getElementById("cvss3vec").textContent = cvss3?.vectorString ?? "—";
-  document.getElementById("cvss4").textContent = cvss4?.baseScore ?? "—";
-  document.getElementById("cvss4vec").textContent = cvss4?.vectorString ?? "—";
+  $("cvss3").textContent = (cvss3?.baseScore ?? "—");
+  $("cvss3vec").textContent = (cvss3?.vectorString ?? "—");
+  $("cvss4").textContent = (cvss4?.baseScore ?? "—");
+  $("cvss4vec").textContent = (cvss4?.vectorString ?? "—");
 
-  // EPSS / KEV
-  document.getElementById("epss").textContent = (typeof epss === "number") ? `${(epss * 100).toFixed(2)}%` : "—";
-  document.getElementById("epssPct").textContent = (typeof epssPct === "number") ? `Percentile : ${(epssPct * 100).toFixed(0)}e` : "—";
-  document.getElementById("kev").textContent = kev?.inKev ? "Oui" : "Non";
-  document.getElementById("kevDate").textContent = kev?.inKev ? `Ajouté le : ${kev.dateAdded}` : "—";
+  $("epss").textContent = (typeof epss === "number") ? `${(epss*100).toFixed(2)}%` : "—";
+  $("epssPct").textContent = (typeof epssPct === "number") ? `Percentile : ${(epssPct*100).toFixed(0)}e` : "—";
+
+  $("kev").textContent = kev?.inKev ? "Oui" : "Non";
+  $("kevDate").textContent = kev?.inKev ? `Ajouté le : ${kev.dateAdded || "—"}` : "—";
 
   // Badges
   const badges = [];
-  if (kev?.inKev) badges.push('<span class="badge bg-bad">KEV</span>');
-  if (typeof epss === "number" && epss >= 0.20) badges.push('<span class="badge bg-bad">EPSS élevé</span>');
-  if (cvss3?.baseScore >= 9.0) badges.push('<span class="badge bg-bad">Critique</span>');
-  document.getElementById("badges").innerHTML = badges.join(" ") || "—";
+  badges.push(`<span class="badge bg-info">${cveId}</span>`);
+  if (isRemote(cvss3, cvss4)) badges.push(`<span class="badge bg-warn">REMOTE exploitable</span>`);
+  if (kev?.inKev) badges.push(`<span class="badge bg-bad">KEV</span>`);
+  if (typeof epss === "number" && epss >= 0.20) badges.push(`<span class="badge bg-bad">EPSS élevé</span>`);
+  if (typeof cvss3?.baseScore === "number" && cvss3.baseScore >= 9.0) badges.push(`<span class="badge bg-bad">CVSS v3 Critique</span>`);
+  if (typeof cvss4?.baseScore === "number" && cvss4.baseScore >= 9.0) badges.push(`<span class="badge bg-bad">CVSS v4 Critique</span>`);
+  $("badges").innerHTML = badges.join(" ") || "—";
 
-  // CPE (avec bouton "Voir tous" si > 5)
+  // Banner exploit conditions
+  const pills = buildExploitPills(cvss3, cvss4, kev);
+  $("exploitBanner").style.display = pills.length ? "block" : "none";
+  $("exploitPills").innerHTML = pills.map(p => `<span class="pill ${p.cls || ""}">${p.k}: ${p.v}</span>`).join("");
+
+  // CPE
   renderCpes(cpeList);
 
-  // CWE List
-  const cweDiv = document.getElementById("cwe");
-  if (cweList.length) {
-    cweDiv.innerHTML = `<ul>${
-      cweList.map(c => `<li>${c} - <a href="https://cwe.mitre.org/data/definitions/${c.split('-')[1]}.html" target="_blank">Mitre</a></li>`).join("")
-    }</ul>`;
-  } else {
-    cweDiv.textContent = "—";
-  }
+  // CWE list
+  const cweDiv = $("cwe");
+  const uniqCwe = Array.from(new Set(cweList || []));
+  if (uniqCwe.length) {
+    cweDiv.innerHTML = `<ul>${uniqCwe.map(c =>
+      `<li><span class="mono">${c}</span> — <a target="_blank" href="https://cwe.mitre.org/data/definitions/${c.split("-")[1]}.html">MITRE</a></li>`
+    ).join("")}</ul>`;
+  } else cweDiv.textContent = "—";
 
-  // --- LE PIVOT EMB3D ---
-  const emb3dBox = document.getElementById("emb3d-info");
-  emb3dBox.innerHTML = "";
-  const match = cweList.find(c => emb3dMapping[c]);
+  // EMB3D pivot (premier match)
+  const embBox = $("emb3d-info");
+  embBox.innerHTML = "";
+  const match = uniqCwe.find(c => emb3dMapping[c]);
   if (match) {
     const m = emb3dMapping[match];
-    emb3dBox.innerHTML = `
+    embBox.innerHTML = `
       <div class="emb3d-card">
         <div style="font-size:0.75em; color:var(--accent); font-weight:bold; text-transform:uppercase;">🛡️ Pivot EMB3D</div>
         <div style="font-weight:900; margin-top:5px;">${m.tid} : ${m.threat}</div>
@@ -492,58 +959,56 @@ function renderResults({ cveId, description, cvss3, cvss4, epss, epssPct, cweLis
       </div>`;
   }
 
-  // CAPEC List (tu passes capecList: [] pour l'instant)
-  const capecDiv = document.getElementById("capec");
-  if (capecList.length) {
-    capecDiv.innerHTML = `<ul>${capecList.map(c => `<li>CAPEC-${c.id} : ${c.name}</li>`).join("")}</ul>`;
-  } else {
-    capecDiv.textContent = "—";
-  }
+  // CAPEC (placeholder)
+  const capDiv = $("capec");
+  if (capecList && capecList.length) capDiv.innerHTML = `<ul>${capecList.map(c => `<li>CAPEC-${c.id} : ${c.name}</li>`).join("")}</ul>`;
+  else capDiv.textContent = "—";
 
-  // Références
-  const safeRefs = Array.isArray(refs) ? refs.filter(Boolean) : [];
-  document.getElementById("refs").innerHTML = safeRefs.length
-    ? `<ul>${safeRefs.map(r => `<li><a href="${r}" target="_blank" rel="noopener">${r}</a></li>`).join("")}</ul>`
+  // References
+  const safeRefs = (refs || []).filter(Boolean);
+  $("refs").innerHTML = safeRefs.length
+    ? `<ul>${safeRefs.map(u => `<li><a target="_blank" rel="noopener" href="${u}">${u}</a></li>`).join("")}</ul>`
     : "—";
+
+  // 🔥 Sync triage context for automation + semi-auto
+  updateFollowUpContext({ cveId, cvss3, cvss4, epss, epssPct, kev, cpeList });
 }
 
 /* ============================================================
-   ORCHESTRATION PRINCIPALE
-   ============================================================ */
+   ORCHESTRATION
+============================================================ */
 async function runAnalysis() {
-  const btn = document.getElementById("runBtn");
-  const cveId = document.getElementById("cveInput").value.trim().toUpperCase();
+  const btn = $("runBtn");
+  const cveId = ($("cveInput").value || "").trim().toUpperCase();
 
-  // Reset UI état CPE à chaque nouvelle analyse
-  cpeExpanded = false;
-  lastCpeList = [];
-  renderCpes([]); // reset affichage
-
-  if (!/^CVE-\d{4}-\d{4,}$/.test(cveId)) {
-    alert("Format CVE invalide (ex: CVE-2023-1234)");
-    return;
-  }
-
+  $("logs").textContent = "—";
+  setStatus("Analyse en cours…");
   btn.disabled = true;
-  log(`Analyse lancée pour ${cveId}`);
-  setStatus("Analyse en cours...");
+
+  // reset UI state
+  cpeExpanded = false;
+  userLockedDecision = false;
 
   try {
-    const nvd = await fetchNvdCve(cveId);
+    if (!/^CVE-\d{4}-\d{4,}$/.test(cveId)) throw new Error("Format CVE invalide (ex: CVE-2025-32058).");
+    log(`Analyse de ${cveId}`);
 
-    // Ici: on récupère l'objet "cve" + on garde aussi le conteneur si besoin
+    log("Récupération NVD…");
+    const nvd = await fetchNvdCve(cveId);
     const vuln0 = nvd?.vulnerabilities?.[0];
     const cve = vuln0?.cve;
-    if (!cve) throw new Error("CVE non trouvée.");
+    if (!cve) throw new Error("CVE non trouvée dans la NVD.");
 
-    const desc =
-      cve.descriptions?.find(d => d.lang === "fr")?.value ||
-      cve.descriptions?.find(d => d.lang === "en")?.value ||
-      "—";
+    // Description FR/EN
+    const descArr = cve.descriptions || [];
+    const fr = descArr.find(d => d.lang === "fr")?.value;
+    const en = descArr.find(d => d.lang === "en")?.value;
+    const description = fr || en || "";
 
-    const metrics = cve.metrics;
-    const cvss3 = metrics?.cvssMetricV31?.[0]?.cvssData || metrics?.cvssMetricV30?.[0]?.cvssData;
-    const cvss4 = metrics?.cvssMetricV40?.[0]?.cvssData;
+    // CVSS v3/v4
+    const metrics = cve.metrics || {};
+    const cvss3 = metrics.cvssMetricV31?.[0]?.cvssData || metrics.cvssMetricV30?.[0]?.cvssData || null;
+    const cvss4 = metrics.cvssMetricV40?.[0]?.cvssData || null;
 
     // CWE
     const cweList = [];
@@ -553,41 +1018,48 @@ async function runAnalysis() {
       });
     });
 
-    // CPE : extraction depuis cve.configurations
-    log("Extraction CPE (NVD configurations)...");
+    // CPE
+    log("Extraction CPE (NVD configurations)…");
     const cpeList = extractCpesFromNvd(cve);
 
-    const epssData = await fetchEpss(cveId);
-    const kev = await fetchKevStatus(cveId);
-    const refs = (cve.references || []).map(r => r.url);
+    // Refs
+    const refs = (cve.references || []).map(r => r.url).filter(Boolean);
+
+    // EPSS + KEV (non bloquants)
+    let epssData = { epss: null, percentile: null };
+    try { log("Récupération EPSS…"); epssData = await fetchEpss(cveId); }
+    catch (e) { log("EPSS indisponible : " + (e.message || e)); }
+
+    let kev = { inKev: false, dateAdded: null };
+    try { log("Récupération KEV (CISA)…"); kev = await fetchKevStatus(cveId); }
+    catch (e) { log("KEV indisponible : " + (e.message || e)); }
 
     renderResults({
       cveId,
-      description: desc,
+      description,
       cvss3,
       cvss4,
-      epss: epssData.epss ? parseFloat(epssData.epss) : null,
-      epssPct: epssData.percentile ? parseFloat(epssData.percentile) : null,
+      epss: epssData?.epss ? parseFloat(epssData.epss) : null,
+      epssPct: epssData?.percentile ? parseFloat(epssData.percentile) : null,
       cweList,
-      capecList: [],  // tu pourras remettre ton mapping CAPEC plus tard
+      capecList: [],
       cpeList,
       refs,
       kev
     });
 
     setStatus("✅ Analyse terminée.");
-    log("Analyse terminée avec succès.");
+    log("Analyse terminée.");
   } catch (e) {
-    log(`ERREUR : ${e.message || e}`);
-    setStatus("⚠️ Erreur lors de l'analyse.");
+    setStatus("⚠️ Erreur (voir logs).");
+    log("ERREUR : " + (e.message || e));
   } finally {
     btn.disabled = false;
   }
 }
 
-// Lancement auto au chargement
+// Auto-run
 window.onload = runAnalysis;
 </script>
-
 </body>
 </html>
