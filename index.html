@@ -230,7 +230,7 @@
 
 <script>
 
-  /// Enlever recherche EUVD pour l'instant //
+  /// 26-02 Enlever recherche EUVD pour l'instant - CERT-FR pas possible pour l'instant //
 /* ============================================================
    Utilitaire UI : log + statut
    - Centralise l’affichage d’état et les traces (debug rapide)
@@ -497,7 +497,7 @@ function renderResults({ cveId, description, cvss3, cvss4, epss, epssPct, cweLis
 
 /* ============================================================
    Orchestration : runAnalysis()
-   - Lance NVD + EPSS + KEV + EUVD + mapping CWE→CAPEC
+   - Lance NVD + EPSS + KEV + mapping CWE→CAPEC
    ============================================================ */
 async function runAnalysis() {
   const btn = document.getElementById("runBtn");
