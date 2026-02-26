@@ -2,221 +2,208 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kat-Force Analyser – Clean</title>
+  <title>Kat-Force Analyser – NVD → CWE → EMB3D</title>
 
-  <!-- jsPDF (stable) -->
+  <!-- ✅ jsPDF correct (évite runAnalysis undefined par arrêt JS) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
-    body { background:#0b1020; color:#e9ecff; font-family:Arial, sans-serif; padding:20px; }
-    h1 { border-bottom:2px solid #7aa2ff; padding-bottom:8px; }
-    .card { background:#121a33; border:1px solid #26325f; border-radius:10px; padding:14px; margin-top:14px; }
+    :root {
+      --bg:#070a15; --card:#121a33; --txt:#e9ecff; --accent:#7aa2ff;
+      --bad:#f87171; --ok:#36d399; --warn:#fbbf24; --line:#26325f;
+    }
+    body { background:var(--bg); color:var(--txt); font-family:sans-serif; padding:20px; }
+    h1 { border-bottom:2px solid var(--accent); padding-bottom:10px; margin:0; }
+    nav a { color:var(--accent); margin-right:15px; text-decoration:none; font-weight:800; }
+    .topbar { display:flex; justify-content:space-between; flex-wrap:wrap; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin-top:14px; }
     .row { display:flex; gap:14px; flex-wrap:wrap; }
-    .col { flex:1 1 320px; }
-    button { background:#7aa2ff; border:none; padding:8px 14px; border-radius:8px; font-weight:700; cursor:pointer; }
-    select, input { padding:8px; border-radius:6px; background:#0f1530; color:#fff; border:1px solid #26325f; }
-    .muted { opacity:0.85; }
-    .badge { display:inline-block; padding:3px 8px; border-radius:6px; font-size:12px; font-weight:700; }
-    .bad { background:#f87171; color:#000; }
-    .warn { background:#fbbf24; color:#000; }
-    .info { background:#7aa2ff33; border:1px solid #7aa2ff55; }
-    #logs { white-space:pre-wrap; background:#050814; border:1px solid #26325f; padding:10px; border-radius:8px; max-height:200px; overflow:auto; }
+    .col { flex:1 1 340px; min-width:320px; }
+
+    input, select {
+      background:rgba(255,255,255,0.04); color:var(--txt);
+      border:1px solid var(--line); border-radius:8px; padding:10px;
+      font-weight:800;
+    }
+    button {
+      background:var(--accent); border:none; padding:10px 16px;
+      border-radius:8px; font-weight:900; cursor:pointer;
+    }
+    button:disabled { opacity:.6; }
+
+    .grid { display:grid; grid-template-columns:repeat(3,minmax(240px,1fr)); gap:10px; }
+    @media(max-width:900px){ .grid{grid-template-columns:repeat(2,1fr);} }
+    @media(max-width:600px){ .grid{grid-template-columns:1fr;} }
+
+    .kpi { background:rgba(255,255,255,0.03); border:1px solid var(--line); border-radius:10px; padding:10px; }
+    .kpi .title { font-size:.75em; text-transform:uppercase; color:var(--accent); }
+    .kpi .value { font-size:1.1em; font-weight:900; }
+    .kpi .sub { font-size:.85em; opacity:.85; }
+
+    .badge { display:inline-block; padding:4px 8px; border-radius:6px; font-size:.75em; font-weight:900; margin-right:6px; }
+    .bg-bad{background:var(--bad);color:#000}
+    .bg-warn{background:var(--warn);color:#000}
+    .bg-info{background:rgba(122,162,255,.2);border:1px solid rgba(122,162,255,.4)}
+
+    .banner { border:1px solid var(--line); border-radius:10px; padding:10px; margin-top:10px; }
+    .pill { border:1px solid rgba(122,162,255,.4); border-radius:999px; padding:6px 10px; font-weight:900; }
+    .pill.warn{border-color:rgba(251,191,36,.7)}
+    .pill.crit{border-color:rgba(248,113,113,.7)}
+
+    .emb3d-card { background:rgba(122,162,255,.08); border:1px solid var(--accent); border-radius:10px; padding:12px; margin-top:10px; }
+
+    #logs {
+      white-space:pre-wrap; font-family:monospace; font-size:.85em;
+      background:rgba(0,0,0,.25); border:1px solid var(--line);
+      border-radius:10px; padding:10px; max-height:240px; overflow:auto;
+    }
   </style>
 </head>
 
 <body>
 
-<h1>🧠 Kat‑Force Analyser (Clean)</h1>
+<nav>
+  <a href="index.html">🔍 Analyseur</a>
+  <a href="veille.html">🔭 Veille</a>
+</nav>
+
+<div class="topbar">
+  <h1>🧠 Kat‑Force Analyser</h1>
+  <div class="muted">Mapping : CVE → CWE → EMB3D</div>
+</div>
 
 <div class="card">
-  <label>CVE</label><br>
+  <label>CVE à analyser</label><br>
   <input id="cveInput" value="CVE-2025-32058">
-  <button onclick="runAnalysis()">🚀 Lancer</button>
-  <span id="status" class="muted">Prêt</span>
+  <button id="runBtn" onclick="runAnalysis()">🚀 Lancer l’analyse</button>
+  <span id="status">Prêt.</span>
 </div>
 
 <div class="row">
   <div class="col card">
-    <h3>Résumé</h3>
-    <div>CVSS v3 : <b id="cvss3">—</b></div>
-    <div>CVSS v4 : <b id="cvss4">—</b></div>
-    <div>EPSS : <b id="epss">—</b></div>
-    <div>KEV : <b id="kev">—</b></div>
+    <h2>Résumé & Scores</h2>
+    <div class="grid">
+      <div class="kpi"><div class="title">CVSS v3</div><div id="cvss3" class="value">—</div><div id="cvss3vec" class="sub">—</div></div>
+      <div class="kpi"><div class="title">CVSS v4</div><div id="cvss4" class="value">—</div><div id="cvss4vec" class="sub">—</div></div>
+      <div class="kpi"><div class="title">EPSS</div><div id="epss" class="value">—</div><div id="epssPct" class="sub">—</div></div>
+      <div class="kpi"><div class="title">KEV</div><div id="kev" class="value">—</div><div id="kevDate" class="sub">—</div></div>
+      <div class="kpi"><div class="title">Badges</div><div id="badges">—</div></div>
+    </div>
+
+    <div id="exploitBanner" class="banner" style="display:none">
+      <h3>Conditions d’exploitation</h3>
+      <div id="exploitPills"></div>
+    </div>
   </div>
 
   <div class="col card">
-    <h3>Description</h3>
-    <div id="desc" class="muted">—</div>
+    <h2>Détail</h2>
+    <div id="desc">—</div>
   </div>
 </div>
 
 <div class="card">
-  <h3>📋 Suivi / Triage</h3>
+  <h2>CPE</h2>
+  <div id="cpe">—</div>
+  <button id="cpeToggleBtn" style="display:none" onclick="toggleCpeView()">Voir tous</button>
+</div>
 
-  <label>Vehicle assets impacted</label><br>
-  <select id="fu_assets">
-    <option value="unknown">Inconnu</option>
-    <option value="yes">Oui</option>
-    <option value="no">Non</option>
-  </select>
-
-  <br><br>
-
-  <label>Exploitation</label><br>
-  <select id="fu_exploit">
-    <option value="none">None</option>
-    <option value="poc">PoC</option>
-    <option value="active">Active</option>
-  </select>
-
-  <br><br>
-
-  <b>Décision recommandée :</b>
-  <div id="decisionBox" class="muted">—</div>
-
-  <br>
-  <button onclick="generatePdf()">📄 PDF de suivi</button>
+<div class="row">
+  <div class="col card">
+    <h2>CWE & Pivot EMB3D</h2>
+    <div id="cwe">—</div>
+    <div id="emb3d-info"></div>
+  </div>
+  <div class="col card">
+    <h2>CAPEC</h2>
+    <div id="capec">—</div>
+  </div>
 </div>
 
 <div class="card">
-  <h3>Logs (debug)</h3>
+  <h2>Références</h2>
+  <div id="refs">—</div>
+</div>
+
+<div class="card">
+  <h2>Logs (debug)</h2>
   <div id="logs">—</div>
 </div>
 
 <script>
-/* =========================================================
-   CONFIG
-========================================================= */
+/* ================= CONFIG ================= */
 const DEBUG = true;
 
-/* =========================================================
-   DEBUG UTILS
-========================================================= */
-function log(msg, obj) {
-  if (!DEBUG) return;
-  const el = document.getElementById("logs");
-  if (el.textContent === "—") el.textContent = "";
-  el.textContent += `[${new Date().toLocaleTimeString()}] ${msg}\n`;
-  if (obj) console.log(msg, obj);
+/* ================= DEBUG ================= */
+function log(msg){
+  if(!DEBUG) return;
+  const el=document.getElementById("logs");
+  if(el.textContent==="—") el.textContent="";
+  el.textContent+=`[${new Date().toLocaleTimeString()}] ${msg}\n`;
 }
+function setStatus(s){document.getElementById("status").textContent=s}
 
-function setStatus(s) {
-  document.getElementById("status").textContent = s;
-}
+/* ================= EMB3D ================= */
+const emb3dMapping={
+  "CWE-787":{tid:"T1.1",threat:"Memory Corruption",category:"App",iot:"RCE firmware"},
+  "CWE-798":{tid:"T3.1",threat:"Hardcoded Credentials",category:"System",iot:"Root creds"},
+  "CWE-295":{tid:"T4.3",threat:"MITM",category:"Network",iot:"TLS bypass"}
+};
 
-/* =========================================================
-   CORE
-========================================================= */
-async function runAnalysis() {
-  try {
-    setStatus("Analyse en cours…");
-    log("runAnalysis() appelé");
+/* ================= ORCHESTRATION ================= */
+async function runAnalysis(){
+  const cveId=document.getElementById("cveInput").value.trim().toUpperCase();
+  if(!/^CVE-\d{4}-\d{4,}$/.test(cveId)){alert("Format CVE invalide");return;}
+  document.getElementById("runBtn").disabled=true;
+  setStatus("Analyse en cours…");
+  log(`Analyse ${cveId}`);
 
-    const cveId = document.getElementById("cveInput").value.trim();
-    if (!/^CVE-\d{4}-\d+$/i.test(cveId)) {
-      throw new Error("Format CVE invalide");
+  try{
+    const nvd=await fetch(`https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=${cveId}`).then(r=>r.json());
+    const cve=nvd.vulnerabilities[0].cve;
+
+    const desc=cve.descriptions.find(d=>d.lang==="fr")?.value||
+               cve.descriptions.find(d=>d.lang==="en")?.value||"—";
+    document.getElementById("desc").textContent=desc;
+
+    const cvss3=cve.metrics?.cvssMetricV31?.[0]?.cvssData;
+    const cvss4=cve.metrics?.cvssMetricV40?.[0]?.cvssData;
+
+    document.getElementById("cvss3").textContent=cvss3?.baseScore??"—";
+    document.getElementById("cvss3vec").textContent=cvss3?.vectorString??"—";
+    document.getElementById("cvss4").textContent=cvss4?.baseScore??"—";
+    document.getElementById("cvss4vec").textContent=cvss4?.vectorString??"—";
+
+    const epss=await fetch(`https://api.first.org/data/v1/epss?cve=${cveId}`).then(r=>r.json());
+    document.getElementById("epss").textContent=(epss.data[0].epss*100).toFixed(2)+"%";
+    document.getElementById("epssPct").textContent="Percentile "+(epss.data[0].percentile*100).toFixed(0);
+
+    const kev=await fetch("https://raw.githubusercontent.com/cisagov/kev-data/main/known_exploited_vulnerabilities.json").then(r=>r.json());
+    const hit=kev.vulnerabilities.find(v=>v.cveID===cveId);
+    document.getElementById("kev").textContent=hit?"Oui":"Non";
+    document.getElementById("kevDate").textContent=hit?hit.dateAdded:"—";
+
+    const cweList=[];
+    (cve.weaknesses||[]).forEach(w=>w.description.forEach(d=>d.value.startsWith("CWE-")&&cweList.push(d.value)));
+    document.getElementById("cwe").innerHTML="<ul>"+cweList.map(c=>`<li>${c}</li>`).join("")+"</ul>";
+
+    const emb=cweList.find(c=>emb3dMapping[c]);
+    if(emb){
+      const m=emb3dMapping[emb];
+      document.getElementById("emb3d-info").innerHTML=
+        `<div class="emb3d-card"><b>${m.tid}</b> – ${m.threat}<br>${m.iot}</div>`;
     }
-
-    log("CVE valide", cveId);
-
-    // ---- NVD ----
-    const nvdUrl = `https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=${cveId}`;
-    log("Fetch NVD", nvdUrl);
-
-    const nvd = await fetch(nvdUrl).then(r => r.json());
-    const cve = nvd?.vulnerabilities?.[0]?.cve;
-    if (!cve) throw new Error("CVE non trouvée");
-
-    const desc =
-      cve.descriptions?.find(d => d.lang === "fr")?.value ||
-      cve.descriptions?.find(d => d.lang === "en")?.value ||
-      "—";
-
-    document.getElementById("desc").textContent = desc;
-
-    // CVSS
-    const cvss3 = cve.metrics?.cvssMetricV31?.[0]?.cvssData?.baseScore ?? "—";
-    const cvss4 = cve.metrics?.cvssMetricV40?.[0]?.cvssData?.baseScore ?? "—";
-
-    document.getElementById("cvss3").textContent = cvss3;
-    document.getElementById("cvss4").textContent = cvss4;
-
-    // EPSS
-    let epss = "—";
-    try {
-      const epssData = await fetch(`https://api.first.org/data/v1/epss?cve=${cveId}`).then(r => r.json());
-      epss = (epssData?.data?.[0]?.epss * 100).toFixed(2) + "%";
-    } catch {
-      log("EPSS indisponible");
-    }
-    document.getElementById("epss").textContent = epss;
-
-    // KEV
-    let kev = "Non";
-    try {
-      const kevData = await fetch("https://raw.githubusercontent.com/cisagov/kev-data/main/known_exploited_vulnerabilities.json").then(r => r.json());
-      if (kevData.vulnerabilities.some(v => v.cveID === cveId)) kev = "Oui";
-    } catch {
-      log("KEV indisponible");
-    }
-    document.getElementById("kev").textContent = kev;
-
-    // ---- RECOMMANDATION ----
-    const decision = computeDecision({
-      cvss3,
-      epss,
-      kev,
-      assets: document.getElementById("fu_assets").value
-    });
-
-    document.getElementById("decisionBox").innerHTML =
-      `<span class="badge ${decision.level}">${decision.label}</span><br>${decision.reason}`;
 
     setStatus("✅ Analyse terminée");
-    log("Analyse terminée");
-
-  } catch (e) {
-    setStatus("❌ Erreur");
-    log("ERREUR : " + e.message);
+  }catch(e){
+    log("ERREUR "+e.message);
+    setStatus("Erreur");
+  }finally{
+    document.getElementById("runBtn").disabled=false;
   }
 }
 
-/* =========================================================
-   DECISION ENGINE (simple & robuste)
-========================================================= */
-function computeDecision(ctx) {
-  log("Decision context", ctx);
-
-  if (ctx.assets === "no") {
-    return { label:"Dismiss to SOC", level:"info", reason:"Actifs véhicule non impactés" };
-  }
-
-  if (ctx.kev === "Oui") {
-    return { label:"Patch immédiat", level:"bad", reason:"KEV confirmé" };
-  }
-
-  if (typeof ctx.cvss3 === "number" && ctx.cvss3 >= 9) {
-    return { label:"Patch prioritaire", level:"warn", reason:"CVSS critique" };
-  }
-
-  return { label:"Track for change", level:"info", reason:"Aucun signal fort" };
-}
-
-/* =========================================================
-   PDF
-========================================================= */
-function generatePdf() {
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF();
-
-  pdf.text("Kat‑Force – Suivi vulnérabilité", 10, 15);
-  pdf.text("CVE : " + document.getElementById("cveInput").value, 10, 25);
-  pdf.text("Décision : " + document.getElementById("decisionBox").innerText, 10, 35);
-
-  pdf.save("suivi_cve.pdf");
-}
+window.onload=runAnalysis;
 </script>
-
 </body>
 </html>
