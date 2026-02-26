@@ -1,0 +1,624 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <title>Kat-Force Analyser – NVD → CWE → CAPEC</title>
+
+  <style>
+    :root {
+      --bg: #070a15; --card: #121a33; --txt: #e9ecff; --accent: #7aa2ff;
+      --bad: #f87171; --ok: #36d399; --warn: #fbbf24; --line: #26325f;
+    }
+    body { background: var(--bg); color: var(--txt); font-family: sans-serif; padding: 20px; }
+    h1 { border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin: 0; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; gap: 12px; flex-wrap: wrap; }
+    nav { margin-bottom: 16px; }
+    nav a { color: var(--accent); margin-right: 15px; text-decoration: none; font-weight: 800; }
+    nav a:hover { text-decoration: underline; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-top: 14px;
+    }
+
+    .row { display:flex; gap: 14px; flex-wrap: wrap; align-items: stretch; }
+    .col { flex: 1 1 340px; min-width: 320px; }
+
+    label { font-size: 0.9em; opacity: 0.9; }
+    input[type="text"] {
+      width: min(520px, 100%);
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.04);
+      color: var(--txt);
+      outline: none;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+    }
+
+    button {
+      background: var(--accent);
+      border: none;
+      padding: 10px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 900;
+      color: #000;
+    }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .badge {
+      display:inline-block;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.75em;
+      font-weight: 900;
+      margin-right: 6px;
+      margin-top: 6px;
+    }
+    .bg-ok { background: var(--ok); color:#000; }
+    .bg-bad { background: var(--bad); color:#000; }
+    .bg-warn { background: var(--warn); color:#000; }
+    .bg-info { background: rgba(122,162,255,0.18); border: 1px solid rgba(122,162,255,0.35); color: var(--txt); }
+
+    .muted { opacity: 0.88; }
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(240px, 1fr));
+      gap: 10px;
+    }
+    @media (max-width: 980px) {
+      .grid { grid-template-columns: repeat(2, minmax(240px, 1fr)); }
+    }
+    @media (max-width: 680px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    .kpi {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .kpi .title { font-size: 0.75em; letter-spacing: 0.8px; text-transform: uppercase; color: var(--accent); }
+    .kpi .value { margin-top: 6px; font-size: 1.1em; font-weight: 900; }
+    .kpi .sub { margin-top: 4px; font-size: 0.85em; opacity: 0.9; }
+
+    .banner {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+    }
+    .banner h3 { margin: 0 0 8px 0; font-size: 0.9em; color: var(--accent); text-transform: uppercase; letter-spacing: 0.8px; }
+    .banner .items { display:flex; flex-wrap: wrap; gap: 8px; }
+    .pill {
+      border: 1px solid rgba(122,162,255,0.35);
+      background: rgba(122,162,255,0.10);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.82em;
+      font-weight: 900;
+    }
+    .pill.crit { border-color: rgba(248,113,113,0.7); background: rgba(248,113,113,0.12); }
+    .pill.warn { border-color: rgba(251,191,36,0.7); background: rgba(251,191,36,0.12); }
+
+    ul { margin: 8px 0 0 20px; }
+    li { margin: 4px 0; }
+
+    .links a { color: var(--accent); font-weight: 900; text-decoration: none; }
+    .links a:hover { text-decoration: underline; }
+
+    #logs {
+      white-space: pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.88em;
+      background: rgba(0,0,0,0.25);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      max-height: 240px;
+      overflow: auto;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <a href="index.html">🔍 Analyseur</a>
+    <a href="veille.html">🔭 Veille (Watchtower)</a>
+  </nav>
+
+  <div class="topbar">
+    <h1>🧠 Kat-Force Analyser</h1>
+    <div class="muted">Mapping : <b>NVD (CVE)</b> → <b>CWE</b> → <b>CAPEC</b></div>
+  </div>
+
+  <div class="card">
+    <label for="cveInput">CVE à analyser</label><br/>
+    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 8px;">
+      <input id="cveInput" type="text" placeholder="Ex: CVE-2025-32058" value="CVE-2025-32058" />
+      <button id="runBtn" onclick="runAnalysis()">🚀 Lancer l'analyse</button>
+      <span id="status" class="muted">Prêt.</span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="card">
+        <h2 style="margin:0 0 8px 0;">Résumé & Scores</h2>
+
+        <div class="grid">
+          <div class="kpi">
+            <div class="title">CVSS v3.x Base</div>
+            <div id="cvss3" class="value">—</div>
+            <div id="cvss3vec" class="sub mono">—</div>
+          </div>
+
+          <div class="kpi">
+            <div class="title">CVSS v4.0 Base</div>
+            <div id="cvss4" class="value">—</div>
+            <div id="cvss4vec" class="sub mono">—</div>
+          </div>
+
+          <div class="kpi">
+            <div class="title">EPSS (30j)</div>
+            <div id="epss" class="value">—</div>
+            <div id="epssPct" class="sub">—</div>
+          </div>
+
+          <div class="kpi">
+            <div class="title">KEV (CISA)</div>
+            <div id="kev" class="value">—</div>
+            <div id="kevDate" class="sub">—</div>
+          </div>
+<div class="kpi">
+            <div class="title">Badges</div>
+            <div id="badges" class="sub">—</div>
+          </div>
+        </div>
+
+        <div id="exploitBanner" class="banner" style="display:none;">
+          <h3>Conditions d’exploitation & impacts</h3>
+          <div id="exploitPills" class="items"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="card">
+        <h2 style="margin:0 0 8px 0;">Détail de la vulnérabilité</h2>
+        <div id="desc" class="muted">—</div>
+      </div>
+    </div>
+  </div>
+<div class="row">
+    <div class="col">
+      <div class="card">
+        <h2 style="margin:0 0 8px 0;">CWE & EMB3D</h2>
+        <div id="cwe" class="muted">—</div>
+        <div id="emb3d-info" style="margin-top:10px; padding-top:10px; border-top:1px dashed var(--line);"></div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <h2 style="margin:0 0 8px 0;">CAPEC</h2>
+        <div id="capec" class="muted">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin:0 0 8px 0;">Références (NVD)</h2>
+    <div id="refs" class="links muted">—</div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin:0 0 8px 0;">Logs</h2>
+    <div id="logs">—</div>
+  </div>
+
+<script>
+/* Ajout du mapping Emb3D */
+  <script src="data/emb3d.js"></script>
+  /// 26-02 Enlever recherche EUVD pour l'instant - CERT-FR pas possible pour l'instant //
+/* ============================================================
+   Utilitaire UI : log + statut
+   - Centralise l’affichage d’état et les traces (debug rapide)
+   ============================================================ */
+function log(msg) {
+  const el = document.getElementById("logs");
+  if (el.textContent.trim() === "—") el.textContent = "";
+  el.textContent += `[${new Date().toLocaleTimeString()}] ${msg}\n`;
+  el.scrollTop = el.scrollHeight;
+}
+function setStatus(msg) {
+  document.getElementById("status").textContent = msg;
+}
+
+/* ============================================================
+   Utilitaire : fetch JSON robuste
+   - Ajoute gestion d’erreurs et message clair dans les logs
+   ============================================================ */
+async function fetchJson(url, timeoutMs = 12000) {
+ const ctrl = new AbortController();
+ const t = setTimeout(() => ctrl.abort(), timeoutMs);
+ let r;
+ try {
+   r = await fetch(url, { cache: "no-store", signal: ctrl.signal });
+ } catch (e) {
+   clearTimeout(t);
+   throw new Error(`FETCH échoué sur ${url} : ${e.name || e}`);
+ }
+ clearTimeout(t);
+ if (!r.ok) {
+   const txt = await r.text().catch(() => "");
+   throw new Error(`HTTP ${r.status} sur ${url} ${txt.slice(0,120)}`);
+ }
+ return r.json();
+}
+
+/* ============================================================
+   Récupération NVD (Internet)
+   - Source : description + CVSS (v3/v4) + CWE + références
+   ============================================================ */
+async function fetchNvdCve(cveId) {
+  const url = `https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=${encodeURIComponent(cveId)}`;
+  return fetchJson(url);
+}
+
+/* ============================================================
+   Récupération EPSS FIRST (Internet)
+   - Score EPSS + percentile (si dispo)
+   ============================================================ */
+async function fetchEpss(cveId) {
+  const url = `https://api.first.org/data/v1/epss?cve=${encodeURIComponent(cveId)}`;
+  const data = await fetchJson(url);
+  const rec = (data && data.data && data.data.length) ? data.data[0] : null;
+  return {
+    epss: rec?.epss ? parseFloat(rec.epss) : null,
+    percentile: rec?.percentile ? parseFloat(rec.percentile) : null
+  };
+}
+
+/* ============================================================
+   Récupération KEV CISA (Internet)
+   - Source officielle CISA via mirror GitHub (CORS OK)
+   ============================================================ */
+async function fetchKevStatus(cveId) {
+  const url = "https://raw.githubusercontent.com/cisagov/kev-data/main/known_exploited_vulnerabilities.json";
+  const kev = await fetchJson(url);
+  const list = kev?.vulnerabilities || [];
+  const hit = list.find(v => v?.cveID === cveId);
+  return {
+    inKev: !!hit,
+    dateAdded: hit?.dateAdded || null
+  };
+}
+
+/* ============================================================
+   Chargement base CWE→CAPEC (Internet)
+   - Base publique du projet CVE2CAPEC (Galeax)
+   ============================================================ */
+async function loadCweDb() {
+  const cacheKey = "CWE_DB_V1";
+  const cached = sessionStorage.getItem(cacheKey);
+  if (cached) return JSON.parse(cached);
+  const url = "https://raw.githubusercontent.com/Galeax/CVE2CAPEC/main/resources/cwe_db.json";
+  const db = await fetchJson(url);
+  sessionStorage.setItem(cacheKey, JSON.stringify(db));
+  return db;
+}
+
+/* ============================================================
+   Chargement base CAPEC (Internet)
+   - Base publique du projet CVE2CAPEC (Galeax)
+   ============================================================ */
+async function loadCapecDb() {
+  const cacheKey = "CAPEC_DB_V1";
+  const cached = sessionStorage.getItem(cacheKey);
+  if (cached) return JSON.parse(cached);
+  const url = "https://raw.githubusercontent.com/Galeax/CVE2CAPEC/main/resources/capec_db.json";
+  const db = await fetchJson(url);
+  sessionStorage.setItem(cacheKey, JSON.stringify(db));
+  return db;
+}
+
+/* ============================================================
+   Mapping CWE → CAPEC
+   - Extrait RelatedAttackPatterns et dé-duplique
+   ============================================================ */
+function mapCweToCapecIds(cweList, cweDb) {
+  const out = new Set();
+  (cweList || []).forEach(cwe => {
+    const entry = cweDb?.[cwe];
+    const capecs = entry?.RelatedAttackPatterns || [];
+    capecs.forEach(id => out.add(id));
+  });
+  return Array.from(out);
+}
+
+/* ============================================================
+   Détails CAPEC
+   - Récupère le nom associé à chaque CAPEC ID
+   ============================================================ */
+function capecDetails(capecIds, capecDb) {
+  return (capecIds || []).map(id => {
+    const entry = capecDb?.[String(id)] || capecDb?.[id] || {};
+    const name = entry?.name || entry?.Name || "CAPEC";
+    return { id: String(id), name };
+  });
+}
+
+/* ============================================================
+   Extraction CVSS (v3 & v4) depuis NVD
+   - NVD renvoie cvssMetricV31 / V30 / V40
+   ============================================================ */
+function extractCvss(nvdItem) {
+  const metrics = nvdItem?.cve?.metrics || {};
+  const v31 = metrics.cvssMetricV31?.[0]?.cvssData;
+  const v30 = metrics.cvssMetricV30?.[0]?.cvssData;
+  const cvss3 = v31 || v30 || null;
+  const cvss4 = metrics.cvssMetricV40?.[0]?.cvssData || null;
+  return { cvss3, cvss4 };
+}
+
+/* ============================================================
+   Bandeau : conditions d’exploitation + impacts (CIA v3)
+   - Conditions exploitabilité: AV/AC/PR/UI/S
+   - Impacts v3: C/I/A
+   ============================================================ */
+function buildExploitConditionsPills(cvss3, cvss4, kev) {
+  const pills = [];
+
+  // Conditions (v3 prioritaire)
+  if (cvss3) {
+    if (cvss3.attackVector) pills.push({ cls:"", k:"AV", v: cvss3.attackVector });
+    if (cvss3.attackComplexity) pills.push({ cls:"", k:"AC", v: cvss3.attackComplexity });
+    if (cvss3.privilegesRequired) pills.push({ cls:"", k:"PR", v: cvss3.privilegesRequired });
+    if (cvss3.userInteraction) pills.push({ cls:"", k:"UI", v: cvss3.userInteraction });
+    if (cvss3.scope) pills.push({ cls:"", k:"S", v: cvss3.scope });
+
+    // Impacts CIA (v3 demandé)
+    if (cvss3.confidentialityImpact) pills.push({ cls:"warn", k:"C", v: cvss3.confidentialityImpact });
+    if (cvss3.integrityImpact) pills.push({ cls:"warn", k:"I", v: cvss3.integrityImpact });
+    if (cvss3.availabilityImpact) pills.push({ cls:"warn", k:"A", v: cvss3.availabilityImpact });
+  } else if (cvss4) {
+    // fallback v4 pour conditions si v3 absent
+    if (cvss4.attackVector) pills.push({ cls:"", k:"AV", v: cvss4.attackVector });
+    if (cvss4.attackComplexity) pills.push({ cls:"", k:"AC", v: cvss4.attackComplexity });
+    if (cvss4.attackRequirements) pills.push({ cls:"", k:"AT", v: cvss4.attackRequirements });
+    if (cvss4.privilegesRequired) pills.push({ cls:"", k:"PR", v: cvss4.privilegesRequired });
+    if (cvss4.userInteraction) pills.push({ cls:"", k:"UI", v: cvss4.userInteraction });
+  }
+
+  // Statut KEV
+  if (kev?.inKev) pills.push({ cls:"crit", k:"KEV", v: "Oui" });
+  else pills.push({ cls:"", k:"KEV", v: "Non" });
+  return pills;
+}
+
+/* ============================================================
+   Détection Remote exploitable (visuel)
+   - Basée sur AV=NETWORK (v3 ou v4)
+   ============================================================ */
+function isRemote(cvss3, cvss4) {
+  const av3 = (cvss3?.attackVector || "").toString().toUpperCase();
+  const av4 = (cvss4?.attackVector || "").toString().toUpperCase();
+  return av3 === "NETWORK" || av4 === "NETWORK";
+}
+
+/* ============================================================
+   Rendu UI centralisé
+   - Met à jour scores, badges, bandeau, CWE/CAPEC, refs
+   ============================================================ */
+function renderResults({ cveId, description, cvss3, cvss4, epss, epssPct, cweList, capecList, refs, kev }) {
+  // Description
+  document.getElementById("desc").textContent = description || "—";
+
+  // CVSS v3
+  const cvss3Score = cvss3?.baseScore ?? null;
+  const cvss3Vec = cvss3?.vectorString ?? null;
+  document.getElementById("cvss3").textContent = (cvss3Score !== null) ? cvss3Score : "—";
+  document.getElementById("cvss3vec").textContent = cvss3Vec || "—";
+
+  // CVSS v4
+  const cvss4Score = cvss4?.baseScore ?? null;
+  const cvss4Vec = cvss4?.vectorString ?? null;
+  document.getElementById("cvss4").textContent = (cvss4Score !== null) ? cvss4Score : "—";
+  document.getElementById("cvss4vec").textContent = cvss4Vec || "—";
+
+  // EPSS
+  if (typeof epss === "number") document.getElementById("epss").textContent = `${(epss * 100).toFixed(2)}%`;
+  else document.getElementById("epss").textContent = "—";
+  document.getElementById("epssPct").textContent =
+    (typeof epssPct === "number") ? `Percentile : ${(epssPct * 100).toFixed(0)}e` : "Percentile : —";
+
+  // KEV
+  document.getElementById("kev").textContent = kev?.inKev ? "Oui" : "Non";
+  document.getElementById("kevDate").textContent = kev?.inKev
+    ? `Date ajout : ${kev.dateAdded || "—"}`
+    : "—";
+
+  // Badges
+  const badges = [];
+  badges.push(`<span class="badge bg-info">${cveId}</span>`);
+  if (isRemote(cvss3, cvss4)) badges.push(`<span class="badge bg-warn">REMOTE exploitable</span>`);
+  if (kev?.inKev) badges.push(`<span class="badge bg-bad">KEV</span>`);  if (typeof epss === "number" && epss >= 0.20) badges.push(`<span class="badge bg-bad">EPSS élevé</span>`);
+  if (typeof cvss3Score === "number" && cvss3Score >= 9.0) badges.push(`<span class="badge bg-bad">CVSS v3 Critique</span>`);
+  if (typeof cvss4Score === "number" && cvss4Score >= 9.0) badges.push(`<span class="badge bg-bad">CVSS v4 Critique</span>`);
+  document.getElementById("badges").innerHTML = badges.join(" ") || "—";
+
+  // Bandeau conditions d’exploitation + impacts CIA
+  const pills = buildExploitConditionsPills(cvss3, cvss4, kev);
+  const banner = document.getElementById("exploitBanner");
+  const pillBox = document.getElementById("exploitPills");
+  banner.style.display = pills.length ? "block" : "none";
+  pillBox.innerHTML = pills.map(p => `<span class="pill ${p.cls || ""}">${p.k}: ${p.v}</span>`).join("");
+
+  // CWE
+  if (cweList && cweList.length) {
+    document.getElementById("cwe").innerHTML =
+      `<ul>${cweList.map(c =>
+        `<li><span class="mono">${c}</span> — <a target="_blank" href="https://cwe.mitre.org/data/definitions/${c.replace('CWE-','')}.html">MITRE CWE</a></li>`
+      ).join("")}</ul>`;
+  } else {
+    document.getElementById("cwe").textContent = "—";
+  }
+
+  // CAPEC
+  if (capecList && capecList.length) {
+    document.getElementById("capec").innerHTML =
+      `<ul>${capecList.map(c =>
+        `<li><span class="mono">CAPEC-${c.id}</span> — ${c.name} — <a target="_blank" href="https://capec.mitre.org/data/definitions/${c.id}.html">CAPEC</a></li>`
+      ).join("")}</ul>`;
+  } else {
+    document.getElementById("capec").textContent = "—";
+  }
+
+  // Références
+  if (refs && refs.length) {
+    document.getElementById("refs").innerHTML =
+      `<ul>${refs.map(u => `<li><a target="_blank" rel="noopener" href="${u}">${u}</a></li>`).join("")}</ul>`;
+  } else {
+    document.getElementById("refs").textContent = "—";
+  }
+
+  /* Ajout pour Emb3d   mise  à jour la fonction de rendu pour qu'elle cherche le mapping dans ton fichier `emb3d.js` et l'affiche.*/
+  const emb3dBox = document.getElementById("emb3d-info");
+  emb3dBox.innerHTML = ""; // Reset
+  if (cweList && cweList.length > 0) {
+    // On cherche si l'un des CWE de la liste est présent dans ton mapping EMB3D
+    const firstCweWithMapping = cweList.find(c => emb3dMapping[c]);
+    if (firstCweWithMapping) {
+      const m = emb3dMapping[firstCweWithMapping];
+      emb3dBox.innerHTML = `
+        <div style="background: rgba(122,162,255,0.1); border-radius: 8px; padding: 10px;">
+          <div style="font-size: 0.75em; color: var(--accent); font-weight: bold; text-transform: uppercase;">Pivot EMB3D</div>
+          <div style="font-weight: 900; margin-top: 4px;">${m.tid} : ${m.threat}</div>
+          <div class="badge bg-info" style="margin-top:5px;">${m.category}</div>
+          <div style="font-size: 0.85em; margin-top: 8px; opacity: 0.9;">${m.iot_impact}</div>
+        </div>
+      `;
+    }
+  }
+}
+
+/* ============================================================
+   Orchestration : runAnalysis()
+   - Lance NVD + EPSS + KEV + mapping CWE→CAPEC
+   ============================================================ */
+async function runAnalysis() {
+  const btn = document.getElementById("runBtn");
+  const cveId = document.getElementById("cveInput").value.trim();
+
+  document.getElementById("logs").textContent = "—";
+  setStatus("Analyse en cours…");
+  btn.disabled = true;
+
+  try {
+    if (!/^CVE-\d{4}-\d{4,}$/i.test(cveId)) {
+      throw new Error("Format CVE invalide. Exemple : CVE-2025-32058");
+    }
+
+    log(`Analyse de ${cveId}`);
+
+    // --- NVD
+    log("Récupération NVD…");
+    const nvd = await fetchNvdCve(cveId);
+    const item = nvd?.vulnerabilities?.[0];
+    if (!item) throw new Error("CVE non trouvée dans la NVD (réponse vide).");
+
+    // Description (FR puis EN)
+    const descArr = item?.cve?.descriptions || [];
+    const fr = descArr.find(d => d.lang === "fr")?.value;
+    const en = descArr.find(d => d.lang === "en")?.value;
+    const description = fr || en || "";
+
+    // CVSS
+    const { cvss3, cvss4 } = extractCvss(item);
+
+    // CWE list
+    const weaknesses = item?.cve?.weaknesses || [];
+    const cweList = [];
+    weaknesses.forEach(w => {
+      (w.description || []).forEach(d => {
+        if (typeof d.value === "string" && d.value.startsWith("CWE-")) cweList.push(d.value);
+      });
+    });
+    const cweUniq = Array.from(new Set(cweList));
+
+    // Références
+    const refs = (item?.cve?.references || []).map(r => r?.url).filter(Boolean);
+
+    // --- EPSS
+ log("Récupération EPSS…");
+ let epssData = { epss: null, percentile: null };
+ try {
+   epssData = await fetchEpss(cveId);
+ } catch (e) {
+   log("EPSS indisponible : " + (e.message || e));
+ }
+
+    // --- KEV
+ log("Récupération KEV (CISA)…");
+ let kev = { inKev: false, dateAdded: null };
+ try {
+   kev = await fetchKevStatus(cveId);
+ } catch (e) {
+   log("KEV indisponible : " + (e.message || e));
+ }
+    // --- Mapping CWE → CAPEC
+    log("Chargement DB CWE→CAPEC…");
+    const cweDb = await loadCweDb();
+
+    log("Chargement DB CAPEC…");
+    const capecDb = await loadCapecDb();
+
+    log("Mapping CWE → CAPEC…");
+    const capecIds = mapCweToCapecIds(cweUniq, cweDb);
+    const capecList = capecDetails(capecIds, capecDb);
+
+    renderResults({
+      cveId,
+      description,
+      cvss3,
+      cvss4,
+      epss: epssData.epss,
+      epssPct: epssData.percentile,
+      cweList: cweUniq,
+      capecList,
+      refs,
+      kev
+ });
+
+    setStatus("✅ Analyse terminée.");
+    log("Analyse terminée.");
+
+  } catch (e) {
+    console.error(e);
+    setStatus("⚠️ Erreur (voir logs).");
+    log(`ERREUR: ${e.message || e}`);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+/* ============================================================
+   Auto-run optionnel
+   - Lance l’analyse au chargement si un CVE est déjà rempli
+   ============================================================ */
+runAnalysis();
+</script>
+
+</body>
+</html>
