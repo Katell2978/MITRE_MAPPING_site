@@ -1,126 +1,236 @@
 <!doctype html>
 <html lang="fr">
 <head>
-    <meta charset="utf-8" />
-    <title>Kat-Force – Security Watchtower</title>
-    <style>
-        :root {
-            --bg: #070a15; --card: #121a33; --txt: #e9ecff; --accent: #7aa2ff;
-            --bad: #f87171; --ok: #36d399; --line: #26325f;
-        }
-        body { background: var(--bg); color: var(--txt); font-family: sans-serif; padding: 20px; }
-        h1 { border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--card); border-radius: 10px; overflow: hidden; }
-        th, td { padding: 15px; text-align: left; border-bottom: 1px solid var(--line); }
-        th { background: rgba(122, 162, 255, 0.1); color: var(--accent); font-size: 0.8em; text-transform: uppercase; }
-        .delta-up { color: var(--bad); font-weight: bold; animation: blink 1.5s infinite; }
-        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; }
-        .bg-bad { background: var(--bad); color: #000; }
-        .bg-ok { background: var(--ok); color: #000; }
-        button { background: var(--accent); border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-        @keyframes blink { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-    </style>
+  <meta charset="utf-8" />
+  <title>Kat-Force – Security Watchtower</title>
+
+  <style>
+    :root {
+      --bg:#070a15; --card:#121a33; --txt:#e9ecff; --accent:#7aa2ff;
+      --bad:#f87171; --ok:#36d399; --warn:#fbbf24; --line:#26325f;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--txt);
+      font-family: sans-serif;
+      padding: 20px;
+    }
+
+    h1 { border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: var(--card);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      background: rgba(122,162,255,0.1);
+      color: var(--accent);
+      font-size: 0.8em;
+      text-transform: uppercase;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    th.sort-asc::after { content:" ▲"; }
+    th.sort-desc::after { content:" ▼"; }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75em;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .bg-ok { background: var(--ok); color:#000; }
+    .bg-bad { background: var(--bad); color:#000; }
+    .bg-warn { background: var(--warn); color:#000; }
+
+    .delta-up { color: var(--bad); font-weight: bold; }
+
+    .sources a {
+      color: var(--accent);
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .sources a:hover { text-decoration: underline; }
+
+    button {
+      background: var(--accent);
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+  </style>
 </head>
+
 <body>
-    <nav style="margin-bottom: 20px;">
-    <a href="index.html" style="color: var(--accent); margin-right: 15px;">🔍 Analyseur</a>
-    <a href="veille.html" style="color: var(--accent);">🔭 Veille (Watchtower)</a>
-    </nav>
-    
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h1>🔭 Watchtower Intelligence</h1>
-        <button onclick="refreshData()">🔄 Forcer la mise à jour</button>
-    </div>
 
-    <div id="summary" style="margin-bottom: 20px; color: var(--accent);">Chargement de la veille...</div>
+<nav style="margin-bottom:20px;">
+  index.html margin-right:15px;">🔍 Analyseur</a>
+  veille.html">🔭 Veille (Watchtower)</a>
+</nav>
 
-    <table>
-        <thead>
-            <tr>
-                <th>CVE ID</th>
-                <th>Status</th>
-                <th>CVSS (Init → Actuel)</th>
-                <th>EPSS (Init → Actuel)</th>
-                <th>KEV</th>
-                <th>Surveillance depuis</th>
-                <th>Dernier Check</th>
-            </tr>
-        </thead>
-        <tbody id="watch-body"></tbody>
-    </table>
+<div style="display:flex; justify-content:space-between; align-items:center;">
+  <h1>🔭 Watchtower Intelligence</h1>
+  <button onclick="refreshData()">🔄 Forcer la mise à jour</button>
+</div>
+
+<div id="summary" style="margin-bottom:20px; color:var(--accent);">
+  Chargement de la veille…
+</div>
+
+<table>
+  <thead>
+    <tr>
+      <th data-key="cve_id">CVE</th>
+      <th data-key="status">Status</th>
+      <th data-key="cvss">CVSS</th>
+      <th data-key="epss">EPSS</th>
+      <th data-key="kev">KEV</th>
+      <th data-key="remote">Remote</th>
+      <th data-key="components">Composants impactés</th>
+      <th data-key="sources">Sources</th>
+      <th data-key="monitoring">Surveillance</th>
+      <th data-key="check">Dernier check</th>
+    </tr>
+  </thead>
+  <tbody id="watch-body"></tbody>
+</table>
 
 <script>
 const DATA_PATH = 'data/vuln-watch.json';
+let dataCache = [];
+let sortState = {};
 
 async function refreshData() {
   const btn = document.querySelector('button');
   btn.textContent = "⌛ Chargement...";
 
   try {
-    const url = new URL(DATA_PATH, window.location.href);
-    url.searchParams.set('t', Date.now());
+    const res = await fetch(DATA_PATH + '?t=' + Date.now(), { cache: "no-store" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
 
-    const response = await fetch(url, { cache: "no-store" });
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status}`);
-    }
+    const json = await res.json();
+    if (!json.vulnerabilities) throw new Error("JSON invalide : vulnerabilities absent");
 
-    const data = await response.json();
+    dataCache = Object.values(json.vulnerabilities);
+    renderTable(dataCache);
 
-    // ✅ JSON réel
-    const vuln = data.vulnerability_watch;
-    if (!vuln) {
-      throw new Error("Structure JSON invalide : vulnerability_watch absent");
-    }
-
-    renderTable(vuln);
     document.getElementById('summary').textContent =
-      `Analyse de 1 vulnérabilité en cours : ${vuln.cve_id}`;
+      `Analyse de ${dataCache.length} vulnérabilité(s) en cours.`;
 
   } catch (e) {
     console.error(e);
     document.getElementById('summary').textContent =
-      "⚠️ Erreur de chargement des données (voir console).";
+      "⚠️ Erreur de chargement des données (voir console)";
   } finally {
     btn.textContent = "🔄 Forcer la mise à jour";
   }
 }
 
-function renderTable(v) {
+function renderTable(list) {
   const body = document.getElementById('watch-body');
   body.innerHTML = "";
 
-  const cvssDelta = v.metrics.cvss.base_current > v.metrics.cvss.base_initial;
-  const epssDelta = v.metrics.epss.current > v.metrics.epss.initial;
-  const kevChange = v.metrics.kev_status.current && !v.metrics.kev_status.initial;
+  list.forEach(v => {
+    const cvss = v.metrics?.cvss || {};
+    const epss = v.metrics?.epss || {};
+    const kev  = v.metrics?.kev_status || {};
+    const remote = v.exploitation_conditions?.attack_vector?.toLowerCase().includes("remote");
 
-  const row = document.createElement('tr');
-  row.innerHTML = `
-    <td style="font-weight:bold; color:var(--accent)">${v.cve_id}</td>
-    <td><span class="badge ${v.status === 'active' ? 'bg-ok' : ''}">${v.status}</span></td>
-    <td class="${cvssDelta ? 'delta-up' : ''}">
-      ${v.metrics.cvss.base_initial} ➔ ${v.metrics.cvss.base_current}
-      ${cvssDelta ? ' 📈' : ''}
-    </td>
-    <td class="${epssDelta ? 'delta-up' : ''}">
-      ${(v.metrics.epss.initial * 100).toFixed(2)}%
-      ➔ ${(v.metrics.epss.current * 100).toFixed(2)}%
-    </td>
-    <td>
-      <span class="badge ${v.metrics.kev_status.current ? 'bg-bad' : ''}">
-        ${v.metrics.kev_status.current ? 'EXPLOITÉ' : 'Non répertorié'}
-      </span>
-      ${kevChange ? '<br><small class="delta-up">Nouveau KEV !</small>' : ''}
-    </td>
-    <td><small>${new Date(v.dates.monitoring_start).toLocaleDateString()}</small></td>
-    <td><small>${new Date(v.dates.last_check).toLocaleString()}</small></td>
-  `;
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td style="font-weight:bold; color:var(--accent)">${v.cve_id}</td>
+      <td><span class="badge bg-ok">${v.status}</span></td>
 
-  body.appendChild(row);
+      <td class="${cvss.base_current > cvss.base_initial ? 'delta-up' : ''}">
+        ${cvss.base_initial ?? "—"} ➔ ${cvss.base_current ?? "—"}
+      </td>
+
+      <td class="${epss.current > epss.initial ? 'delta-up' : ''}">
+        ${(epss.initial*100).toFixed(2)}% ➔ ${(epss.current*100).toFixed(2)}%
+      </td>
+
+      <td>
+        <span class="badge ${kev.current ? 'bg-bad' : ''}">
+          ${kev.current ? 'EXPLOITÉ' : 'Non'}
+        </span>
+      </td>
+
+      <td>
+        ${remote ? '<span class="badge bg-warn">REMOTE</span>' : '—'}
+      </td>
+
+      <td><small>${(v.affected_components || []).join(", ") || '—'}</small></td>
+
+      <td class="sources">
+        ${(v.publications || []).map(p =>
+          `<a href="${p.url}" target="_blank">${p.publisher}</a>`
+        ).join("<br>") || '—'}
+      </td>
+
+      <td><small>${new Date(v.dates.monitoring_start).toLocaleDateString()}</small></td>
+      <td><small>${new Date(v.dates.last_check).toLocaleString()}</small></td>
+    `;
+    body.appendChild(row);
+  });
 }
 
-// Initialisation
+/* === TRI PAR COLONNE === */
+document.querySelectorAll("th").forEach(th => {
+  th.addEventListener("click", () => {
+    const key = th.dataset.key;
+    if (!key) return;
+
+    const dir = sortState[key] === "asc" ? "desc" : "asc";
+    sortState = { dir };
+
+    document.querySelectorAll("th").forEach(t => t.classList.remove("sort-asc","sort-desc"));
+    th.classList.add(dir === "asc" ? "sort-asc" : "sort-desc");
+
+    const sorted = [...dataCache].sort((a,b) => {
+      const va = extract(a,key);
+      const vb = extract(b,key);
+      return dir === "asc" ? va > vb ? 1 : -1 : va < vb ? 1 : -1;
+    });
+
+    renderTable(sorted);
+  });
+});
+
+function extract(v,key) {
+  switch (key) {
+    case "cvss": return v.metrics?.cvss?.base_current ?? 0;
+    case "epss": return v.metrics?.epss?.current ?? 0;
+    case "kev": return v.metrics?.kev_status?.current ? 1 : 0;
+    case "remote": return v.exploitation_conditions?.attack_vector?.toLowerCase().includes("remote") ? 1 : 0;
+    case "components": return (v.affected_components || []).join(",");
+    case "sources": return (v.publications || []).length;
+    case "monitoring": return new Date(v.dates.monitoring_start).getTime();
+    case "check": return new Date(v.dates.last_check).getTime();
+    default: return v[key] || "";
+  }
+}
+
 refreshData();
 </script>
+
 </body>
 </html>
