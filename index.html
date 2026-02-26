@@ -33,7 +33,7 @@
 <body>
     <nav style="margin-bottom: 20px;">
     <a href="index.html" style="color: var(--accent); margin-right: 15px;">🔍 Analyseur</a>
-    <a href="monitoring.html" style="color: var(--accent);">🔭 Veille (Watchtower)</a>
+    <a href="veille.html" style="color: var(--accent);">🔭 Veille (Watchtower)</a>
 </nav>
     
 <header>
@@ -69,7 +69,7 @@
 const APIS = {
     nvd: "https://services.nvd.nist.gov/rest/json/cves/2.0?cveId=",
     kev: "build/kev.json",
-    watchlist: "data/vuln-watch.json" //data/vuln-watch.json
+    watchlist: "data/vuln-watch.json" //data/vuln-watch.json fichier de suivi de vuln - liste pour veille
 };
 
 let MITRE_INDEX = {}, CWE_DB = {}, CAPEC_DB = {}, ATM_DB = [], WATCHLIST = {};
