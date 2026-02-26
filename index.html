@@ -288,10 +288,10 @@ async function fetchEpss(cveId) {
 
 /* ============================================================
    Récupération KEV CISA (Internet)
-   - Catalogue JSON CISA KEV (cveID + dateAdded) [1](https://www.cisa.gov/known-exploited-vulnerabilities-catalog)
+   - Source officielle CISA via mirror GitHub (CORS OK)
    ============================================================ */
 async function fetchKevStatus(cveId) {
-  const url = "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json";
+  const url = "https://raw.githubusercontent.com/cisagov/kev-data/main/known_exploited_vulnerabilities.json";
   const kev = await fetchJson(url);
   const list = kev?.vulnerabilities || [];
   const hit = list.find(v => v?.cveID === cveId);
