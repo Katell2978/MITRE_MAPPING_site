@@ -22,6 +22,10 @@
     </style>
 </head>
 <body>
+    <nav style="margin-bottom: 20px;">
+    <a href="index.html" style="color: var(--accent); margin-right: 15px;">🔍 Analyseur</a>
+    <a href="veille.html" style="color: var(--accent);">🔭 Veille (Watchtower)</a>
+    </nav>
 
     <div style="display:flex; justify-content:space-between; align-items:center;">
         <h1>🔭 Watchtower Intelligence</h1>
@@ -45,75 +49,78 @@
         <tbody id="watch-body"></tbody>
     </table>
 
-    <script>
-        const DATA_PATH = 'data/vuln-watch.json'; // Assurez-vous que le nom correspond data/vuln-watch.json
+<script>
+const DATA_PATH = 'data/vuln-watch.json';
 
-        async function refreshData() {
-            const btn = document.querySelector('button');
-            btn.textContent = "⌛ Chargement...";
-            
-            try {
-                const url = new URL(DATA_PATH, window.location.href);
-                url.searchParams.set('t', Date.now()); // no-cache
-                const response = await fetch(url, { cache: "no-store" });
-                    // 1) Vérifie le statut HTTP
-                if (!response.ok) {
-                  const body = await response.text().catch(() => "");
-                  throw new Error(`HTTP ${response.status} ${response.statusText} sur ${url.href}\nRéponse: ${body.slice(0, 200)}`);
-                }
-                // 2) Vérifie le content-type (optionnel mais très utile)
-                const ct = response.headers.get("content-type") || "";
-                if (!ct.includes("application/json")) {
-                  const body = await response.text();
-                  throw new Error(`Contenu non-JSON (${ct}) sur ${url.href}\nDébut: ${body.slice(0, 200)}`);
-                }
-                const data = await response.json();
-                
-                renderTable(data.vulnerabilities || {});
-                document.getElementById('summary').textContent = `Analyse de ${Object.keys(data.vulnerabilities || {}).length} vulnérabilités en cours.`;
-                } catch (e) {
-                    console.error("RefreshData error:", e);            // <-- la clé
-                    document.getElementById('summary').textContent = `⚠️ Erreur de chargement des données (voir console).`;
-              } finally {
-                btn.textContent = "🔄 Forcer la mise à jour";
-              }
+async function refreshData() {
+  const btn = document.querySelector('button');
+  btn.textContent = "⌛ Chargement...";
+
+  try {
+    const url = new URL(DATA_PATH, window.location.href);
+    url.searchParams.set('t', Date.now());
+
+    const response = await fetch(url, { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
     }
 
-        function renderTable(vulns) {
-            const body = document.getElementById('watch-body');
-            body.innerHTML = "";
+    const data = await response.json();
 
-            Object.entries(vulns).forEach(([id, v]) => {
-                const cvssDelta = v.metrics.cvss.base_current > v.metrics.cvss.base_initial;
-                const epssDelta = v.metrics.epss.current > v.metrics.epss.initial;
-                const kevChange = v.metrics.kev_status.current && !v.metrics.kev_status.initial;
+    // ✅ JSON réel
+    const vuln = data.vulnerability_watch;
+    if (!vuln) {
+      throw new Error("Structure JSON invalide : vulnerability_watch absent");
+    }
 
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td style="font-weight:bold; color:var(--accent)">${id}</td>
-                    <td><span class="badge ${v.status === 'active' ? 'bg-ok' : ''}">${v.status}</span></td>
-                    <td class="${cvssDelta ? 'delta-up' : ''}">
-                        ${v.metrics.cvss.base_initial} ➔ ${v.metrics.cvss.base_current}
-                        ${cvssDelta ? ' 📈' : ''}
-                    </td>
-                    <td class="${epssDelta ? 'delta-up' : ''}">
-                        ${(v.metrics.epss.initial * 100).toFixed(2)}% ➔ ${(v.metrics.epss.current * 100).toFixed(2)}%
-                    </td>
-                    <td>
-                        <span class="badge ${v.metrics.kev_status.current ? 'bg-bad' : ''}">
-                            ${v.metrics.kev_status.current ? 'EXPLOITÉ' : 'Non répertorié'}
-                        </span>
-                        ${kevChange ? '<br><small class="delta-up">Nouveau KEV !</small>' : ''}
-                    </td>
-                    <td><small>${new Date(v.dates.monitoring_start).toLocaleDateString()}</small></td>
-                    <td><small>${new Date(v.dates.last_check).toLocaleString()}</small></td>
-                `;
-                body.appendChild(row);
-            });
-        }
+    renderTable(vuln);
+    document.getElementById('summary').textContent =
+      `Analyse de 1 vulnérabilité en cours : ${vuln.cve_id}`;
 
-        // Initialisation
-        refreshData();
-    </script>
+  } catch (e) {
+    console.error(e);
+    document.getElementById('summary').textContent =
+      "⚠️ Erreur de chargement des données (voir console).";
+  } finally {
+    btn.textContent = "🔄 Forcer la mise à jour";
+  }
+}
+
+function renderTable(v) {
+  const body = document.getElementById('watch-body');
+  body.innerHTML = "";
+
+  const cvssDelta = v.metrics.cvss.base_current > v.metrics.cvss.base_initial;
+  const epssDelta = v.metrics.epss.current > v.metrics.epss.initial;
+  const kevChange = v.metrics.kev_status.current && !v.metrics.kev_status.initial;
+
+  const row = document.createElement('tr');
+  row.innerHTML = `
+    <td style="font-weight:bold; color:var(--accent)">${v.cve_id}</td>
+    <td><span class="badge ${v.status === 'active' ? 'bg-ok' : ''}">${v.status}</span></td>
+    <td class="${cvssDelta ? 'delta-up' : ''}">
+      ${v.metrics.cvss.base_initial} ➔ ${v.metrics.cvss.base_current}
+      ${cvssDelta ? ' 📈' : ''}
+    </td>
+    <td class="${epssDelta ? 'delta-up' : ''}">
+      ${(v.metrics.epss.initial * 100).toFixed(2)}%
+      ➔ ${(v.metrics.epss.current * 100).toFixed(2)}%
+    </td>
+    <td>
+      <span class="badge ${v.metrics.kev_status.current ? 'bg-bad' : ''}">
+        ${v.metrics.kev_status.current ? 'EXPLOITÉ' : 'Non répertorié'}
+      </span>
+      ${kevChange ? '<br><small class="delta-up">Nouveau KEV !</small>' : ''}
+    </td>
+    <td><small>${new Date(v.dates.monitoring_start).toLocaleDateString()}</small></td>
+    <td><small>${new Date(v.dates.last_check).toLocaleString()}</small></td>
+  `;
+
+  body.appendChild(row);
+}
+
+// Initialisation
+refreshData();
+</script>
 </body>
 </html>
