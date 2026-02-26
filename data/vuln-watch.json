@@ -24,6 +24,17 @@
         "current": true,
         "date_added": "2025-02-24"
       }
+        "publications": [
+    {
+      "type": "autre",
+      "title": "string",
+      "url": "https://www.yazoul.net/advisory/cve/cve-2025-32058/",
+      "publisher": "https://www.yazoul.net/",
+      "published_at": "2026-02-15 | null",
+      "reliability": " community",
+      "notes": ""
+    }
+  ],
     },
     "tracking_history": [
       {
