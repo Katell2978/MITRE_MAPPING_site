@@ -28,8 +28,10 @@ Index.html fonctionnalitées :
 ✅ Recherche par CVE (NVD API v2.0)
 ✅ Recherche par CPE (NVD API v2.0 cpeName=...)
 ✅ Drilldown CWE → CAPEC → vraies Techniques MITRE ATT&CK (via tes fichiers data/cwe_db.json, data/capec_db.json, data/techniques_db.json)
-✅ Jointure ATT&CK → ATM (via data/ATM-matrix-TTP.csv)
-✅ Affiche ATM / DET / DC / Onboard / Offboard / rmq
+TODO : Jointure ATT&CK → ATM (via data/ATM-matrix-TTP.csv) Pas 
+TODO : Affiche ATM / DET / DC /  A voir si pertinant rmq
+Ongoing mise en veille CVE
+TODO: Mise en veille CPE
 ✅ Ajoute un visuel SVG “pivots & liens” (CWE→CAPEC→ATT&CK→ATM→DET/DC)
 ✅ Inclut un moniteur d’activité en bas de page (log détaillé)
 
