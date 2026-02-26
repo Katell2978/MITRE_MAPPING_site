@@ -5,119 +5,76 @@
   <title>Kat-Force – Security Watchtower</title>
 
   <style>
-    :root {
+    :root{
       --bg:#070a15; --card:#121a33; --txt:#e9ecff; --accent:#7aa2ff;
       --bad:#f87171; --ok:#36d399; --warn:#fbbf24; --line:#26325f;
     }
-
-    body {
-      background: var(--bg);
-      color: var(--txt);
-      font-family: sans-serif;
-      padding: 20px;
+    body{background:var(--bg);color:var(--txt);font-family:sans-serif;padding:20px;}
+    h1{border-bottom:2px solid var(--accent);padding-bottom:10px;}
+    table{width:100%;border-collapse:collapse;margin-top:20px;background:var(--card);border-radius:10px;overflow:hidden;}
+    th,td{padding:12px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top;}
+    th{
+      background:rgba(122,162,255,.1);
+      color:var(--accent);
+      font-size:.8em;
+      text-transform:uppercase;
+      cursor:pointer;
+      user-select:none;
     }
+    th.sort-asc::after{content:" ▲";}
+    th.sort-desc::after{content:" ▼";}
 
-    h1 { border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+    .badge{padding:4px 8px;border-radius:4px;font-size:.75em;font-weight:bold;display:inline-block;}
+    .bg-ok{background:var(--ok);color:#000;}
+    .bg-bad{background:var(--bad);color:#000;}
+    .bg-warn{background:var(--warn);color:#000;}
+    .delta-up{color:var(--bad);font-weight:bold;}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-      background: var(--card);
-      border-radius: 10px;
-      overflow: hidden;
-    }
+    .sources a{color:var(--accent);font-weight:bold;text-decoration:none;}
+    .sources a:hover{text-decoration:underline;}
 
-    th, td {
-      padding: 12px;
-      border-bottom: 1px solid var(--line);
-      vertical-align: top;
-      text-align: left;
-    }
-
-    th {
-      background: rgba(122,162,255,0.1);
-      color: var(--accent);
-      font-size: 0.8em;
-      text-transform: uppercase;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    th.sort-asc::after { content:" ▲"; }
-    th.sort-desc::after { content:" ▼"; }
-
-    .badge {
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 0.75em;
-      font-weight: bold;
-      display: inline-block;
-    }
-
-    .bg-ok { background: var(--ok); color:#000; }
-    .bg-bad { background: var(--bad); color:#000; }
-    .bg-warn { background: var(--warn); color:#000; }
-
-    .delta-up { color: var(--bad); font-weight: bold; }
-
-    .sources a {
-      color: var(--accent);
-      font-weight: bold;
-      text-decoration: none;
-    }
-
-    .sources a:hover { text-decoration: underline; }
-
-    button {
-      background: var(--accent);
-      border: none;
-      padding: 10px 20px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
+    button{background:var(--accent);border:none;padding:10px 20px;border-radius:5px;cursor:pointer;font-weight:bold;}
+    small{opacity:.95}
   </style>
 </head>
 
 <body>
 
-<nav style="margin-bottom:20px;">
-  index.html margin-right:15px;">🔍 Analyseur</a>
-  veille.html">🔭 Veille (Watchtower)</a>
-</nav>
+  <nav style="margin-bottom:20px;">
+    <a href="index.html" style="color:var(--accent);margin-right:15px;">🔍 Analyseur</a>
+    <a href="veille.html" style="color:var(--accent);">🔭 Veille (Watchtower)</a>
+  </nav>
 
-<div style="display:flex; justify-content:space-between; align-items:center;">
-  <h1>🔭 Watchtower Intelligence</h1>
-  <button onclick="refreshData()">🔄 Forcer la mise à jour</button>
-</div>
+  <div style="display:flex;justify-content:space-between;align-items:center;">
+    <h1>🔭 Watchtower Intelligence</h1>
+    <button onclick="refreshData()">🔄 Forcer la mise à jour</button>
+  </div>
 
-<div id="summary" style="margin-bottom:20px; color:var(--accent);">
-  Chargement de la veille…
-</div>
+  <div id="summary" style="margin-bottom:20px;color:var(--accent);">Chargement de la veille…</div>
 
-<table>
-  <thead>
-    <tr>
-      <th data-key="cve_id">CVE</th>
-      <th data-key="status">Status</th>
-      <th data-key="cvss">CVSS</th>
-      <th data-key="epss">EPSS</th>
-      <th data-key="kev">KEV</th>
-      <th data-key="remote">Remote</th>
-      <th data-key="components">Composants impactés</th>
-      <th data-key="sources">Sources</th>
-      <th data-key="monitoring">Surveillance</th>
-      <th data-key="check">Dernier check</th>
-    </tr>
-  </thead>
-  <tbody id="watch-body"></tbody>
-</table>
+  <table>
+    <thead>
+      <tr>
+        <th data-key="cve_id">CVE</th>
+        <th data-key="status">Status</th>
+        <th data-key="cvss">CVSS</th>
+        <th data-key="epss">EPSS</th>
+        <th data-key="kev">KEV</th>
+        <th data-key="remote">Remote</th>
+        <th data-key="components">Composants impactés</th>
+        <th data-key="sources">Sources</th>
+        <th data-key="monitoring">Surveillance</th>
+        <th data-key="check">Dernier check</th>
+      </tr>
+    </thead>
+    <tbody id="watch-body"></tbody>
+  </table>
 
 <script>
 const DATA_PATH = 'data/vuln-watch.json';
 let dataCache = [];
-let sortState = {};
+let sortKey = null;
+let sortDir = "asc";
 
 async function refreshData() {
   const btn = document.querySelector('button');
@@ -128,10 +85,14 @@ async function refreshData() {
     if (!res.ok) throw new Error("HTTP " + res.status);
 
     const json = await res.json();
-    if (!json.vulnerabilities) throw new Error("JSON invalide : vulnerabilities absent");
+
+    // ✅ supporte le format cible { vulnerabilities: { ... } }
+    if (!json.vulnerabilities || typeof json.vulnerabilities !== "object") {
+      throw new Error("Structure JSON invalide : vulnerabilities absent");
+    }
 
     dataCache = Object.values(json.vulnerabilities);
-    renderTable(dataCache);
+    renderTable(applySort(dataCache));
 
     document.getElementById('summary').textContent =
       `Analyse de ${dataCache.length} vulnérabilité(s) en cours.`;
@@ -139,96 +100,170 @@ async function refreshData() {
   } catch (e) {
     console.error(e);
     document.getElementById('summary').textContent =
-      "⚠️ Erreur de chargement des données (voir console)";
+      "⚠️ Erreur de chargement des données (voir console).";
   } finally {
     btn.textContent = "🔄 Forcer la mise à jour";
   }
 }
+
+function safeDateLabel(iso, mode) {
+  // mode: "date" | "datetime"
+  if (!iso) return "—";
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return "—";
+  return mode === "datetime" ? d.toLocaleString() : d.toLocaleDateString();
+}
+
+function isRemoteExploitable(v) {
+  // On se base sur exploitation_conditions.attack_vector si présent.
+  // Si absent -> false (pas d'invention).
+  const av = (v?.exploitation_conditions?.attack_vector || "").toString().toLowerCase();
+  return av.includes("remote") || av.includes("network");
+}
+
+function renderSources(publications) {
+  if (!Array.isArray(publications) || publications.length === 0) return "—";
+  return publications.map(p => {
+    const publisher = (p.publisher || p.type || "source").toString();
+    const url = (p.url || "").toString();
+    if (!url) return `<span>${escapeHtml(publisher)}</span>`;
+    return `<a href="${escapeAttr(url)}" target="_blank" rel="noopener">${escapeHtml(publisher)}</a>`;
+  }).join("<br>");
+}
+
+function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[c]));}
+function escapeAttr(s){return escapeHtml(s);}
 
 function renderTable(list) {
   const body = document.getElementById('watch-body');
   body.innerHTML = "";
 
   list.forEach(v => {
-    const cvss = v.metrics?.cvss || {};
-    const epss = v.metrics?.epss || {};
-    const kev  = v.metrics?.kev_status || {};
-    const remote = v.exploitation_conditions?.attack_vector?.toLowerCase().includes("remote");
+    const cvss = v?.metrics?.cvss || {};
+    const epss = v?.metrics?.epss || {};
+    const kev  = v?.metrics?.kev_status || {};
+
+    const cvssInitial = (typeof cvss.base_initial === "number") ? cvss.base_initial : null;
+    const cvssCurrent = (typeof cvss.base_current === "number") ? cvss.base_current : null;
+    const epssInitial = (typeof epss.initial === "number") ? epss.initial : null;
+    const epssCurrent = (typeof epss.current === "number") ? epss.current : null;
+
+    const cvssDelta = (cvssInitial !== null && cvssCurrent !== null) ? (cvssCurrent > cvssInitial) : false;
+    const epssDelta = (epssInitial !== null && epssCurrent !== null) ? (epssCurrent > epssInitial) : false;
+    const kevCurrent = !!kev.current;
+    const kevInitial = !!kev.initial;
+    const kevChange = kevCurrent && !kevInitial;
+
+    const remote = isRemoteExploitable(v);
+    const components = Array.isArray(v.affected_components) && v.affected_components.length
+      ? v.affected_components.map(x => escapeHtml(String(x))).join(", ")
+      : "—";
+
+    const sources = renderSources(v.publications);
+
+    // ✅ DATES : tolérance si v.dates absent
+    const monitoring = safeDateLabel(v?.dates?.monitoring_start, "date");
+    const lastCheck  = safeDateLabel(v?.dates?.last_check, "datetime");
 
     const row = document.createElement('tr');
     row.innerHTML = `
-      <td style="font-weight:bold; color:var(--accent)">${v.cve_id}</td>
-      <td><span class="badge bg-ok">${v.status}</span></td>
+      <td style="font-weight:bold;color:var(--accent)">${escapeHtml(String(v.cve_id || "—"))}</td>
 
-      <td class="${cvss.base_current > cvss.base_initial ? 'delta-up' : ''}">
-        ${cvss.base_initial ?? "—"} ➔ ${cvss.base_current ?? "—"}
+      <td>
+        <span class="badge ${v.status === 'active' ? 'bg-ok' : ''}">
+          ${escapeHtml(String(v.status || "unknown"))}
+        </span>
       </td>
 
-      <td class="${epss.current > epss.initial ? 'delta-up' : ''}">
-        ${(epss.initial*100).toFixed(2)}% ➔ ${(epss.current*100).toFixed(2)}%
+      <td class="${cvssDelta ? 'delta-up' : ''}">
+        ${cvssInitial ?? "—"} ➔ ${cvssCurrent ?? "—"} ${cvssDelta ? " 📈" : ""}
+      </td>
+
+      <td class="${epssDelta ? 'delta-up' : ''}">
+        ${(epssInitial !== null ? (epssInitial*100).toFixed(2) + "%" : "—")}
+        ➔
+        ${(epssCurrent !== null ? (epssCurrent*100).toFixed(2) + "%" : "—")}
       </td>
 
       <td>
-        <span class="badge ${kev.current ? 'bg-bad' : ''}">
-          ${kev.current ? 'EXPLOITÉ' : 'Non'}
+        <span class="badge ${kevCurrent ? 'bg-bad' : ''}">
+          ${kevCurrent ? "EXPLOITÉ" : "Non"}
         </span>
+        ${kevChange ? '<br><small class="delta-up">Nouveau KEV !</small>' : ''}
       </td>
 
       <td>
         ${remote ? '<span class="badge bg-warn">REMOTE</span>' : '—'}
       </td>
 
-      <td><small>${(v.affected_components || []).join(", ") || '—'}</small></td>
+      <td><small>${components}</small></td>
 
-      <td class="sources">
-        ${(v.publications || []).map(p =>
-          `<a href="${p.url}" target="_blank">${p.publisher}</a>`
-        ).join("<br>") || '—'}
-      </td>
+      <td class="sources"><small>${sources}</small></td>
 
-      <td><small>${new Date(v.dates.monitoring_start).toLocaleDateString()}</small></td>
-      <td><small>${new Date(v.dates.last_check).toLocaleString()}</small></td>
+      <td><small>${monitoring}</small></td>
+      <td><small>${lastCheck}</small></td>
     `;
+
     body.appendChild(row);
   });
 }
 
-/* === TRI PAR COLONNE === */
-document.querySelectorAll("th").forEach(th => {
+/* === TRI PAR COLONNE (robuste) === */
+document.querySelectorAll("th[data-key]").forEach(th => {
   th.addEventListener("click", () => {
     const key = th.dataset.key;
-    if (!key) return;
 
-    const dir = sortState[key] === "asc" ? "desc" : "asc";
-    sortState = { dir };
+    // toggle direction if same key
+    if (sortKey === key) sortDir = (sortDir === "asc") ? "desc" : "asc";
+    else { sortKey = key; sortDir = "asc"; }
 
     document.querySelectorAll("th").forEach(t => t.classList.remove("sort-asc","sort-desc"));
-    th.classList.add(dir === "asc" ? "sort-asc" : "sort-desc");
+    th.classList.add(sortDir === "asc" ? "sort-asc" : "sort-desc");
 
-    const sorted = [...dataCache].sort((a,b) => {
-      const va = extract(a,key);
-      const vb = extract(b,key);
-      return dir === "asc" ? va > vb ? 1 : -1 : va < vb ? 1 : -1;
-    });
-
-    renderTable(sorted);
+    renderTable(applySort(dataCache));
   });
 });
 
-function extract(v,key) {
+function extractSortValue(v, key) {
   switch (key) {
-    case "cvss": return v.metrics?.cvss?.base_current ?? 0;
-    case "epss": return v.metrics?.epss?.current ?? 0;
-    case "kev": return v.metrics?.kev_status?.current ? 1 : 0;
-    case "remote": return v.exploitation_conditions?.attack_vector?.toLowerCase().includes("remote") ? 1 : 0;
-    case "components": return (v.affected_components || []).join(",");
-    case "sources": return (v.publications || []).length;
-    case "monitoring": return new Date(v.dates.monitoring_start).getTime();
-    case "check": return new Date(v.dates.last_check).getTime();
-    default: return v[key] || "";
+    case "cve_id": return (v.cve_id || "").toString();
+    case "status": return (v.status || "").toString();
+    case "cvss": return v?.metrics?.cvss?.base_current ?? -1;
+    case "epss": return v?.metrics?.epss?.current ?? -1;
+    case "kev": return v?.metrics?.kev_status?.current ? 1 : 0;
+    case "remote": return isRemoteExploitable(v) ? 1 : 0;
+    case "components": return (Array.isArray(v.affected_components) ? v.affected_components.join(",") : "");
+    case "sources": return (Array.isArray(v.publications) ? v.publications.length : 0);
+    case "monitoring": return (v?.dates?.monitoring_start ? new Date(v.dates.monitoring_start).getTime() : -1);
+    case "check": return (v?.dates?.last_check ? new Date(v.dates.last_check).getTime() : -1);
+    default: return "";
   }
 }
 
+function applySort(list) {
+  if (!sortKey) return list;
+
+  const sorted = [...list].sort((a, b) => {
+    const va = extractSortValue(a, sortKey);
+    const vb = extractSortValue(b, sortKey);
+
+    // string compare
+    if (typeof va === "string" || typeof vb === "string") {
+      const sa = String(va).toLowerCase();
+      const sb = String(vb).toLowerCase();
+      if (sa === sb) return 0;
+      return sa > sb ? 1 : -1;
+    }
+
+    // numeric compare
+    if (va === vb) return 0;
+    return va > vb ? 1 : -1;
+  });
+
+  return (sortDir === "asc") ? sorted : sorted.reverse();
+}
+
+// init
 refreshData();
 </script>
 
