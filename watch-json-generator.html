@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>CVE JSON Enricher</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    input, button, textarea { width: 100%; margin-top: 10px; }
+    textarea { height: 400px; font-family: monospace; }
+  </style>
+</head>
+<body>
+
+<h2>Enrichissement JSON à partir d’un CVE</h2>
+  <p> Cette paga a pour but de simplifier la generation du contenu du json pour ajouter une cve dans la json data/vuln-watch.json </p>
+
+<label for="cveInput">Numéro de CVE</label>
+<input id="cveInput" placeholder="ex: CVE-2025-32058" />
+
+<button onclick="fetchCVE()">Générer l’enrichissement JSON</button>
+
+<h3>Résultat JSON</h3>
+<textarea id="output" readonly></textarea>
+
+<script>
+async function fetchCVE() {
+  const cveId = document.getElementById("cveInput").value.trim();
+  if (!cveId) {
+    alert("Veuillez entrer un numéro de CVE.");
+    return;
+  }
+
+  // --- API NVD (publique) ---
+  const nvdUrl = `https://services.nvd.nist.gov/rest/json/cve/2.0?cveId=${cveId}`;
+
+  let nvdData = null;
+
+  try {
+    const response = await fetch(nvdUrl);
+    const data = await response.json();
+    nvdData = data.vulnerabilities?.[0]?.cve || null;
+  } catch (e) {
+    console.error("Erreur NVD:", e);
+  }
+
+  // --- Construction JSON SANS INVENTION ---
+  const enrichment = {
+    cve_id: cveId,
+
+    exploitation_conditions: {
+      attack_vector: null,
+      attack_complexity: null,
+      privileges_required: null,
+      user_interaction: null,
+      preconditions: [],
+      exploit_maturity: null,
+      public_exploit_available: false
+    },
+
+    vehicle_impact: {
+      impact_scope: null,
+      technical_impact: [],
+      safety_relevance: null,
+      potential_consequences: []
+    },
+
+    references: [
+      {
+        type: "nvd",
+        url: `https://nvd.nist.gov/vuln/detail/${cveId}`
+      },
+      {
+        type: "cve",
+        url: `https://www.cve.org/CVERecord?id=${cveId}`
+      }
+    ]
+  };
+
+  // --- Remplissage CVSS si présent ---
+  if (nvdData?.metrics?.cvssMetricV31?.length) {
+    const cvss = nvdData.metrics.cvssMetricV31[0].cvssData;
+
+    enrichment.exploitation_conditions.attack_vector = cvss.attackVector || null;
+    enrichment.exploitation_conditions.attack_complexity = cvss.attackComplexity || null;
+    enrichment.exploitation_conditions.privileges_required = cvss.privilegesRequired || null;
+    enrichment.exploitation_conditions.user_interaction = cvss.userInteraction || null;
+  }
+
+  // --- Préconditions (description brute uniquement) ---
+  if (nvdData?.descriptions?.length) {
+    enrichment.exploitation_conditions.preconditions.push(
+      nvdData.descriptions[0].value
+    );
+  }
+
+  // --- Affichage ---
+  document.getElementById("output").value =
+    JSON.stringify(enrichment, null, 2);
+}
+</script>
+
+</body>
+</html>
