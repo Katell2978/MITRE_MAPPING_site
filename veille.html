@@ -58,7 +58,7 @@
                 renderTable(data.vulnerabilities || {});
                 document.getElementById('summary').textContent = `Analyse de ${Object.keys(data.vulnerabilities).length} vulnérabilités en cours.`;
             } catch (e) {
-                document.getElementById('summary').textContent = "⚠️ Erreur : Fichier data/vulnerability.json introuvable.";
+                document.getElementById('summary').textContent = "⚠️ Erreur : Fichier data/vuln-watch.json introuvable.";
             } finally {
                 btn.textContent = "🔄 Forcer la mise à jour";
             }
