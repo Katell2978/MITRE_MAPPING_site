@@ -2,12 +2,14 @@
   "vulnerability_watch": {
     "cve_id": "CVE-2025-32058",
     "status": "active",
+
     "dates": {
       "published": "2025-02-10T10:00:00Z",
       "updated": "2025-02-25T14:30:00Z",
       "monitoring_start": "2025-02-12T09:00:00Z",
       "last_check": "2025-02-25T15:00:00Z"
     },
+
     "metrics": {
       "cvss": {
         "base_initial": 7.5,
@@ -24,51 +26,73 @@
         "current": true,
         "date_added": "2025-02-24"
       }
-      
-"affected_components": [
-  "Infotainment (IVI)",
-  "Telematics Control Unit (TCU)",
-  "Connectivity stack"
-],
-     "publications": [
-  {
-    "type": "conference",
-    "title": "Remote Exploitation of Nissan Leaf",
-    "url": "http://i.blackhat.com/Asia-25/Asia-25-Evdokimov-Remote-Exploitation-of-Nissan-Leaf.pdf",
-    "publisher": "Black Hat Asia",
-    "published_at": null,
-    "reliability": "official",
-    "notes": "Présentation Black Hat Asia décrivant des scénarios d’exploitation à distance sur Nissan Leaf (support PDF)."
-  },
-  {
-    "type": "advisory",
-    "title": "CVE-2025-32058 – Vulnerability & Exploit Details",
-    "url": "https://cve.akaoma.com/cve-2025-32058",
-    "publisher": "Akaoma",
-    "published_at": null,
-    "reliability": "trusted",
-    "notes": "Analyse CVSS, conditions d’exploitation et impact. Pas de PoC public autonome, exploitation décrite."
-  },
-  {
-    "type": "vendor",
-    "title": "Nissan Infotainment Vulnerabilities Manufactured by Bosch",
-    "url": "https://pcacybersecurity.com/resources/advisory/vulnerabilities-in-nissan-infotainment-manufactured-by-bosch",
-    "publisher": "PCA Cyber Security",
-    "published_at": null,
-    "reliability": "trusted",
-    "notes": "Avis de sécurité concernant des vulnérabilités sur les systèmes d’infotainment Nissan fournis par Bosch."
-  },
-    {
-      "type": "autre",
-      "title": "string",
-      "url": "https://www.yazoul.net/advisory/cve/cve-2025-32058/",
-      "publisher": "https://www.yazoul.net/",
-      "published_at": "2026-02-15 | null",
-      "reliability": " community",
-      "notes": ""
-    }
-  ],
     },
+
+    "affected_components": [
+      "Infotainment (IVI)",
+      "Telematics Control Unit (TCU)",
+      "Connectivity stack"
+    ],
+
+    "exploitation_conditions": {
+      "attack_vector": "Local",
+      "attack_complexity": "Low",
+      "privileges_required": "None",
+      "user_interaction": "None",
+      "preconditions": [
+        "Compromise préalable du SoC principal de l’infotainment (exécution de code requise)",
+        "Capacité à envoyer des requêtes malformées via le protocole propriétaire INC",
+        "Absence ou insuffisance de validation des entrées côté microcontrôleur RH850"
+      ],
+      "exploit_maturity": "Research-based",
+      "public_exploit_available": false,
+      "notes": "L’exploitation complète repose sur une chaîne d’attaque documentée dans des travaux de recherche (Black Hat Asia), sans exploit autonome public."
+    },
+
+    "vehicle_impact": {
+      "impact_scope": "Vehicle-wide (scope changed)",
+      "technical_impact": [
+        "Exécution de code arbitraire sur le microcontrôleur RH850",
+        "Injection de messages CAN arbitraires sur le bus véhicule"
+      ],
+      "safety_relevance": "High",
+      "potential_consequences": [
+        "Altération du comportement de systèmes véhicule connectés au CAN",
+        "Risque sur la sûreté de fonctionnement selon les ECU affectés",
+        "Perte de confiance dans l’isolement infotainment / fonctions critiques"
+      ]
+    },
+
+    "publications": [
+      {
+        "type": "conference",
+        "title": "Remote Exploitation of Nissan Leaf",
+        "url": "http://i.blackhat.com/Asia-25/Asia-25-Evdokimov-Remote-Exploitation-of-Nissan-Leaf.pdf",
+        "publisher": "Black Hat Asia",
+        "published_at": null,
+        "reliability": "official",
+        "notes": "Présentation décrivant la chaîne d’exploitation infotainment → RH850 → CAN."
+      },
+      {
+        "type": "advisory",
+        "title": "CVE-2025-32058 – Vulnerability & Exploit Details",
+        "url": "https://cve.akaoma.com/cve-2025-32058",
+        "publisher": "Akaoma",
+        "published_at": null,
+        "reliability": "trusted",
+        "notes": "Analyse CVSS et conditions d’exploitation. Pas de PoC public."
+      },
+      {
+        "type": "vendor",
+        "title": "Nissan Infotainment Vulnerabilities Manufactured by Bosch",
+        "url": "https://pcacybersecurity.com/resources/advisory/vulnerabilities-in-nissan-infotainment-manufactured-by-bosch",
+        "publisher": "PCA Cyber Security",
+        "published_at": null,
+        "reliability": "trusted",
+        "notes": "Avis de sécurité industriel."
+      }
+    ],
+
     "tracking_history": [
       {
         "date": "2025-02-24",
@@ -76,6 +100,9 @@
         "impact_level": "critical"
       }
     ],
-    "notification_targets": ["admin@example.com"]
+
+    "notification_targets": [
+      "admin@example.com"
+    ]
   }
 }
