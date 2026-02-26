@@ -24,6 +24,12 @@
         "current": true,
         "date_added": "2025-02-24"
       }
+      
+"affected_components": [
+  "Infotainment (IVI)",
+  "Telematics Control Unit (TCU)",
+  "Connectivity stack"
+],
      "publications": [
   {
     "type": "conference",
