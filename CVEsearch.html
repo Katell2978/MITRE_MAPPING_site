@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Analyse CVE complète – NVD → CWE → CAPEC → ATT&CK → ATM (+ CISA KEV / EUVD)</title>
+<title>Analyse CVE complète – NVD → CWE → CAPEC  (+ CISA KEV / EUVD)</title>
 
 <style>
 :root{
@@ -45,7 +45,7 @@ li{margin:4px 0}
   <h1>Analyse CVE complète</h1>
   <p class="muted">
     Chaînage complet :
-    <span class="mono">NVD → CWE → CAPEC → ATT&CK → ATM → Détection</span><br/>
+    <span class="mono">NVD → CWE → CAPEC</span><br/>
     Enrichi avec statut <b>CISA KEV</b> et <b>EUVD (ENISA)</b>.
   </p>
 </header>
@@ -111,33 +111,15 @@ let CWE_DB=null, CAPEC_DB=null, TECH_DB=null, ATM_DB=null;
 
 async function loadSecurityBases(){
   if(CWE_DB) return;
-  log("Chargement bases CWE / CAPEC / ATT&CK…");
+  log("Chargement bases CWE / CAPEC");
   [CWE_DB,CAPEC_DB,TECH_DB]=await Promise.all([
     fetch(`${DATA}/cwe_db.json`).then(r=>r.json()),
     fetch(`${DATA}/capec_db.json`).then(r=>r.json()),
     fetch(`${DATA}/techniques_db.json`).then(r=>r.json())
   ]);
-  log("Bases MITRE chargées ✅","ok");
+  log("Bases chargées ✅","ok");
 }
 
-async function loadATM(){
-  if(ATM_DB) return ATM_DB;
-  log("Chargement mapping ATM…");
-  const txt=await fetch(`${DATA}/ATM-matrix-TTP.csv`).then(r=>r.text());
-  ATM_DB=txt.split(/\r?\n/).slice(1).filter(Boolean).map(l=>{
-    const c=l.split(";").map(x=>x.trim());
-    return{
-      tactic:c[0], atmId:c[1], label:c[2],
-      ent:(c[3]||"").split(",").filter(Boolean),
-      mob:(c[4]||"").split(",").filter(Boolean),
-      det:(c[5]||"").split(",").filter(Boolean),
-      dc:(c[6]||"").match(/DC\d{4}/g)||[],
-      onboard:c[12]==="Y", offboard:c[13]==="Y", rmq:c[14]||""
-    };
-  });
-  log(`ATM chargé (${ATM_DB.length} lignes) ✅`,"ok");
-  return ATM_DB;
-}
 
 /* ================= CVSS ================= */
 function pickCvss(metrics){
@@ -156,36 +138,13 @@ function parseVector(v){
   return o;
 }
 
-/* ================= CWE → CAPEC → ATT&CK ================= */
-function extractTechFromCapec(tax){
-  const s=new Set();
-  tax?.split("NAME:ATTACK:ENTRY ").slice(1).forEach(p=>{
-    const m=p.match(/:(\d{4}(?:\.\d{3})?)/);
-    if(m) s.add("T"+m[1]);
-  });
-  return [...s];
-}
-async function computeFromCWE(cwe){
-  await loadSecurityBases();
-  const capecs=(CWE_DB[cwe]?.RelatedAttackPatterns||[])
-    .map(id=>CAPEC_DB[id]).filter(Boolean);
-  const techSet=new Set();
-  capecs.forEach(c=>extractTechFromCapec(c.techniques).forEach(t=>techSet.add(t)));
-  return{
-    capecs,
-    techniques:[...techSet].map(t=>({tid:t,url:`https://attack.mitre.org/techniques/${t}/`}))
-  };
-}
-
 /* ================= VISUEL PIVOTS ================= */
-function renderPivotGraph({cwe,capecs,techniques,atmHits}){
+function renderPivotGraph({cwe,capecs}){
   const svg=document.getElementById("pivotSvg"); if(!svg) return; svg.innerHTML="";
   const ns="http://www.w3.org/2000/svg";
   const cols=[
     {x:20,  items:[`CWE-${cwe}`]},
     {x:200, items:capecs.map(c=>`CAPEC-${c.id}`).slice(0,6)},
-    {x:400, items:techniques.map(t=>t.tid).slice(0,8)},
-    {x:600, items:atmHits.map(a=>a.atmId).slice(0,6)},
     {x:820, items:[...new Set(atmHits.flatMap(a=>a.det.concat(a.dc)))].slice(0,8)}
   ];
   const step=i=>60+i*40;
@@ -259,42 +218,8 @@ async function renderCveDetail(cve){
 /* ================= DRILLDOWN ================= */
 async function drill(cwe){
   const d=document.getElementById("drill");
-  d.innerHTML='<span class="spinner"></span> Analyse CWE → CAPEC → ATT&CK → ATM…';
-
-  const {capecs,techniques}=await computeFromCWE(cwe);
-  const atm=await loadATM();
-  const tids=techniques.map(t=>t.tid);
-  const hits=atm.filter(a =>
-    a.ent.some(t=>tids.includes(t)) ||
-    a.mob.some(t=>tids.includes(t))
-  );
-
-  d.innerHTML=`
-    <h3>ATT&CK dérivées</h3>
-    <ul>
-      ${techniques.map(t=>`
-        <li><a href="${t.url}" target="_blank">${t.tid}</a></li>`).join("")}
-    </ul>
-
-    <h3>ATM Si liens trouvés</h3>
-    <ul>
-      ${hits.map(h=>`
-        <li>
-          <b>${h.atmId}</b> – ${escapeHtml(h.label)}
-          <span class="tag">${h.tactic}</span>
-          ${h.onboard?'<span class="tag">Onboard</span>':''}
-          ${h.offboard?'<span class="tag">Offboard</span>':''}
-          <div class="muted">
-            DET: ${h.det.join(",")||"—"} |
-            DC: ${h.dc.join(",")||"—"}
-          </div>
-        </li>`).join("")}
-    </ul>
-
-    <svg id="pivotSvg"></svg>
-  `;
-
-  renderPivotGraph({cwe,capecs,techniques,atmHits:hits});
+  d.innerHTML='<span class="spinner"></span> Analyse CWE → CAPEC ';
+  renderPivotGraph({cwe,capecs});
 }
 
 /* ================= RECHERCHE CVE ================= */
