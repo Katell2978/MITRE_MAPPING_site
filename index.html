@@ -201,15 +201,14 @@
       </div>
     </div>
   </div>
-
-  <div class="row">
+<div class="row">
     <div class="col">
       <div class="card">
-        <h2 style="margin:0 0 8px 0;">CWE</h2>
+        <h2 style="margin:0 0 8px 0;">CWE & EMB3D</h2>
         <div id="cwe" class="muted">—</div>
+        <div id="emb3d-info" style="margin-top:10px; padding-top:10px; border-top:1px dashed var(--line);"></div>
       </div>
     </div>
-
     <div class="col">
       <div class="card">
         <h2 style="margin:0 0 8px 0;">CAPEC</h2>
@@ -229,7 +228,8 @@
   </div>
 
 <script>
-
+/* Ajout du mapping Emb3D */
+  <script src="data/emb3d.js"></script>
   /// 26-02 Enlever recherche EUVD pour l'instant - CERT-FR pas possible pour l'instant //
 /* ============================================================
    Utilitaire UI : log + statut
@@ -449,7 +449,6 @@ function renderResults({ cveId, description, cvss3, cvss4, epss, epssPct, cweLis
     ? `Date ajout : ${kev.dateAdded || "—"}`
     : "—";
 
-
   // Badges
   const badges = [];
   badges.push(`<span class="badge bg-info">${cveId}</span>`);
@@ -492,6 +491,25 @@ function renderResults({ cveId, description, cvss3, cvss4, epss, epssPct, cweLis
       `<ul>${refs.map(u => `<li><a target="_blank" rel="noopener" href="${u}">${u}</a></li>`).join("")}</ul>`;
   } else {
     document.getElementById("refs").textContent = "—";
+  }
+
+  /* Ajout pour Emb3d   mise  à jour la fonction de rendu pour qu'elle cherche le mapping dans ton fichier `emb3d.js` et l'affiche.*/
+  const emb3dBox = document.getElementById("emb3d-info");
+  emb3dBox.innerHTML = ""; // Reset
+  if (cweList && cweList.length > 0) {
+    // On cherche si l'un des CWE de la liste est présent dans ton mapping EMB3D
+    const firstCweWithMapping = cweList.find(c => emb3dMapping[c]);
+    if (firstCweWithMapping) {
+      const m = emb3dMapping[firstCweWithMapping];
+      emb3dBox.innerHTML = `
+        <div style="background: rgba(122,162,255,0.1); border-radius: 8px; padding: 10px;">
+          <div style="font-size: 0.75em; color: var(--accent); font-weight: bold; text-transform: uppercase;">Pivot EMB3D</div>
+          <div style="font-weight: 900; margin-top: 4px;">${m.tid} : ${m.threat}</div>
+          <div class="badge bg-info" style="margin-top:5px;">${m.category}</div>
+          <div style="font-size: 0.85em; margin-top: 8px; opacity: 0.9;">${m.iot_impact}</div>
+        </div>
+      `;
+    }
   }
 }
 
