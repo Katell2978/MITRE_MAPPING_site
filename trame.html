@@ -27,25 +27,10 @@
 
   <!-- Footer injecté -->
   <div id="footer"></div>
+   <!------- JS pour chargement de header et footer -->
+  <script src="scripts/include.js"></script>
+   <!------- JS pour chargement des fonctions de l'analyser -->
+  <script src="scripts/analyser.js"></script>
 
-  <!------- JS pour chargement de header et footer -->
-  <script>
-async function loadPartial(id, url) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  try {
-    const r = await fetch(url);
-    el.innerHTML = await r.text();
-  } catch (e) {
-    el.innerHTML = "<!-- erreur chargement -->";
-    console.error("Include error:", url, e);
-  }
-}
-
-window.addEventListener("DOMContentLoaded", () => {
-  loadPartial("header", "header.html");
-  loadPartial("footer", "footer.html");
-});
-    </script>
 </body>
 </html>
