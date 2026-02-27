@@ -11,6 +11,6 @@ async function loadPartial(id, url) {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-  loadPartial("header", "partials/header.html");
-  loadPartial("footer", "partials/footer.html");
+  loadPartial("header", "header.html");
+  loadPartial("footer", "/footer.html");
 });
