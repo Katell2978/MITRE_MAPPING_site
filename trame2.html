@@ -9,13 +9,14 @@
     <h1>🧠 Kat-Force Analyser</h1>
     <div class="muted">Mapping : <b>NVD (CVE)</b> → <b>CWE</b> → <b>CAPEC</b></div>
   </div>
-
-<div class="card">
-  <label>CVE à analyser</label><br>
-  <input id="cveInput" value="CVE-2025-32058">
-  <button id="runBtn" onclick="runAnalysis()">🚀 Lancer l’analyse</button>
-  <span id="status">Prêt.</span>
-</div>
+  <div class="card">
+    <label for="cveInput">CVE à analyser</label><br/>
+    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top: 8px;">
+      <input id="cveInput" type="text" placeholder="Ex: CVE-2025-32058" value="CVE-2025-32058" />
+      <button id="runBtn" onclick="runAnalysis()">🚀 Lancer l'analyse</button>
+      <span id="status" class="muted">Prêt.</span>
+    </div>
+  </div>
 
 <div class="row">
   <div class="col card">
