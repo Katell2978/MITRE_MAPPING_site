@@ -69,5 +69,3 @@ async function runAnalysis(){
     document.getElementById("runBtn").disabled=false;
   }
 }
-
-window.onload=runAnalysis;
