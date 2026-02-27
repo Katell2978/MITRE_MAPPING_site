@@ -113,7 +113,67 @@
     <div id="logs">—</div>
   </div>
 
+<!----------------------------------------->
 
+<div class="card">
+  <label>CVE à analyser</label><br>
+  <input id="cveInput" value="CVE-2025-32058">
+  <button id="runBtn" onclick="runAnalysis()">🚀 Lancer l’analyse</button>
+  <span id="status">Prêt.</span>
+</div>
+
+<div class="row">
+  <div class="col card">
+    <h2>Résumé & Scores</h2>
+    <div class="grid">
+      <div class="kpi"><div class="title">CVSS v3</div><div id="cvss3" class="value">—</div><div id="cvss3vec" class="sub">—</div></div>
+      <div class="kpi"><div class="title">CVSS v4</div><div id="cvss4" class="value">—</div><div id="cvss4vec" class="sub">—</div></div>
+      <div class="kpi"><div class="title">EPSS</div><div id="epss" class="value">—</div><div id="epssPct" class="sub">—</div></div>
+      <div class="kpi"><div class="title">KEV</div><div id="kev" class="value">—</div><div id="kevDate" class="sub">—</div></div>
+      <div class="kpi"><div class="title">Badges</div><div id="badges">—</div></div>
+    </div>
+
+    <div id="exploitBanner" class="banner" style="display:none">
+      <h3>Conditions d’exploitation</h3>
+      <div id="exploitPills"></div>
+    </div>
+  </div>
+
+  <div class="col card">
+    <h2>Détail</h2>
+    <div id="desc">—</div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>CPE</h2>
+  <div id="cpe">—</div>
+  <button id="cpeToggleBtn" style="display:none" onclick="toggleCpeView()">Voir tous</button>
+</div>
+
+<div class="row">
+  <div class="col card">
+    <h2>CWE & Pivot EMB3D</h2>
+    <div id="cwe">—</div>
+    <div id="emb3d-info"></div>
+  </div>
+  <div class="col card">
+    <h2>CAPEC</h2>
+    <div id="capec">—</div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Références</h2>
+  <div id="refs">—</div>
+</div>
+
+<div class="card">
+  <h2>Logs (debug)</h2>
+  <div id="logs">—</div>
+</div>
+
+<!-- fin ajout -->
     
     <!-- rien à mutualiser ici -->
 
