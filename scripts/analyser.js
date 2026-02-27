@@ -263,3 +263,103 @@ function renderResults({ cveId, description, cvss3, cvss4, epss, epssPct, cweLis
     document.getElementById("refs").textContent = "—";
   }
 }
+
+/* ============================================================
+   Orchestration : runAnalysis()
+   - Lance NVD + EPSS + KEV + EUVD + mapping CWE→CAPEC
+   ============================================================ */
+async function runAnalysis() {
+  const btn = document.getElementById("runBtn");
+  const cveId = document.getElementById("cveInput").value.trim();
+
+  document.getElementById("logs").textContent = "—";
+  setStatus("Analyse en cours…");
+  btn.disabled = true;
+
+  try {
+    if (!/^CVE-\d{4}-\d{4,}$/i.test(cveId)) {
+      throw new Error("Format CVE invalide. Exemple : CVE-2025-32058");
+    }
+
+    log(`Analyse de ${cveId}`);
+
+    // --- NVD
+    log("Récupération NVD…");
+    const nvd = await fetchNvdCve(cveId);
+    const item = nvd?.vulnerabilities?.[0];
+    if (!item) throw new Error("CVE non trouvée dans la NVD (réponse vide).");
+
+    // Description (FR puis EN)
+    const descArr = item?.cve?.descriptions || [];
+    const fr = descArr.find(d => d.lang === "fr")?.value;
+    const en = descArr.find(d => d.lang === "en")?.value;
+    const description = fr || en || "";
+
+    // CVSS
+    const { cvss3, cvss4 } = extractCvss(item);
+
+    // CWE list
+    const weaknesses = item?.cve?.weaknesses || [];
+    const cweList = [];
+    weaknesses.forEach(w => {
+      (w.description || []).forEach(d => {
+        if (typeof d.value === "string" && d.value.startsWith("CWE-")) cweList.push(d.value);
+      });
+    });
+    const cweUniq = Array.from(new Set(cweList));
+
+    // Références
+    const refs = (item?.cve?.references || []).map(r => r?.url).filter(Boolean);
+
+    // --- EPSS
+ log("Récupération EPSS…");
+ let epssData = { epss: null, percentile: null };
+ try {
+   epssData = await fetchEpss(cveId);
+ } catch (e) {
+   log("EPSS indisponible : " + (e.message || e));
+ }
+
+    // --- KEV
+ log("Récupération KEV (CISA)…");
+ let kev = { inKev: false, dateAdded: null };
+ try {
+   kev = await fetchKevStatus(cveId);
+ } catch (e) {
+   log("KEV indisponible : " + (e.message || e));
+ }
+    // --- Mapping CWE → CAPEC
+    log("Chargement DB CWE→CAPEC…");
+    const cweDb = await loadCweDb();
+
+    log("Chargement DB CAPEC…");
+    const capecDb = await loadCapecDb();
+
+    log("Mapping CWE → CAPEC…");
+    const capecIds = mapCweToCapecIds(cweUniq, cweDb);
+    const capecList = capecDetails(capecIds, capecDb);
+
+    renderResults({
+      cveId,
+      description,
+      cvss3,
+      cvss4,
+      epss: epssData.epss,
+      epssPct: epssData.percentile,
+      cweList: cweUniq,
+      capecList,
+      refs,
+      kev
+ });
+
+    setStatus("✅ Analyse terminée.");
+    log("Analyse terminée.");
+
+  } catch (e) {
+    console.error(e);
+    setStatus("⚠️ Erreur (voir logs).");
+    log(`ERREUR: ${e.message || e}`);
+  } finally {
+    btn.disabled = false;
+  }
+}
