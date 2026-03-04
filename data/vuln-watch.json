@@ -76,8 +76,8 @@
         "review": { "last_review": "2026-02-26T16:02:22Z", "frequency_days": 60, "next_review": "2026-04-27T16:02:22Z", "rationale": "LOW: revue bimestrielle." }
       }
     }
-  }
+  },
   "meta": {
     "generated_at": "2026-02-26T16:02:21Z"
-  },
+  }
   }
