@@ -4,32 +4,13 @@
     "CVE-2025-32058": {
       "cve_id": "CVE-2025-32058",
       "status": "active",
-      "dates": {
-        "published": "2025-02-10T10:00:00Z",
-        "updated": "2025-02-25T14:30:00Z",
-        "monitoring_start": "2025-02-12T09:00:00Z",
-        "last_check": "2026-02-26T16:02:21Z"
-      },
+      "dates": { "published": "2025-02-10T10:00:00Z", "updated": "2025-02-25T14:30:00Z", "monitoring_start": "2025-02-12T09:00:00Z", "last_check": "2026-02-26T16:02:21Z" },
       "metrics": {
-        "cvss": {
-          "base_initial": 7.5,
-          "base_current": 8.8,
-          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
-        },
-        "epss": {
-          "initial": 0.0012,
-          "current": 0.0001,
-          "percentile": 0.0153
-        },
-        "kev_status": {
-          "initial": false,
-          "current": false,
-          "date_added": "2025-02-24"
-        }
+        "cvss": { "base_initial": 7.5, "base_current": 8.8, "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H" },
+        "epss": { "initial": 0.0012, "current": 0.0001, "percentile": 0.0153 },
+        "kev_status": { "initial": false, "current": false, "date_added": "2025-02-24" }
       },
-      "affected_components": [
-        "Infotainment (IVI)"
-      ],
+      "affected_components": [ "Infotainment (IVI)"],
       "exploitation_conditions": {
         "attack_vector": "Remote → Local (pivot)",
         "attack_complexity": "Low",
@@ -40,10 +21,7 @@
       },
       "vehicle_impact": {
         "impact_scope": "Vehicle-wide",
-        "technical_impact": [
-          "Exécution de code arbitraire",
-          "Injection CAN"
-        ],
+        "technical_impact": [ "Exécution de code arbitraire", "Injection CAN"],
         "safety_relevance": "High"
       },
       "publications": [
@@ -63,29 +41,14 @@
         }
       ],
       "watchtower": {
-        "priority": {
-          "score": 2.0,
-          "level": "LOW",
-          "signals": {
-            "remote_exploitable": true,
-            "kev": false,
-            "epss_current": 0.0001
-          }
+        "priority": { "score": 2.0, "level": "LOW", "signals": { "remote_exploitable": true, "kev": false,"epss_current": 0.0001 }},
+        "review": { "last_review": "2026-02-26T16:02:22Z", "frequency_days": 60, "next_review": "2026-04-27T16:02:22Z", "rationale": "LOW: revue bimestrielle." }
         },
-        "review": {
-          "last_review": "2026-02-26T16:02:22Z",
-          "frequency_days": 60,
-          "next_review": "2026-04-27T16:02:22Z",
-          "rationale": "LOW: revue bimestrielle."
-        }
     },
     "CVE-2024-47607": {
       "cve_id": "CVE-2024-47607",
       "status": "active",
-      "affected_components": [
-        "Multimedia pipeline",
-        "GStreamer (Opus parser)"
-      ],
+      "affected_components": [ "Multimedia pipeline", "GStreamer (Opus parser)" ],
       "exploitation_conditions": {
         "attack_vector": "Network",
         "attack_complexity": "Low",
@@ -103,48 +66,20 @@
           "url": "https://gstreamer.freedesktop.org/security/sa-2024-0024.html"
         }
       ],
-      "dates": {
-        "monitoring_start": "2026-02-26T16:02:22Z",
-        "last_check": "2026-02-26T16:02:22Z"
-      },
+      "dates": { "monitoring_start": "2026-02-26T16:02:22Z", "last_check": "2026-02-26T16:02:22Z" },
  "metrics": {
-        "cvss": {
-          "base_initial": 9.8,
-          "base_current": 9.8,
-          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
-        },
-        "epss": {
-          "initial": 0.0011,
-          "current": 0.0011,
-          "percentile": 0.2977
-        },
-        "kev_status": {
-          "initial": false,
-          "current": false,
-          "date_added": "2025-02-24"
-        }
-      },
+        "cvss": { "base_initial": 9.8, "base_current": 9.8, "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"},
+        "epss": { "initial": 0.0011, "current": 0.0011, "percentile": 0.2977 },
+        "kev_status": {"initial": false, "current": false, "date_added": "2025-02-24"}
+ }, 
         "kev_status": {}
       },
       "watchtower": {
-        "priority": {
-          "score": 2.01,
-          "level": "LOW",
-          "signals": {
-            "remote_exploitable": true,
-            "kev": false,
-            "epss_current": 0.0011
-          }
-        },
-        "review": {
-          "last_review": "2026-02-26T16:02:22Z",
-          "frequency_days": 60,
-          "next_review": "2026-04-27T16:02:22Z",
-          "rationale": "LOW: revue bimestrielle."
-        }
+        "priority": { "score": 2.01, "level": "LOW", "signals": {"remote_exploitable": true, "kev": false, "epss_current": 0.0011} },
+        "review": { "last_review": "2026-02-26T16:02:22Z", "frequency_days": 60, "next_review": "2026-04-27T16:02:22Z", "rationale": "LOW: revue bimestrielle." }
       }
     }
-  },
+  }
   "meta": {
     "generated_at": "2026-02-26T16:02:21Z"
   }
