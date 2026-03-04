@@ -1,5 +1,5 @@
-{ //ouverte global
-  "vulnerabilities": { //ouverte vuln
+{
+  "vulnerabilities": {
     
     "CVE-2025-32058": {
       "cve_id": "CVE-2025-32058",
