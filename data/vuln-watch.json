@@ -44,7 +44,7 @@
         "priority": { "score": 2.0, "level": "LOW", "signals": { "remote_exploitable": true, "kev": false,"epss_current": 0.0001 }},
         "review": { "last_review": "2026-02-26T16:02:22Z", "frequency_days": 60, "next_review": "2026-04-27T16:02:22Z", "rationale": "LOW: revue bimestrielle." }
         },
-    },
+    
     "CVE-2024-47607": {
       "cve_id": "CVE-2024-47607",
       "status": "active",
