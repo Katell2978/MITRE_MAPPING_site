@@ -72,8 +72,7 @@
         "epss": { "initial": 0.0011, "current": 0.0011, "percentile": 0.2977 },
         "kev_status": {"initial": false, "current": false, "date_added": "2025-02-24"}
  }, 
-        "kev_status": {}
-      },
+        "kev_status": {},
       "watchtower": {
         "priority": { "score": 2.01, "level": "LOW", "signals": {"remote_exploitable": true, "kev": false, "epss_current": 0.0011} },
         "review": { "last_review": "2026-02-26T16:02:22Z", "frequency_days": 60, "next_review": "2026-04-27T16:02:22Z", "rationale": "LOW: revue bimestrielle." }
