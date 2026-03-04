@@ -1,14 +1,13 @@
 {
   "vulnerabilities": {
-    
     "CVE-2025-32058": {
-      "cve_id": "CVE-2025-32058",
-      "status": "active",
-      "dates": { "published": "2025-02-10T10:00:00Z", "updated": "2025-02-25T14:30:00Z", "monitoring_start": "2025-02-12T09:00:00Z", "last_check": "2026-02-26T16:02:21Z" },
-      "metrics": {
-        "cvss": { "base_initial": 7.5, "base_current": 8.8, "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H" },
-        "epss": { "initial": 0.0012, "current": 0.0001, "percentile": 0.0153 },
-        "kev_status": { "initial": false, "current": false, "date_added": "2025-02-24" }
+        "cve_id": "CVE-2025-32058",
+        "status": "active",
+        "dates": { "published": "2025-02-10T10:00:00Z", "updated": "2025-02-25T14:30:00Z", "monitoring_start": "2025-02-12T09:00:00Z", "last_check": "2026-02-26T16:02:21Z" },
+        "metrics": {
+          "cvss": { "base_initial": 7.5, "base_current": 8.8, "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H" },
+          "epss": { "initial": 0.0012, "current": 0.0001, "percentile": 0.0153 },
+          "kev_status": { "initial": false, "current": false, "date_added": "2025-02-24" }
       },
       "affected_components": [ "Infotainment (IVI)"],
       "exploitation_conditions": {
@@ -67,18 +66,17 @@
         }
       ],
       "dates": { "monitoring_start": "2026-02-26T16:02:22Z", "last_check": "2026-02-26T16:02:22Z" },
- "metrics": {
-        "cvss": { "base_initial": 9.8, "base_current": 9.8, "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"},
-        "epss": { "initial": 0.0011, "current": 0.0011, "percentile": 0.2977 },
-        "kev_status": {"initial": false, "current": false, "date_added": "2025-02-24"}
- }, 
-        "kev_status": {},
-      "watchtower": {
+       "metrics": {
+          "cvss": { "base_initial": 9.8, "base_current": 9.8, "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"},
+          "epss": { "initial": 0.0011, "current": 0.0011, "percentile": 0.2977 },
+          "kev_status": {"initial": false, "current": false, "date_added": "2025-02-24"}
+       }, 
+       "watchtower": {
         "priority": { "score": 2.01, "level": "LOW", "signals": {"remote_exploitable": true, "kev": false, "epss_current": 0.0011} },
         "review": { "last_review": "2026-02-26T16:02:22Z", "frequency_days": 60, "next_review": "2026-04-27T16:02:22Z", "rationale": "LOW: revue bimestrielle." }
       }
     }
-  },
+  }
   "meta": {
     "generated_at": "2026-02-26T16:02:21Z"
   },
