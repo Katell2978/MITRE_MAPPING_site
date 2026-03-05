@@ -30,7 +30,7 @@
         "Infotainment (IVI)"
       ],
       "exploitation_conditions": {
-        "attack_vector": "Remote \u2192 Local (pivot)",
+        "attack_vector": "Remote → Local (pivot)",
         "attack_complexity": "Low",
         "privileges_required": "None",
         "user_interaction": "None",
@@ -40,7 +40,7 @@
       "vehicle_impact": {
         "impact_scope": "Vehicle-wide",
         "technical_impact": [
-          "Ex\u00e9cution de code arbitraire",
+          "Exécution de code arbitraire",
           "Injection CAN"
         ],
         "safety_relevance": "High"
@@ -56,14 +56,14 @@
         {
           "type": "advisory",
           "publisher": "Akaoma",
-          "title": "CVE-2025-32058 \u2013 Vulnerability & Exploit Details",
+          "title": "CVE-2025-32058 – Vulnerability & Exploit Details",
           "url": "https://cve.akaoma.com/cve-2025-32058",
           "reliability": "trusted"
         }
       ],
       "watchtower": {
         "priority": {
-          "score": 2.0,
+          "score": 2,
           "level": "LOW",
           "signals": {
             "remote_exploitable": true,
@@ -218,11 +218,70 @@
         "last_review": "2026-03-05T08:42:29.718374Z",
         "frequency_days": 30,
         "next_review": null,
-        "rationale": "HIGH: CVE exploit\u00e9e (KEV) \u2013 suivi mensuel requis."
+        "rationale": "HIGH: CVE exploitée (KEV) – suivi mensuel requis."
+      }
+    },
+    "CVE-2023-39075": {
+      "cve_id": "CVE-2023-39075",
+      "status": "active",
+      "dates": {
+        "published": "2023-08-03T18:15:11.477",
+        "updated": "2024-11-21T08:14:43.520",
+        "monitoring_start": "2026-03-05T09:48:48.348Z",
+        "last_check": "2026-03-05T09:48:48.348Z"
+      },
+      "metrics": {
+        "cvss": {
+          "base_initial": 4.6,
+          "base_current": 4.6,
+          "vector": "CVSS:3.1/AV:P/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+        },
+        "epss": {
+          "initial": 0.00035,
+          "current": 0.00035,
+          "percentile": 0.09822
+        },
+        "kev_status": {
+          "initial": false,
+          "current": false,
+          "date_added": null
+        }
+      },
+      "affected_components": [],
+      "exploitation_conditions": {
+        "attack_vector": "Physical",
+        "attack_complexity": null,
+        "privileges_required": null,
+        "user_interaction": null,
+        "exploit_maturity": "Unknown",
+        "public_exploit_available": false
+      },
+      "vehicle_impact": {
+        "impact_scope": null,
+        "technical_impact": [],
+        "safety_relevance": "To be assessed"
+      },
+      "publications": [],
+      "watchtower": {
+        "priority": {
+          "score": 2,
+          "level": "LOW",
+          "signals": {
+            "remote_exploitable": false,
+            "kev": false,
+            "epss_current": 0.00035
+          }
+        },
+        "review": {
+          "last_review": "2026-03-05T09:48:48.348Z",
+          "frequency_days": 60,
+          "next_review": null,
+          "rationale": "LOW: revue bimestrielle."
+        }
       }
     }
   },
   "meta": {
-    "generated_at": "2026-03-05T02:31:20Z"
+    "generated_at": "2026-03-05T09:48:48.348Z"
   }
 }
