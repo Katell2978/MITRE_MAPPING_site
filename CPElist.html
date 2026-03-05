@@ -119,13 +119,12 @@
 
     <aside class="card">
       <h2 style="margin:0 0 10px; font-size:16px;">Sources & fonctionnement</h2>
-      <p class="small">• NVD CVE API v2.0 supporte la pagination via <span class="mono">resultsPerPage</span> (≤ 2000) et <span class="mono">startIndex</span>. La réponse fournit <span class="mono">totalResults</span> et une liste <span class="mono">vulnerabilities</span>. citeturn1search37</p>
-      <p class="small">• La clé API NVD (optionnelle) se passe dans l’en-tête HTTP <span class="mono">apiKey</span>. citeturn1search31</p>
-      <p class="small">• Le catalog KEV est disponible en JSON. citeturn1search25turn1search29</p>
+      <p class="small">• NVD CVE API v2.0 supporte la pagination via <span class="mono">resultsPerPage</span> (≤ 2000) et <span class="mono">startIndex</span>. La réponse fournit <span class="mono">totalResults</span> et une liste <span class="mono">vulnerabilities</span>.</p>
+      <p class="small">• La clé API NVD (optionnelle) se passe dans l’en-tête HTTP <span class="mono">apiKey</span>.</p>
+      <p class="small">• Le catalog KEV est disponible en JSON.</p>
       <hr style="border:none;border-top:1px solid var(--border); margin:12px 0" />
       <p class="small">⚠️ Notes pratiques : les appels NVD sont soumis à rate limiting. Le mode « Équilibré » applique des délais et limite la concurrence.</p>
       <p class="small">💡 Cache : les résultats sont stockés dans <span class="mono">localStorage</span> (par CPE + date), pour accélérer les rechargements.</p>
-      <p class="small">🔎 Tu as déjà un prototype interne de page « Vuln by CPE » (<span class="mono">index (4).html</span>) — cette version se focalise sur les métriques demandées (#CVE, #KEV, CVSS max, dernière date). citeturn1search12</p>
       <hr style="border:none;border-top:1px solid var(--border); margin:12px 0" />
       <button id="exportCsv" class="secondary">Exporter résultats en CSV</button>
       <p class="hint">Les liens « NVD » ouvrent la recherche par <span class="mono">cpeName</span> sur NVD. Les liens « JSON » ouvrent l’API NVD.</p>
@@ -188,6 +187,16 @@ function scoreClass(v) {
   return 'ok';
 }
 
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+  }[c]));
+}
+
 function makeRow(cpe) {
   const tr = document.createElement('tr');
   tr.dataset.cpe = cpe;
@@ -200,10 +209,6 @@ function makeRow(cpe) {
     <td data-k="links">—</td>
   `;
   return tr;
-}
-
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',''':'&#39;'}[c]));
 }
 
 function renderTable() {
@@ -229,9 +234,16 @@ function updateRow(cpe, data) {
   maxCvss.className = 'right ' + scoreClass(data.maxCvss);
   lastDate.textContent = formatDate(data.lastDate);
 
-  const nvdSearchUrl = `https://nvd.nist.gov/vuln/search/results?form_type=Advanced&results_type=overview&isCpeNameSearch=true&seach_type=all&query=${encodeURIComponent(cpe)}`;
+  // bonus: fix "search_type" + keep CPE in query
+  const nvdSearchUrl =
+    `https://nvd.nist.gov/vuln/search/results?form_type=Advanced&results_type=overview&isCpeNameSearch=true&search_type=all&query=${encodeURIComponent(cpe)}`;
+
+  // FIX: use & not &amp; in JS strings
   const apiUrl = `${NVD_BASE}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=2000&startIndex=0`;
-  links.innerHTML = `<a class="link" href="${nvdSearchUrl}" target="_blank" rel="noopener">NVD</a> · <a class="link" href="${apiUrl}" target="_blank" rel="noopener">JSON</a>`;
+
+  links.innerHTML =
+    `<a class="link" href="${nvdSearchUrl}" target="_blank" rel="noopener">NVD</a> · ` +
+    `<a class="link" href="${apiUrl}" target="_blank" rel="noopener">JSON</a>`;
 }
 
 function cacheGet(cpe) {
@@ -270,7 +282,6 @@ function extractMaxCvss(vuln) {
   const metrics = vuln?.cve?.metrics;
   if (!metrics) return null;
   const candidates = [];
-  // CVSS v3.1
   for (const k of ['cvssMetricV31','cvssMetricV30','cvssMetricV3','cvssMetricV2']) {
     const arr = metrics[k];
     if (Array.isArray(arr)) {
@@ -294,14 +305,13 @@ async function nvdFetch(url, apiKey, signal) {
   if (apiKey) headers['apiKey'] = apiKey; // NVD: apiKey dans l’en-tête
   const resp = await fetch(url, { headers, signal });
   if (!resp.ok) {
-    const txt = await resp.text().catch(()=>'');
+    const txt = await resp.text().catch(()=> '');
     throw new Error(`NVD HTTP ${resp.status} ${txt.slice(0,120)}`);
   }
   return resp.json();
 }
 
 async function metricsForCpe(cpe, kevSet, apiKey, mode, signal) {
-  // Cache
   const cached = cacheGet(cpe);
   if (cached) return {...cached, cached:true};
 
@@ -313,6 +323,7 @@ async function metricsForCpe(cpe, kevSet, apiKey, mode, signal) {
   let lastDate = null;
 
   while (true) {
+    // FIX: use & not &amp; in JS strings
     const url = `${NVD_BASE}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=${perPage}&startIndex=${startIndex}`;
     const data = await nvdFetch(url, apiKey, signal);
     if (total === null) total = data.totalResults ?? 0;
@@ -327,8 +338,7 @@ async function metricsForCpe(cpe, kevSet, apiKey, mode, signal) {
       if (d) {
         if (!lastDate) lastDate = d;
         else {
-          // Compare ISO timestamps
-          try { if (new Date(d) > new Date(lastDate)) lastDate = d; } catch { /* ignore */ }
+          try { if (new Date(d) > new Date(lastDate)) lastDate = d; } catch {}
         }
       }
     }
@@ -368,7 +378,6 @@ async function runAnalysis() {
     const apiKey = els.apiKey.value.trim();
     const mode = els.mode.value;
 
-    // Concurrence limitée à 1 (plus stable avec rate limit)
     let done = 0, errs = 0;
     for (const cpe of visibleCpes) {
       if (signal.aborted) throw new Error('aborted');
@@ -386,7 +395,6 @@ async function runAnalysis() {
       els.pending.textContent = String(Math.max(0, visibleCpes.length - done));
       els.errors.textContent = String(errs);
       els.bar.style.width = ((done/visibleCpes.length)*100).toFixed(1) + '%';
-      // micro-pause UI
       await sleep(20);
     }
 
@@ -406,22 +414,21 @@ function stopAnalysis() {
 }
 
 function parseCsvText(text) {
-  // accepte ; ou , ; détection simple
-  const lines = text.split(/
-?
-/).filter(Boolean);
+  // FIX: robust line split (CRLF/LF)
+  const lines = text.split(/\r?\n/).filter(line => line.trim().length);
   if (!lines.length) return [];
+
   const sep = (lines[0].split(';').length > lines[0].split(',').length) ? ';' : ',';
-  const headers = lines[0].split(sep).map(h => h.trim().replace(/^﻿/,''));
+  const headers = lines[0].split(sep).map(h => h.trim().replace(/^\uFEFF/, ''));
   const idx = headers.findIndex(h => h.toLowerCase().includes('cpe'));
   if (idx < 0) return [];
+
   const out = [];
   for (let i=1;i<lines.length;i++) {
     const parts = lines[i].split(sep);
     const cpe = (parts[idx]||'').trim();
     if (cpe.startsWith('cpe:2.3:')) out.push(cpe);
   }
-  // unique
   return [...new Set(out)].sort();
 }
 
@@ -453,8 +460,9 @@ function exportResultsCsv() {
     const lastDate = tr.querySelector('[data-k="lastDate"]').textContent.trim();
     rows.push([cpe,cveCount,kevCount,maxCvss,lastDate]);
   }
-  const csv = rows.map(r => r.map(v => '"' + String(v).replaceAll('"','""') + '"').join(';')).join('
-');
+  const csv = rows
+    .map(r => r.map(v => '"' + String(v).replaceAll('"','""') + '"').join(';'))
+    .join('\n');
   const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -469,7 +477,12 @@ els.run.addEventListener('click', runAnalysis);
 els.stop.addEventListener('click', stopAnalysis);
 els.loadDefault.addEventListener('click', () => { CPE_LIST = [...DEFAULT_CPE_LIST]; setMsg('Liste par défaut rechargée.'); renderTable(); });
 els.clearCache.addEventListener('click', clearCache);
+
+// NOTE : garder seulement le rendu de la table quand tu filtres.
+// Si tu veux conserver les résultats calculés même après filtrage,
+// on pourra améliorer en stockant les résultats dans une map.
 els.filter.addEventListener('input', () => { renderTable(); });
+
 els.csvFile.addEventListener('change', (e) => {
   const f = e.target.files && e.target.files[0];
   if (f) loadCsvFile(f);
