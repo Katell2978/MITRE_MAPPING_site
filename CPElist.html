@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Gestion des vulnérabilités — CVE par CPE</title>
+  <style>
+    :root{ --bg:#0b1020; --card:#121a33; --text:#e9ecf5; --muted:#a7b0d6; --accent:#7aa2ff; --danger:#ff6b6b; --ok:#2dd4bf; --warn:#fbbf24; --border:rgba(255,255,255,.12); }
+    @media (prefers-color-scheme: light) { :root{ --bg:#f6f7fb; --card:#ffffff; --text:#0b1020; --muted:#46507a; --accent:#2f6fff; --border:rgba(0,0,0,.1); } }
+    body{ margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans",Arial; background:var(--bg); color:var(--text); }
+    header{ padding:28px 18px 14px; max-width:1100px; margin:0 auto; }
+    h1{ font-size:20px; margin:0 0 8px; letter-spacing:.2px; }
+    p{ margin:6px 0; color:var(--muted); line-height:1.35; }
+    .wrap{ max-width:1100px; margin:0 auto; padding:0 18px 34px; }
+    .grid{ display:grid; gap:12px; grid-template-columns: 1fr; }
+    @media (min-width: 920px) { .grid{ grid-template-columns: 1.2fr .8fr; } }
+    .card{ background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px; box-shadow:0 6px 22px rgba(0,0,0,.12); }
+    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    label{ font-size:12px; color:var(--muted); display:block; margin-bottom:6px; }
+    input[type="text"], input[type="password"], select{ background:transparent; border:1px solid var(--border); color:var(--text); border-radius:10px; padding:10px 12px; min-width:240px; outline:none; }
+    input[type="file"]{ color:var(--muted); }
+    button{ background:var(--accent); border:none; color:white; border-radius:10px; padding:10px 12px; cursor:pointer; font-weight:600; }
+    button.secondary{ background:transparent; border:1px solid var(--border); color:var(--text); }
+    button:disabled{ opacity:.55; cursor:not-allowed; }
+    .small{ font-size:12px; color:var(--muted); }
+    .pill{ display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:999px; border:1px solid var(--border); color:var(--muted); font-size:12px; }
+    .pill strong{ color:var(--text); }
+    .pill.ok strong{ color:var(--ok); }
+    .pill.warn strong{ color:var(--warn); }
+    .pill.bad strong{ color:var(--danger); }
+
+    table{ width:100%; border-collapse:separate; border-spacing:0; overflow:hidden; border-radius:12px; border:1px solid var(--border); }
+    thead th{ text-align:left; font-size:12px; color:var(--muted); padding:10px 10px; background:rgba(255,255,255,.04); position:sticky; top:0; z-index:1; }
+    tbody td{ padding:10px 10px; border-top:1px solid var(--border); vertical-align:top; }
+    tbody tr:hover td{ background:rgba(122,162,255,.07); }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size:12px; }
+    .right{ text-align:right; }
+    .muted{ color:var(--muted); }
+    .link{ color:var(--accent); text-decoration:none; }
+    .progress{ height:10px; background:rgba(255,255,255,.08); border-radius:999px; overflow:hidden; }
+    .progress > div{ height:100%; width:0%; background:linear-gradient(90deg,var(--accent),#2dd4bf); }
+    .status{ display:flex; justify-content:space-between; gap:12px; align-items:center; margin-top:10px; }
+    .hint{ margin-top:8px; font-size:12px; color:var(--muted); }
+    .kbd{ font-family:ui-monospace; border:1px solid var(--border); border-bottom-width:2px; padding:0 6px; border-radius:7px; color:var(--muted); }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Gestion des vulnérabilités — tableau <span class="mono">CPE → CVE</span></h1>
+  <p>Cette page charge une liste de CPE et calcule, pour chacune : <strong>#CVE</strong>, <strong>#CVE avec KEV</strong>, <strong>CVSS max</strong>, <strong>date de la dernière CVE</strong>.</p>
+  <p class="small">Données : NVD CVE API (<span class="mono">/rest/json/cves/2.0</span>) et catalog KEV de CISA. Conformément aux recommandations NVD : <span class="mono">"This product uses data from the NVD API but is not endorsed or certified by the NVD."</span></p>
+</header>
+
+<div class="wrap">
+  <div class="grid">
+
+    <div class="card">
+      <div class="row" style="justify-content:space-between; align-items:flex-end">
+        <div style="flex: 1 1 420px;">
+          <label for="filter">Filtre rapide (vendor / produit / version / texte CPE)</label>
+          <input id="filter" type="text" placeholder="ex: openssl, linux_kernel, 1.1.1w…" />
+        </div>
+        <div class="row" style="align-items:flex-end">
+          <div>
+            <label for="mode">Mode de requêtes NVD</label>
+            <select id="mode">
+              <option value="balanced" selected>Équilibré (pagination + délais)</option>
+              <option value="fast">Rapide (moins de délais — risque 429/403)</option>
+            </select>
+          </div>
+          <div>
+            <label for="apiKey">Clé API NVD (optionnel)</label>
+            <input id="apiKey" type="password" placeholder="apiKey (header)" />
+          </div>
+          <div style="padding-top:22px;">
+            <button id="run">Analyser</button>
+            <button id="stop" class="secondary" disabled>Stop</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="status">
+        <div class="row">
+          <span class="pill"><strong id="count">0</strong>&nbsp;<span> CPE</span></span>
+          <span class="pill ok"><strong id="done">0</strong>&nbsp;<span> traités</span></span>
+          <span class="pill warn"><strong id="pending">0</strong>&nbsp;<span> en cours</span></span>
+          <span class="pill bad"><strong id="errors">0</strong>&nbsp;<span> erreurs</span></span>
+        </div>
+        <div class="small muted" id="lastMsg">—</div>
+      </div>
+      <div class="progress" aria-label="progression"><div id="bar"></div></div>
+      <div class="hint">Astuce : tu peux ajouter/mettre à jour la liste en déposant un CSV (délimiteur <span class="kbd">;</span> ou <span class="kbd">,</span>) qui contient une colonne <span class="mono">CPE:2.3</span> (comme ton exemple). La page ne nécessite aucun backend (GitHub Pages compatible).</div>
+
+      <div style="margin-top:10px" class="row">
+        <div>
+          <label for="csvFile">Charger un CSV de CPE (optionnel)</label>
+          <input id="csvFile" type="file" accept=".csv,text/csv" />
+        </div>
+        <button id="loadDefault" class="secondary" title="Recharge la liste par défaut (celle embarquée dans la page)">Recharger la liste par défaut</button>
+        <button id="clearCache" class="secondary" title="Efface le cache navigateur (résultats par CPE)">Vider le cache</button>
+      </div>
+
+      <div style="margin-top:12px; max-height:60vh; overflow:auto; border-radius:12px;">
+        <table id="tbl">
+          <thead>
+            <tr>
+              <th style="width:44%">CPE</th>
+              <th class="right">#CVE</th>
+              <th class="right">#KEV</th>
+              <th class="right">CVSS max</th>
+              <th>Dernière CVE (date)</th>
+              <th>Liens</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <aside class="card">
+      <h2 style="margin:0 0 10px; font-size:16px;">Sources & fonctionnement</h2>
+      <p class="small">• NVD CVE API v2.0 supporte la pagination via <span class="mono">resultsPerPage</span> (≤ 2000) et <span class="mono">startIndex</span>. La réponse fournit <span class="mono">totalResults</span> et une liste <span class="mono">vulnerabilities</span>. citeturn1search37</p>
+      <p class="small">• La clé API NVD (optionnelle) se passe dans l’en-tête HTTP <span class="mono">apiKey</span>. citeturn1search31</p>
+      <p class="small">• Le catalog KEV est disponible en JSON. citeturn1search25turn1search29</p>
+      <hr style="border:none;border-top:1px solid var(--border); margin:12px 0" />
+      <p class="small">⚠️ Notes pratiques : les appels NVD sont soumis à rate limiting. Le mode « Équilibré » applique des délais et limite la concurrence.</p>
+      <p class="small">💡 Cache : les résultats sont stockés dans <span class="mono">localStorage</span> (par CPE + date), pour accélérer les rechargements.</p>
+      <p class="small">🔎 Tu as déjà un prototype interne de page « Vuln by CPE » (<span class="mono">index (4).html</span>) — cette version se focalise sur les métriques demandées (#CVE, #KEV, CVSS max, dernière date). citeturn1search12</p>
+      <hr style="border:none;border-top:1px solid var(--border); margin:12px 0" />
+      <button id="exportCsv" class="secondary">Exporter résultats en CSV</button>
+      <p class="hint">Les liens « NVD » ouvrent la recherche par <span class="mono">cpeName</span> sur NVD. Les liens « JSON » ouvrent l’API NVD.</p>
+    </aside>
+
+  </div>
+</div>
+
+<script>
+// ====== Données par défaut (issues de IVC3_BOM_cpe.csv) ======
+const DEFAULT_CPE_LIST = ["cpe:2.3:a:alsa-project:alsa:1.1.4.1:*:*:*:*:*:*:*", "cpe:2.3:a:arm:mbed_tls:2.16.0:*:*:*:*:*:*:*", "cpe:2.3:a:attr_project:attr:2.4.47:*:*:*:*:*:*:*", "cpe:2.3:a:boost:boost:1.64.0:*:*:*:*:*:*:*", "cpe:2.3:a:busybox:busybox:1.24.1:*:*:*:*:*:*:*", "cpe:2.3:a:cgroup-lite_project:cgroup-lite:1.11:*:*:*:*:*:*:*", "cpe:2.3:a:cjson_project:cjson:1.6.0:*:*:*:*:*:*:*", "cpe:2.3:a:covesa:dlt-daemon:2.18.6:*:*:*:*:*:*:*", "cpe:2.3:a:data-oss_project:data-oss:1:*:*:*:*:*:*:*", "cpe:2.3:a:debian:init-ifupdown:1:*:*:*:*:*:*:*", "cpe:2.3:a:debian:shadow:4.2.1:*:*:*:*:*:*:*", "cpe:2.3:a:dest-unreach:socat:1.7.3.2:*:*:*:*:*:*:*", "cpe:2.3:a:dhcpcd_project:dhcpcd:9.2.0:*:*:*:*:*:*:*", "cpe:2.3:a:embms-kernel_project:embms-kernel:1:*:*:*:*:*:*:*", "cpe:2.3:a:ext4-utils_project:ext4-utils:1:*:*:*:*:*:*:*", "cpe:2.3:a:feep:libtar:1.2.20:*:*:*:*:*:*:*", "cpe:2.3:a:gnu:libidn2:2.3.0:*:*:*:*:*:*:*", "cpe:2.3:a:gnu:ncurses:6.4:*:*:*:*:*:*:*", "cpe:2.3:a:gnu:readline:5.2:*:*:*:*:*:*:*", "cpe:2.3:a:gnupg:libgpg-error:1.27:*:*:*:*:*:*:*", "cpe:2.3:a:google:android:1.6:r1.3:*:*:*:*:*:*", "cpe:2.3:a:google:android:14.0.0:r15:*:*:*:*:*:*", "cpe:2.3:a:google:android:6.0.0:r1:*:*:*:*:*:*", "cpe:2.3:a:google:android:6.0.0:r7:*:*:*:*:*:*", "cpe:2.3:a:google:android:7.0.0:r19:*:*:*:*:*:*", "cpe:2.3:a:google:android:7.0.0:r1:*:*:*:*:*:*", "cpe:2.3:a:google:android:7.1.0:r1:*:*:*:*:*:*", "cpe:2.3:a:google:android_bootable_bootloader_lk:froyo-20101011:*:*:*:*:*:*:*", "cpe:2.3:a:google:android_libselinux:6.0.1:r55:*:*:*:*:*:*", "cpe:2.3:a:google:android_libunwind:6.0.1:r55:*:*:*:*:*:*", "cpe:2.3:a:google:libsparse:1:*:*:*:*:*:*:*", "cpe:2.3:a:haxx:curl:8.4.0:*:*:*:*:*:*:*", "cpe:2.3:a:hostap-daemon-qcacld_project:hostap-daemon-qcacld:1:*:*:*:*:*:*:*", "cpe:2.3:a:iputils:iputils:s20151218:*:*:*:*:*:*:*", "cpe:2.3:a:iw_project:iw:4.9:*:*:*:*:*:*:*", "cpe:2.3:a:jsoncpp_project:jsoncpp:1.9.5:*:*:*:*:*:*:*", "cpe:2.3:a:kbd_project:kbd:2.0.4:*:*:*:*:*:*:*", "cpe:2.3:a:kernel:ethtool:1:*:*:*:*:*:*:*", "cpe:2.3:a:kernel:kmod:24:*:*:*:*:*:*:*", "cpe:2.3:a:kernel:util-linux:2.30:-:*:*:*:*:*:*", "cpe:2.3:a:libarchive:libarchive:3.3.2:*:*:*:*:*:*:*", "cpe:2.3:a:libbase_project:libbase:1:*:*:*:*:*:*:*", "cpe:2.3:a:libcap-ng_project:libcap-ng:0.7.8:*:*:*:*:*:*:*", "cpe:2.3:a:libcap_project:libcap:2.25:*:*:*:*:*:*:*", "cpe:2.3:a:libcutils_project:libcutils:1:*:*:*:*:*:*:*", "cpe:2.3:a:libffi_project:libffi:3.2.1:*:*:*:*:*:*:*", "cpe:2.3:a:libkcapi_project:libkcapi:1.1.4:*:*:*:*:*:*:*", "cpe:2.3:a:libunwind_project:libunwind:1:*:*:*:*:*:*:*", "cpe:2.3:a:libuv:libuv:1.48.0:*:*:*:*:*:*:*", "cpe:2.3:a:lzo_project:lzo:2.10:*:*:*:*:*:*:*", "cpe:2.3:a:mmc-utils_project:mmc-utils:0.1:*:*:*:*:*:*:*", "cpe:2.3:a:modutils-initscripts_project:modutils-initscripts:1:*:*:*:*:*:*:*", "cpe:2.3:a:mozilla:ca-certificates:20170717:*:*:*:*:*:*:*", "cpe:2.3:a:mtd-utils_project:mtd-utils:2.0.0:*:*:*:*:*:*:*", "cpe:2.3:a:netbase_project:netbase:5.4:*:*:*:*:*:*:*", "cpe:2.3:a:openssl:openssl:1.1.1w:*:*:*:*:*:*:*", "cpe:2.3:a:opkg_project:opkg:0.3.5:*:*:*:*:*:*:*", "cpe:2.3:a:pcre:pcre:8.44:*:*:*:*:*:*:*", "cpe:2.3:a:phytool_project:phytool:1.0.1:*:*:*:*:*:*:*", "cpe:2.3:a:pimd_project:pimd:1:*:*:*:*:*:*:*", "cpe:2.3:a:rng-tools_project:rng-tools:5.0:*:*:*:*:*:*:*", "cpe:2.3:a:rtsp-alg_project:rtsp-alg:3.7:*:*:*:*:*:*:*", "cpe:2.3:a:run-postinsts_project:run-postinsts:1:*:*:*:*:*:*:*", "cpe:2.3:a:sec-config_project:sec-config:1:*:*:*:*:*:*:*", "cpe:2.3:a:sfe_project:sfe:1:*:*:*:*:*:*:*", "cpe:2.3:a:shared-mime-info_project:shared-mime-info:1.8:*:*:*:*:*:*:*", "cpe:2.3:a:sqlite:sqlite:3.40.1:*:*:*:*:*:*:*", "cpe:2.3:a:ssc_project:ssc:0.0.2:*:*:*:*:*:*:*", "cpe:2.3:a:strongswan:strongswan:5.9.10:-:*:*:*:*:*:*", "cpe:2.3:a:sysfsutils_project:sysfsutils:2.1.0:*:*:*:*:*:*:*", "cpe:2.3:a:system-conf_project:system-conf:1:*:*:*:*:*:*:*", "cpe:2.3:a:sysvinit_project:sysvinit:2.88:*:*:*:*:*:*:*", "cpe:2.3:a:tcp_wrappers_project:tcp_wrappers:7.6:*:*:*:*:*:*:*", "cpe:2.3:a:tcpdump:libpcap:1.10.5:*:*:*:*:*:*:*", "cpe:2.3:a:tcpdump:tcpdump:4.99.1:*:*:*:*:*:*:*", "cpe:2.3:a:thekelleys:dnsmasq:2.79:*:*:*:*:*:*:*", "cpe:2.3:a:tinyalsa_project:tinyalsa:1:*:*:*:*:*:*:*", "cpe:2.3:a:tinyscheme_project:tinyscheme:1.0.0:*:*:*:*:*:*:*", "cpe:2.3:a:underbit:mad_libmad:0.15.1b:*:*:*:*:*:*:*", "cpe:2.3:a:update-rc.d_project:update-rc.d:0.7:*:*:*:*:*:*:*", "cpe:2.3:a:usb-g-config_project:usb-g-config:1:*:*:*:*:*:*:*", "cpe:2.3:a:w1.fi:wpa_supplicant:2.8:*:*:*:*:*:*:*", "cpe:2.3:a:wireless-tools_project:wireless-tools:30~pre9:*:*:*:*:*:*:*", "cpe:2.3:a:xdelta3:xdelta3:3.0.11:*:*:*:*:*:*:*", "cpe:2.3:a:xmlsoft:libxml2:2.13.6:*:*:*:*:*:*:*", "cpe:2.3:a:zlib:zlib:1.2.13:*:*:*:*:*:*:*", "cpe:2.3:h:qualcomm:mdm9628:-:*:*:*:*:*:*:*", "cpe:2.3:o:linux:linux_kernel:3.18.120:*:*:*:*:*:*:*", "cpe:2.3:o:qualcomm:mdm9628_firmware:-:*:*:*:*:*:*:*"];
+
+// Endpoints publics
+const NVD_BASE = 'https://services.nvd.nist.gov/rest/json/cves/2.0';
+const KEV_JSON = 'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json';
+
+// Cache navigateur (clé -> JSON)
+const CACHE_PREFIX = 'cpe_cve_metrics_v1::';
+const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // 24h
+
+// UI refs
+const els = {
+  filter: document.getElementById('filter'),
+  mode: document.getElementById('mode'),
+  apiKey: document.getElementById('apiKey'),
+  run: document.getElementById('run'),
+  stop: document.getElementById('stop'),
+  loadDefault: document.getElementById('loadDefault'),
+  clearCache: document.getElementById('clearCache'),
+  csvFile: document.getElementById('csvFile'),
+  exportCsv: document.getElementById('exportCsv'),
+  tbody: document.querySelector('#tbl tbody'),
+  count: document.getElementById('count'),
+  done: document.getElementById('done'),
+  pending: document.getElementById('pending'),
+  errors: document.getElementById('errors'),
+  lastMsg: document.getElementById('lastMsg'),
+  bar: document.getElementById('bar')
+};
+
+let CPE_LIST = [...DEFAULT_CPE_LIST];
+let aborter = null;
+
+function setMsg(msg) { els.lastMsg.textContent = msg; }
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function formatDate(iso) {
+  if (!iso) return '—';
+  try {
+    const d = new Date(iso);
+    if (isNaN(d)) return iso;
+    return d.toLocaleDateString('fr-FR', { year:'numeric', month:'2-digit', day:'2-digit' });
+  } catch { return iso; }
+}
+
+function scoreClass(v) {
+  if (v === null || v === undefined) return 'muted';
+  if (v >= 9) return 'bad';
+  if (v >= 7) return 'warn';
+  return 'ok';
+}
+
+function makeRow(cpe) {
+  const tr = document.createElement('tr');
+  tr.dataset.cpe = cpe;
+  tr.innerHTML = `
+    <td class="mono">${escapeHtml(cpe)}</td>
+    <td class="right" data-k="cveCount">—</td>
+    <td class="right" data-k="kevCount">—</td>
+    <td class="right" data-k="maxCvss">—</td>
+    <td data-k="lastDate">—</td>
+    <td data-k="links">—</td>
+  `;
+  return tr;
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',''':'&#39;'}[c]));
+}
+
+function renderTable() {
+  els.tbody.innerHTML = '';
+  const q = els.filter.value.trim().toLowerCase();
+  const filtered = CPE_LIST.filter(c => !q || c.toLowerCase().includes(q));
+  for (const cpe of filtered) els.tbody.appendChild(makeRow(cpe));
+  els.count.textContent = String(filtered.length);
+}
+
+function updateRow(cpe, data) {
+  const tr = [...els.tbody.querySelectorAll('tr')].find(r => r.dataset.cpe === cpe);
+  if (!tr) return;
+  const cveCount = tr.querySelector('[data-k="cveCount"]');
+  const kevCount = tr.querySelector('[data-k="kevCount"]');
+  const maxCvss = tr.querySelector('[data-k="maxCvss"]');
+  const lastDate = tr.querySelector('[data-k="lastDate"]');
+  const links = tr.querySelector('[data-k="links"]');
+
+  cveCount.textContent = data.totalCves ?? '—';
+  kevCount.textContent = data.kevCves ?? '—';
+  maxCvss.textContent = (data.maxCvss ?? '—');
+  maxCvss.className = 'right ' + scoreClass(data.maxCvss);
+  lastDate.textContent = formatDate(data.lastDate);
+
+  const nvdSearchUrl = `https://nvd.nist.gov/vuln/search/results?form_type=Advanced&results_type=overview&isCpeNameSearch=true&seach_type=all&query=${encodeURIComponent(cpe)}`;
+  const apiUrl = `${NVD_BASE}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=2000&startIndex=0`;
+  links.innerHTML = `<a class="link" href="${nvdSearchUrl}" target="_blank" rel="noopener">NVD</a> · <a class="link" href="${apiUrl}" target="_blank" rel="noopener">JSON</a>`;
+}
+
+function cacheGet(cpe) {
+  try {
+    const raw = localStorage.getItem(CACHE_PREFIX + cpe);
+    if (!raw) return null;
+    const obj = JSON.parse(raw);
+    if (!obj.ts || (Date.now() - obj.ts) > CACHE_TTL_MS) return null;
+    return obj.data;
+  } catch { return null; }
+}
+
+function cacheSet(cpe, data) {
+  try {
+    localStorage.setItem(CACHE_PREFIX + cpe, JSON.stringify({ ts: Date.now(), data }));
+  } catch { /* ignore quota */ }
+}
+
+async function loadKevSet(signal) {
+  setMsg('Chargement du catalogue KEV…');
+  const resp = await fetch(KEV_JSON, { signal });
+  if (!resp.ok) throw new Error('KEV HTTP ' + resp.status);
+  const kev = await resp.json();
+  const set = new Set();
+  // Schema courant : kev.vulnerabilities[] contient cveID
+  const items = kev?.vulnerabilities || kev?.Vulnerabilities || [];
+  for (const it of items) {
+    const id = it.cveID || it.cveId || it.cve || it.CVE;
+    if (id) set.add(String(id).trim().toUpperCase());
+  }
+  setMsg(`KEV chargé : ${set.size} entrées.`);
+  return set;
+}
+
+function extractMaxCvss(vuln) {
+  const metrics = vuln?.cve?.metrics;
+  if (!metrics) return null;
+  const candidates = [];
+  // CVSS v3.1
+  for (const k of ['cvssMetricV31','cvssMetricV30','cvssMetricV3','cvssMetricV2']) {
+    const arr = metrics[k];
+    if (Array.isArray(arr)) {
+      for (const m of arr) {
+        const s = m?.cvssData?.baseScore;
+        if (typeof s === 'number') candidates.push(s);
+      }
+    }
+  }
+  if (!candidates.length) return null;
+  return Math.max(...candidates);
+}
+
+function extractDate(vuln) {
+  const c = vuln?.cve;
+  return c?.lastModified || c?.published || null;
+}
+
+async function nvdFetch(url, apiKey, signal) {
+  const headers = {};
+  if (apiKey) headers['apiKey'] = apiKey; // NVD: apiKey dans l’en-tête
+  const resp = await fetch(url, { headers, signal });
+  if (!resp.ok) {
+    const txt = await resp.text().catch(()=>'');
+    throw new Error(`NVD HTTP ${resp.status} ${txt.slice(0,120)}`);
+  }
+  return resp.json();
+}
+
+async function metricsForCpe(cpe, kevSet, apiKey, mode, signal) {
+  // Cache
+  const cached = cacheGet(cpe);
+  if (cached) return {...cached, cached:true};
+
+  const perPage = 2000;
+  let startIndex = 0;
+  let total = null;
+  let kevCount = 0;
+  let maxCvss = null;
+  let lastDate = null;
+
+  while (true) {
+    const url = `${NVD_BASE}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=${perPage}&startIndex=${startIndex}`;
+    const data = await nvdFetch(url, apiKey, signal);
+    if (total === null) total = data.totalResults ?? 0;
+
+    const vulns = data.vulnerabilities || [];
+    for (const v of vulns) {
+      const id = v?.cve?.id;
+      if (id && kevSet.has(String(id).toUpperCase())) kevCount++;
+      const s = extractMaxCvss(v);
+      if (typeof s === 'number') maxCvss = (maxCvss === null) ? s : Math.max(maxCvss, s);
+      const d = extractDate(v);
+      if (d) {
+        if (!lastDate) lastDate = d;
+        else {
+          // Compare ISO timestamps
+          try { if (new Date(d) > new Date(lastDate)) lastDate = d; } catch { /* ignore */ }
+        }
+      }
+    }
+
+    startIndex += perPage;
+    if (startIndex >= (total || 0)) break;
+
+    // délai anti-rate-limit
+    if (mode === 'balanced') await sleep(apiKey ? 250 : 1200);
+    else await sleep(apiKey ? 120 : 600);
+  }
+
+  const result = { totalCves: total || 0, kevCves: kevCount, maxCvss, lastDate, cached:false };
+  cacheSet(cpe, result);
+  return result;
+}
+
+function resetCounters(total) {
+  els.done.textContent = '0';
+  els.pending.textContent = String(total);
+  els.errors.textContent = '0';
+  els.bar.style.width = '0%';
+}
+
+async function runAnalysis() {
+  aborter = new AbortController();
+  const signal = aborter.signal;
+
+  els.run.disabled = true;
+  els.stop.disabled = false;
+
+  const visibleCpes = [...els.tbody.querySelectorAll('tr')].map(tr => tr.dataset.cpe);
+  resetCounters(visibleCpes.length);
+
+  try {
+    const kevSet = await loadKevSet(signal);
+    const apiKey = els.apiKey.value.trim();
+    const mode = els.mode.value;
+
+    // Concurrence limitée à 1 (plus stable avec rate limit)
+    let done = 0, errs = 0;
+    for (const cpe of visibleCpes) {
+      if (signal.aborted) throw new Error('aborted');
+      setMsg('Analyse : ' + cpe);
+      try {
+        const data = await metricsForCpe(cpe, kevSet, apiKey, mode, signal);
+        updateRow(cpe, data);
+      } catch (e) {
+        errs++;
+        updateRow(cpe, { totalCves:'—', kevCves:'—', maxCvss:null, lastDate:null });
+        console.warn('Erreur CPE', cpe, e);
+      }
+      done++;
+      els.done.textContent = String(done);
+      els.pending.textContent = String(Math.max(0, visibleCpes.length - done));
+      els.errors.textContent = String(errs);
+      els.bar.style.width = ((done/visibleCpes.length)*100).toFixed(1) + '%';
+      // micro-pause UI
+      await sleep(20);
+    }
+
+    setMsg('Terminé.');
+  } catch (e) {
+    if (String(e?.message||e).includes('aborted')) setMsg('Arrêt demandé.');
+    else setMsg('Erreur: ' + (e?.message || e));
+  } finally {
+    els.run.disabled = false;
+    els.stop.disabled = true;
+    aborter = null;
+  }
+}
+
+function stopAnalysis() {
+  if (aborter) aborter.abort();
+}
+
+function parseCsvText(text) {
+  // accepte ; ou , ; détection simple
+  const lines = text.split(/
+?
+/).filter(Boolean);
+  if (!lines.length) return [];
+  const sep = (lines[0].split(';').length > lines[0].split(',').length) ? ';' : ',';
+  const headers = lines[0].split(sep).map(h => h.trim().replace(/^﻿/,''));
+  const idx = headers.findIndex(h => h.toLowerCase().includes('cpe'));
+  if (idx < 0) return [];
+  const out = [];
+  for (let i=1;i<lines.length;i++) {
+    const parts = lines[i].split(sep);
+    const cpe = (parts[idx]||'').trim();
+    if (cpe.startsWith('cpe:2.3:')) out.push(cpe);
+  }
+  // unique
+  return [...new Set(out)].sort();
+}
+
+async function loadCsvFile(file) {
+  const text = await file.text();
+  const list = parseCsvText(text);
+  if (!list.length) {
+    setMsg('CSV chargé, mais aucune colonne CPE détectée.');
+    return;
+  }
+  CPE_LIST = list;
+  setMsg(`CSV chargé : ${list.length} CPE.`);
+  renderTable();
+}
+
+function clearCache() {
+  const keys = Object.keys(localStorage);
+  for (const k of keys) if (k.startsWith(CACHE_PREFIX)) localStorage.removeItem(k);
+  setMsg('Cache supprimé.');
+}
+
+function exportResultsCsv() {
+  const rows = [['cpe','cve_count','kev_count','max_cvss','last_date']];
+  for (const tr of els.tbody.querySelectorAll('tr')) {
+    const cpe = tr.dataset.cpe;
+    const cveCount = tr.querySelector('[data-k="cveCount"]').textContent.trim();
+    const kevCount = tr.querySelector('[data-k="kevCount"]').textContent.trim();
+    const maxCvss = tr.querySelector('[data-k="maxCvss"]').textContent.trim();
+    const lastDate = tr.querySelector('[data-k="lastDate"]').textContent.trim();
+    rows.push([cpe,cveCount,kevCount,maxCvss,lastDate]);
+  }
+  const csv = rows.map(r => r.map(v => '"' + String(v).replaceAll('"','""') + '"').join(';')).join('
+');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'cpe_vuln_metrics.csv';
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Events
+els.run.addEventListener('click', runAnalysis);
+els.stop.addEventListener('click', stopAnalysis);
+els.loadDefault.addEventListener('click', () => { CPE_LIST = [...DEFAULT_CPE_LIST]; setMsg('Liste par défaut rechargée.'); renderTable(); });
+els.clearCache.addEventListener('click', clearCache);
+els.filter.addEventListener('input', () => { renderTable(); });
+els.csvFile.addEventListener('change', (e) => {
+  const f = e.target.files && e.target.files[0];
+  if (f) loadCsvFile(f);
+});
+els.exportCsv.addEventListener('click', exportResultsCsv);
+
+// Init
+renderTable();
+setMsg(`Liste par défaut prête (${CPE_LIST.length} CPE).`);
+</script>
+</body>
+</html>
