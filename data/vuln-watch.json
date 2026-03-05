@@ -30,7 +30,7 @@
         "Infotainment (IVI)"
       ],
       "exploitation_conditions": {
-        "attack_vector": "Remote → Local (pivot)",
+        "attack_vector": "Remote \u2192 Local (pivot)",
         "attack_complexity": "Low",
         "privileges_required": "None",
         "user_interaction": "None",
@@ -40,7 +40,7 @@
       "vehicle_impact": {
         "impact_scope": "Vehicle-wide",
         "technical_impact": [
-          "Exécution de code arbitraire",
+          "Ex\u00e9cution de code arbitraire",
           "Injection CAN"
         ],
         "safety_relevance": "High"
@@ -56,7 +56,7 @@
         {
           "type": "advisory",
           "publisher": "Akaoma",
-          "title": "CVE-2025-32058 – Vulnerability & Exploit Details",
+          "title": "CVE-2025-32058 \u2013 Vulnerability & Exploit Details",
           "url": "https://cve.akaoma.com/cve-2025-32058",
           "reliability": "trusted"
         }
@@ -140,6 +140,85 @@
           "next_review": "2026-04-27T16:02:22Z",
           "rationale": "LOW: revue bimestrielle."
         }
+      }
+    },
+    "CVE-2026-21385": {
+      "cve_id": "CVE-2026-21385",
+      "status": "active",
+      "dates": {
+        "published": "2026-03-02T17:16:29Z",
+        "updated": "2026-03-04T13:09:31Z",
+        "monitoring_start": "2026-03-05T08:42:29.718314Z",
+        "last_check": "2026-03-05T08:42:29.718356Z"
+      },
+      "metrics": {
+        "cvss": {
+          "base_initial": 7.8,
+          "base_current": 7.8,
+          "vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
+        },
+        "epss": {
+          "initial": null,
+          "current": null,
+          "percentile": null
+        },
+        "kev_status": {
+          "initial": true,
+          "current": true,
+          "date_added": "2026-03-03"
+        }
+      },
+      "affected_components": [
+        "Qualcomm Graphics / Display component"
+      ],
+      "exploitation_conditions": {
+        "attack_vector": "Local",
+        "attack_complexity": "Low",
+        "privileges_required": "Low",
+        "user_interaction": "None",
+        "exploit_maturity": "Exploited in the wild (limited, targeted)",
+        "public_exploit_available": false
+      },
+      "vehicle_impact": {
+        "impact_scope": "Potential system compromise",
+        "technical_impact": [
+          "Memory corruption",
+          "Privilege escalation potential"
+        ],
+        "safety_relevance": "To be assessed"
+      },
+      "publications": [
+        {
+          "type": "vendor_advisory",
+          "publisher": "Qualcomm",
+          "title": "March 2026 Security Bulletin",
+          "url": "https://docs.qualcomm.com/product/publicresources/securitybulletin/march-2026-bulletin.html",
+          "reliability": "official"
+        },
+        {
+          "type": "nvd",
+          "publisher": "NIST",
+          "title": "NVD CVE-2026-21385",
+          "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-21385",
+          "reliability": "official"
+        }
+      ],
+      "watchtower": {
+        "priority": {
+          "score": 4.5,
+          "level": "HIGH",
+          "signals": {
+            "remote_exploitable": false,
+            "kev": true,
+            "exploited_in_the_wild": true
+          }
+        }
+      },
+      "review": {
+        "last_review": "2026-03-05T08:42:29.718374Z",
+        "frequency_days": 30,
+        "next_review": null,
+        "rationale": "HIGH: CVE exploit\u00e9e (KEV) \u2013 suivi mensuel requis."
       }
     }
   },
