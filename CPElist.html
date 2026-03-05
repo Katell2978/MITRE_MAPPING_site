@@ -44,6 +44,7 @@
     .kbd{ font-family:ui-monospace; border:1px solid var(--border); border-bottom-width:2px; padding:0 6px; border-radius:7px; color:var(--muted); }
   </style>
 </head>
+
 <body>
 <header>
   <h1>Gestion des vulnérabilités — tableau <span class="mono">CPE → CVE</span></h1>
@@ -89,7 +90,7 @@
         <div class="small muted" id="lastMsg">—</div>
       </div>
       <div class="progress" aria-label="progression"><div id="bar"></div></div>
-      <div class="hint">Astuce : tu peux ajouter/mettre à jour la liste en déposant un CSV (délimiteur <span class="kbd">;</span> ou <span class="kbd">,</span>) qui contient une colonne <span class="mono">CPE:2.3</span> (comme ton exemple). La page ne nécessite aucun backend (GitHub Pages compatible).</div>
+      <div class="hint">Astuce : tu peux ajouter/mettre à jour la liste en déposant un CSV (délimiteur <span class="kbd">;</span> ou <span class="kbd">,</span>) qui contient une colonne <span class="mono">CPE:2.3</span>. La page ne nécessite aucun backend (GitHub Pages compatible).</div>
 
       <div style="margin-top:10px" class="row">
         <div>
@@ -121,7 +122,7 @@
       <h2 style="margin:0 0 10px; font-size:16px;">Sources & fonctionnement</h2>
       <p class="small">• NVD CVE API v2.0 supporte la pagination via <span class="mono">resultsPerPage</span> (≤ 2000) et <span class="mono">startIndex</span>. La réponse fournit <span class="mono">totalResults</span> et une liste <span class="mono">vulnerabilities</span>.</p>
       <p class="small">• La clé API NVD (optionnelle) se passe dans l’en-tête HTTP <span class="mono">apiKey</span>.</p>
-      <p class="small">• Le catalog KEV est disponible en JSON.</p>
+      <p class="small">• Le catalog KEV est chargé via le miroir GitHub de CISA (évite les blocages CORS côté cisa.gov).</p>
       <hr style="border:none;border-top:1px solid var(--border); margin:12px 0" />
       <p class="small">⚠️ Notes pratiques : les appels NVD sont soumis à rate limiting. Le mode « Équilibré » applique des délais et limite la concurrence.</p>
       <p class="small">💡 Cache : les résultats sont stockés dans <span class="mono">localStorage</span> (par CPE + date), pour accélérer les rechargements.</p>
@@ -139,7 +140,10 @@ const DEFAULT_CPE_LIST = ["cpe:2.3:a:alsa-project:alsa:1.1.4.1:*:*:*:*:*:*:*", "
 
 // Endpoints publics
 const NVD_BASE = 'https://services.nvd.nist.gov/rest/json/cves/2.0';
-const KEV_JSON = 'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json';
+
+// ✅ FIX CORS KEV: utiliser le miroir GitHub CISA
+// repo officiel kev-data : https://github.com/cisagov/kev-data  [1](https://github.com/cisagov/kev-data/blob/develop/known_exploited_vulnerabilities_schema.json)
+const KEV_JSON = 'https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.json';
 
 // Cache navigateur (clé -> JSON)
 const CACHE_PREFIX = 'cpe_cve_metrics_v1::';
@@ -187,6 +191,7 @@ function scoreClass(v) {
   return 'ok';
 }
 
+// ✅ FIX: escapeHtml sans erreur de quotes
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, (c) => ({
     "&": "&amp;",
@@ -234,16 +239,13 @@ function updateRow(cpe, data) {
   maxCvss.className = 'right ' + scoreClass(data.maxCvss);
   lastDate.textContent = formatDate(data.lastDate);
 
-  // bonus: fix "search_type" + keep CPE in query
-  const nvdSearchUrl =
-    `https://nvd.nist.gov/vuln/search/results?form_type=Advanced&results_type=overview&isCpeNameSearch=true&search_type=all&query=${encodeURIComponent(cpe)}`;
+  // bonus: fix search_type
+  const nvdSearchUrl = `https://nvd.nist.gov/vuln/search/results?form_type=Advanced&results_type=overview&isCpeNameSearch=true&search_type=all&query=${encodeURIComponent(cpe)}`;
 
-  // FIX: use & not &amp; in JS strings
+  // ✅ FIX: & (pas &amp;) dans une string JS
   const apiUrl = `${NVD_BASE}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=2000&startIndex=0`;
 
-  links.innerHTML =
-    `<a class="link" href="${nvdSearchUrl}" target="_blank" rel="noopener">NVD</a> · ` +
-    `<a class="link" href="${apiUrl}" target="_blank" rel="noopener">JSON</a>`;
+  links.innerHTML = `<a class="link" href="${nvdSearchUrl}" target="_blank" rel="noopener">NVD</a> · <a class="link" href="${apiUrl}" target="_blank" rel="noopener">JSON</a>`;
 }
 
 function cacheGet(cpe) {
@@ -264,11 +266,10 @@ function cacheSet(cpe, data) {
 
 async function loadKevSet(signal) {
   setMsg('Chargement du catalogue KEV…');
-  const resp = await fetch(KEV_JSON, { signal });
+  const resp = await fetch(KEV_JSON, { signal, cache: 'no-store' });
   if (!resp.ok) throw new Error('KEV HTTP ' + resp.status);
   const kev = await resp.json();
   const set = new Set();
-  // Schema courant : kev.vulnerabilities[] contient cveID
   const items = kev?.vulnerabilities || kev?.Vulnerabilities || [];
   for (const it of items) {
     const id = it.cveID || it.cveId || it.cve || it.CVE;
@@ -302,7 +303,7 @@ function extractDate(vuln) {
 
 async function nvdFetch(url, apiKey, signal) {
   const headers = {};
-  if (apiKey) headers['apiKey'] = apiKey; // NVD: apiKey dans l’en-tête
+  if (apiKey) headers['apiKey'] = apiKey;
   const resp = await fetch(url, { headers, signal });
   if (!resp.ok) {
     const txt = await resp.text().catch(()=> '');
@@ -323,7 +324,7 @@ async function metricsForCpe(cpe, kevSet, apiKey, mode, signal) {
   let lastDate = null;
 
   while (true) {
-    // FIX: use & not &amp; in JS strings
+    // ✅ FIX: & (pas &amp;) dans une string JS
     const url = `${NVD_BASE}?cpeName=${encodeURIComponent(cpe)}&resultsPerPage=${perPage}&startIndex=${startIndex}`;
     const data = await nvdFetch(url, apiKey, signal);
     if (total === null) total = data.totalResults ?? 0;
@@ -346,7 +347,6 @@ async function metricsForCpe(cpe, kevSet, apiKey, mode, signal) {
     startIndex += perPage;
     if (startIndex >= (total || 0)) break;
 
-    // délai anti-rate-limit
     if (mode === 'balanced') await sleep(apiKey ? 250 : 1200);
     else await sleep(apiKey ? 120 : 600);
   }
@@ -414,7 +414,7 @@ function stopAnalysis() {
 }
 
 function parseCsvText(text) {
-  // FIX: robust line split (CRLF/LF)
+  // ✅ FIX: split lignes robuste (CRLF/LF)
   const lines = text.split(/\r?\n/).filter(line => line.trim().length);
   if (!lines.length) return [];
 
@@ -460,9 +460,7 @@ function exportResultsCsv() {
     const lastDate = tr.querySelector('[data-k="lastDate"]').textContent.trim();
     rows.push([cpe,cveCount,kevCount,maxCvss,lastDate]);
   }
-  const csv = rows
-    .map(r => r.map(v => '"' + String(v).replaceAll('"','""') + '"').join(';'))
-    .join('\n');
+  const csv = rows.map(r => r.map(v => '"' + String(v).replaceAll('"','""') + '"').join(';')).join('\n');
   const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
@@ -477,12 +475,7 @@ els.run.addEventListener('click', runAnalysis);
 els.stop.addEventListener('click', stopAnalysis);
 els.loadDefault.addEventListener('click', () => { CPE_LIST = [...DEFAULT_CPE_LIST]; setMsg('Liste par défaut rechargée.'); renderTable(); });
 els.clearCache.addEventListener('click', clearCache);
-
-// NOTE : garder seulement le rendu de la table quand tu filtres.
-// Si tu veux conserver les résultats calculés même après filtrage,
-// on pourra améliorer en stockant les résultats dans une map.
 els.filter.addEventListener('input', () => { renderTable(); });
-
 els.csvFile.addEventListener('change', (e) => {
   const f = e.target.files && e.target.files[0];
   if (f) loadCsvFile(f);
