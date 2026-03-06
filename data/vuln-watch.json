@@ -7,7 +7,7 @@
         "published": "2025-02-10T10:00:00Z",
         "updated": "2025-02-25T14:30:00Z",
         "monitoring_start": "2025-02-12T09:00:00Z",
-        "last_check": "2026-03-05T02:31:20Z"
+        "last_check": "2026-03-06T02:29:32Z"
       },
       "metrics": {
         "cvss": {
@@ -18,7 +18,7 @@
         "epss": {
           "initial": 0.0012,
           "current": 0.0001,
-          "percentile": 0.0159
+          "percentile": 0.0163
         },
         "kev_status": {
           "initial": false,
@@ -105,7 +105,7 @@
       ],
       "dates": {
         "monitoring_start": "2026-02-26T16:02:22Z",
-        "last_check": "2026-03-05T02:31:20Z"
+        "last_check": "2026-03-06T02:29:32Z"
       },
       "metrics": {
         "cvss": {
@@ -116,7 +116,7 @@
         "epss": {
           "initial": 0.0011,
           "current": 0.0011,
-          "percentile": 0.2962
+          "percentile": 0.2969
         },
         "kev_status": {
           "initial": false,
@@ -149,7 +149,7 @@
         "published": "2026-03-02T17:16:29Z",
         "updated": "2026-03-04T13:09:31Z",
         "monitoring_start": "2026-03-05T08:42:29.718314Z",
-        "last_check": "2026-03-05T08:42:29.718356Z"
+        "last_check": "2026-03-06T02:29:32Z"
       },
       "metrics": {
         "cvss": {
@@ -158,9 +158,9 @@
           "vector": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H"
         },
         "epss": {
-          "initial": null,
-          "current": null,
-          "percentile": null
+          "initial": 0.0034,
+          "current": 0.0034,
+          "percentile": 0.5639
         },
         "kev_status": {
           "initial": true,
@@ -205,13 +205,19 @@
       ],
       "watchtower": {
         "priority": {
-          "score": 4.5,
-          "level": "HIGH",
+          "score": 3.02,
+          "level": "MEDIUM",
           "signals": {
             "remote_exploitable": false,
             "kev": true,
-            "exploited_in_the_wild": true
+            "epss_current": 0.0034
           }
+        },
+        "review": {
+          "last_review": "2026-03-06T02:29:32Z",
+          "frequency_days": 30,
+          "next_review": "2026-04-05T02:29:32Z",
+          "rationale": "MEDIUM: revue mensuelle."
         }
       },
       "review": {
@@ -228,7 +234,7 @@
         "published": "2023-08-03T18:15:11.477",
         "updated": "2024-11-21T08:14:43.520",
         "monitoring_start": "2026-03-05T09:48:48.348Z",
-        "last_check": "2026-03-05T09:48:48.348Z"
+        "last_check": "2026-03-06T02:29:32Z"
       },
       "metrics": {
         "cvss": {
@@ -238,8 +244,8 @@
         },
         "epss": {
           "initial": 0.00035,
-          "current": 0.00035,
-          "percentile": 0.09822
+          "current": 0.0003,
+          "percentile": 0.0986
         },
         "kev_status": {
           "initial": false,
@@ -264,24 +270,24 @@
       "publications": [],
       "watchtower": {
         "priority": {
-          "score": 2,
+          "score": 0.0,
           "level": "LOW",
           "signals": {
             "remote_exploitable": false,
             "kev": false,
-            "epss_current": 0.00035
+            "epss_current": 0.0003
           }
         },
         "review": {
           "last_review": "2026-03-05T09:48:48.348Z",
           "frequency_days": 60,
-          "next_review": null,
+          "next_review": "2026-05-04T09:48:48Z",
           "rationale": "LOW: revue bimestrielle."
         }
       }
     }
   },
   "meta": {
-    "generated_at": "2026-03-05T09:48:48.348Z"
+    "generated_at": "2026-03-06T02:29:32Z"
   }
 }
