@@ -285,7 +285,167 @@
           "rationale": "LOW: revue bimestrielle."
         }
       }
+    },
+    "CVE-2022-38766": {
+  "cve_id": "CVE-2022-38766",
+  "status": "active",
+  "dates": {
+    "published": "2023-01-03T15:15:10Z",
+    "updated": "2025-04-10T16:15:21Z",
+    "monitoring_start": "2026-03-06T15:18:23Z",
+    "last_check": "2026-03-06T15:18:23Z"
+  },
+  "metrics": {
+    "cvss": {
+      "base_initial": 8.1,
+      "base_current": 8.1,
+      "vector": "CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:H"
+    },
+    "epss": {
+      "initial": 0.0289,
+      "current": 0.0289,
+      "percentile": 0.86
+    },
+    "kev_status": {
+      "initial": false,
+      "current": false,
+      "date_added": null
     }
+  },
+  "affected_components": [
+    "Remote Keyless Entry (RKE)",
+    "Body Control / Access System"
+  ],
+  "exploitation_conditions": {
+    "attack_vector": "Adjacent",
+    "attack_complexity": "Low",
+    "privileges_required": "None",
+    "user_interaction": "None",
+    "exploit_maturity": "Public PoC available",
+    "public_exploit_available": true
+  },
+  "vehicle_impact": {
+    "impact_scope": "Vehicle access",
+    "technical_impact": [
+      "Authentication bypass",
+      "Unauthorized door unlocking"
+    ],
+    "safety_relevance": "Medium"
+  },
+  "publications": [
+    {
+      "type": "nvd",
+      "publisher": "NIST",
+      "title": "NVD CVE-2022-38766",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2022-38766",
+      "reliability": "official"
+    },
+    {
+      "type": "exploit",
+      "publisher": "AUTOCRYPT",
+      "title": "PoC – Renault ZOE Keyless Replay Attack",
+      "url": "https://github.com/AUTOCRYPT-IVS-VnV/CVE-2022-38766",
+      "reliability": "trusted"
+    }
+  ],
+  "watchtower": {
+    "priority": {
+      "score": 3.2,
+      "level": "MEDIUM",
+      "signals": {
+        "remote_exploitable": false,
+        "kev": false,
+        "epss_current": 0.0289
+      }
+    },
+    "review": {
+      "last_review": "2026-03-06T15:18:23Z",
+      "frequency_days": 60,
+      "next_review": "2026-05-05T15:18:23Z",
+      "rationale": "MEDIUM: attaque adjacente avec PoC public."
+    }
+  }
+},
+    "CVE-2023-39801": {
+  "cve_id": "CVE-2023-39801",
+  "status": "active",
+  "dates": {
+    "published": "2023-08-24T20:15:09Z",
+    "updated": "2024-11-21T08:15:56Z",
+    "monitoring_start": "2026-03-06T15:18:23Z",
+    "last_check": "2026-03-06T15:18:23Z"
+  },
+  "metrics": {
+    "cvss": {
+      "base_initial": 4.6,
+      "base_current": 4.6,
+      "vector": "CVSS:3.1/AV:P/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+    },
+    "epss": {
+      "initial": 0.00033,
+      "current": 0.00033,
+      "percentile": 0.08
+    },
+    "kev_status": {
+      "initial": false,
+      "current": false,
+      "date_added": null
+    }
+  },
+  "affected_components": [
+    "Infotainment (IVI)",
+    "Easy Link Multimedia System"
+  ],
+  "exploitation_conditions": {
+    "attack_vector": "Physical",
+    "attack_complexity": "Low",
+    "privileges_required": "None",
+    "user_interaction": "None",
+    "exploit_maturity": "Public PoC available",
+    "public_exploit_available": true
+  },
+  "vehicle_impact": {
+    "impact_scope": "Infotainment availability",
+    "technical_impact": [
+      "Denial of Service",
+      "IVI crash / reboot"
+    ],
+    "safety_relevance": "Low"
+  },
+  "publications": [
+    {
+      "type": "nvd",
+      "publisher": "NIST",
+      "title": "NVD CVE-2023-39801",
+      "url": "https://nvd.nist.gov/vuln/detail/CVE-2023-39801",
+      "reliability": "official"
+    },
+    {
+      "type": "exploit",
+      "publisher": "GitHub",
+      "title": "Renault Easy Link DoS PoC",
+      "url": "https://github.com/zj3t/Automotive-vulnerabilities/blob/main/RENAULT/ZOE_EV_2021/Vuln%232/README.md",
+      "reliability": "trusted"
+    }
+  ],
+  "watchtower": {
+    "priority": {
+      "score": 1.1,
+      "level": "LOW",
+      "signals": {
+        "remote_exploitable": false,
+        "kev": false,
+        "epss_current": 0.00033
+      }
+    },
+    "review": {
+      "last_review": "2026-03-06T15:18:23Z",
+      "frequency_days": 60,
+      "next_review": "2026-05-05T15:18:23Z",
+      "rationale": "LOW: DoS IVI avec accès physique requis."
+    }
+  }
+}
   },
   "meta": {
     "generated_at": "2026-03-06T02:29:32Z"
