@@ -81,3 +81,69 @@ Note pour regenerer listes des Tactiques et technqiues du Mitre avec recuperatio
 ┌──────────────────────┐
 │ CPEList_offline.html │  ← Analyse & priorisation
 └──────────────────────┘
+
+
+2️⃣ Télécharger les dumps OFFLINE
+🛠 Script : scripts/download_dumps.sh
+Rôle : télécharge les dumps officiels sans API, sans clé, sans proxy reproductible sur poste ou CI
+Sources couvertes :
+NVD : JSON feeds officiels (par année + modified)
+OSV : dump global officiel (all.zip)
+EUVD : export agrégé open (en attendant un dump officiel)
+
+▶️ Exécution
+Shellchmod +x tools/download_dumps.sh./tools/download_dumps.shAfficher plus de lignes
+Résultat :
+ data/nvd/*.json.gz
+ data/osv/osv_all.zip
+ data/euvd/euvd_dump.json
+
+3️⃣ Générer la base OFFLINE enrichie
+🛠 Script : scripts/generate_offline_db.py
+Rôle :
+
+lit list_cpe.csv
+parcourt les dumps NVD / EUVD / OSV
+corrèle par CPE
+calcule un résumé par produit
+
+Enrichissements produits :
+
+nombre de CVE
+CVSS max
+EPSS max
+KEV (CISA exploité)
+CWE
+base prête pour le calcul de score risque
+
+▶️ Exécution
+Shellpython3 tools/generate_offline_db.py
+Résultats générés :
+
+✅ data/offline_cpe_db.json
+✅ data/offline_cpe_db.csv
+
+
+4️⃣ Analyser avec la page HTML OFFLINE
+🌐 CPEList2.html
+Fonctionnement :
+
+charge uniquement data/offline_cpe_db.json
+aucun appel réseau
+compatible GitHub Pages
+
+Fonctionnalités :
+
+affichage CVE / CVSS / EPSS / KEV / CWE
+score de risque composite
+🔥 filtre KEV
+🧨 filtre RCE (heuristique CWE)
+🧠 filtre par score minimal
+tri par score / CVSS / #CVE
+affichage des dates de mise à jour des dumps
+
+🧠 Score de risque (logique)
+Score simple, explicable et ajustable :
+Plain TextScore = CVSS × (1.5 si KEV) × EPSS``Afficher plus de lignes
+Objectif : priorisation exploitation réelle > sévérité théorique
+
