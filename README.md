@@ -147,3 +147,18 @@ Score simple, explicable et ajustable :
 Plain TextScore = CVSS × (1.5 si KEV) × EPSS``Afficher plus de lignes
 Objectif : priorisation exploitation réelle > sévérité théorique
 
+
+repo/
+├── data/
+│   ├── list_cpe.csv              # ✅ Entrée : produits à analyser
+│   ├── nvd/                      # ✅ Dumps NVD (JSON.gz)
+│   ├── euvd/                     # ✅ Dump EUVD agrégé
+│   ├── osv/                      # ✅ Dump OSV (zip)
+│   ├── offline_cpe_db.json       # ⬅️ Généré (consommé par l’HTML)
+│   └── offline_cpe_db.csv        # ⬅️ Généré (Excel / SOC)
+│
+├── scriptss/
+│   ├── download_dumps.sh         # ⬅️ Téléchargement OFFLINE
+│   └── generate_offline_db.py    # ⬅️ Génération JSON enrichi
+│
+└── CPEList2.html          # ✅ Page HTML finale
