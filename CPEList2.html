@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CPEList — Vulnérabilités (CIRCL enrichi)</title>
 
-  <!-- ================= STYLE =================
-       Style conservé de la version précédente
-  ============================================ -->
+  <!-- =========================================================
+       STYLE — conservé de la version précédente (dark/light)
+  ========================================================== -->
   <style>
     :root{
       --bg:#0b1020; --card:#121a33; --text:#e9ecf5; --muted:#a7b0d6;
@@ -21,8 +21,6 @@
       }
     }
     body{margin:0;font-family:system-ui;background:var(--bg);color:var(--text);}
-
-
     header{padding:24px 18px;max-width:1300px;margin:auto;}
     h1{margin:0;font-size:20px;}
     p{color:var(--muted);margin:6px 0;}
@@ -32,31 +30,23 @@
     th,td{padding:7px;border-bottom:1px solid var(--border);vertical-align:top;}
     th{color:var(--muted);text-align:left;}
     tr:hover td{background:rgba(122,162,255,.06);}
-
-
     .mono{font-family:ui-monospace;font-size:11px;}
     .right{text-align:right;}
     .badge{padding:2px 8px;border-radius:999px;font-size:11px;white-space:nowrap;}
     .ok{background:rgba(45,212,191,.15);color:var(--ok);}
-
-
     .warn{background:rgba(251,191,36,.15);color:var(--warn);}
-
-
     .bad{background:rgba(255,107,107,.15);color:var(--danger);}
-
-
     button{background:var(--accent);color:white;border:none;border-radius:10px;padding:8px 12px;cursor:pointer;font-weight:600;}
     input[type=file]{color:var(--muted);}
-
     a{color:var(--accent);text-decoration:none;}
   </style>
 </head>
+
 <body>
 
 <header>
-  <h1>CPEList — Analyse vulnérabilités sur base de CPE(CIRCL enrichi)</h1>
-  <p>Vue orientée <strong>priorisation risque</strong> — KEV, EPSS, CWE, score composite.</p>
+  <h1>🚗 CPEList — Analyse vulnérabilités (CIRCL enrichi)</h1>
+  <p>Priorisation <strong>risque véhicule</strong> — KEV, EPSS, CWE, score composite.</p>
 </header>
 
 <div class="wrap">
@@ -86,102 +76,164 @@
 </div>
 
 <script>
-// ======================================================
-// CPEList — moteur CIRCL enrichi analyste cyber
-// ======================================================
+/* ==========================================================
+   CPEList — moteur CIRCL enrichi (front-only)
+   ========================================================== */
 
-const CIRCL = 'https://cve.circl.lu/api/search';
+const CIRCL_API = 'https://cve.circl.lu/api/search';
+
 let CPE_LIST = [];
 let RESULTS = [];
 
 const tbody = document.getElementById('tbody');
 
-// -------- Utils
+/* ---------- Utilitaires ---------- */
+
+// Extraction vendor / product depuis un CPE 2.3
 function parseCpe(cpe){
-  const p=cpe.split(':');
-  return {vendor:p[3],product:p[4]};
+  const p = cpe.split(':');
+  return { vendor: p[3], product: p[4] };
 }
 
+// Classe visuelle selon CVSS
 function sevClass(v){
-  if(v===null) return '';
-  if(v>=9) return 'bad';
-  if(v>=7) return 'warn';
+  if (v === null) return '';
+  if (v >= 9) return 'bad';
+  if (v >= 7) return 'warn';
   return 'ok';
 }
 
+// Score composite orienté risque véhicule
+// CVSS × (1.5 si KEV) × EPSS
 function scoreRisque(cvss, epss, kev){
-  if(!cvss) return null;
-  const fKev = kev ? 1.5 : 1;
-  return (cvss * fKev * (epss||0.01)).toFixed(2);
+  if (!cvss) return null;
+  const factorKev = kev ? 1.5 : 1;
+  return (cvss * factorKev * (epss || 0.01)).toFixed(2);
 }
 
-// -------- Analyse CIRCL
+/* ---------- Analyse CIRCL ---------- */
+
 async function analyzeCpe(cpe){
-  const {vendor,product}=parseCpe(cpe);
-  const r=await fetch(`${CIRCL}/${vendor}/${product}`);
-  if(!r.ok) throw new Error('HTTP '+r.status);
-  const data=await r.json();
+  const { vendor, product } = parseCpe(cpe);
+  const resp = await fetch(`${CIRCL_API}/${vendor}/${product}`);
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
 
-  let cvssMax=null, epssMax=null, kev=false, cwes=new Set(), last=null;
+  const data = await resp.json();
 
-  for(const v of data){
-    if(v.cvss){ const s=parseFloat(v.cvss); if(!isNaN(s)) cvssMax=Math.max(cvssMax||0,s); }
-    if(v.epss){ const e=parseFloat(v.epss); if(!isNaN(e)) epssMax=Math.max(epssMax||0,e); }
-    if(v.kev) kev=true;
-    if(v.cwe) cwes.add(v.cwe);
-    const d=v.Modified||v.Published;
-    if(d && (!last || d>last)) last=d;
+  let cvssMax = null;
+  let epssMax = null;
+  let kev = false;
+  let cwes = new Set();
+  let lastDate = null;
+
+  for (const v of data) {
+    if (v.cvss) {
+      const s = parseFloat(v.cvss);
+      if (!isNaN(s)) cvssMax = Math.max(cvssMax ?? 0, s);
+    }
+    if (v.epss) {
+      const e = parseFloat(v.epss);
+      if (!isNaN(e)) epssMax = Math.max(epssMax ?? 0, e);
+    }
+    if (v.kev) kev = true;
+    if (v.cwe) cwes.add(v.cwe);
+
+    const d = v.Modified || v.Published;
+    if (d && (!lastDate || d > lastDate)) lastDate = d;
   }
 
   return {
-    cpe, count:data.length, cvssMax, epssMax, kev,
-    cwe:[...cwes].join(','), last,
+    cpe,
+    count: data.length,
+    cvssMax,
+    epssMax,
+    kev,
+    cwe: [...cwes].join(','),
+    last: lastDate,
     score: scoreRisque(cvssMax, epssMax, kev)
   };
 }
 
-// -------- Rendu
+/* ---------- Rendu ---------- */
+
 function addRow(r){
-  const tr=document.createElement('tr');
-  tr.innerHTML=`
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
     <td class="mono">${r.cpe}</td>
     <td class="right">${r.count}</td>
-    <td class="right"><span class="badge ${sevClass(r.cvssMax)}">${r.cvssMax??'—'}</span></td>
-    <td class="right">${r.epssMax?Number(r.epssMax).toFixed(3):'—'}</td>
-    <td>${r.kev?'🔥 KEV':''}</td>
-    <td>${r.cwe||'—'}</td>
-    <td class="right"><strong>${r.score??'—'}</strong></td>
-    <td>${r.last||'—'}</td>`;
+    <td class="right"><span class="badge ${sevClass(r.cvssMax)}">${r.cvssMax ?? '—'}</span></td>
+    <td class="right">${r.epssMax ? r.epssMax.toFixed(3) : '—'}</td>
+    <td>${r.kev ? '🔥 KEV' : ''}</td>
+    <td>${r.cwe || '—'}</td>
+    <td class="right"><strong>${r.score ?? '—'}</strong></td>
+    <td>${r.last || '—'}</td>
+  `;
   tbody.appendChild(tr);
 }
 
-// -------- CSV loader
-csv.addEventListener('change',async e=>{
-  const t=await e.target.files[0].text();
-  CPE_LIST=t.split(/\r?
-/).filter(l=>l.startsWith('cpe:2.3:'));
+/* ---------- Chargement CSV ---------- */
+
+document.getElementById('csv').addEventListener('change', async e => {
+  const text = await e.target.files[0].text();
+  CPE_LIST = text
+    .split(/\r?\n/)
+    .map(l => l.trim())
+    .filter(l => l.startsWith('cpe:2.3:'));
 });
 
-// -------- Analyse
-run.addEventListener('click',async()=>{
-  tbody.innerHTML=''; RESULTS=[];
-  for(const cpe of CPE_LIST){
-    try{ const r=await analyzeCpe(cpe); RESULTS.push(r); addRow(r); }
-    catch(e){ console.error(cpe,e); }
+/* ---------- Lancement analyse ---------- */
+
+document.getElementById('run').addEventListener('click', async () => {
+  tbody.innerHTML = '';
+  RESULTS = [];
+
+  for (const cpe of CPE_LIST) {
+    try {
+      const r = await analyzeCpe(cpe);
+      RESULTS.push(r);
+      addRow(r);
+    } catch (e) {
+      console.error('Erreur CPE', cpe, e);
+    }
   }
 });
 
-// -------- Export CSV enrichi
-export.addEventListener('click',()=>{
-  const h=['CPE','#CVE','CVSS_MAX','EPSS_MAX','KEV','CWE','SCORE_RISQUE','LAST_DATE'];
-  const rows=RESULTS.map(r=>[r.cpe,r.count,r.cvssMax,r.epssMax,r.kev,r.cwe,r.score,r.last].join(';'));
-  const csv=h.join(';')+'
-'+rows.join('
-');
-  const b=new Blob([csv],{type:'text/csv'});
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(b); a.download='cpe_risk_analysis.csv'; a.click();
+/* ---------- Export CSV enrichi ---------- */
+
+document.getElementById('export').addEventListener('click', () => {
+  const header = [
+    'CPE',
+    '#CVE',
+    'CVSS_MAX',
+    'EPSS_MAX',
+    'KEV',
+    'CWE',
+    'SCORE_RISQUE',
+    'LAST_DATE'
+  ];
+
+  const rows = RESULTS.map(r =>
+    [
+      r.cpe,
+      r.count,
+      r.cvssMax ?? '',
+      r.epssMax ?? '',
+      r.kev,
+      r.cwe,
+      r.score,
+      r.last
+    ].join(';')
+  );
+
+  const csv = header.join(';') + '\n' + rows.join('\n');
+
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'cpe_risk_analysis.csv';
+  a.click();
 });
 </script>
+
 </body>
 </html>
