@@ -41,3 +41,43 @@ TODO: Mise en veille CPE
 Note pour regenerer listes des Tactiques et technqiues du Mitre avec recuperation des datas sur le site :
 --> lancer le script  build/build_index.py depuis Codespaces via le bouton play.
 --> si ok validate dans le source controle, puit commit(lebleu)
+
+
+
+
+<-------------- CPEList2 ------------------------>
+# 📦 CPEList — Analyse de vulnérabilités OFFLINE sur base du fichier de cpe dans data (NVD / EUVD / OSV)
+ Objectif fournir une **chaîne complète OFFLINE** permettant :
+ 
+- d’analyser des **produits formalisés en CPE 2.3**
+- de **corréler les vulnérabilités** issues de plusieurs sources (NVD, EUVD, OSV)
+- de **prioriser le risque** (CVSS, EPSS, KEV, RCE)
+- sans **aucun appel réseau** côté navigateur
+- compatible **GitHub Pages**
+
+👉 Le résultat final est une **page HTML autonome** qui lit une base JSON locale enrichie.
+---
+
+## 🧱 Architecture globale
+
+```text
+┌──────────────────────┐
+│ list_cpe.csv         │  ← Liste produits (CPE) dans data
+└─────────┬────────────┘
+          │
+          ▼
+┌──────────────────────┐
+│ Scripts OFFLINE      │
+│ - download_dumps     │  ← Téléchargement des dumps dans data et scripts dans scripts
+│ - generate_db        │  ← Corrélation & enrichissement
+└─────────┬────────────┘
+          │
+          ▼
+┌──────────────────────┐
+│ offline_cpe_db.json  │  ← Base locale enrichie
+└─────────┬────────────┘
+          │
+          ▼
+┌──────────────────────┐
+│ CPEList_offline.html │  ← Analyse & priorisation
+└──────────────────────┘
