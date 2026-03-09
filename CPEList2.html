@@ -45,7 +45,7 @@
 <body>
 
 <header>
-  <h1>🚗 CPEList — Analyse vulnérabilités (CIRCL enrichi)</h1>
+  <h1>🚗 CPEList — Analyse vulnérabilités sur base de CPE (CIRCL enrichi)</h1>
   <p>Priorisation <strong>risque véhicule</strong> — KEV, EPSS, CWE, score composite.</p>
 </header>
 
@@ -107,7 +107,7 @@ function sevClass(v){
 // CVSS × (1.5 si KEV) × EPSS
 function scoreRisque(cvss, epss, kev){
   if (!cvss) return null;
-  const factorKev = kev ? 1.5 : 1;
+  const factorKev = kev ? 2 : 1; // calcul ponderé en fonction du KEV
   return (cvss * factorKev * (epss || 0.01)).toFixed(2);
 }
 
