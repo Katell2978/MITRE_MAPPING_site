@@ -1,0 +1,101 @@
+{
+  "metadata": {
+    "title": "Cyber AMS – Patch Deployer Model (Adapted)",
+    "version": "1.0",
+    "description": "Adaptation of the SSVC Deployer model for vehicle cybersecurity, integrating safety impact and supplier involvement.",
+    "author": "C. Tanguy",
+    "source": "Based on CERT/CC SSVC Deployer model"
+  },
+
+  "decision_points": [
+    {
+      "id": "Exploitation",
+      "question": "What is the present state of exploitation of the vulnerability?",
+      "values": ["None", "Public PoC", "Active"]
+    },
+    {
+      "id": "System Exposure",
+      "question": "What is the accessible attack surface of the affected system?",
+      "values": ["Small", "Controlled", "Open"]
+    },
+    {
+      "id": "Human Impact",
+      "question": "What is the combined safety and technical impact?",
+      "values": ["Low", "Medium", "High"]
+    },
+    {
+      "id": "Supplier Involvement",
+      "question": "What is the supplier remediation capability?",
+      "values": ["Fix Ready", "Cooperative", "Unresponsive"]
+    }
+  ],
+
+  "outcomes": [
+    "No Action: Track for change",
+    "ACT Cyber Analysis",
+    "Deep Analysis by Cybersecurity needed",
+    "ACT: Request countermeasure (no patch)",
+    "Patch: Defer",
+    "Patch: Schedule",
+    "Patch: Out-of-Cycle or Immediate"
+  ],
+
+  "decision_table": [
+    {
+      "when": {
+        "Exploitation": "None",
+        "System Exposure": "Small"
+      },
+      "then": "No Action: Track for change"
+    },
+    {
+      "when": {
+        "Exploitation": "None",
+        "System Exposure": "Controlled",
+        "Human Impact": "Low"
+      },
+      "then": "No Action: Track for change"
+    },
+    {
+      "when": {
+        "Exploitation": "Public PoC",
+        "System Exposure": "Open",
+        "Human Impact": "High"
+      },
+      "then": "ACT Cyber Analysis"
+    },
+    {
+      "when": {
+        "Exploitation": "Active",
+        "System Exposure": "Open"
+      },
+      "then": "ACT Cyber Analysis"
+    },
+    {
+      "when": {
+        "Exploitation": "Public PoC",
+        "System Exposure": "Open",
+        "Human Impact": "Medium",
+        "Supplier Involvement": "Cooperative"
+      },
+      "then": "Deep Analysis by Cybersecurity needed"
+    },
+    {
+      "when": {
+        "Exploitation": "Public PoC",
+        "System Exposure": "Open",
+        "Human Impact": "Medium",
+        "Supplier Involvement": "Unresponsive"
+      },
+      "then": "ACT: Request countermeasure (no patch)"
+    },
+    {
+      "when": {
+        "Exploitation": "Active",
+        "Human Impact": "High",
+        "Supplier Involvement": "Fix Ready"
+      },
+      "then": "Patch: Out-of-Cycle or Immediate"
+    },
+    {
+      "when": {
