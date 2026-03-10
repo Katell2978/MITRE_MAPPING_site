@@ -3,13 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kat‑Force — CVE Decision (SSVC)</title>
+  <title>Kat‑Force — CVE Decision (SSVC) v2</title>
   <link rel="stylesheet" type="text/css" href="style3.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-  <!-- =========================================================
-   ✅ AJOUT UNIQUEMENT : styles locaux (KPIs KEV/RCE en rouge + bloc RiskScore)
-   ========================================================= -->
   <style>
     /* Rend "KEV" et "RCE" visibles en rouge quand class="crit" est appliquée */
     .kpi .value.crit { color: #ff6b6b; font-weight: 800; }
@@ -62,7 +59,7 @@
       <button id="pdfBtn" disabled>Exporter PDF (Decision record)</button>
       <!-- ✅ NOUVEAU : ajout + téléchargement JSON -->
       <button id="addToWatchBtn" disabled title="Ajoute/écrase la CVE dans vuln-watch.json et télécharge le fichier mis à jour">
-        ➕ Ajouter & télécharger le JSON
+        ➕ Ajouter & télécharger le JSON pour gestion de la veille simplifier (amélioration à prevoir)
       </button>
     </div>
     <div id="status" class="muted small" style="margin-top:8px;">Prêt.</div>
