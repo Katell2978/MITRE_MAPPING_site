@@ -3,151 +3,235 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Kat‑Force — CVE Decision (SSVC) V2</title>
+  <title>Kat‑Force — CVE Decision (SSVC) V2 avec arbre de décison intégré</title>
 
-  <link rel="stylesheet" type="text/css" href="style3.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <link rel="stylesheet" href="style3.css">
 
-  <!-- =========================================================
-   ✅ AJOUT UNIQUEMENT : styles locaux pour
-   - KEV/RCE en rouge
-   - cadres "Exposure + Safety"
-   - résultat "Cyber AMS V1.0"
-   ========================================================= -->
   <style>
-    .kpi .value.crit { color: #ff6b6b; font-weight: 800; }
-    .kpi .sub.crit { color: rgba(255,107,107,.95); }
+    .crit { color:#ff4d4d; font-weight:700; }
+    .warn { color:#ffb84d; font-weight:700; }
 
-    .miniCard {
-      background: rgba(15,22,48,.55);
-      border: 1px dashed rgba(255,255,255,.18);
-      border-radius: 14px;
-      padding: 10px 12px;
-      margin-top: 10px;
+    .decision-grid {
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:20px;
     }
-    .miniCard h4 { margin: 0 0 8px 0; font-size: 1.0em; }
-    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
-    .tiny { font-size:.82em; opacity:.85; }
+    @media(max-width:900px){
+      .decision-grid { grid-template-columns:1fr; }
+    }
+
+    .decision-box {
+      border:1px dashed #445;
+      padding:12px;
+      border-radius:12px;
+      background:rgba(15,22,48,.55);
+    }
+
+    .pill {
+      display:inline-block;
+      padding:4px 10px;
+      border-radius:999px;
+      background:#2b355f;
+      margin-right:6px;
+      margin-bottom:6px;
+    }
+    .pill.crit { background:#802020; color:#fff; }
+    .pill.warn { background:#806020; color:#fff; }
+
+    .small { font-size:.85em; opacity:.85; }
+    .mono { font-family: monospace; }
   </style>
 </head>
 
 <body>
+
 <header>
-  <nav>
-    <a href="index.html">🔍 Analyseur</a>
-    <a href="veille.html">🔭 Veille (Watchtower)</a>
-    <a href="CPEsearch.html">🔍Vuln by CPE</a>
-    <a href="CPElist.html">🔍Vuln by list of CPE</a>
-  </nav>
-  <h1>Kat‑Force — Décision & Priorisation (SSVC)</h1>
-  <p>
-    Cette page combine : triage rapide (CVSS/EPSS/KEV), contexte NVD (dates, refs, CPE),
-    et une décision structurée :
-    <b>Cyber AMS V1.0</b> (action opérationnelle) + <b>SSVC</b> (cadre de justification).
+  <h1>Kat‑Force — Cyber AMS / Patch Deployer Decision</h1>
+  <p class="small">
+    Décision structurée SSVC adaptée au modèle véhicule / fournisseur.
   </p>
 </header>
 
 <main>
-  <!-- INPUT -->
-  <div class="card">
-    <div class="row">
-      <select id="mode">
-        <option value="cve">Recherche par CVE</option>
-        <option value="cpe">Recherche par CPE</option>
+
+<!-- ================= INPUT ================= -->
+<div class="card">
+  <select id="mode">
+    <option value="cve">CVE</option>
+    <option value="cpe">CPE</option>
+  </select>
+  <input id="queryInput" value="CVE-2025-32058" />
+  <button id="goBtn">Analyser</button>
+  <span id="status" class="small muted">Prêt.</span>
+</div>
+
+<!-- ================= RESUME ================= -->
+<div class="card">
+  <h2>Résumé & Scores</h2>
+
+  <div class="kpiGrid">
+
+    <div class="kpi">
+      <div class="title">CVSS v3</div>
+      <div id="cvss3" class="value">—</div>
+      <div id="cvss3vec" class="sub mono">—</div>
+    </div>
+
+    <div class="kpi">
+      <div class="title">EPSS</div>
+      <div id="epss" class="value">—</div>
+      <div id="epssPct" class="sub">—</div>
+    </div>
+
+    <div class="kpi">
+      <div class="title">KEV</div>
+      <div id="kev" class="value">—</div>
+      <div id="kevDate" class="sub">—</div>
+    </div>
+
+    <div class="kpi">
+      <div class="title">RCE</div>
+      <div id="rce" class="value">—</div>
+      <div id="rceSrc" class="sub">—</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= SSVC DECISION ================= -->
+<div class="card">
+  <h2>SSVC — Aide à la décision</h2>
+
+  <div class="decision-grid">
+
+    <!-- ===== Cadre 1 : CONTEXTE SYSTEME ===== -->
+    <div class="decision-box">
+      <h3>System context</h3>
+
+      <label>Exploitation</label><br>
+      <select id="dpExploitation">
+        <option value="N">None</option>
+        <option value="P">Active & PoC</option>
+        <option value="A">Active in the wild</option>
       </select>
-      <input id="queryInput" type="text" value="CVE-2025-32058" placeholder="Ex: CVE-2025-32058" />
-      <button id="goBtn">Analyser</button>
-      <button id="pdfBtn" disabled>Exporter PDF (Decision record)</button>
-      <button id="addToWatchBtn" disabled title="Ajoute/écrase la CVE dans vuln-watch.json et télécharge le fichier mis à jour">
-        ➕ Ajouter & télécharger le JSON
-      </button>
-    </div>
-    <div id="status" class="muted small" style="margin-top:8px;">Prêt.</div>
-  </div>
 
-  <!-- KPI -->
-  <div class="card">
-    <h2>Résumé & Scores</h2>
-    <div class="kpiGrid">
-      <div class="kpi">
-        <div class="title">CVSS v3.x</div>
-        <div id="cvss3" class="value">—</div>
-        <div id="cvss3vec" class="sub">—</div>
-      </div>
-      <div class="kpi">
-        <div class="title">CVSS v4.0</div>
-        <div id="cvss4" class="value">—</div>
-        <div id="cvss4vec" class="sub">—</div>
-      </div>
-      <div class="kpi">
-        <div class="title">EPSS (30j)</div>
-        <div id="epss" class="value">—</div>
-        <div id="epssPct" class="sub">—</div>
+      <div style="height:10px"></div>
+
+      <label>System Exposure</label><br>
+      <select id="dpExposure">
+        <option value="S">Small</option>
+        <option value="C">Controlled</option>
+        <option value="O" selected>Open</option>
+      </select>
+      <div class="small">
+        Need to be documented by asset / ECU owner
       </div>
 
-      <!-- KEV : rouge si Oui -->
-      <div class="kpi">
-        <div class="title">KEV (CISA)</div>
-        <div id="kev" class="value">—</div>
-        <div id="kevDate" class="sub">—</div>
-      </div>
+      <div style="height:10px"></div>
 
-      <!-- RCE : rouge si Oui + mention "obtenu/calculé" -->
-      <div class="kpi">
-        <div class="title">RCE</div>
-        <div id="rce" class="value">—</div>
-        <div id="rceSrc" class="sub">—</div>
-      </div>
-
-      <div class="kpi">
-        <div class="title">Badges</div>
-        <div id="badges" class="sub">—</div>
+      <label>Safety Impact</label><br>
+      <select id="dpSafetyImpact">
+        <option value="N">N & M</option>
+        <option value="R" selected>R & C</option>
+      </select>
+      <div class="small">
+        If undocumented → assume R&C
       </div>
     </div>
 
-    <div id="exploitBanner" class="banner" style="display:none;">
-      <h3>Exploitability (CVSS vector hints)</h3>
-      <div id="exploitPills"></div>
+    <!-- ===== Cadre 2 : DECISION CYBER ===== -->
+    <div class="decision-box">
+      <h3>Cyber decision</h3>
+
+      <label>Technical Impact</label><br>
+      <select id="dpTechImpact">
+        <option value="P">Partial</option>
+        <option value="T">Total</option>
+      </select>
+
+      <div style="height:10px"></div>
+
+      <label>Supplier Involvement</label><br>
+      <select id="dpSupplierInvolvement">
+        <option value="FR">Fix Ready</option>
+        <option value="C" selected>Cooperative</option>
+        <option value="UU">Unresponsive</option>
+      </select>
     </div>
+
   </div>
 
-  <!-- DETAILS -->
-  <div class="card">
-    <h2>Détail CVE / Contexte</h2>
-    <div id="cveDetail" class="small muted">—</div>
-    <hr />
-    <details>
-      <summary>Produits affectés (CPE)</summary>
-      <div id="cpeList" class="small mono muted">—</div>
-    </details>
-    <div style="height:10px"></div>
-    <details>
-      <summary>Références NVD</summary>
-      <div id="refList" class="small muted">—</div>
-    </details>
+  <!-- ===== RESULTAT ===== -->
+  <div class="card" style="margin-top:20px;">
+    <h3>Résultat — Aide à la décision</h3>
+    <div id="decisionResult" class="pill">—</div>
+    <div id="decisionRationale" class="small muted" style="margin-top:8px;"></div>
   </div>
 
-  <!-- SSVC / CYBER AMS DECISION -->
-  <div class="card">
-    <h2>SSVC — Aide à la décision</h2>
-    <p class="small muted">
-      Ici on affiche 2 résultats :
-      <b>Cyber AMS V1.0</b> (action opérationnelle inspirée du modèle “Patch deployer with adaptation”)
-      et <b>SSVC</b> (cadre de justification : Exploitation / Exposure / Technical Impact).
-    </p>
+</div>
 
-    <div class="grid">
-      <!-- =========================
-           CADRE 1 : Decision points
-           - Safety placé avec Exposure (même cadre)
-           - Supplier retiré d'ici (il passe cadre 2)
-           ========================= -->
-      <div>
-        <h3>Decision points</h3>
+</main>
 
-        <!-- Cyber AMS gating -->
-        <div class="miniCard">
-          <h4>Cyber AMS V1.0 — Gating & contexte</h4>
+<!-- ================= SCRIPT ================= -->
+<script>
+const $ = id => document.getElementById(id);
 
-          <label>Vehicle’s assets impacted ?</label><br>
-          <select id="dpAssetsImpacted">
+function detectRCE(desc, vec){
+  const kw = /(remote code execution|rce|execute arbitrary|command execution)/i;
+  if (kw.test(desc)) return { yes:true, src:"obtenu" };
+  if (/AV:N/.test(vec) && /PR:N/.test(vec) && /UI:N/.test(vec))
+    return { yes:true, src:"calculé" };
+  return { yes:false, src:"—" };
+}
+
+function computeDecision(){
+  const exp = $("dpExposure").value;
+  const safety = $("dpSafetyImpact").value;
+  const tech = $("dpTechImpact").value;
+  const supplier = $("dpSupplierInvolvement").value;
+  const kev = $("kev").textContent === "Oui";
+  const rce = $("rce").textContent === "Oui";
+
+  if (kev || rce)
+    return { label:"ACT Cyber Analysis", cls:"crit",
+      why:"KEV ou RCE détecté" };
+
+  if (exp==="O" && safety==="R" && supplier!=="FR")
+    return { label:"Deep Analysis by Cybersecurity needed", cls:"warn",
+      why:"Exposition ouverte + Safety R&C" };
+
+  if (supplier==="UU")
+    return { label:"ACT: Request countermeasure (no patch)", cls:"warn",
+      why:"Supplier non réactif" };
+
+  return { label:"No Action: Track for change", cls:"",
+    why:"Pas de risque immédiat identifié" };
+}
+
+function renderDecision(){
+  const d = computeDecision();
+  $("decisionResult").textContent = d.label;
+  $("decisionResult").className = "pill " + d.cls;
+  $("decisionRationale").textContent = d.why;
+}
+
+/* Démo statique RCE / KEV */
+$("kev").textContent = "Oui";
+$("kev").classList.add("crit");
+
+$("rce").textContent = "Oui";
+$("rce").classList.add("crit");
+$("rceSrc").textContent = "calculé";
+
+["dpExposure","dpSafetyImpact","dpTechImpact","dpSupplierInvolvement"]
+  .forEach(id => $(id).addEventListener("change", renderDecision));
+
+renderDecision();
+</script>
+
+<footer class="small muted" style="margin-top:40px;">
+  Kat‑Force © 2026 — Cyber AMS / Patch Deployer model
+</footer>
+
+</body>
+</html>
