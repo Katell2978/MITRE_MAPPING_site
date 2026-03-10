@@ -1,4 +1,102 @@
+OUTIL D'aide à l'anayse cyber - OAAC ?
+
+Index2.html 
+
+Evolution à faire : supporter des arbre de decision variable pour une v3 via import d'un json du SSVC
+Status actuel : 
+# Kat‑Force — CVE Decision & Prioritization (SSVC)
+page HTML fournit un **outil d’aide à la décision cybersécurité** pour l’analyse et la priorisation des vulnérabilités (CVE / CPE), basé sur la méthodologie **SSVC (Stakeholder‑Specific Vulnerability Categorization)** 
+
+L’objectif n’est **pas de produire un score unique**, mais de **guider une décision explicite, justifiable et traçable** (analyse, suivi, mitigation ou action immédiate).
+
+## 🎯 Objectifs
+- Centraliser les **signaux techniques** (CVSS, EPSS, KEV, RCE)
+- Structurer la **décision cybersécurité** avec SSVC
+- Intégrer des **critères choisi**
+- Rendre la décision :
+  - compréhensible (SOC / Cyber / Supplier / Management)
+  - justifiable (audit, CSMS, ISO 21434)
+  - exportable (PDF / JSON)
+
+## 🧭 Méthodologie
+La page s’appuie sur :
+- **SSVC (CERT/CC) **Patch Deployer Model**    https://certcc.github.io/SSVC
+- **KEV – CISA Known Exploited Vulnerabilities**
+- **EPSS – FIRST** 
+- **CVSS v3 / v4**
+
+⚠️ Rappel méthodologique important :  
+- **EPSS est prédictif**
+- **SSVC Exploitation est evidence‑based**
+- EPSS ne “prouve” jamais une exploitation
+
+## 🧩 Structure de la page
+### 1. Résumé & Scores
+### 2. Contexte système (SSVC)
+- **Exploitation**
+- **System Exposure**
+  👉 Si inconnu, **assumé Open**
+- **Safety Impact**
+  👉 Si non documenté, **assumé R&C**
+Ces informations doivent être fournies 
+### 3. Décision cybersécurité & fournisseur
+Ces critères pilotent **l’action à mener**.
+- **Technical Impact**
+- **Supplier Involvement**
+Ils permettent d’évaluer :
+- la capacité réelle de remédiation
+- la nécessité d’une action interne
+--
+### 4. Résultat — Aide à la décision
+La page produit une **décision explicite**, par exemple :
+- **ACT Cyber Analysis** -->👉 a reformuler pr - **Deep Analysis by Cybersecurity needed**
+- **ACT: Request countermeasure (no patch)**
+- **No Action: Track for change**
+Chaque décision est accompagnée :
+- d’un libellé clair
+- d’une justification synthétique
+
+👉 Ce résultat est **volontairement distinct** :
+- d’un score CVSS
+- d’une décision automatique de patch
+
+---
+
+## 🔥 Cas “Deep Analysis by Cybersecurity needed”
+Ce statut intermédiaire est déclenché typiquement lorsque :
+- exposition **Open**
+- safety **R&C**
+- impact technique **partiel ou total**
+- fournisseur **pas encore en mesure de fournir un correctif**
+
+## 📤 Exports
+
+Selon la configuration du projet, la page peut générer :
+- **PDF** : décision lisible et partageable
+- **JSON** : intégration dans un pipeline (watchtower, SOC, GRC)
+---
+## ⚠️ Limites connues
+
+- L’outil **n’est pas prédictif**
+- Il **ne remplace pas** une analyse humaine
+- Les résultats dépendent de la **qualité des informations fournies**
+  (exposition, safety, supplier)
+---
+
+## 📚 Références
+- SSVC – CERT/CC    https://certcc.github.io/SSVC
+- CISA – Known Exploited Vulnerabilities    https://www.cisa.gov/known-exploited-vulnerabilities-catalog
+- EPSS – FIRST    https://www.first.org/epss/
+- CVSS    https://www.first.org/cvss/
+---
+## 📝 Licence & usage
+Usage interne – démonstrateur méthodologique.  
+À adapter selon les processus de gestion des vulnérabilités de l’organisation.
+
+////////// OLD Note a garder pour la suite /////
+
 MITRE MAPPING MITRE - Work in progress
+Objectif ajouter le mapping des CVE en TTP via CWE et ou CAPEC
 
 Obj : permettre de trouver les liens entre les matrices pour simplifier la vie des équipes cyber
 
