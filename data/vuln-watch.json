@@ -126,7 +126,7 @@
       },
       "watchtower": {
         "priority": {
-          "score": 2.0,
+          "score": 2,
           "level": "LOW",
           "signals": {
             "remote_exploitable": true,
@@ -270,7 +270,7 @@
       "publications": [],
       "watchtower": {
         "priority": {
-          "score": 0.0,
+          "score": 0,
           "level": "LOW",
           "signals": {
             "remote_exploitable": false,
@@ -430,7 +430,7 @@
       ],
       "watchtower": {
         "priority": {
-          "score": 0.0,
+          "score": 0,
           "level": "LOW",
           "signals": {
             "remote_exploitable": false,
@@ -445,9 +445,68 @@
           "rationale": "LOW: revue bimestrielle."
         }
       }
+    },
+    "CVE-2025-32062": {
+      "cve_id": "CVE-2025-32062",
+      "status": "active",
+      "dates": {
+        "published": "2026-02-15T11:15:54.307",
+        "updated": "2026-02-18T17:52:22.253",
+        "monitoring_start": "2026-03-10T13:37:57.154Z",
+        "last_check": "2026-03-10T13:37:57.154Z"
+      },
+      "metrics": {
+        "cvss": {
+          "base_initial": 8.8,
+          "base_current": 8.8,
+          "vector": "CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+        },
+        "epss": {
+          "initial": 0.00037,
+          "current": 0.00037,
+          "percentile": 0.10761
+        },
+        "kev_status": {
+          "initial": false,
+          "current": false,
+          "date_added": null
+        }
+      },
+      "affected_components": [],
+      "exploitation_conditions": {
+        "attack_vector": "Adjacent",
+        "attack_complexity": null,
+        "privileges_required": null,
+        "user_interaction": null,
+        "exploit_maturity": "Unknown",
+        "public_exploit_available": false
+      },
+      "vehicle_impact": {
+        "impact_scope": null,
+        "technical_impact": [],
+        "safety_relevance": "To be assessed"
+      },
+      "publications": [],
+      "watchtower": {
+        "priority": {
+          "score": 2,
+          "level": "LOW",
+          "signals": {
+            "remote_exploitable": true,
+            "kev": false,
+            "epss_current": 0.00037
+          }
+        },
+        "review": {
+          "last_review": "2026-03-10T13:37:57.154Z",
+          "frequency_days": 60,
+          "next_review": null,
+          "rationale": "LOW: revue bimestrielle."
+        }
+      }
     }
   },
   "meta": {
-    "generated_at": "2026-03-10T02:27:40Z"
+    "generated_at": "2026-03-10T13:37:57.158Z"
   }
 }
