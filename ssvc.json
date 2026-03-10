@@ -1,101 +1,71 @@
 {
   "metadata": {
-    "title": "Cyber AMS – Patch Deployer Model (Adapted)",
+    "title": "Cyber SSVC kat(Adapted)",
     "version": "1.0",
-    "description": "Adaptation of the SSVC Deployer model for vehicle cybersecurity, integrating safety impact and supplier involvement.",
-    "author": "C. Tanguy",
-    "source": "Based on CERT/CC SSVC Deployer model"
+    "description": "SSVC Deployer model adapted par catherine Tanguy"
   },
-
   "decision_points": [
     {
-      "id": "Exploitation",
-      "question": "What is the present state of exploitation of the vulnerability?",
-      "values": ["None", "Public PoC", "Active"]
+      "id": "exploitation",
+      "name": "Exploitation",
+      "values": [
+        { "id": "none", "name": "None" },
+        { "id": "poc", "name": "Public PoC" },
+        { "id": "active", "name": "Active" }
+      ]
     },
     {
-      "id": "System Exposure",
-      "question": "What is the accessible attack surface of the affected system?",
-      "values": ["Small", "Controlled", "Open"]
+      "id": "exposure",
+      "name": "System Exposure",
+      "values": [
+        { "id": "small", "name": "Small" },
+        { "id": "controlled", "name": "Controlled" },
+        { "id": "open", "name": "Open" }
+      ]
     },
     {
-      "id": "Human Impact",
-      "question": "What is the combined safety and technical impact?",
-      "values": ["Low", "Medium", "High"]
+      "id": "impact",
+      "name": "Human Impact",
+      "values": [
+        { "id": "low", "name": "Low (N&M + Partial)" },
+        { "id": "medium", "name": "Medium (R&C + Partial)" },
+        { "id": "high", "name": "High (R&C + Total)" }
+      ]
     },
     {
-      "id": "Supplier Involvement",
-      "question": "What is the supplier remediation capability?",
-      "values": ["Fix Ready", "Cooperative", "Unresponsive"]
+      "id": "supplier",
+      "name": "Supplier Involvement",
+      "values": [
+        { "id": "fix", "name": "Fix Ready" },
+        { "id": "coop", "name": "Cooperative" },
+        { "id": "unresp", "name": "Unresponsive" }
+      ]
     }
   ],
 
   "outcomes": [
-    "No Action: Track for change",
-    "ACT Cyber Analysis",
-    "Deep Analysis by Cybersecurity needed",
-    "ACT: Request countermeasure (no patch)",
-    "Patch: Defer",
-    "Patch: Schedule",
-    "Patch: Out-of-Cycle or Immediate"
+    { "id": "track", "name": "No Action: Track for change" },
+    { "id": "analysis", "name": "ACT Cyber Analysis" },
+    { "id": "deep", "name": "Deep Analysis by Cybersecurity needed" },
+    { "id": "counter", "name": "ACT: Request countermeasure (no patch)" },
+    { "id": "defer", "name": "Patch: Defer" },
+    { "id": "schedule", "name": "Patch: Schedule" },
+    { "id": "immediate", "name": "Patch: Out-of-Cycle or Immediate" }
   ],
 
-  "decision_table": [
-    {
-      "when": {
-        "Exploitation": "None",
-        "System Exposure": "Small"
-      },
-      "then": "No Action: Track for change"
-    },
-    {
-      "when": {
-        "Exploitation": "None",
-        "System Exposure": "Controlled",
-        "Human Impact": "Low"
-      },
-      "then": "No Action: Track for change"
-    },
-    {
-      "when": {
-        "Exploitation": "Public PoC",
-        "System Exposure": "Open",
-        "Human Impact": "High"
-      },
-      "then": "ACT Cyber Analysis"
-    },
-    {
-      "when": {
-        "Exploitation": "Active",
-        "System Exposure": "Open"
-      },
-      "then": "ACT Cyber Analysis"
-    },
-    {
-      "when": {
-        "Exploitation": "Public PoC",
-        "System Exposure": "Open",
-        "Human Impact": "Medium",
-        "Supplier Involvement": "Cooperative"
-      },
-      "then": "Deep Analysis by Cybersecurity needed"
-    },
-    {
-      "when": {
-        "Exploitation": "Public PoC",
-        "System Exposure": "Open",
-        "Human Impact": "Medium",
-        "Supplier Involvement": "Unresponsive"
-      },
-      "then": "ACT: Request countermeasure (no patch)"
-    },
-    {
-      "when": {
-        "Exploitation": "Active",
-        "Human Impact": "High",
-        "Supplier Involvement": "Fix Ready"
-      },
-      "then": "Patch: Out-of-Cycle or Immediate"
-    },
-    {
-      "when": {
+  "outcome_table": [
+    { "exploitation": "none", "exposure": "small", "outcome": "track" },
+    { "exploitation": "none", "exposure": "controlled", "impact": "low", "outcome": "track" },
+
+    { "exploitation": "poc", "exposure": "open", "impact": "medium", "supplier": "coop", "outcome": "deep" },
+    { "exploitation": "poc", "exposure": "open", "impact": "medium", "supplier": "unresp", "outcome": "counter" },
+
+    { "exploitation": "poc", "impact": "high", "supplier": "fix", "outcome": "schedule" },
+    { "exploitation": "active", "impact": "high", "supplier": "fix", "outcome": "immediate" },
+
+    { "exploitation": "active", "exposure": "open", "outcome": "analysis" },
+    { "exploitation": "poc", "exposure": "open", "impact": "high", "outcome": "analysis" },
+
+    { "exploitation": "none", "impact": "high", "outcome": "defer" }
+  ]
+}
