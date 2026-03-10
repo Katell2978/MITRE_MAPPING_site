@@ -1,71 +1,117 @@
 {
-  "metadata": {
-    "title": "Cyber SSVC kat(Adapted)",
-    "version": "1.0",
-    "description": "SSVC Deployer model adapted par catherine Tanguy"
-  },
-  "decision_points": [
-    {
-      "id": "exploitation",
+  "namespace": "ssvc",
+  "key": "DT_DP_CYBER_AMS",
+  "version": "1.0.0",
+  "name": "Cyber AMS – Patch Deployer Model with Adaptation",
+  "definition": "SSVC Deployer decision table adapted for vehicle cybersecurity (Cyber AMS).",
+  "schemaVersion": "2.0.0",
+
+  "decision_points": {
+    "ssvc:E:1.1.0": {
+      "namespace": "ssvc",
+      "key": "E",
+      "version": "1.1.0",
       "name": "Exploitation",
+      "schemaVersion": "2.0.0",
       "values": [
-        { "id": "none", "name": "None" },
-        { "id": "poc", "name": "Public PoC" },
-        { "id": "active", "name": "Active" }
+        { "key": "N", "name": "None" },
+        { "key": "P", "name": "Public PoC" },
+        { "key": "A", "name": "Active" }
       ]
     },
-    {
-      "id": "exposure",
+
+    "ssvc:EXP:1.0.1": {
+      "namespace": "ssvc",
+      "key": "EXP",
+      "version": "1.0.1",
       "name": "System Exposure",
+      "schemaVersion": "2.0.0",
       "values": [
-        { "id": "small", "name": "Small" },
-        { "id": "controlled", "name": "Controlled" },
-        { "id": "open", "name": "Open" }
+        { "key": "S", "name": "Small" },
+        { "key": "C", "name": "Controlled" },
+        { "key": "O", "name": "Open" }
       ]
     },
-    {
-      "id": "impact",
+
+    "ssvc:A:2.0.0": {
+      "namespace": "ssvc",
+      "key": "A",
+      "version": "2.0.0",
+      "name": "Automatable",
+      "schemaVersion": "2.0.0",
+      "values": [
+        { "key": "N", "name": "No" },
+        { "key": "Y", "name": "Yes" }
+      ]
+    },
+
+    "ssvc:HI:2.0.2": {
+      "namespace": "ssvc",
+      "key": "HI",
+      "version": "2.0.2",
       "name": "Human Impact",
+      "schemaVersion": "2.0.0",
       "values": [
-        { "id": "low", "name": "Low (N&M + Partial)" },
-        { "id": "medium", "name": "Medium (R&C + Partial)" },
-        { "id": "high", "name": "High (R&C + Total)" }
+        { "key": "L", "name": "Low" },
+        { "key": "M", "name": "Medium" },
+        { "key": "H", "name": "High" },
+        { "key": "VH", "name": "Very High" }
       ]
     },
-    {
-      "id": "supplier",
+
+    "ssvc:SV:1.0.0": {
+      "namespace": "ssvc",
+      "key": "SV",
+      "version": "1.0.0",
       "name": "Supplier Involvement",
+      "schemaVersion": "2.0.0",
       "values": [
-        { "id": "fix", "name": "Fix Ready" },
-        { "id": "coop", "name": "Cooperative" },
-        { "id": "unresp", "name": "Unresponsive" }
+        { "key": "F", "name": "Fix Ready & Cooperative" },
+        { "key": "U", "name": "Unresponsive" }
+      ]
+    },
+
+    "ssvc:DSOI:1.0.0": {
+      "namespace": "ssvc",
+      "key": "DSOI",
+      "version": "1.0.0",
+      "name": "Defer, Scheduled, Out-of-Cycle, Immediate",
+      "schemaVersion": "2.0.0",
+      "values": [
+        { "key": "D", "name": "Defer" },
+        { "key": "S", "name": "Scheduled" },
+        { "key": "O", "name": "Out-of-Cycle" },
+        { "key": "I", "name": "Immediate" }
       ]
     }
-  ],
+  },
 
-  "outcomes": [
-    { "id": "track", "name": "No Action: Track for change" },
-    { "id": "analysis", "name": "ACT Cyber Analysis" },
-    { "id": "deep", "name": "Deep Analysis by Cybersecurity needed" },
-    { "id": "counter", "name": "ACT: Request countermeasure (no patch)" },
-    { "id": "defer", "name": "Patch: Defer" },
-    { "id": "schedule", "name": "Patch: Schedule" },
-    { "id": "immediate", "name": "Patch: Out-of-Cycle or Immediate" }
-  ],
+  "outcome": "ssvc:DSOI:1.0.0",
 
-  "outcome_table": [
-    { "exploitation": "none", "exposure": "small", "outcome": "track" },
-    { "exploitation": "none", "exposure": "controlled", "impact": "low", "outcome": "track" },
-
-    { "exploitation": "poc", "exposure": "open", "impact": "medium", "supplier": "coop", "outcome": "deep" },
-    { "exploitation": "poc", "exposure": "open", "impact": "medium", "supplier": "unresp", "outcome": "counter" },
-
-    { "exploitation": "poc", "impact": "high", "supplier": "fix", "outcome": "schedule" },
-    { "exploitation": "active", "impact": "high", "supplier": "fix", "outcome": "immediate" },
-
-    { "exploitation": "active", "exposure": "open", "outcome": "analysis" },
-    { "exploitation": "poc", "exposure": "open", "impact": "high", "outcome": "analysis" },
-
-    { "exploitation": "none", "impact": "high", "outcome": "defer" }
+  "mapping": [
+    {
+      "ssvc:E:1.1.0": "P",
+      "ssvc:EXP:1.0.1": "O",
+      "ssvc:A:2.0.0": "Y",
+      "ssvc:HI:2.0.2": "H",
+      "ssvc:SV:1.0.0": "F",
+      "ssvc:DSOI:1.0.0": "S"
+    },
+    {
+      "ssvc:E:1.1.0": "P",
+      "ssvc:EXP:1.0.1": "O",
+      "ssvc:A:2.0.0": "Y",
+      "ssvc:HI:2.0.2": "H",
+      "ssvc:SV:1.0.0": "U",
+      "ssvc:DSOI:1.0.0": "O"
+    },
+    {
+      "ssvc:E:1.1.0": "A",
+      "ssvc:EXP:1.0.1": "O",
+      "ssvc:A:2.0.0": "Y",
+      "ssvc:HI:2.0.2": "VH",
+      "ssvc:SV:1.0.0": "F",
+      "ssvc:DSOI:1.0.0": "I"
+    }
   ]
 }
