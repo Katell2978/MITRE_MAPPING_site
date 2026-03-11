@@ -7,7 +7,7 @@
         "published": "2025-02-10T10:00:00Z",
         "updated": "2025-02-25T14:30:00Z",
         "monitoring_start": "2025-02-12T09:00:00Z",
-        "last_check": "2026-03-10T02:27:40Z"
+        "last_check": "2026-03-11T02:27:12Z"
       },
       "metrics": {
         "cvss": {
@@ -18,7 +18,7 @@
         "epss": {
           "initial": 0.0012,
           "current": 0.0001,
-          "percentile": 0.0162
+          "percentile": 0.0161
         },
         "kev_status": {
           "initial": false,
@@ -105,7 +105,7 @@
       ],
       "dates": {
         "monitoring_start": "2026-02-26T16:02:22Z",
-        "last_check": "2026-03-10T02:27:40Z"
+        "last_check": "2026-03-11T02:27:12Z"
       },
       "metrics": {
         "cvss": {
@@ -116,7 +116,7 @@
         "epss": {
           "initial": 0.0011,
           "current": 0.001,
-          "percentile": 0.2816
+          "percentile": 0.2814
         },
         "kev_status": {
           "initial": false,
@@ -149,7 +149,7 @@
         "published": "2026-03-02T17:16:29Z",
         "updated": "2026-03-04T13:09:31Z",
         "monitoring_start": "2026-03-05T08:42:29.718314Z",
-        "last_check": "2026-03-10T02:27:40Z"
+        "last_check": "2026-03-11T02:27:12Z"
       },
       "metrics": {
         "cvss": {
@@ -160,7 +160,7 @@
         "epss": {
           "initial": 0.0034,
           "current": 0.0038,
-          "percentile": 0.5916
+          "percentile": 0.5915
         },
         "kev_status": {
           "initial": true,
@@ -234,7 +234,7 @@
         "published": "2023-08-03T18:15:11.477",
         "updated": "2024-11-21T08:14:43.520",
         "monitoring_start": "2026-03-05T09:48:48.348Z",
-        "last_check": "2026-03-10T02:27:40Z"
+        "last_check": "2026-03-11T02:27:13Z"
       },
       "metrics": {
         "cvss": {
@@ -245,7 +245,7 @@
         "epss": {
           "initial": 0.00035,
           "current": 0.0003,
-          "percentile": 0.0979
+          "percentile": 0.0978
         },
         "kev_status": {
           "initial": false,
@@ -293,7 +293,7 @@
         "published": "2023-01-03T15:15:10Z",
         "updated": "2025-04-10T16:15:21Z",
         "monitoring_start": "2026-03-06T15:18:23Z",
-        "last_check": "2026-03-10T02:27:41Z"
+        "last_check": "2026-03-11T02:27:13Z"
       },
       "metrics": {
         "cvss": {
@@ -373,7 +373,7 @@
         "published": "2023-08-24T20:15:09Z",
         "updated": "2024-11-21T08:15:56Z",
         "monitoring_start": "2026-03-06T15:18:23Z",
-        "last_check": "2026-03-10T02:27:41Z"
+        "last_check": "2026-03-11T02:27:13Z"
       },
       "metrics": {
         "cvss": {
@@ -384,7 +384,7 @@
         "epss": {
           "initial": 0.00033,
           "current": 0.0003,
-          "percentile": 0.0914
+          "percentile": 0.0913
         },
         "kev_status": {
           "initial": false,
@@ -453,7 +453,7 @@
         "published": "2026-02-15T11:15:54.307",
         "updated": "2026-02-18T17:52:22.253",
         "monitoring_start": "2026-03-10T13:37:57.154Z",
-        "last_check": "2026-03-10T13:37:57.154Z"
+        "last_check": "2026-03-11T02:27:13Z"
       },
       "metrics": {
         "cvss": {
@@ -463,8 +463,8 @@
         },
         "epss": {
           "initial": 0.00037,
-          "current": 0.00037,
-          "percentile": 0.10761
+          "current": 0.0004,
+          "percentile": 0.1074
         },
         "kev_status": {
           "initial": false,
@@ -489,24 +489,24 @@
       "publications": [],
       "watchtower": {
         "priority": {
-          "score": 2,
+          "score": 0.0,
           "level": "LOW",
           "signals": {
-            "remote_exploitable": true,
+            "remote_exploitable": false,
             "kev": false,
-            "epss_current": 0.00037
+            "epss_current": 0.0004
           }
         },
         "review": {
           "last_review": "2026-03-10T13:37:57.154Z",
           "frequency_days": 60,
-          "next_review": null,
+          "next_review": "2026-05-09T13:37:57Z",
           "rationale": "LOW: revue bimestrielle."
         }
       }
     }
   },
   "meta": {
-    "generated_at": "2026-03-10T13:37:57.158Z"
+    "generated_at": "2026-03-11T02:27:12Z"
   }
 }
