@@ -4,190 +4,824 @@ corriger chargement de fichier
 ajoute un moniteur/debug en bas de page
 ajoute un panneau lateral sur clic pour affichier les infos complementaire en ajoutant le lien vers les autres matrice issues de mon fichier ATM matrice TTP
 et ajoute un etat de couverture sous la matrice
+data/ATM-matrix-TTP.csv
+et ton JSON par défaut (si tu utilises le champ URL) à :
+data/ATM_Techniques_with_detection.json
 -->
-
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>ATM Detection Coverage Matrix</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ATM – Matrix & Detection Coverage</title>
 
 <style>
-  body {
+  :root{
+    --bg:#ffffff;
+    --fg:#111;
+    --muted:#666;
+    --border:#d0d0d0;
+    --head:#f2f2f2;
+    --cell:#fafafa;
+    --det:#b6e3b6;
+    --nodet:#f5f5f5;
+    --warn:#fff3cd;
+    --warnBorder:#ffeeba;
+    --danger:#f8d7da;
+    --dangerBorder:#f5c6cb;
+  }
+
+  body{
     font-family: Arial, sans-serif;
-    margin: 20px;
+    margin: 16px;
+    color: var(--fg);
+    background: var(--bg);
   }
 
-  h1 {
-    margin-bottom: 10px;
+  h1{ margin: 0 0 8px 0; font-size: 20px; }
+  .sub{ color: var(--muted); margin: 0 0 16px 0; font-size: 13px; }
+
+  .controls{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 14px;
+    border: 1px solid var(--border);
+    padding: 12px;
+    border-radius: 8px;
+    background: #fcfcfc;
   }
 
-  table {
+  .controls label{ font-weight: bold; font-size: 13px; }
+  .row{
+    display:flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  input[type="text"]{
+    width: min(900px, 100%);
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+  }
+
+  input[type="file"]{
+    padding: 6px;
+  }
+
+  button{
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #fff;
+    cursor: pointer;
+  }
+  button:hover{ background: #f7f7f7; }
+
+  .status{
+    margin: 10px 0 12px 0;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #fff;
+  }
+  .status strong{ font-size: 13px; }
+  .chips{
+    margin-top: 6px;
+    display:flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .chip{
+    border:1px solid var(--border);
+    border-radius: 999px;
+    padding: 3px 8px;
+    font-size: 12px;
+    background:#fff;
+  }
+  .chip.det{ background: var(--det); }
+  .chip.nodet{ background: var(--nodet); }
+
+  /* Matrix */
+  .matrix-wrap{
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: auto;
+    background: #fff;
+  }
+  table.matrix{
     border-collapse: collapse;
     width: 100%;
+    min-width: 900px;
     table-layout: fixed;
   }
-
-  th, td {
-    border: 1px solid #ccc;
+  table.matrix th,
+  table.matrix td{
+    border: 1px solid var(--border);
     padding: 6px;
-    text-align: center;
+    vertical-align: top;
     font-size: 12px;
   }
-
-  th {
-    background: #f0f0f0;
+  table.matrix th{
+    background: var(--head);
     position: sticky;
     top: 0;
     z-index: 2;
-  }
-
-  td.tech {
-    cursor: pointer;
+    text-align: center;
     font-weight: bold;
   }
-
-  td.detected {
-    background-color: #b6e3b6; /* vert */
+  td.tech{
+    background: var(--cell);
+    cursor: pointer;
+    font-weight: bold;
+    text-align: center;
   }
+  td.tech.detected{ background: var(--det); }
+  td.tech.not-detected{ background: var(--nodet); color: #222; }
+  td.empty{ background: #fff; }
 
-  td.not-detected {
-    background-color: #f5f5f5;
-  }
-
-  .legend {
+  .legend{
     margin-top: 10px;
+    display:flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .legend span{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    border:1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 8px;
+    background: #fff;
+  }
+  .dot{
+    width: 12px;
+    height: 12px;
+    border: 1px solid var(--border);
+    display:inline-block;
+    border-radius: 3px;
+  }
+  .dot.det{ background: var(--det); }
+  .dot.nodet{ background: var(--nodet); }
+
+  /* Side panel */
+  .sidepanel{
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: min(420px, 92vw);
+    background: #fff;
+    border-left: 1px solid var(--border);
+    box-shadow: -8px 0 20px rgba(0,0,0,0.08);
+    transform: translateX(105%);
+    transition: transform 0.2s ease;
+    z-index: 999;
+    display:flex;
+    flex-direction: column;
+  }
+  .sidepanel.open{ transform: translateX(0); }
+  .sidepanel header{
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    background: #fafafa;
+  }
+  .sidepanel header .title{
+    font-weight: bold;
+    font-size: 14px;
+    overflow:hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .sidepanel header button{
+    padding: 6px 10px;
+  }
+  .sidepanel .content{
+    padding: 12px;
+    overflow: auto;
+    font-size: 13px;
+  }
+  .kvs{
+    display:grid;
+    grid-template-columns: 120px 1fr;
+    gap: 6px 10px;
+    align-items: start;
+    margin: 10px 0;
+  }
+  .kvs .k{ color: var(--muted); }
+  .kvs .v{ word-break: break-word; }
+  .pill{
+    display:inline-block;
+    padding: 3px 8px;
+    border-radius: 999px;
+    border:1px solid var(--border);
+    font-size: 12px;
+  }
+  .pill.det{ background: var(--det); }
+  .pill.nodet{ background: var(--nodet); }
+  .links a{
+    display:block;
+    margin: 4px 0;
+    color: #0b57d0;
+    text-decoration: none;
+  }
+  .links a:hover{ text-decoration: underline; }
+
+  /* Debug monitor */
+  .debug{
+    margin-top: 14px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    background:#fff;
+  }
+  .debug header{
+    background: #fafafa;
+    border-bottom: 1px solid var(--border);
+    padding: 8px 10px;
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+  }
+  .debug header strong{ font-size: 13px; }
+  .debug pre{
+    margin: 0;
+    padding: 10px;
+    height: 160px;
+    overflow: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+    font-size: 11px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    background: #0b1220;
+    color: #d7e0ff;
   }
 
-  .legend span {
-    display: inline-block;
-    padding: 4px 10px;
-    margin-right: 10px;
-    border: 1px solid #ccc;
+  .banner{
+    margin: 10px 0 12px 0;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--warnBorder);
+    background: var(--warn);
+    color:#4a3b00;
+    display:none;
   }
-
-  .legend .detected {
-    background-color: #b6e3b6;
-  }
-
-  .legend .not-detected {
-    background-color: #f5f5f5;
+  .banner.error{
+    border-color: var(--dangerBorder);
+    background: var(--danger);
+    color:#6b0f18;
   }
 </style>
 </head>
 
 <body>
+  <h1>Automotive Threat Matrix – Matrix & Detection Coverage</h1>
+  <p class="sub">
+    Charge un JSON ATM (local ou URL). Clique sur une technique pour voir le détail + mapping depuis <code>data/ATM-matrix-TTP.csv</code>.
+  </p>
 
-<h1>Automotive Threat Matrix – Detection Coverage</h1>
+  <div class="controls">
+    <div>
+      <label>1) Charger un JSON depuis votre poste</label>
+      <div class="row">
+        <input type="file" id="fileInput" accept=".json" />
+        <button id="btnLoadLocal">Charger le fichier</button>
+      </div>
+    </div>
 
-<!-- === Chargement fichier local === -->
-<p>
-  <strong>Charger un JSON depuis votre poste :</strong><br>
-  <input type="file" id="fileInput" accept=".json">
-</p>
+    <div>
+      <label>2) Ou charger un JSON depuis une URL (GitHub Pages)</label>
+      <div class="row">
+        <input type="text" id="jsonUrl" value="data/ATM_Techniques_with_detection.json" />
+        <button id="btnLoadUrl">Charger l’URL</button>
+        <button id="btnReloadMapping">Recharger mapping CSV</button>
+      </div>
+      <div class="row" style="margin-top:6px;">
+        <span class="chip">Mapping CSV attendu : <code>data/ATM-matrix-TTP.csv</code></span>
+      </div>
+    </div>
+  </div>
 
-<!-- === Chargement par URL (optionnel) === -->
-<p>
-  <strong>Ou charger depuis une URL :</strong><br>
-  <input type="text" id="jsonUrl" size="80"
-         placeholder="ATM_Techniques_with_detection.json">
-  <button onclick="loadFromUrl()">Charger</button>
-</p>
+  <div id="banner" class="banner"></div>
 
-<div id="matrix"></div>
+  <!-- Etat de couverture -->
+  <div id="coverageStatus" class="status">
+    <strong>État de couverture :</strong>
+    <div id="coverageLine" style="margin-top:6px; color: var(--muted);">Aucune donnée chargée.</div>
+    <div id="coverageChips" class="chips"></div>
+  </div>
 
-<div class="legend">
-  <span class="detected">Détection présente</span>
-  <span class="not-detected">Pas de détection</span>
-</div>
+  <!-- Matrice -->
+  <div class="matrix-wrap">
+    <div id="matrix"></div>
+  </div>
+
+  <div class="legend">
+    <span><i class="dot det"></i> Détection présente</span>
+    <span><i class="dot nodet"></i> Pas de détection</span>
+    <span>Astuce : survol = description, clic = panneau latéral</span>
+  </div>
+
+  <!-- Side Panel -->
+  <aside id="sidepanel" class="sidepanel" aria-hidden="true">
+    <header>
+      <div class="title" id="spTitle">Détails</div>
+      <button id="spClose">Fermer</button>
+    </header>
+    <div class="content" id="spContent"></div>
+  </aside>
+
+  <!-- Debug Monitor -->
+  <section class="debug">
+    <header>
+      <strong>Moniteur / Debug</strong>
+      <div class="row">
+        <button id="btnClearLog">Vider</button>
+        <button id="btnCopyLog">Copier</button>
+      </div>
+    </header>
+    <pre id="debugLog"></pre>
+  </section>
 
 <script>
 /* =========================
-   UTILITAIRES
+   DEBUG / UTIL
    ========================= */
+const logEl = document.getElementById('debugLog');
+const bannerEl = document.getElementById('banner');
 
-function buildMatrix(data) {
-  // Collect all tactics
-  const tactics = [...new Set(
-    data.flatMap(t => t.tactic)
-  )].sort();
+function log(msg, level="INFO"){
+  const ts = new Date().toISOString();
+  logEl.textContent += `[${ts}] [${level}] ${msg}\n`;
+  logEl.scrollTop = logEl.scrollHeight;
+}
 
-  // Group techniques by tactic
-  const byTactic = {};
-  tactics.forEach(t => byTactic[t] = []);
-  data.forEach(t => {
-    t.tactic.forEach(tc => byTactic[tc].push(t));
-  });
+function showBanner(msg, type="warn"){
+  bannerEl.style.display = "block";
+  bannerEl.classList.toggle("error", type==="error");
+  bannerEl.textContent = msg;
+}
+function hideBanner(){
+  bannerEl.style.display = "none";
+  bannerEl.textContent = "";
+  bannerEl.classList.remove("error");
+}
 
-  // Build table
-  let html = '<table>';
-  html += '<tr><th>Tactic</th><th>Technique</th></tr>';
-
-  tactics.forEach(tactic => {
-    const techniques = byTactic[tactic];
-
-    techniques.forEach((tech, index) => {
-      html += '<tr>';
-
-      if (index === 0) {
-        html += `<th rowspan="${techniques.length}">${tactic}</th>`;
-      }
-
-      const cls = tech.covered_by_detection
-        ? 'detected'
-        : 'not-detected';
-
-      html += `
-        <td class="tech ${cls}"
-            title="${tech.description}">
-          ${tech.id}
-        </td>
-      `;
-      html += '</tr>';
-    });
-  });
-
-  html += '</table>';
-  document.getElementById('matrix').innerHTML = html;
+function escapeHtml(s){
+  return (s ?? "").toString()
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll("\"","&quot;")
+    .replaceAll("'","&#039;");
 }
 
 /* =========================
-   CHARGEMENT LOCAL
+   DONNEES GLOBALES
    ========================= */
+let techniques = [];          // Liste normalisée {id,tactic[],description,covered_by_detection}
+let mappingByAtmId = {};      // issu du CSV: ATM-Txxxx -> mapping row object
 
-document.getElementById('fileInput').addEventListener('change', function (event) {
-  const file = event.target.files[0];
-  if (!file) return;
+/* =========================
+   PARSE CSV (mapping) - data/ATM-matrix-TTP.csv
+   ========================= */
+async function loadMappingCsv(){
+  const path = "data/ATM-matrix-TTP.csv";
+  log(`Chargement mapping CSV: ${path}`);
+  try{
+    const res = await fetch(path, { cache: "no-store" });
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const text = await res.text();
 
-  const reader = new FileReader();
-  reader.onload = function (e) {
-    try {
-      const json = JSON.parse(e.target.result);
-      buildMatrix(json);
-    } catch (err) {
-      alert('Erreur : fichier JSON invalide');
+    // CSV séparateur ';' et parfois colonnes vides. On gère au mieux.
+    const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
+    if(lines.length < 2){
+      log("Mapping CSV vide ou incomplet.", "WARN");
+      return;
     }
-  };
-  reader.readAsText(file);
+
+    const header = lines[0].split(";");
+    const idx = {
+      tactic: header.indexOf("Tactics"),
+      atm: header.indexOf("ATM ID"),
+      mitreEnt: header.indexOf("Mitre ID Ent"),
+      mitreMob: header.indexOf("mitre ID Mobile"),
+      det: header.indexOf("DET_ID"),
+      logsrc: header.indexOf("Log_source"),
+      onboard: header.indexOf("Data Onboard"),
+      offboard: header.indexOf("Data Offboard"),
+      rmq: header.indexOf("rmq")
+    };
+
+    const map = {};
+    for(let i=1;i<lines.length;i++){
+      const cols = lines[i].split(";");
+      const atm = (cols[idx.atm] || "").trim();
+      if(!atm || !atm.startsWith("ATM-T")) continue;
+
+      map[atm] = {
+        tactics: (cols[idx.tactic] || "").trim(),
+        mitre_enterprise: (cols[idx.mitreEnt] || "").trim(),
+        mitre_mobile: (cols[idx.mitreMob] || "").trim(),
+        det_id: (cols[idx.det] || "").trim(),
+        log_source: (cols[idx.logsrc] || "").trim(),
+        data_onboard: (cols[idx.onboard] || "").trim(),
+        data_offboard: (cols[idx.offboard] || "").trim(),
+        rmq: (cols[idx.rmq] || "").trim()
+      };
+    }
+
+    mappingByAtmId = map;
+    log(`Mapping chargé: ${Object.keys(mappingByAtmId).length} lignes ATM-Txxxx`);
+    showBanner(`Mapping CSV chargé (${Object.keys(mappingByAtmId).length} lignes).`, "warn");
+    setTimeout(hideBanner, 1500);
+  }catch(e){
+    log(`Erreur mapping CSV: ${e.message}`, "ERROR");
+    showBanner(`Impossible de charger ${"data/ATM-matrix-TTP.csv"} (vérifie qu’il existe bien dans ton repo).`, "error");
+  }
+}
+
+/* =========================
+   NORMALISATION JSON
+   - Accepte :
+     A) Liste simplifiée: [{id,tactic,description,covered_by_detection}]
+     B) STIX bundle: {type:'bundle', objects:[...]} -> extract attack-pattern
+   ========================= */
+function normalizeJson(anyJson){
+  // Cas A: liste
+  if(Array.isArray(anyJson)){
+    const out = anyJson
+      .filter(x => x && typeof x === "object")
+      .map(x => ({
+        id: (x.id || x.ID || "").trim(),
+        tactic: Array.isArray(x.tactic) ? x.tactic : (x.tactic ? [x.tactic] : []),
+        description: x.description || "",
+        covered_by_detection: !!x.covered_by_detection
+      }))
+      .filter(x => x.id.startsWith("ATM-T"));
+    return out;
+  }
+
+  // Cas B: STIX bundle
+  if(anyJson && typeof anyJson === "object" && anyJson.type === "bundle" && Array.isArray(anyJson.objects)){
+    // build tactic lookup from x-mitre-tactic shortname -> name
+    const tacticLookup = {};
+    for(const obj of anyJson.objects){
+      if(obj.type === "x-mitre-tactic"){
+        const short = (obj.x_mitre_shortname || obj.name || "").toString().toLowerCase().replace(/\s+/g,"_");
+        tacticLookup[short] = obj.name;
+      }
+    }
+
+    const out = [];
+    for(const obj of anyJson.objects){
+      if(obj.type !== "attack-pattern") continue;
+
+      // external_references external_id ATM-Txxxx
+      let atmId = "";
+      if(Array.isArray(obj.external_references)){
+        for(const r of obj.external_references){
+          if(r && r.external_id && String(r.external_id).startsWith("ATM-T")){
+            atmId = String(r.external_id).trim();
+            break;
+          }
+        }
+      }
+      if(!atmId) continue;
+
+      // tactics from kill_chain_phases
+      const tactics = [];
+      if(Array.isArray(obj.kill_chain_phases)){
+        for(const kc of obj.kill_chain_phases){
+          const phase = (kc && kc.phase_name) ? String(kc.phase_name) : "";
+          if(!phase) continue;
+          tactics.push(tacticLookup[phase] || phase);
+        }
+      }
+
+      out.push({
+        id: atmId,
+        tactic: [...new Set(tactics)],
+        description: obj.description || "",
+        // STIX export ne contient pas forcément covered_by_detection -> on met false par défaut
+        covered_by_detection: !!obj.covered_by_detection
+      });
+    }
+    return out;
+  }
+
+  // Inconnu
+  return [];
+}
+
+/* =========================
+   BUILD MATRIX (MITRE-like grid)
+   - colonnes = tactics
+   - lignes = index technique dans la tactic (padded)
+   ========================= */
+function buildMatrixView(data){
+  if(!data || data.length === 0){
+    document.getElementById("matrix").innerHTML = `<div style="padding:12px;color:var(--muted)">Aucune technique à afficher.</div>`;
+    return;
+  }
+
+  // collect tactics
+  const tactics = [...new Set(data.flatMap(t => t.tactic || []))].filter(Boolean).sort();
+
+  // group by tactic
+  const byTactic = {};
+  for(const tc of tactics) byTactic[tc] = [];
+  for(const t of data){
+    for(const tc of (t.tactic || [])){
+      if(!byTactic[tc]) byTactic[tc] = [];
+      byTactic[tc].push(t);
+    }
+  }
+
+  // sort techniques inside each tactic by ID
+  for(const tc of Object.keys(byTactic)){
+    byTactic[tc] = byTactic[tc].slice().sort((a,b) => (a.id||"").localeCompare(b.id||""));
+  }
+
+  const maxRows = Math.max(...tactics.map(tc => (byTactic[tc] || []).length));
+  log(`Matrice: ${tactics.length} tactics, maxRows=${maxRows}`);
+
+  // table header
+  let html = `<table class="matrix"><thead><tr>`;
+  for(const tc of tactics){
+    html += `<th>${escapeHtml(tc)}</th>`;
+  }
+  html += `</tr></thead><tbody>`;
+
+  // rows
+  for(let r=0;r<maxRows;r++){
+    html += `<tr>`;
+    for(const tc of tactics){
+      const t = (byTactic[tc] || [])[r];
+      if(!t){
+        html += `<td class="empty"></td>`;
+        continue;
+      }
+      const cls = t.covered_by_detection ? "detected" : "not-detected";
+      const title = (t.description || "").toString().replace(/\s+/g," ").trim();
+      html += `
+        <td class="tech ${cls}"
+            data-atm-id="${escapeHtml(t.id)}"
+            title="${escapeHtml(title)}">
+          ${escapeHtml(t.id)}
+        </td>`;
+    }
+    html += `</tr>`;
+  }
+
+  html += `</tbody></table>`;
+  document.getElementById("matrix").innerHTML = html;
+
+  // click handler (event delegation)
+  document.querySelectorAll("td.tech").forEach(td => {
+    td.addEventListener("click", () => {
+      const id = td.getAttribute("data-atm-id");
+      const tech = techniques.find(x => x.id === id);
+      if(tech) openSidePanel(tech);
+    });
+  });
+}
+
+/* =========================
+   COVERAGE STATUS
+   ========================= */
+function updateCoverageStatus(data){
+  const total = data.length;
+  const detected = data.filter(t => !!t.covered_by_detection).length;
+  const pct = total ? Math.round((detected/total)*1000)/10 : 0;
+
+  // per tactic counts
+  const tacticStats = {};
+  for(const t of data){
+    for(const tc of (t.tactic || [])){
+      if(!tacticStats[tc]) tacticStats[tc] = { total:0, det:0 };
+      tacticStats[tc].total += 1;
+      if(t.covered_by_detection) tacticStats[tc].det += 1;
+    }
+  }
+
+  document.getElementById("coverageLine").innerHTML =
+    `<span>Total techniques: <b>${total}</b> — Couvertes par détection: <b>${detected}</b> — Couverture: <b>${pct}%</b></span>`;
+
+  const chips = [];
+  chips.push(`<span class="chip det">Détectées: ${detected}</span>`);
+  chips.push(`<span class="chip nodet">Non détectées: ${Math.max(0,total-detected)}</span>`);
+
+  // add a few tactic chips (sorted by coverage desc)
+  const sorted = Object.entries(tacticStats)
+    .sort((a,b) => (b[1].det/b[1].total) - (a[1].det/a[1].total));
+
+  for(const [tc, st] of sorted.slice(0, 8)){
+    const p = st.total ? Math.round((st.det/st.total)*100) : 0;
+    chips.push(`<span class="chip">${escapeHtml(tc)}: ${st.det}/${st.total} (${p}%)</span>`);
+  }
+
+  document.getElementById("coverageChips").innerHTML = chips.join("");
+}
+
+/* =========================
+   SIDE PANEL (details + links + mapping CSV)
+   ========================= */
+function pickFirstMitreId(str){
+  // returns first Txxxx or Txxxx.xxx from a string
+  if(!str) return "";
+  const m = str.match(/T\\d{4}(?:\\.\\d{3})?/);
+  return m ? m[0] : "";
+}
+
+function openSidePanel(tech){
+  const sp = document.getElementById("sidepanel");
+  const title = document.getElementById("spTitle");
+  const content = document.getElementById("spContent");
+
+  title.textContent = tech.id;
+
+  const map = mappingByAtmId[tech.id] || null;
+  const tactics = (tech.tactic || []).join(", ");
+
+  // Links
+  const atmUrl = `https://atm.automotiveisac.com/technique/${encodeURIComponent(tech.id)}`;
+  const entId = map ? pickFirstMitreId(map.mitre_enterprise) : "";
+  const mobId = map ? pickFirstMitreId(map.mitre_mobile) : "";
+  const entUrl = entId ? `https://attack.mitre.org/techniques/${entId}/` : "";
+  const mobUrl = mobId ? `https://attack.mitre.org/techniques/${mobId}/` : "";
+
+  // Optional link to local mapping CSV in repo
+  const localCsvUrl = `data/ATM-matrix-TTP.csv`;
+
+  const detPill = tech.covered_by_detection
+    ? `<span class="pill det">Couvert par détection</span>`
+    : `<span class="pill nodet">Non couvert</span>`;
+
+  const description = (tech.description || "").toString().replace(/\s+/g," ").trim();
+
+  let mappingHtml = "";
+  if(map){
+    mappingHtml = `
+      <h3 style="margin:14px 0 6px 0; font-size: 14px;">Mapping (depuis data/ATM-matrix-TTP.csv)</h3>
+      <div class="kvs">
+        <div class="k">Tactics (CSV)</div><div class="v">${escapeHtml(map.tactics)}</div>
+        <div class="k">MITRE Ent</div><div class="v">${escapeHtml(map.mitre_enterprise)}</div>
+        <div class="k">MITRE Mobile</div><div class="v">${escapeHtml(map.mitre_mobile)}</div>
+        <div class="k">DET_ID</div><div class="v">${escapeHtml(map.det_id)}</div>
+        <div class="k">Log source</div><div class="v">${escapeHtml(map.log_source)}</div>
+        <div class="k">Data Onboard</div><div class="v">${escapeHtml(map.data_onboard)}</div>
+        <div class="k">Data Offboard</div><div class="v">${escapeHtml(map.data_offboard)}</div>
+        <div class="k">Remarques</div><div class="v">${escapeHtml(map.rmq)}</div>
+      </div>
+    `;
+  }else{
+    mappingHtml = `
+      <h3 style="margin:14px 0 6px 0; font-size: 14px;">Mapping</h3>
+      <div style="padding:8px;border:1px solid var(--border);border-radius:8px;background:#fafafa;">
+        Aucun mapping trouvé dans <code>data/ATM-matrix-TTP.csv</code> pour <b>${escapeHtml(tech.id)}</b>.
+      </div>
+    `;
+  }
+
+  content.innerHTML = `
+    <div>${detPill}</div>
+
+    <div class="kvs" style="margin-top:10px;">
+      <div class="k">Technique</div><div class="v"><b>${escapeHtml(tech.id)}</b></div>
+      <div class="k">Tactics (JSON)</div><div class="v">${escapeHtml(tactics)}</div>
+      <div class="k">Description</div><div class="v">${escapeHtml(description)}</div>
+    </div>
+
+    <h3 style="margin:14px 0 6px 0; font-size: 14px;">Liens</h3>
+    <div class="links">
+      <a href="${atmUrl}" target="_blank" rel="noreferrer">ATM – page technique (${escapeHtml(tech.id)})</a>
+      ${entUrl ? `<a href="${entUrl}" target="_blank" rel="noreferrer">MITRE ATT&CK Enterprise – ${escapeHtml(entId)}</a>` : `<span style="color:var(--muted)">MITRE Enterprise : non renseigné</span>`}
+      ${mobUrl ? `<a href="${mobUrl}" target="_blank" rel="noreferrer">MITRE ATT&CK Mobile – ${escapeHtml(mobId)}</a>` : `<span style="color:var(--muted)">MITRE Mobile : non renseigné</span>`}
+      <a href="${localCsvUrl}" target="_blank" rel="noreferrer">Ouvrir le mapping CSV du repo (data/ATM-matrix-TTP.csv)</a>
+    </div>
+
+    ${mappingHtml}
+  `;
+
+  sp.classList.add("open");
+  sp.setAttribute("aria-hidden", "false");
+  log(`Side panel ouvert pour ${tech.id}`);
+}
+
+function closeSidePanel(){
+  const sp = document.getElementById("sidepanel");
+  sp.classList.remove("open");
+  sp.setAttribute("aria-hidden", "true");
+}
+
+/* =========================
+   LOAD JSON
+   ========================= */
+async function loadFromUrl(){
+  hideBanner();
+  const url = document.getElementById("jsonUrl").value.trim();
+  if(!url){
+    showBanner("URL vide.", "error");
+    return;
+  }
+  log(`Chargement JSON depuis URL: ${url}`);
+  try{
+    const res = await fetch(url, { cache: "no-store" });
+    if(!res.ok) throw new Error(`HTTP ${res.status}`);
+    const json = await res.json();
+    techniques = normalizeJson(json);
+
+    if(techniques.length === 0){
+      showBanner("JSON chargé mais aucune technique ATM-Txxxx détectée (format inattendu ?). Voir debug.", "error");
+      log("Aucune technique extraite après normalisation.", "ERROR");
+    }else{
+      log(`Techniques chargées: ${techniques.length}`);
+      buildMatrixView(techniques);
+      updateCoverageStatus(techniques);
+      showBanner(`JSON chargé (${techniques.length} techniques).`, "warn");
+      setTimeout(hideBanner, 1500);
+    }
+  }catch(e){
+    log(`Erreur chargement URL JSON: ${e.message}`, "ERROR");
+    showBanner(`Erreur chargement JSON: ${e.message}`, "error");
+  }
+}
+
+async function loadFromLocalFile(){
+  hideBanner();
+  const input = document.getElementById("fileInput");
+  const file = input.files && input.files[0];
+  if(!file){
+    showBanner("Aucun fichier sélectionné.", "error");
+    return;
+  }
+
+  log(`Lecture fichier local: ${file.name} (${file.size} bytes)`);
+  try{
+    const text = await file.text();
+    log(`Fichier lu: ${text.length} caractères`);
+    const json = JSON.parse(text);
+    techniques = normalizeJson(json);
+
+    if(techniques.length === 0){
+      showBanner("Fichier JSON lu mais aucune technique ATM-Txxxx détectée (format inattendu ?). Voir debug.", "error");
+      log("Aucune technique extraite après normalisation.", "ERROR");
+      return;
+    }
+
+    log(`Techniques chargées: ${techniques.length}`);
+    buildMatrixView(techniques);
+    updateCoverageStatus(techniques);
+    showBanner(`Fichier chargé (${techniques.length} techniques).`, "warn");
+    setTimeout(hideBanner, 1500);
+  }catch(e){
+    log(`Erreur parsing JSON local: ${e.message}`, "ERROR");
+    showBanner(`Erreur JSON: ${e.message}`, "error");
+  }
+}
+
+/* =========================
+   UI HOOKS
+   ========================= */
+document.getElementById("btnLoadUrl").addEventListener("click", loadFromUrl);
+document.getElementById("btnLoadLocal").addEventListener("click", loadFromLocalFile);
+document.getElementById("btnReloadMapping").addEventListener("click", loadMappingCsv);
+
+document.getElementById("spClose").addEventListener("click", closeSidePanel);
+document.addEventListener("keydown", (e) => { if(e.key === "Escape") closeSidePanel(); });
+
+document.getElementById("btnClearLog").addEventListener("click", () => { logEl.textContent = ""; });
+document.getElementById("btnCopyLog").addEventListener("click", async () => {
+  try{
+    await navigator.clipboard.writeText(logEl.textContent);
+    showBanner("Debug copié dans le presse-papiers.", "warn");
+    setTimeout(hideBanner, 1200);
+  }catch(e){
+    showBanner("Impossible de copier (droits navigateur).", "error");
+  }
 });
 
 /* =========================
-   CHARGEMENT URL
+   INIT
    ========================= */
-
-async function loadFromUrl() {
-  const url = document.getElementById('jsonUrl').value;
-  if (!url) return;
-
-  try {
-    const response = await fetch(url);
-    const json = await response.json();
-    buildMatrix(json);
-  } catch (err) {
-    alert('Erreur lors du chargement du JSON');
-  }
-}
+(async function init(){
+  log("Init page…");
+  await loadMappingCsv(); // mapping CSV auto au démarrage
+  // Option : charge l’URL par défaut si disponible
+  // (tu peux commenter la ligne suivante si tu préfères charger manuellement)
+  // await loadFromUrl();
+})();
 </script>
 
 </body>
