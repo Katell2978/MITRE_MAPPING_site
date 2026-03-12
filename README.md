@@ -1,10 +1,13 @@
 OUTIL D'aide à l'anayse cyber - OAAC ?
+
+
 --- une partie mapping Mitre -----
 Mappng ATM-TTP-CWE
 CVE--CWE
 si j'ai des CVE avec des CWE suis-je capable de les lier à l'ATM
 si j'ai une liste de CVE puis-je montere sur la matrice mitre le chemin.
-
+Viewer de la Matrice ATM chargé en Json. Vue Detection et vue vuln.
+Sur la base d'une liste de cve faire un json à injecter dans le viewer avec les case en rouge.
 
 ---- Une partie analyse de Vuln ----
 
