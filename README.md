@@ -1,4 +1,12 @@
 OUTIL D'aide à l'anayse cyber - OAAC ?
+--- une partie mapping Mitre -----
+Mappng ATM-TTP-CWE
+CVE--CWE
+si j'ai des CVE avec des CWE suis-je capable de les lier à l'ATM
+si j'ai une liste de CVE puis-je montere sur la matrice mitre le chemin.
+
+
+---- Une partie analyse de Vuln ----
 
 Index2.html 
 
