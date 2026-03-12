@@ -13,6 +13,10 @@ J'ai mon analyse des ATM vers TTP (entreprise et mobile)
 recuperer le lien TTP-CWE
 recuperer lien CVE-CWE
 
+avoir un navigateur TTP matrices inclure emb3d et ATM faire les liens
+je choisi ma matrice, j'ai le mapping avec les autres, j'ai le DET et les DATA et les exemple et les CWE
+et je list eles CVE de ma veille qui correspondent pivot CWE
+
 ---- Une partie analyse de Vuln ----
 
 Index2.html 
