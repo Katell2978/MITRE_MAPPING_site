@@ -9,6 +9,10 @@ si j'ai une liste de CVE puis-je montere sur la matrice mitre le chemin.
 Viewer de la Matrice ATM chargé en Json. Vue Detection et vue vuln.
 Sur la base d'une liste de cve faire un json à injecter dans le viewer avec les case en rouge.
 
+J'ai mon analyse des ATM vers TTP (entreprise et mobile)
+recuperer le lien TTP-CWE
+recuperer lien CVE-CWE
+
 ---- Une partie analyse de Vuln ----
 
 Index2.html 
