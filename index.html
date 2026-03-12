@@ -14,6 +14,8 @@
     /* Rend "KEV" et "RCE" visibles en rouge quand class="crit" est appliquée */
     .kpi .value.crit { color: #ff6b6b; font-weight: 800; }
     .kpi .sub.crit { color: rgba(255,107,107,.9); }
+  .cwe-critical {   color: #ff6b6b; font-weight: 800;}
+
 
     .riskGrid { display:grid; grid-template-columns: 1.1fr .9fr; gap:14px; align-items:start; }
     @media (max-width: 980px){ .riskGrid { grid-template-columns: 1fr; } }
@@ -103,6 +105,12 @@
         <div id="rceSrc" class="sub">—</div>
       </div>
 
+      <div class="kpi">
+        <div class="title">Weakness (CWE)</div>
+        <div id="cweId" class="value">—</div>
+        <div id="cweName" class="sub">—</div>
+        <div id="cweSource" class="tiny muted">—</div>
+    </div>
       <div class="kpi">
         <div class="title">Badges</div>
         <div id="badges" class="sub">—</div>
@@ -398,6 +406,27 @@ Supplier_multiplier (SSVC SINV):
     (configurations ?? []).forEach(walk);
     return [...new Set(out)];
   }
+  /////// Ajout 12/03 /// -- CWE Critique a valider
+  const CRITICAL_CWE = new Set([
+  "CWE-119","CWE-120","CWE-121","CWE-122",
+  "CWE-124","CWE-125","CWE-787","CWE-416"
+]);
+
+function extractPrimaryCweDetailed(weaknesses) {
+  for (const w of weaknesses ?? []) {
+    const d = (w.description ?? []).find(x => x.lang === "en");
+    if (!d?.value) continue;
+    const m = d.value.match(/CWE-(\d{1,5})/);
+    if (!m) continue;
+    return {
+      id: `CWE-${m[1]}`,
+      name: d.value.replace(/CWE-\d{1,5}\s*[:–-]?\s*/i, "").trim(),
+      source: w.source ?? "NVD"
+    };
+  }
+  return null;
+}
+  ////// Fin Ajout /////
 
   function getCwes(weaknesses) {
     const cwes = [];
@@ -698,7 +727,23 @@ Supplier_multiplier (SSVC SINV):
       const { cvss3, cvss4 } = pickCvss(cve.metrics);
       const cpes = extractCpes(cve.configurations);
       const refs = (cve.references ?? []).map(r => r.url).filter(Boolean);
-      const cwes = getCwes(cve.weaknesses);
+      //// Ajout 12/03 ////
+const cwe = extractPrimaryCweDetailed(cve.weaknesses);
+
+if (cwe) {
+  $("cweId").textContent = cwe.id;
+  $("cweName").textContent = cwe.name;
+  $("cweSource").textContent = `Source: ${cwe.source}`;
+
+  const crit = CRITICAL_CWE.has(cwe.id);
+  $("cweId").classList.toggle("cwe-critical", crit);
+  $("cweName").classList.toggle("cwe-critical", crit);
+} else {
+  $("cweId").textContent = "—";
+  $("cweName").textContent = "No weakness listed";
+  $("cweSource").textContent = "—";
+}
+      //// fin Ajout ///
 
       // EPSS
       let epssVal = null, epssPct = null;
