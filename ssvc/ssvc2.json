@@ -1,0 +1,83 @@
+{
+  "version": "1.0.0",
+  "decision_points": [
+    {
+      "id": "exploitation",
+      "name": "Exploitation",
+      "description": "Current state of exploitation of the vulnerability.",
+      "type": "enum",
+      "options": [
+        { "key": "none", "label": "None", "description": "No exploitation is known." },
+        { "key": "public_poc", "label": "Public PoC", "description": "Public proof-of-concept code exists." },
+        { "key": "active", "label": "Active", "description": "Active exploitation has been observed." }
+      ]
+    },
+    {
+      "id": "system_exposure",
+      "name": "System Exposure",
+      "description": "Degree to which the vulnerable system is exposed.",
+      "type": "enum",
+      "options": [
+        { "key": "small", "label": "Small", "description": "Limited exposure or constrained access." },
+        { "key": "controlled", "label": "Controlled", "description": "Access is controlled or mitigated." },
+        { "key": "open", "label": "Open", "description": "System is broadly exposed or reachable." }
+      ]
+    },
+    {
+      "id": "automatable",
+      "name": "Automatable",
+      "description": "Whether exploitation can be automated at scale.",
+      "type": "enum",
+      "options": [
+        { "key": "no", "label": "No", "description": "Attack requires manual effort or chaining." },
+        { "key": "yes", "label": "Yes", "description": "Attack can be automated." }
+      ]
+    },
+    {
+      "id": "technical_impact",
+      "name": "Technical Impact",
+      "description": "Impact on the technical system if exploited.",
+      "type": "enum",
+      "options": [
+        { "key": "partial", "label": "Partial", "description": "Limited impact on system functionality or data." },
+        { "key": "total", "label": "Total", "description": "Complete compromise of the system." }
+      ]
+    },
+    {
+      "id": "safety_impact",
+      "name": "Safety Impact",
+      "description": "Potential impact on human safety.",
+      "type": "enum",
+      "options": [
+        { "key": "negligible", "label": "Negligible", "description": "No meaningful safety impact." },
+        { "key": "marginal", "label": "Marginal", "description": "Minor or reversible safety impact." },
+        { "key": "critical", "label": "Critical", "description": "Severe safety impact possible." },
+        { "key": "catastrophic", "label": "Catastrophic", "description": "Loss of life or irreversible harm possible." }
+      ]
+    },
+    {
+      "id": "supplier_involvement",
+      "name": "Supplier Involvement",
+      "description": "Level of supplier engagement required to remediate.",
+      "type": "enum",
+      "options": [
+        { "key": "fix_ready", "label": "Fix Ready", "description": "A fix is already available." },
+        { "key": "cooperative", "label": "Cooperative", "description": "Supplier is responsive and cooperative." },
+        { "key": "uncooperative", "label": "Uncooperative/Unresponsive", "description": "Supplier is unresponsive or blocking remediation." }
+      ]
+    }
+  ],
+  "outcomes": {
+    "id": "action",
+    "name": "Remediation Action",
+    "description": "Recommended remediation priority.",
+    "type": "enum",
+    "options": [
+      { "key": "defer", "label": "Defer", "description": "No immediate action required." },
+      { "key": "scheduled", "label": "Scheduled", "description": "Fix during normal release cycle." },
+      { "key": "out_of_cycle", "label": "Out-of-Cycle", "description": "Fix outside the normal release cycle." },
+      { "key": "immediate", "label": "Immediate", "description": "Immediate remediation required." },
+      { "key": "cyber_analysis", "label": "CyberAnalysis", "description": "Further cybersecurity analysis required." }
+    ]
+  }
+}
