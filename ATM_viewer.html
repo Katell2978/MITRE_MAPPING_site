@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>ATM Detection Coverage Matrix</title>
+
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -71,11 +72,18 @@
 
 <h1>Automotive Threat Matrix – Detection Coverage</h1>
 
+<!-- === Chargement fichier local === -->
 <p>
-  Source JSON :
+  <strong>Charger un JSON depuis votre poste :</strong><br>
+  <input type="file" id="fileInput" accept=".json">
+</p>
+
+<!-- === Chargement par URL (optionnel) === -->
+<p>
+  <strong>Ou charger depuis une URL :</strong><br>
   <input type="text" id="jsonUrl" size="80"
-         value="ATM_Techniques_with_detection.json">
-  <button onclick="loadMatrix()">Charger</button>
+         placeholder="ATM_Techniques_with_detection.json">
+  <button onclick="loadFromUrl()">Charger</button>
 </p>
 
 <div id="matrix"></div>
@@ -86,12 +94,12 @@
 </div>
 
 <script>
-async function loadMatrix() {
-  const url = document.getElementById('jsonUrl').value;
-  const response = await fetch(url);
-  const data = await response.json();
+/* =========================
+   UTILITAIRES
+   ========================= */
 
-  // Collect tactics
+function buildMatrix(data) {
+  // Collect all tactics
   const tactics = [...new Set(
     data.flatMap(t => t.tactic)
   )].sort();
@@ -105,12 +113,14 @@ async function loadMatrix() {
 
   // Build table
   let html = '<table>';
-  html += '<tr><th>Tactic</th><th>Technique ID</th></tr>';
+  html += '<tr><th>Tactic</th><th>Technique</th></tr>';
 
   tactics.forEach(tactic => {
     const techniques = byTactic[tactic];
+
     techniques.forEach((tech, index) => {
       html += '<tr>';
+
       if (index === 0) {
         html += `<th rowspan="${techniques.length}">${tactic}</th>`;
       }
@@ -133,9 +143,36 @@ async function loadMatrix() {
   document.getElementById('matrix').innerHTML = html;
 }
 
-// Auto-load at startup
-loadMatrix();
-</script>
+/* =========================
+   CHARGEMENT LOCAL
+   ========================= */
 
-</body>
-</html>
+document.getElementById('fileInput').addEventListener('change', function (event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    try {
+      const json = JSON.parse(e.target.result);
+      buildMatrix(json);
+    } catch (err) {
+      alert('Erreur : fichier JSON invalide');
+    }
+  };
+  reader.readAsText(file);
+});
+
+/* =========================
+   CHARGEMENT URL
+   ========================= */
+
+async function loadFromUrl() {
+  const url = document.getElementById('jsonUrl').value;
+  if (!url) return;
+
+  try {
+    const response = await fetch(url);
+    const json = await response.json();
+    buildMatrix(json);
+  } catch (err) {
