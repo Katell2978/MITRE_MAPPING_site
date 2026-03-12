@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>ATM Detection Coverage Matrix</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+  }
+
+  h1 {
+    margin-bottom: 10px;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  th, td {
+    border: 1px solid #ccc;
+    padding: 6px;
+    text-align: center;
+    font-size: 12px;
+  }
+
+  th {
+    background: #f0f0f0;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  td.tech {
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  td.detected {
+    background-color: #b6e3b6; /* vert */
+  }
+
+  td.not-detected {
+    background-color: #f5f5f5;
+  }
+
+  .legend {
+    margin-top: 10px;
+  }
+
+  .legend span {
+    display: inline-block;
+    padding: 4px 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+  }
+
+  .legend .detected {
+    background-color: #b6e3b6;
+  }
+
+  .legend .not-detected {
+    background-color: #f5f5f5;
+  }
+</style>
+</head>
+
+<body>
+
+<h1>Automotive Threat Matrix – Detection Coverage</h1>
+
+<p>
+  Source JSON :
+  <input type="text" id="jsonUrl" size="80"
+         value="ATM_Techniques_with_detection.json">
+  <button onclick="loadMatrix()">Charger</button>
+</p>
+
+<div id="matrix"></div>
+
+<div class="legend">
+  <span class="detected">Détection présente</span>
+  <span class="not-detected">Pas de détection</span>
+</div>
+
+<script>
+async function loadMatrix() {
+  const url = document.getElementById('jsonUrl').value;
+  const response = await fetch(url);
+  const data = await response.json();
+
+  // Collect tactics
+  const tactics = [...new Set(
+    data.flatMap(t => t.tactic)
+  )].sort();
+
+  // Group techniques by tactic
+  const byTactic = {};
+  tactics.forEach(t => byTactic[t] = []);
+  data.forEach(t => {
+    t.tactic.forEach(tc => byTactic[tc].push(t));
+  });
+
+  // Build table
+  let html = '<table>';
+  html += '<tr><th>Tactic</th><th>Technique ID</th></tr>';
+
+  tactics.forEach(tactic => {
+    const techniques = byTactic[tactic];
+    techniques.forEach((tech, index) => {
+      html += '<tr>';
+      if (index === 0) {
+        html += `<th rowspan="${techniques.length}">${tactic}</th>`;
+      }
+
+      const cls = tech.covered_by_detection
+        ? 'detected'
+        : 'not-detected';
+
+      html += `
+        <td class="tech ${cls}"
+            title="${tech.description}">
+          ${tech.id}
+        </td>
+      `;
+      html += '</tr>';
+    });
+  });
+
+  html += '</table>';
+  document.getElementById('matrix').innerHTML = html;
+}
+
+// Auto-load at startup
+loadMatrix();
+</script>
+
+</body>
+</html>
