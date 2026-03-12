@@ -7,7 +7,7 @@
         "published": "2025-02-10T10:00:00Z",
         "updated": "2025-02-25T14:30:00Z",
         "monitoring_start": "2025-02-12T09:00:00Z",
-        "last_check": "2026-03-11T02:27:12Z"
+        "last_check": "2026-03-12T02:33:19Z"
       },
       "metrics": {
         "cvss": {
@@ -18,7 +18,7 @@
         "epss": {
           "initial": 0.0012,
           "current": 0.0001,
-          "percentile": 0.0161
+          "percentile": 0.0157
         },
         "kev_status": {
           "initial": false,
@@ -105,7 +105,7 @@
       ],
       "dates": {
         "monitoring_start": "2026-02-26T16:02:22Z",
-        "last_check": "2026-03-11T02:27:12Z"
+        "last_check": "2026-03-12T02:33:20Z"
       },
       "metrics": {
         "cvss": {
@@ -116,7 +116,7 @@
         "epss": {
           "initial": 0.0011,
           "current": 0.001,
-          "percentile": 0.2814
+          "percentile": 0.2811
         },
         "kev_status": {
           "initial": false,
@@ -149,7 +149,7 @@
         "published": "2026-03-02T17:16:29Z",
         "updated": "2026-03-04T13:09:31Z",
         "monitoring_start": "2026-03-05T08:42:29.718314Z",
-        "last_check": "2026-03-11T02:27:12Z"
+        "last_check": "2026-03-12T02:33:20Z"
       },
       "metrics": {
         "cvss": {
@@ -160,7 +160,7 @@
         "epss": {
           "initial": 0.0034,
           "current": 0.0038,
-          "percentile": 0.5915
+          "percentile": 0.5919
         },
         "kev_status": {
           "initial": true,
@@ -234,7 +234,7 @@
         "published": "2023-08-03T18:15:11.477",
         "updated": "2024-11-21T08:14:43.520",
         "monitoring_start": "2026-03-05T09:48:48.348Z",
-        "last_check": "2026-03-11T02:27:13Z"
+        "last_check": "2026-03-12T02:33:20Z"
       },
       "metrics": {
         "cvss": {
@@ -293,7 +293,7 @@
         "published": "2023-01-03T15:15:10Z",
         "updated": "2025-04-10T16:15:21Z",
         "monitoring_start": "2026-03-06T15:18:23Z",
-        "last_check": "2026-03-11T02:27:13Z"
+        "last_check": "2026-03-12T02:33:20Z"
       },
       "metrics": {
         "cvss": {
@@ -304,7 +304,7 @@
         "epss": {
           "initial": 0.0289,
           "current": 0.0289,
-          "percentile": 0.8611
+          "percentile": 0.8613
         },
         "kev_status": {
           "initial": false,
@@ -373,7 +373,7 @@
         "published": "2023-08-24T20:15:09Z",
         "updated": "2024-11-21T08:15:56Z",
         "monitoring_start": "2026-03-06T15:18:23Z",
-        "last_check": "2026-03-11T02:27:13Z"
+        "last_check": "2026-03-12T02:33:20Z"
       },
       "metrics": {
         "cvss": {
@@ -384,7 +384,7 @@
         "epss": {
           "initial": 0.00033,
           "current": 0.0003,
-          "percentile": 0.0913
+          "percentile": 0.0914
         },
         "kev_status": {
           "initial": false,
@@ -453,7 +453,7 @@
         "published": "2026-02-15T11:15:54.307",
         "updated": "2026-02-18T17:52:22.253",
         "monitoring_start": "2026-03-10T13:37:57.154Z",
-        "last_check": "2026-03-11T02:27:13Z"
+        "last_check": "2026-03-12T02:33:20Z"
       },
       "metrics": {
         "cvss": {
@@ -464,7 +464,7 @@
         "epss": {
           "initial": 0.00037,
           "current": 0.0004,
-          "percentile": 0.1074
+          "percentile": 0.1076
         },
         "kev_status": {
           "initial": false,
@@ -507,6 +507,6 @@
     }
   },
   "meta": {
-    "generated_at": "2026-03-11T02:27:12Z"
+    "generated_at": "2026-03-12T02:33:19Z"
   }
 }
