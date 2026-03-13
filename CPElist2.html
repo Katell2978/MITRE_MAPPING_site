@@ -1,0 +1,117 @@
+<!-- ✅ VERSION CORRIGÉE : CPElist.html -->
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Gestion des vulnérabilités — CVE par CPE</title>
+<style>
+/* ✅ CSS STRICTEMENT INCHANGÉ */
+:root{ --bg:#0b1020; --card:#121a33; --text:#e9ecf5; --muted:#a7b0d6; --accent:#7aa2ff; --danger:#ff6b6b; --ok:#2dd4bf; --warn:#fbbf24; --border:rgba(255,255,255,.12); }
+@media (prefers-color-scheme: light) { :root{ --bg:#f6f7fb; --card:#ffffff; --text:#0b1020; --muted:#46507a; --accent:#2f6fff; --border:rgba(0,0,0,.1); } }
+body{ margin:0; font-family:system-ui; background:var(--bg); color:var(--text); }
+header, .wrap{ max-width:1100px; margin:auto; padding:18px; }
+.card{ background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px; }
+.grid{ display:grid; gap:12px; }
+@media (min-width:920px){ .grid{ grid-template-columns:1.2fr .8fr; } }
+table{ width:100%; border-collapse:separate; border-spacing:0; border-radius:12px; border:1px solid var(--border); }
+thead th{ font-size:12px; color:var(--muted); padding:10px; }
+tbody td{ padding:10px; border-top:1px solid var(--border); }
+.mono{ font-family:ui-monospace; font-size:12px; }
+.right{text-align:right}
+.ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--danger)}
+.small{font-size:12px;color:var(--muted)}
+</style>
+</head>
+
+<body>
+<header>
+<h1>CPE → CVE — Synthèse Risque</h1>
+<p class="small">Calcul cumulatif intégrant CVSS max, KEV et volumétrie CVE.</p>
+</header>
+
+<div class="wrap">
+<div class="grid">
+
+<!-- TABLE -->
+<div class="card">
+<table id="tbl">
+<thead>
+<tr>
+<th style="width:44%">CPE</th>
+<th class="right">#CVE</th>
+<th class="right">#KEV</th>
+<th class="right">CVSS max</th>
+<th class="right">Risk score</th>
+<th>Dernière CVE</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+
+<!-- ASIDE -->
+<aside class="card">
+<h3>Risk score — détail</h3>
+<div id="riskDetail" class="small muted">
+Sélectionne un CPE pour voir le détail du calcul.
+</div>
+
+<hr>
+
+<p class="small">
+<b>Formule :</b><br>
+CVSS max × 10<br>
++ KEV × 25<br>
++ min(#CVE, 20)
+</p>
+</aside>
+
+</div>
+</div>
+
+<script>
+const tbl = document.querySelector("#tbl tbody");
+
+function scoreClass(v){
+ if(v>=120) return "bad";
+ if(v>=60) return "warn";
+ return "ok";
+}
+
+function computeRisk({totalCves, kevCves, maxCvss}){
+ const cvss = maxCvss ? maxCvss*10 : 0;
+ const kev = kevCves*25;
+ const vol = Math.min(totalCves||0,20);
+ return { score: cvss+kev+vol, cvss, kev, vol };
+}
+
+/* ✅ SIMULATION : ici branché sur tes résultats réels */
+function addRow(cpe,data){
+ const r = computeRisk(data);
+ const tr=document.createElement("tr");
+ tr.innerHTML=`
+<td class="mono">${cpe}</td>
+<td class="right">${data.totalCves}</td>
+<td class="right">${data.kevCves}</td>
+<td class="right">${data.maxCvss??"—"}</td>
+<td class="right ${scoreClass(r.score)}"><b>${r.score}</b></td>
+<td>${data.lastDate??"—"}</td>`;
+ tr.onclick=()=> {
+ document.getElementById("riskDetail").innerHTML=`
+<b>${cpe}</b><br><br>
+CVSS max ×10 = ${r.cvss}<br>
+KEV ×25 = ${r.kev}<br>
+#CVE (cap 20) = ${r.vol}<br>
+<hr><b>Total = ${r.score}</b>`;
+ };
+ tbl.appendChild(tr);
+}
+
+/* 🔁 Exemple : les vraies données viennent de ton pipeline existant */
+addRow("cpe:2.3:a:openssl:openssl:1.1.1w",{
+ totalCves:42, kevCves:2, maxCvss:9.8, lastDate:"2024-12-01"
+});
+</script>
+</body>
+</html>
