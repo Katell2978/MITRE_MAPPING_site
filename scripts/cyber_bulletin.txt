@@ -1,0 +1,10 @@
+# Documentation de la Veille Cyber
+Ce script automatise la collecte d'informations provenant exclusivement de sources primaires pour éviter les doublons de "veille de veille".
+
+**Sources consultées :**
+* **NVD (NIST) :** Filtrage en temps réel des vulnérabilités avec un score > 9.0.
+* **CISA KEV :** Identification des failles dont l'exploitation active est confirmée.
+* **SecurityWeek Automotive :** Flux spécialisé sur les menaces du secteur automobile.
+ **  Ajouter ASRG et autre source que je trust
+
+**Fonctionnement :** Le script s'exécute via GitHub Actions, extrait les données des dernières 24h, et formate un rapport envoyé par mail via SMTP.
