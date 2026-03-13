@@ -457,8 +457,9 @@ async function metricsForCpe(cpe, kevSet, apiKey, mode, signal) {
     startIndex += perPage;
     if (startIndex >= (total || 0)) break;
 
-    if (mode === 'balanced') await sleep(apiKey ? 250 : 1200);
-    else await sleep(apiKey ? 120 : 600);
+    if (mode === 'balanced') await sleep(apiKey ? 400 : 1500);
+    else await sleep(apiKey ? 200 : 800);
+
   }
 
   const result = { totalCves: total || 0, kevCves: kevCount, maxCvss, lastDate, cached:false };
