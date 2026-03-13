@@ -1,20 +1,40 @@
-name: Daily Cyber Bulletin
+name: Daily Cyber
 on:
   schedule:
     - cron: '0 8 * * *'
   workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
-  build:
+  archive:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Set up Python
-        uses: actions/setup-python@v4
-        with: {python-version: '3.x'}
-      - name: Run
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests feedparser
+
+      - name: Run script
+        run: python cyber_bulletin.py
+
+      - name: Commit and Push
         run: |
-          pip install requests feedparser
-          python cyber_bulletin.py
-        env:
-          SMTP_USER: ${{ secrets.SMTP_USER }}
-          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add reports/
+          if git diff --cached --quiet; then
+            echo "Aucun changement à commiter."
+          else
+            git commit -m "Archive: $(date +'%Y-%m-%d')"
+            git push
+          fi
