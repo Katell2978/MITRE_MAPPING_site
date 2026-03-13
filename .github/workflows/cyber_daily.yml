@@ -1,0 +1,20 @@
+name: Daily Cyber Bulletin
+on:
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with: {python-version: '3.x'}
+      - name: Run
+        run: |
+          pip install requests feedparser
+          python cyber_bulletin.py
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
