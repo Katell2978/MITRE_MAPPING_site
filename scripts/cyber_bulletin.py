@@ -1,25 +1,29 @@
-import requests
-import feedparser
+import requests, feedparser, smtplib, os
 from datetime import datetime, timedelta
+from email.message import EmailMessage
 
-# Configuration des sources
-NVD_API = "https://services.nvd.nist.gov/rest/json/cves/2.0"
-CISA_KEV = "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json"
-RSS_AUTO = "https://www.securityweek.com/category/verticals/automotive/feed/"
-
-def get_vulns():
-    # Récupère les CVE > 9.0 des dernières 24h
+def get_cyber_data():
+    # NVD API - CVE > 9.0 (Dernières 24h)
     yesterday = (datetime.now() - timedelta(days=1)).isoformat()
-    params = {'cvssV3Severity': 'CRITICAL', 'pubStartDate': yesterday}
-    res = requests.get(NVD_API, params=params).json()
-    return [(v['cve']['id'], f"https://nvd.nist.gov/vuln/detail/{v['cve']['id']}") for v in res.get('vulnerabilities', [])]
+    res = requests.get(f"https://services.nvd.nist.gov/rest/json/cves/2.0?cvssV3Severity=CRITICAL&pubStartDate={yesterday}").json()
+    vulns = [f"- {v['cve']['id']}: https://nvd.nist.gov/vuln/detail/{v['cve']['id']}" for v in res.get('vulnerabilities', [])]
+    
+    # RSS Auto News
+    feed = feedparser.parse("https://www.securityweek.com/category/verticals/automotive/feed/")
+    news = [f"- {e.title}: {e.link}" for e in feed.entries[:5]]
+    
+    return "\n".join(["### FAILLES CRITIQUES", *vulns, "\n### SECTEUR AUTO", *news])
 
-def get_auto_news():
-    # Récupère les actualités cyber-automobile via RSS
-    feed = feedparser.parse(RSS_AUTO)
-    return [(entry.title, entry.link) for entry in feed.entries[:5]]
+def send_email(body):
+    msg = EmailMessage()
+    msg.set_content(body)
+    msg['Subject'] = f"Veille Cyber du {datetime.now().strftime('%d/%m/%Y')}"
+    msg['From'], msg['To'] = os.environ['SMTP_USER'], os.environ['SMTP_USER']
+    
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+        server.login(os.environ['SMTP_USER'], os.environ['SMTP_PASS'])
+        server.send_message(msg)
 
-# Génération du rapport (Logique simplifiée pour GitHub Actions)
-print(f"Bulletin du {datetime.now().strftime('%d/%m/%Y')}")
-print("\n--- Failles Critiques (CVSS > 9) ---\n", get_vulns())
-print("\n--- Sécurité Automobile ---\n", get_auto_news())
+if __name__ == "__main__":
+    report = get_cyber_data()
+    send_email(report)
