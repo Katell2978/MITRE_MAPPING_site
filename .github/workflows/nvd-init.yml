@@ -1,0 +1,37 @@
+name: NVD initial dump
+
+on:
+  workflow_dispatch:   # lancement manuel
+  push:
+    paths:
+      - scripts/nvd_mirror.py
+
+jobs:
+  nvd-init:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Create output directory
+        run: mkdir -p data/nvd
+
+      - name: Run NVD initial dump
+        run: |
+          python scripts/nvd_mirror.py --mode init --out data/nvd
+
+      - name: Commit NVD dump
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add data/nvd
+          git commit -m "NVD initial dump (year feeds + recent/modified)" || echo "No changes to commit"
+
+      - name: Push changes
+        run: git push
