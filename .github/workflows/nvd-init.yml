@@ -1,5 +1,4 @@
 name: NVD initial dump
-
 on:
   workflow_dispatch:
 
