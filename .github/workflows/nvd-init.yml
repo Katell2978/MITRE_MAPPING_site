@@ -1,14 +1,12 @@
 name: NVD initial dump
 
 on:
-  workflow_dispatch:   # lancement manuel
-  push:
-    paths:
-      - scripts/nvd_mirror.py
+  workflow_dispatch:
 
 jobs:
   nvd-init:
     runs-on: ubuntu-latest
+    timeout-minutes: 120   # important
 
     steps:
       - name: Checkout repository
@@ -22,16 +20,12 @@ jobs:
       - name: Create output directory
         run: mkdir -p data/nvd
 
-      - name: Run NVD initial dump
+      - name: Run NVD initial dump (limited years)
         run: |
-          python scripts/nvd_mirror.py --mode init --out data/nvd
+          python scripts/nvd_mirror.py \
+            --mode init \
+            --start-year 2018 \
+            --out data/nvd
 
-      - name: Commit NVD dump
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add data/nvd
-          git commit -m "NVD initial dump (year feeds + recent/modified)" || echo "No changes to commit"
-
-      - name: Push changes
-        run: git push
+      - name: Show downloaded files
+        run: ls -lh data/nvd
