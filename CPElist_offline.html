@@ -1,0 +1,424 @@
+<!doctype html>
+    <html lang="fr">
+    <head>
+      <meta charset="utf-8" />
+      <meta name="viewport" content="width=device-width,initial-scale=1" />
+      <title>Gestion des vulnérabilités — CPE (offline) → CVE</title>
+      <style>
+        :root{ --bg:#0b1020; --card:#121a33; --text:#e9ecf5; --muted:#a7b0d6; --accent:#7aa2ff; --danger:#ff6b6b; --ok:#2dd4bf; --warn:#fbbf24; --border:rgba(255,255,255,.12); }
+        @media (prefers-color-scheme: light) { :root{ --bg:#f6f7fb; --card:#ffffff; --text:#0b1020; --muted:#46507a; --accent:#2f6fff; --border:rgba(0,0,0,.1); } }
+        body{ margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,"Noto Sans",Arial; background:var(--bg); color:var(--text); }
+        header{ padding:28px 18px 14px; max-width:1100px; margin:0 auto; }
+        h1{ font-size:20px; margin:0 0 8px; letter-spacing:.2px; }
+        p{ margin:6px 0; color:var(--muted); line-height:1.35; }
+        .wrap{ max-width:1100px; margin:0 auto; padding:0 18px 34px; }
+        .grid{ display:grid; gap:12px; grid-template-columns: 1fr; }
+        @media (min-width: 920px) { .grid{ grid-template-columns: 1.2fr .8fr; } }
+        .card{ background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px; box-shadow:0 6px 22px rgba(0,0,0,.12); }
+        .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+        label{ font-size:12px; color:var(--muted); display:block; margin-bottom:6px; }
+        input[type="text"], input[type="file"]{ background:transparent; border:1px solid var(--border); color:var(--text); border-radius:10px; padding:10px 12px; min-width:240px; outline:none; }
+        input[type="file"]{ color:var(--muted); }
+        button{ background:var(--accent); border:none; color:white; border-radius:10px; padding:10px 12px; cursor:pointer; font-weight:600; }
+        button.secondary{ background:transparent; border:1px solid var(--border); color:var(--text); }
+        button:disabled{ opacity:.55; cursor:not-allowed; }
+        .small{ font-size:12px; color:var(--muted); }
+        .pill{ display:inline-flex; align-items:center; gap:6px; padding:3px 10px; border-radius:999px; border:1px solid var(--border); color:var(--muted); font-size:12px; }
+        .pill strong{ color:var(--text); }
+        .pill.ok strong{ color:var(--ok); }
+        .pill.warn strong{ color:var(--warn); }
+        .pill.bad strong{ color:var(--danger); }
+        table{ width:100%; border-collapse:separate; border-spacing:0; overflow:hidden; border-radius:12px; border:1px solid var(--border); }
+        thead th{ text-align:left; font-size:12px; color:var(--muted); padding:10px 10px; background:rgba(255,255,255,.04); position:sticky; top:0; z-index:1; }
+        tbody td{ padding:10px 10px; border-top:1px solid var(--border); vertical-align:top; }
+        tbody tr:hover td{ background:rgba(122,162,255,.07); }
+        .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; font-size:12px; }
+        .right{ text-align:right; }
+        .muted{ color:var(--muted); }
+        .ok{ color:var(--ok); }
+        .warn{ color:var(--warn); }
+        .bad{ color:var(--danger); }
+        .hint{ margin-top:8px; font-size:12px; color:var(--muted); }
+        .kbd{ font-family:ui-monospace; border:1px solid var(--border); border-bottom-width:2px; padding:0 6px; border-radius:7px; color:var(--muted); }
+      </style>
+    </head>
+    <body>
+      <header>
+        <h1>Gestion des vulnérabilités — <span class="mono">CPE → CVE</span> (mode offline)</h1>
+        <p>Cette page ne contacte <b>pas</b> l’API NVD (évite CORS/403/429). Elle lit un fichier <span class="mono">data/cpe_metrics.json</span> généré offline.</p>
+        <p class="small">Flux NVD : year feeds (1/jour), feeds <span class="mono">recent</span>/<span class="mono">modified</span> (≈ toutes les 2h) + recommandation d’utiliser les <span class="mono">.meta</span>. Voir la page NVD Data Feeds.</p>
+      </header>
+
+      <div class="wrap">
+        <div class="grid">
+          <div class="card">
+            <div class="row" style="justify-content:space-between; align-items:flex-end">
+              <div style="flex: 1 1 420px;">
+                <label for="filter">Filtre rapide (vendor / produit / version / texte CPE)</label>
+                <input id="filter" type="text" placeholder="ex: openssl, linux_kernel, 1.1.1w…" />
+              </div>
+              <div class="row" style="align-items:flex-end">
+                <div>
+                  <label for="csvFile">Importer une liste de CPE (CSV)</label>
+                  <input id="csvFile" type="file" accept=".csv,text/csv" />
+                </div>
+                <div>
+                  <label for="metricsFile">(Optionnel) Charger un cpe_metrics.json</label>
+                  <input id="metricsFile" type="file" accept="application/json,.json" />
+                </div>
+                <div style="padding-top:22px;">
+                  <button id="loadDefault" class="secondary">Recharger la liste par défaut</button>
+                  <button id="exportCsv" class="secondary">Exporter résultats en CSV</button>
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-top:10px" class="row">
+              <span class="pill"><strong id="count">0</strong><span> CPE</span></span>
+              <span class="pill ok"><strong id="withData">0</strong><span> trouvés</span></span>
+              <span class="pill bad"><strong id="missing">0</strong><span> manquants</span></span>
+              <span class="small muted" id="lastMsg">—</span>
+            </div>
+
+            <div style="margin-top:12px; max-height:60vh; overflow:auto; border-radius:12px;">
+              <table id="tbl">
+                <thead>
+                  <tr>
+                    <th style="width:44%">CPE</th>
+                    <th class="right">#CVE</th>
+                    <th class="right">#KEV</th>
+                    <th class="right">CVSS max</th>
+                    <th class="right">Risk score</th>
+                    <th>Dernière CVE (date)</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+
+            <div class="hint">
+              Astuce : le fichier <span class="mono">data/cpe_metrics.json</span> est généré par <span class="mono">scripts/build_cpe_metrics.py</span> à partir des dumps NVD téléchargés via <span class="mono">scripts/nvd_mirror.py</span>.
+            </div>
+          </div>
+
+          <aside class="card">
+            <h2 style="margin:0 0 10px; font-size:16px;">Risk score — détail</h2>
+            <div id="riskDetail" class="small muted">Clique/Survole une ligne pour voir le détail.</div>
+            <hr style="border:none;border-top:1px solid var(--border); margin:12px 0" />
+            <div class="small muted">
+              <div><b>Méthode</b></div>
+              <div class="mono" id="riskMethod">risk_score = (CVSSmax × 10) + (#KEV × 25) + min(#CVE, 20)</div>
+              <div id="riskWeights" class="small muted" style="margin-top:6px;">CVSS×10 · KEV×25 · cap CVE=20</div>
+            </div>
+            <hr style="border:none;border-top:1px solid var(--border); margin:12px 0" />
+            <div class="small muted">
+              <div><b>Offline dataset</b></div>
+              <div id="meta" class="small muted">Chargement…</div>
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      <footer class="small muted" style="padding:18px; max-width:1100px; margin:0 auto;">
+        <hr style="border-color: rgba(255,255,255,.12);">
+        <div><b>Risk score — méthode de calcul</b></div>
+        <div class="mono" style="margin-top:6px;">risk_score = (CVSSmax × 10) + (#KEV × 25) + min(#CVE, 20)</div>
+      </footer>
+
+      <script>
+        // ----- Default list (small placeholder). Replace or import CSV.
+        const DEFAULT_CPE_LIST = [
+          "cpe:2.3:a:openssl:openssl:1.1.1w:*:*:*:*:*:*:*",
+          "cpe:2.3:o:qualcomm:mdm9628_firmware:-:*:*:*:*:*:*:*"
+        ];
+
+        // Risk configuration (must match build_cpe_metrics.py)
+        const RISK = { cvssMultiplier: 10, kevWeight: 25, cveCap: 20 };
+
+        const els = {
+          filter: document.getElementById('filter'),
+          csvFile: document.getElementById('csvFile'),
+          metricsFile: document.getElementById('metricsFile'),
+          loadDefault: document.getElementById('loadDefault'),
+          exportCsv: document.getElementById('exportCsv'),
+          tbody: document.querySelector('#tbl tbody'),
+          count: document.getElementById('count'),
+          withData: document.getElementById('withData'),
+          missing: document.getElementById('missing'),
+          lastMsg: document.getElementById('lastMsg'),
+          riskDetail: document.getElementById('riskDetail'),
+          riskMethod: document.getElementById('riskMethod'),
+          riskWeights: document.getElementById('riskWeights'),
+          meta: document.getElementById('meta')
+        };
+
+        let CPE_LIST = [...DEFAULT_CPE_LIST];
+        let METRICS = null; // { meta, risk_method, cpe_metrics }
+
+        function setMsg(m){ els.lastMsg.textContent = m; }
+
+        function parseCsvText(text){
+          const lines = text.split(/?
+/).filter(l=>l.trim().length);
+          if(!lines.length) return [];
+          const sep = (lines[0].split(';').length > lines[0].split(',').length) ? ';' : ',';
+          const headers = lines[0].split(sep).map(h=>h.trim().replace(/^﻿/,''));
+          let idx = headers.findIndex(h=>h.toLowerCase().includes('cpe'));
+          if(idx < 0) idx = 0;
+          const out = [];
+          for(let i=1;i<lines.length;i++){
+            const parts = lines[i].split(sep);
+            const cpe = (parts[idx]||'').trim();
+            if(cpe.startsWith('cpe:2.3:')) out.push(cpe);
+          }
+          return [...new Set(out)].sort();
+        }
+
+        function computeRisk(totalCves, kevCves, maxCvss){
+          const cvssPart = (typeof maxCvss === 'number') ? (maxCvss * RISK.cvssMultiplier) : 0;
+          const kevPart = (Number(kevCves||0) * RISK.kevWeight);
+          const volPart = Math.min(Number(totalCves||0), RISK.cveCap);
+          const score = Math.round((cvssPart + kevPart + volPart) * 10) / 10;
+          return { score, cvssPart, kevPart, volPart };
+        }
+
+        function scoreClassCvss(v){
+          if(v === null || v === undefined) return 'muted';
+          if(v >= 9) return 'bad';
+          if(v >= 7) return 'warn';
+          return 'ok';
+        }
+        function scoreClassRisk(v){
+          if(v === null || v === undefined) return 'muted';
+          if(v >= 120) return 'bad';
+          if(v >= 60) return 'warn';
+          return 'ok';
+        }
+
+        function makeRow(cpe){
+          const tr = document.createElement('tr');
+          tr.dataset.cpe = cpe;
+          tr.dataset.risk = '';
+          tr.innerHTML = `
+            <td class="mono">${cpe}</td>
+            <td class="right" data-k="cveCount">—</td>
+            <td class="right" data-k="kevCount">—</td>
+            <td class="right" data-k="maxCvss">—</td>
+            <td class="right" data-k="riskScore">—</td>
+            <td data-k="lastDate">—</td>
+          `;
+          tr.addEventListener('mouseenter', ()=> showRiskDetail(tr));
+          tr.addEventListener('click', ()=> showRiskDetail(tr));
+          return tr;
+        }
+
+        function showRiskDetail(tr){
+          const cpe = tr.dataset.cpe;
+          const r = {
+            score: Number(tr.dataset.riskScore||0),
+            cvssPart: Number(tr.dataset.cvssPart||0),
+            kevPart: Number(tr.dataset.kevPart||0),
+            volPart: Number(tr.dataset.volPart||0)
+          };
+          if(!tr.dataset.riskScore){
+            els.riskDetail.innerHTML = `<div class="muted">Aucune donnée offline pour <span class="mono">${cpe}</span>.</div>`;
+            return;
+          }
+          els.riskDetail.innerHTML = `
+            <div><b class="mono">${cpe}</b></div>
+            <div style="margin-top:8px" class="small muted">
+              CVSS max × ${RISK.cvssMultiplier} = <b>${r.cvssPart}</b><br>
+              #KEV × ${RISK.kevWeight} = <b>${r.kevPart}</b><br>
+              min(#CVE, ${RISK.cveCap}) = <b>${r.volPart}</b><br>
+              <hr style="border:none;border-top:1px solid var(--border); margin:10px 0">
+              <b>Total Risk score = ${r.score}</b>
+            </div>
+          `;
+        }
+
+        function render(){
+          els.tbody.innerHTML = '';
+          const q = els.filter.value.trim().toLowerCase();
+          const filtered = CPE_LIST.filter(c => !q || c.toLowerCase().includes(q));
+          filtered.forEach(cpe => els.tbody.appendChild(makeRow(cpe)));
+          els.count.textContent = String(filtered.length);
+          applyMetricsToVisible();
+        }
+
+        function applyMetricsToVisible(){
+          const rows = [...els.tbody.querySelectorAll('tr')];
+          let found = 0, missing = 0;
+
+          for(const tr of rows){
+            const cpe = tr.dataset.cpe;
+            const m = METRICS?.cpe_metrics?.[cpe];
+            const cveCountEl = tr.querySelector('[data-k="cveCount"]');
+            const kevCountEl = tr.querySelector('[data-k="kevCount"]');
+            const maxCvssEl = tr.querySelector('[data-k="maxCvss"]');
+            const riskEl = tr.querySelector('[data-k="riskScore"]');
+            const lastDateEl = tr.querySelector('[data-k="lastDate"]');
+
+            if(!m){
+              missing++;
+              cveCountEl.textContent = '—';
+              kevCountEl.textContent = '—';
+              maxCvssEl.textContent = '—';
+              riskEl.textContent = '—';
+              lastDateEl.textContent = '—';
+              tr.dataset.risk = '';
+              tr.dataset.riskScore = '';
+              tr.dataset.cvssPart = '';
+              tr.dataset.kevPart = '';
+              tr.dataset.volPart = '';
+              continue;
+            }
+
+            found++;
+            const totalCves = m.totalCves ?? 0;
+            const kevCves = m.kevCves ?? 0;
+            const maxCvss = (typeof m.maxCvss === 'number') ? m.maxCvss : (m.maxCvss===null? null : Number(m.maxCvss));
+            const lastDate = m.lastDate ?? null;
+
+            cveCountEl.textContent = totalCves;
+            kevCountEl.textContent = kevCves;
+            maxCvssEl.textContent = (maxCvss===null || Number.isNaN(maxCvss)) ? '—' : String(maxCvss);
+            maxCvssEl.className = 'right ' + scoreClassCvss(maxCvss);
+            lastDateEl.textContent = lastDate ? String(lastDate).slice(0,10) : '—';
+
+            const r = computeRisk(totalCves, kevCves, (Number.isFinite(maxCvss)?maxCvss:null));
+            riskEl.textContent = r.score;
+            riskEl.className = 'right ' + scoreClassRisk(r.score);
+
+            tr.dataset.risk = String(r.score);
+            tr.dataset.riskScore = String(r.score);
+            tr.dataset.cvssPart = String(r.cvssPart);
+            tr.dataset.kevPart = String(r.kevPart);
+            tr.dataset.volPart = String(r.volPart);
+          }
+
+          els.withData.textContent = String(found);
+          els.missing.textContent = String(missing);
+
+          // auto sort by risk desc
+          sortByRisk();
+        }
+
+        function sortByRisk(){
+          const rows = [...els.tbody.querySelectorAll('tr')];
+          rows.sort((a,b)=>{
+            const ra = Number(a.dataset.risk);
+            const rb = Number(b.dataset.risk);
+            const na = Number.isFinite(ra) ? ra : -Infinity;
+            const nb = Number.isFinite(rb) ? rb : -Infinity;
+            if(!Number.isFinite(ra) && !Number.isFinite(rb)) return 0;
+            if(!Number.isFinite(ra)) return 1;
+            if(!Number.isFinite(rb)) return -1;
+            return nb - na;
+          });
+          const frag = document.createDocumentFragment();
+          rows.forEach(r=>frag.appendChild(r));
+          els.tbody.appendChild(frag);
+        }
+
+        async function loadMetricsFromUrl(url){
+          const r = await fetch(url, { cache: 'no-store' });
+          if(!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        }
+
+        async function initMetrics(){
+          setMsg('Chargement data/cpe_metrics.json…');
+          try{
+            METRICS = await loadMetricsFromUrl('./data/cpe_metrics.json');
+            const rm = METRICS.risk_method || {};
+            if(rm.cvssMultiplier) RISK.cvssMultiplier = rm.cvssMultiplier;
+            if(rm.kevWeight) RISK.kevWeight = rm.kevWeight;
+            if(rm.cveCap) RISK.cveCap = rm.cveCap;
+            if(rm.formula) els.riskMethod.textContent = rm.formula;
+            els.riskWeights.textContent = `CVSS×${RISK.cvssMultiplier} · KEV×${RISK.kevWeight} · cap CVE=${RISK.cveCap}`;
+            const meta = METRICS.meta || {};
+            els.meta.innerHTML = `
+              <div>Généré: <span class="mono">${meta.generated_at || 'n/a'}</span></div>
+              <div>Source: <span class="mono">${meta.source || 'n/a'}</span></div>
+              <div>CPE indexés: <span class="mono">${meta.cpe_count ?? 'n/a'}</span></div>
+              <div>Includes years: <span class="mono">${meta.includes_year_feeds ?? 'n/a'}</span></div>
+            `;
+            setMsg('OK. Dataset offline chargé.');
+            render();
+          }catch(e){
+            METRICS = { cpe_metrics: {} };
+            els.meta.textContent = 'Aucun dataset chargé.';
+            setMsg('Impossible de charger data/cpe_metrics.json (charge un JSON via le champ optionnel).');
+            render();
+          }
+        }
+
+        function exportCsv(){
+          const rows = [['cpe','cve_count','kev_count','max_cvss','risk_score','last_date']];
+          for(const tr of els.tbody.querySelectorAll('tr')){
+            const cpe = tr.dataset.cpe;
+            const cveCount = tr.querySelector('[data-k="cveCount"]').textContent.trim();
+            const kevCount = tr.querySelector('[data-k="kevCount"]').textContent.trim();
+            const maxCvss = tr.querySelector('[data-k="maxCvss"]').textContent.trim();
+            const riskScore = tr.querySelector('[data-k="riskScore"]').textContent.trim();
+            const lastDate = tr.querySelector('[data-k="lastDate"]').textContent.trim();
+            rows.push([cpe,cveCount,kevCount,maxCvss,riskScore,lastDate]);
+          }
+          const csv = rows.map(r => r.map(v => '"' + String(v).replaceAll('"','""') + '"').join(';')).join('
+');
+          const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'cpe_vuln_metrics_offline.csv';
+          a.click();
+          URL.revokeObjectURL(url);
+        }
+
+        // events
+        els.filter.addEventListener('input', render);
+        els.exportCsv.addEventListener('click', exportCsv);
+        els.loadDefault.addEventListener('click', () => { CPE_LIST = [...DEFAULT_CPE_LIST]; setMsg('Liste par défaut rechargée.'); render(); });
+
+        els.csvFile.addEventListener('change', async (e)=>{
+          const f = e.target.files && e.target.files[0];
+          if(!f) return;
+          const text = await f.text();
+          const list = parseCsvText(text);
+          if(!list.length){ setMsg('CSV chargé mais aucun CPE détecté (colonne contenant CPE).'); return; }
+          CPE_LIST = list;
+          setMsg(`CSV chargé: ${list.length} CPE.`);
+          render();
+        });
+
+        els.metricsFile.addEventListener('change', async (e)=>{
+          const f = e.target.files && e.target.files[0];
+          if(!f) return;
+          try{
+            const txt = await f.text();
+            METRICS = JSON.parse(txt);
+            const rm = METRICS.risk_method || {};
+            if(rm.cvssMultiplier) RISK.cvssMultiplier = rm.cvssMultiplier;
+            if(rm.kevWeight) RISK.kevWeight = rm.kevWeight;
+            if(rm.cveCap) RISK.cveCap = rm.cveCap;
+            if(rm.formula) els.riskMethod.textContent = rm.formula;
+            els.riskWeights.textContent = `CVSS×${RISK.cvssMultiplier} · KEV×${RISK.kevWeight} · cap CVE=${RISK.cveCap}`;
+            const meta = METRICS.meta || {};
+            els.meta.innerHTML = `
+              <div>Généré: <span class="mono">${meta.generated_at || 'n/a'}</span></div>
+              <div>Source: <span class="mono">${meta.source || 'n/a'}</span></div>
+              <div>CPE indexés: <span class="mono">${meta.cpe_count ?? 'n/a'}</span></div>
+              <div>Includes years: <span class="mono">${meta.includes_year_feeds ?? 'n/a'}</span></div>
+            `;
+            setMsg('Dataset chargé depuis fichier JSON.');
+            render();
+          }catch(err){
+            setMsg('Erreur JSON: ' + err.message);
+          }
+        });
+
+        // init
+        initMetrics();
+      </script>
+    </body>
+    </html>
