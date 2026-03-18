@@ -8,3 +8,4 @@ Fidélité absolue : Ne résume pas. Liste chaque branche décisionnelle présen
 4. Esthétique : Utilise des couleurs pour les décisions finales (Rouge pour Patch_immediate, Orange pour Out-of-cycle, Vert pour Schedule, Gris pour Dismiss/Track).
 
 Rendu : Affiche le code Mermaid et le rendu visuel. N'invente aucun cas qui n'est pas dans le CSV."
+je veux un graphique visuel en mode dessin
