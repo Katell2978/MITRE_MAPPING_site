@@ -1,0 +1,110 @@
+{
+  "version": "2.0.0",
+  "title": "Vehicle Vulnerability Cyber Triage (Threat-Driven)",
+  "description": "Modèle SSVC personnalisé pour le triage des vulnérabilités véhicules basé sur l'impact sécurité et l'implication fournisseur.",
+  "dimensions": [
+    {
+      "label": "Base_CVSS",
+      "children": [
+        { "label": ">=7" },
+        { "label": "<7" }
+      ]
+    },
+    {
+      "label": "Exploitation",
+      "children": [
+        { "label": "active" },
+        { "label": "poc" },
+        { "label": "none" }
+      ]
+    },
+    {
+      "label": "vehicle_sa-concerned",
+      "children": [
+        { "label": "yes" },
+        { "label": "no" }
+      ]
+    },
+    {
+      "label": "Asset_criticity",
+      "children": [
+        { "label": "Strategic&critical" },
+        { "label": "Standard&unknown" }
+      ]
+    },
+    {
+      "label": "System_exposure",
+      "children": [
+        { "label": "open" },
+        { "label": "controlled" },
+        { "label": "none" }
+      ]
+    },
+    {
+      "label": "Safety_impact",
+      "children": [
+        { "label": "Catastrophic" },
+        { "label": "critical" },
+        { "label": "marginal" },
+        { "label": "none" }
+      ]
+    },
+    {
+      "label": "Technical_impact",
+      "children": [
+        { "label": "total" },
+        { "label": "partial" },
+        { "label": "any" }
+      ]
+    },
+    {
+      "label": "Supplier_involvement",
+      "children": [
+        { "label": "fix_ready" },
+        { "label": "cooperative" },
+        { "label": "unresponsive" }
+      ]
+    }
+  ],
+  "decisions": [
+    { "label": "Patch_immediate", "color": "#d32f2f" },
+    { "label": "Patch_out-of-cycle", "color": "#f57c00" },
+    { "label": "Patch_shedule", "color": "#388e3c" },
+    { "label": "CyberAnalysis_required", "color": "#fbc02d" },
+    { "label": "Track", "color": "#1976d2" },
+    { "label": "Defer", "color": "#7b1fa2" },
+    { "label": "Dismiss", "color": "#757575" }
+  ],
+  "decision_table": [
+    [">=7", "active", "yes", "Strategic&critical", "open", "Catastrophic", "any", "any", "Patch_immediate"],
+    [">=7", "active", "yes", "Strategic&critical", "open", "critical", "total", "any", "Patch_immediate"],
+    [">=7", "active", "yes", "Strategic&critical", "open", "critical", "partial", "fix_ready", "Patch_out-of-cycle"],
+    [">=7", "active", "yes", "Strategic&critical", "open", "critical", "partial", "cooperative", "Patch_shedule"],
+    [">=7", "active", "yes", "Strategic&critical", "open", "critical", "partial", "unresponsive", "CyberAnalysis_required"],
+    [">=7", "active", "yes", "Strategic&critical", "open", "marginal", "any", "unresponsive", "CyberAnalysis_required"],
+    [">=7", "active", "yes", "Strategic&critical", "open", "marginal", "any", "fix_ready", "Patch_shedule"],
+    [">=7", "active", "yes", "Strategic&critical", "open", "marginal", "any", "cooperative", "CyberAnalysis_required"],
+    [">=7", "active", "yes", "Strategic&critical", "controlled", "Catastrophic", "any", "unresponsive", "CyberAnalysis_required"],
+    [">=7", "active", "yes", "Strategic&critical", "controlled", "critical", "any", "unresponsive", "CyberAnalysis_required"],
+    [">=7", "active", "yes", "Strategic&critical", "controlled", "Catastrophic", "any", "fix_ready", "Patch_shedule"],
+    [">=7", "active", "yes", "Strategic&critical", "controlled", "critical", "any", "fix_ready", "Patch_shedule"],
+    [">=7", "active", "yes", "Strategic&critical", "controlled", "Catastrophic", "any", "cooperative", "CyberAnalysis_required"],
+    [">=7", "active", "yes", "Strategic&critical", "controlled", "critical", "any", "cooperative", "CyberAnalysis_required"],
+    [">=7", "active", "yes", "Strategic&critical", "none", "any", "any", "any", "Defer"],
+    [">=7", "poc", "yes", "Strategic&critical", "open", "Catastrophic", "any", "unresponsive", "CyberAnalysis_required"],
+    [">=7", "poc", "yes", "Strategic&critical", "open", "Catastrophic", "any", "cooperative", "CyberAnalysis_required"],
+    [">=7", "poc", "yes", "Strategic&critical", "open", "Catastrophic", "any", "fix_ready", "Patch_shedule"],
+    [">=7", "poc", "yes", "Strategic&critical", "open", "critical", "any", "any", "Track"],
+    [">=7", "poc", "yes", "Strategic&critical", "open", "marginal", "any", "any", "Track"],
+    [">=7", "poc", "yes", "Strategic&critical", "open", "none", "any", "any", "Track"],
+    [">=7", "poc", "yes", "Strategic&critical", "controlled", "Catastrophic", "any", "unresponsive", "CyberAnalysis_required"],
+    [">=7", "poc", "yes", "Strategic&critical", "controlled", "Catastrophic", "any", "cooperative", "CyberAnalysis_required"],
+    [">=7", "poc", "yes", "Strategic&critical", "controlled", "Catastrophic", "any", "fix_ready", "Patch_shedule"],
+    [">=7", "poc", "yes", "Strategic&critical", "controlled", "critical", "any", "any", "Track"],
+    [">=7", "none", "yes", "Strategic&critical", "open", "Catastrophic", "any", "fix_ready", "Patch_shedule"],
+    [">=7", "none", "yes", "Strategic&critical", "open", "Catastrophic", "any", "cooperative", "CyberAnalysis_required"],
+    [">=7", "active", "yes", "Standard&unknown", "none", "any", "any", "any", "Dismiss"],
+    [">=7", "active", "no", "any", "any", "any", "any", "any", "Dismiss"],
+    ["<7", "any", "any", "any", "any", "any", "any", "any", "Track"]
+  ]
+}
