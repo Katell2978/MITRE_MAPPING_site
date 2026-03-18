@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Wiki — Vehicle Vulnerability Cyber Triage (SSVC)</title>
+  <style>
+    :root{
+      -- Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;      --bg:#0b1220; --text:#e8eefc; --muted:rgba(232,238,252,.72);
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:var(--sans); color:var(--text);
+      background:
+        radial-gradient(900px 600px at 20% -10%, rgba(122,167,255,.35), transparent 65%),
+        radial-gradient(800px 550px at 110% 0%, rgba(45,226,197,.25), transparent 60%),
+        radial-gradient(900px 700px at 70% 120%, rgba(255,92,124,.18), transparent 60%),
+        var(--bg);
+    }
+    .container{max-width:1100px;margin:0 auto;padding:22px}
+    .card{
+      background:var(--panel); border:1px solid var(--line);
+      border-radius:var(--radius); box-shadow:var(--shadow);
+      padding:16px 18px; margin:14px 0;
+    }
+    h1,h2,h3{margin:0 0 10px}
+    p{margin:8px 0; color:rgba(232,238,252,.86); line-height:1.55}
+    .small{color:var(--muted); font-size:12.5px}
+    code{
+      font-family:var(--mono); font-size:12px;
+      background:rgba(0,0,0,.20); padding:1px 6px; border-radius:8px;
+      border:1px solid rgba(255,255,255,.10);
+    }
+    ul{margin:8px 0 0; padding-left:18px; line-height:1.55}
+    .pill{display:inline-block;padding:4px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.06);margin:2px 6px 2px 0;font-weight:700;font-size:12px}
+        --panel:rgba(255,255,255,.06); --line:rgba(255,255,255,.14);
+      --shadow:0 14px 40px rgba(0,0,0,.38); --radius:16px;
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Wiki — Vehicle Vulnerability Cyber Triage (inspiré SSVC)</h1>
+    <div class="small">Mode d’emploi pour lire et utiliser la page de triage (arbre de décision).</div>
+
+    <div class="card">
+      <h2>1) Objectif</h2>
+      <p>
+        Cette page aide à déterminer <b>une décision de traitement</b> pour une vulnérabilité véhicule (suivi, analyse, patch…),
+        en appliquant des règles de type <b>SSVC</b> (Stakeholder-Specific Vulnerability Categorization).
+      </p>
+      <p class="small">
+        Le but n’est pas de “calculer un score” mais de rendre le raisonnement transparent : quelles informations sont utilisées et dans quel ordre.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>2) Comment l’utiliser (pas à pas)</h2>
+      <ul>
+        <li><b>(Optionnel)</b> Renseigner une <code>CVE-YYYY-NNNN</code> et cliquer <code>Charger infos CVE</code> pour afficher des indices (CVSS, EPSS, KEV…).</li>
+        <li>Choisir une valeur dans la <b>1ère colonne</b> de l’arbre, puis dans la suivante, etc.</li>
+        <li>La zone <code>Proposition</code> affiche la décision suggérée et la règle associée.</li>
+        <li>Cliquer <code>Appliquer la proposition</code> pour figer la décision et l’inclure dans l’export JSON.</li>
+      </ul>
+      <p class="small">
+        L’arbre est “progressif” : les colonnes apparaissent au fur et à mesure, pour éviter de demander trop d’informations d’un coup.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>3) Les informations demandées (points de décision)</h2>
+      <p>Les points de décision utilisés dans cette version sont :</p>
+      <p>
+        <span class="pill">Base_CVSS</span>
+        <span class="pill">Exploitation</span>
+        <span class="pill">vehicle_sa-concerned</span>
+        <span class="pill">Asset_criticity</span>
+        <span class="pill">System_exposure</span>
+        <span class="pill">Safety_impact</span>
+        <span class="pill">Technical_impact</span>
+        <span class="pill">Supplier_involvement</span>
+      </p>
+      <p class="small">
+        Ces champs sont définis dans la table de décision (et certains peuvent devenir non sélectionnables si un “gating” s’applique).
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>4) Comment lire une décision finale ?</h2>
+      <ul>
+        <li><b>Dismiss</b> : hors périmètre / non concerné → pas d’action de traitement dans ce contexte.</li>
+        <li><b>Track</b> : suivre l’évolution → re-triage si de nouvelles informations apparaissent (exploitation, exposition…).</li>
+        <li><b>CyberAnalysis_required</b> : analyse requise → besoin de réaliser une <b>Analyse Cyber Véhicule</b> (exposition, exploitabilité, impacts) avant de décider du traitement.</li>
+        <li><b>Defer</b> : différer → périmètre concerné mais signal faible, revue ultérieure.</li>
+        <li><b>Patch_shedule</b> : patch dans le cycle standard.</li>
+        <li><b>Patch_out-of-cycle</b> : patch priorisé hors cycle.</li>
+        <li><b>Patch_immediate</b> : patch immédiat (urgence).</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h2>5) Où sont les règles ?</h2>
+      <p>
+        En bas de la page principale, le tableau <b>“Règles de décision (SSVC) proposées”</b> liste toutes les règles utilisées.
+        La <b>première règle correspondante</b> est appliquée.
+      </p>
+      <p class="small">
+        Dans le tableau, <code>*</code> signifie “n’importe quelle valeur” (le critère n’est pas utilisé dans cette règle).
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>6) Export & traçabilité</h2>
+      <p>
+        Le bouton <code>Export JSON</code> produit une preuve horodatée contenant : les choix, la décision proposée/appliquée, la règle et la justification.
+      </p>
+    </div>
+
+    <div class="small" style="margin-top:14px">
+      Page wiki à publier telle quelle (SharePoint / espace documentaire).
+    </div>
+  </div>
+</body>
+</html>
+
