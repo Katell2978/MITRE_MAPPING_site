@@ -1,6 +1,6 @@
 {
   "title": "Vehicle Vulnerability Cyber Triage",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "decision_points": [
     {
       "label": "Base_CVSS",
@@ -79,11 +79,16 @@
     { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "open", "Safety_impact": "critical", "Technical_impact": "partial", "Supplier_involvement": "fix_ready" }, "outcome": "Patch_out-of-cycle" },
     { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "open", "Safety_impact": "critical", "Technical_impact": "partial", "Supplier_involvement": "cooperative" }, "outcome": "Patch_shedule" },
     { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "open", "Safety_impact": "critical", "Technical_impact": "partial", "Supplier_involvement": "unresponsive" }, "outcome": "CyberAnalysis_required" },
-    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "open", "Safety_impact": "marginal", "Supplier_involvement": "fix_ready" }, "outcome": "Patch_shedule" },
     { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "open", "Safety_impact": "marginal", "Supplier_involvement": "unresponsive" }, "outcome": "CyberAnalysis_required" },
+    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "open", "Safety_impact": "marginal", "Supplier_involvement": "fix_ready" }, "outcome": "Patch_shedule" },
+    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "open", "Safety_impact": "marginal", "Supplier_involvement": "cooperative" }, "outcome": "CyberAnalysis_required" },
     { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "controlled", "Safety_impact": "Catastrophic", "Supplier_involvement": "unresponsive" }, "outcome": "CyberAnalysis_required" },
+    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "controlled", "Safety_impact": "critical", "Supplier_involvement": "unresponsive" }, "outcome": "CyberAnalysis_required" },
+    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "controlled", "Safety_impact": "Catastrophic", "Supplier_involvement": "fix_ready" }, "outcome": "Patch_shedule" },
+    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "controlled", "Safety_impact": "critical", "Supplier_involvement": "fix_ready" }, "outcome": "Patch_shedule" },
+    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "controlled", "Safety_impact": "Catastrophic", "Supplier_involvement": "cooperative" }, "outcome": "CyberAnalysis_required" },
+    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "controlled", "Safety_impact": "critical", "Supplier_involvement": "cooperative" }, "outcome": "CyberAnalysis_required" },
     { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "none" }, "outcome": "Defer" },
-    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "poc", "vehicle_sa-concerned": "no" }, "outcome": "Dismiss" },
-    { "decision_points": { "Base_CVSS": "<7" }, "outcome": "Track" }
-  ]
-}
+    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "poc", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "open", "Safety_impact": "Catastrophic", "Supplier_involvement": "unresponsive" }, "outcome": "CyberAnalysis_required" },
+    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "poc", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "open", "Safety_impact": "Catastrophic", "Supplier_involvement": "cooperative" }, "outcome": "CyberAnalysis_required" },
+    { "decision_points": { "Base_CVSS": "
