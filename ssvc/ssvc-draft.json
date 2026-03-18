@@ -1,110 +1,89 @@
 {
-  "version": "2.0.0",
-  "title": "Vehicle Vulnerability Cyber Triage (Threat-Driven)",
-  "description": "Modèle SSVC personnalisé pour le triage des vulnérabilités véhicules basé sur l'impact sécurité et l'implication fournisseur.",
-  "dimensions": [
+  "title": "Vehicle Vulnerability Cyber Triage",
+  "version": "1.0.0",
+  "decision_points": [
     {
       "label": "Base_CVSS",
-      "children": [
-        { "label": ">=7" },
-        { "label": "<7" }
+      "options": [
+        { "label": ">=7", "value": ">=7" },
+        { "label": "<7", "value": "<7" }
       ]
     },
     {
       "label": "Exploitation",
-      "children": [
-        { "label": "active" },
-        { "label": "poc" },
-        { "label": "none" }
+      "options": [
+        { "label": "active", "value": "active" },
+        { "label": "poc", "value": "poc" },
+        { "label": "none", "value": "none" }
       ]
     },
     {
       "label": "vehicle_sa-concerned",
-      "children": [
-        { "label": "yes" },
-        { "label": "no" }
+      "options": [
+        { "label": "yes", "value": "yes" },
+        { "label": "no", "value": "no" }
       ]
     },
     {
       "label": "Asset_criticity",
-      "children": [
-        { "label": "Strategic&critical" },
-        { "label": "Standard&unknown" }
+      "options": [
+        { "label": "Strategic&critical", "value": "Strategic&critical" },
+        { "label": "Standard&unknown", "value": "Standard&unknown" }
       ]
     },
     {
       "label": "System_exposure",
-      "children": [
-        { "label": "open" },
-        { "label": "controlled" },
-        { "label": "none" }
+      "options": [
+        { "label": "open", "value": "open" },
+        { "label": "controlled", "value": "controlled" },
+        { "label": "none", "value": "none" }
       ]
     },
     {
       "label": "Safety_impact",
-      "children": [
-        { "label": "Catastrophic" },
-        { "label": "critical" },
-        { "label": "marginal" },
-        { "label": "none" }
+      "options": [
+        { "label": "Catastrophic", "value": "Catastrophic" },
+        { "label": "critical", "value": "critical" },
+        { "label": "marginal", "value": "marginal" },
+        { "label": "none", "value": "none" }
       ]
     },
     {
       "label": "Technical_impact",
-      "children": [
-        { "label": "total" },
-        { "label": "partial" },
-        { "label": "any" }
+      "options": [
+        { "label": "total", "value": "total" },
+        { "label": "partial", "value": "partial" }
       ]
     },
     {
       "label": "Supplier_involvement",
-      "children": [
-        { "label": "fix_ready" },
-        { "label": "cooperative" },
-        { "label": "unresponsive" }
+      "options": [
+        { "label": "fix_ready", "value": "fix_ready" },
+        { "label": "cooperative", "value": "cooperative" },
+        { "label": "unresponsive", "value": "unresponsive" }
       ]
     }
   ],
-  "decisions": [
-    { "label": "Patch_immediate", "color": "#d32f2f" },
-    { "label": "Patch_out-of-cycle", "color": "#f57c00" },
-    { "label": "Patch_shedule", "color": "#388e3c" },
-    { "label": "CyberAnalysis_required", "color": "#fbc02d" },
-    { "label": "Track", "color": "#1976d2" },
-    { "label": "Defer", "color": "#7b1fa2" },
-    { "label": "Dismiss", "color": "#757575" }
+  "outcomes": [
+    { "label": "Patch_immediate", "value": "Patch_immediate" },
+    { "label": "Patch_out-of-cycle", "value": "Patch_out-of-cycle" },
+    { "label": "Patch_shedule", "value": "Patch_shedule" },
+    { "label": "CyberAnalysis_required", "value": "CyberAnalysis_required" },
+    { "label": "Track", "value": "Track" },
+    { "label": "Defer", "value": "Defer" },
+    { "label": "Dismiss", "value": "Dismiss" }
   ],
-  "decision_table": [
-    [">=7", "active", "yes", "Strategic&critical", "open", "Catastrophic", "any", "any", "Patch_immediate"],
-    [">=7", "active", "yes", "Strategic&critical", "open", "critical", "total", "any", "Patch_immediate"],
-    [">=7", "active", "yes", "Strategic&critical", "open", "critical", "partial", "fix_ready", "Patch_out-of-cycle"],
-    [">=7", "active", "yes", "Strategic&critical", "open", "critical", "partial", "cooperative", "Patch_shedule"],
-    [">=7", "active", "yes", "Strategic&critical", "open", "critical", "partial", "unresponsive", "CyberAnalysis_required"],
-    [">=7", "active", "yes", "Strategic&critical", "open", "marginal", "any", "unresponsive", "CyberAnalysis_required"],
-    [">=7", "active", "yes", "Strategic&critical", "open", "marginal", "any", "fix_ready", "Patch_shedule"],
-    [">=7", "active", "yes", "Strategic&critical", "open", "marginal", "any", "cooperative", "CyberAnalysis_required"],
-    [">=7", "active", "yes", "Strategic&critical", "controlled", "Catastrophic", "any", "unresponsive", "CyberAnalysis_required"],
-    [">=7", "active", "yes", "Strategic&critical", "controlled", "critical", "any", "unresponsive", "CyberAnalysis_required"],
-    [">=7", "active", "yes", "Strategic&critical", "controlled", "Catastrophic", "any", "fix_ready", "Patch_shedule"],
-    [">=7", "active", "yes", "Strategic&critical", "controlled", "critical", "any", "fix_ready", "Patch_shedule"],
-    [">=7", "active", "yes", "Strategic&critical", "controlled", "Catastrophic", "any", "cooperative", "CyberAnalysis_required"],
-    [">=7", "active", "yes", "Strategic&critical", "controlled", "critical", "any", "cooperative", "CyberAnalysis_required"],
-    [">=7", "active", "yes", "Strategic&critical", "none", "any", "any", "any", "Defer"],
-    [">=7", "poc", "yes", "Strategic&critical", "open", "Catastrophic", "any", "unresponsive", "CyberAnalysis_required"],
-    [">=7", "poc", "yes", "Strategic&critical", "open", "Catastrophic", "any", "cooperative", "CyberAnalysis_required"],
-    [">=7", "poc", "yes", "Strategic&critical", "open", "Catastrophic", "any", "fix_ready", "Patch_shedule"],
-    [">=7", "poc", "yes", "Strategic&critical", "open", "critical", "any", "any", "Track"],
-    [">=7", "poc", "yes", "Strategic&critical", "open", "marginal", "any", "any", "Track"],
-    [">=7", "poc", "yes", "Strategic&critical", "open", "none", "any", "any", "Track"],
-    [">=7", "poc", "yes", "Strategic&critical", "controlled", "Catastrophic", "any", "unresponsive", "CyberAnalysis_required"],
-    [">=7", "poc", "yes", "Strategic&critical", "controlled", "Catastrophic", "any", "cooperative", "CyberAnalysis_required"],
-    [">=7", "poc", "yes", "Strategic&critical", "controlled", "Catastrophic", "any", "fix_ready", "Patch_shedule"],
-    [">=7", "poc", "yes", "Strategic&critical", "controlled", "critical", "any", "any", "Track"],
-    [">=7", "none", "yes", "Strategic&critical", "open", "Catastrophic", "any", "fix_ready", "Patch_shedule"],
-    [">=7", "none", "yes", "Strategic&critical", "open", "Catastrophic", "any", "cooperative", "CyberAnalysis_required"],
-    [">=7", "active", "yes", "Standard&unknown", "none", "any", "any", "any", "Dismiss"],
-    [">=7", "active", "no", "any", "any", "any", "any", "any", "Dismiss"],
-    ["<7", "any", "any", "any", "any", "any", "any", "any", "Track"]
+  "rules": [
+    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "open", "Safety_impact": "Catastrophic" }, "outcome": "Patch_immediate" },
+    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "open", "Safety_impact": "critical", "Technical_impact": "total" }, "outcome": "Patch_immediate" },
+    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "open", "Safety_impact": "critical", "Technical_impact": "partial", "Supplier_involvement": "fix_ready" }, "outcome": "Patch_out-of-cycle" },
+    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "open", "Safety_impact": "critical", "Technical_impact": "partial", "Supplier_involvement": "cooperative" }, "outcome": "Patch_shedule" },
+    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "open", "Safety_impact": "critical", "Technical_impact": "partial", "Supplier_involvement": "unresponsive" }, "outcome": "CyberAnalysis_required" },
+    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "open", "Safety_impact": "marginal", "Supplier_involvement": "fix_ready" }, "outcome": "Patch_shedule" },
+    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "open", "Safety_impact": "marginal", "Supplier_involvement": "unresponsive" }, "outcome": "CyberAnalysis_required" },
+    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "controlled", "Safety_impact": "Catastrophic", "Supplier_involvement": "unresponsive" }, "outcome": "CyberAnalysis_required" },
+    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "active", "vehicle_sa-concerned": "yes", "Asset_criticity": "Strategic&critical", "System_exposure": "none" }, "outcome": "Defer" },
+    { "decision_points": { "Base_CVSS": ">=7", "Exploitation": "poc", "vehicle_sa-concerned": "no" }, "outcome": "Dismiss" },
+    { "decision_points": { "Base_CVSS": "<7" }, "outcome": "Track" }
   ]
 }
