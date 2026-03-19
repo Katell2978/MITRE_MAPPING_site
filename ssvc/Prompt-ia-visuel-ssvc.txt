@@ -1,4 +1,4 @@
-"Agis en tant qu'expert en visualisation de données. En te basant strictement sur le fichier SSVC_decision_table_threat_driven.xlsx - DecisionTable.csv, génère un diagramme de type Mermaid.js (graph LR).
+"Agis en tant qu'expert en visualisation de données. En te basant strictement sur le fichier joint, génère un diagramme de type Mermaid.js (graph LR).
 
 Instructions impératives :
 
@@ -7,5 +7,4 @@ Fidélité absolue : Ne résume pas. Liste chaque branche décisionnelle présen
 3. Structure : L'arbre doit suivre l'ordre des colonnes : CVSS -> Exploitation -> Vehicle SA -> Asset -> Exposure -> Safety -> Technical -> Supplier -> Décision.
 4. Esthétique : Utilise des couleurs pour les décisions finales (Rouge pour Patch_immediate, Orange pour Out-of-cycle, Vert pour Schedule, Gris pour Dismiss/Track).
 
-Rendu : Affiche le code Mermaid et le rendu visuel. N'invente aucun cas qui n'est pas dans le CSV."
-je veux un graphique visuel en mode dessin
+Rendu : Affiche le code Mermaid 
