@@ -1,5 +1,31 @@
 {
   "vulnerabilities": {
+        "CVE-2025-24132": {
+      "cve_id": "CVE-2025-24132",
+      "status": "active",
+      "dates": {
+        "published": "2025-04-30T10:00:00Z",
+        "updated": "2025-12-05T14:30:00Z",
+        "monitoring_start": "2025-02-12T09:00:00Z",
+        "last_check": "2026-03-20T02:31:41Z"
+      },
+      "metrics": {
+        "cvss": {
+          "base_initial": 6.5,
+          "base_current": 6/5,
+          "vector": "CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+        },
+        "epss": {
+          "initial": 0.0012,
+          "current": 0.0001,
+          "percentile": 0.0186
+        },
+        "kev_status": {
+          "initial": false,
+          "current": false,
+          "date_added": "2025-02-24"
+        }
+      },
     "CVE-2025-32058": {
       "cve_id": "CVE-2025-32058",
       "status": "active",
