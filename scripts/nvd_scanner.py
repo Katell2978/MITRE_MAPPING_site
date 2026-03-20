@@ -35,6 +35,8 @@ def scan_cpe(cpe_string):
         return []
 
 def main():
+    os.makedirs(os.path.join(BASE_DIR, 'data', 'inventory'), exist_ok=True)
+    os.makedirs(os.path.join(BASE_DIR, 'data', 'results'), exist_ok=True)
     inventory = load_inventory()
     if not inventory: return
 
