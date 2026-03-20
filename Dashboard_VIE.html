@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kat‑Force — Dynamic VIE Dashboard</title>
+    <title>Kat‑Force — VIE Advanced Risk Dashboard</title>
     <link rel="stylesheet" href="style.css">
     <style>
         :root {
@@ -49,31 +49,31 @@
 
 <div class="container">
     <div class="header-flex">
-          <nav>
+        <nav>
             <a href="index.html">🔍 Analyseur</a>
             <a href="veille.html">🔭 Veille (Watchtower)</a>
            <!-- <a href="CPEsearch.html">🔍Vuln by CPE</a>-->
             <a href="Dashboard_VIE.html">🔍Vuln Dashbaord</a>
           </nav>
         <div>
-            <h1 style="color:var(--accent-blue); margin:0;">🛡️ VIE Dashboard</h1>
-            <p id="fleet-desc" style="color:#8b949e; font-size: 0.9rem; margin:5px 0;">Analyse dynamique de l'inventaire...</p>
+            <h1 style="color:var(--accent-blue); margin:0;">🛡️ VIE Dashboard - Demonstrateur- avec FAKE DATA</h1>
+             <p id="fleet-desc" style="color:#8b949e; font-size: 0.9rem; margin:5px 0;">Calcul de risque pondéré par sévérité et vecteurs d'attaque.</p>
+            <p id="fleet-desc" style="color:#8b949e; font-size: 0.9rem; margin:5px 0;">Dev en cours quelques bugs à regler.</p>
         </div>
         <div class="filter-box">
-            <label style="font-size:0.75rem; font-weight:bold; color:#8b949e;">FILTRE UNITÉ :</label>
             <select id="ecuFilter" onchange="applyFilter()">
-                <option value="ALL">Tout le véhicule</option>
+                <option value="ALL">Vue Flotte Complète</option>
             </select>
         </div>
     </div>
 
-    <div id="debug-monitor">> Initialisation...</div>
+    <div id="debug-monitor">> Initialisation des algorithmes de risque...</div>
 
     <div class="stats-grid">
         <div class="stat-card"><span id="total-cve" class="stat-value">0</span><span class="stat-label">CVE Détectées</span></div>
         <div class="stat-card" style="border-bottom: 3px solid var(--accent-red);"><span id="total-crit" class="stat-value" style="color:var(--accent-red)">0</span><span class="stat-label">Risques Critiques</span></div>
         <div class="stat-card"><span id="total-rce" class="stat-value" style="color:var(--accent-purple)">0</span><span class="stat-label">Vecteurs RCE</span></div>
-        <div class="stat-card" style="border-bottom: 3px solid var(--accent-green);"><span id="avg-risk" class="stat-value">0</span><span class="stat-label">Score Risque Flotte</span></div>
+        <div class="stat-card" style="border-bottom: 3px solid var(--accent-green);"><span id="avg-risk" class="stat-value">0</span><span class="stat-label">Score Risque Véhicule</span></div>
     </div>
 
     <div class="summary-wrapper">
@@ -85,7 +85,7 @@
                     <th>VULNÉRABILITÉS</th>
                     <th>SÉVÉRITÉ MAX</th>
                     <th>TOP CWE</th>
-                    <th style="text-align:right;">RISK SCORE</th>
+                    <th style="text-align:right;">VIE RISK SCORE</th>
                 </tr>
             </thead>
             <tbody id="summary-body"></tbody>
@@ -113,27 +113,38 @@
 
     async function init() {
         try {
-            // 1. Charger l'inventaire pour construire le filtre
             const invRes = await fetch('data/inventory/inventory_cpe.json');
-            if (!invRes.ok) throw new Error("Inventaire introuvable.");
             inventory = await invRes.json();
-            log(`Inventaire chargé : ${inventory.length} composants détectés.`);
-
-            // 2. Charger les vulnérabilités
             const vulnRes = await fetch('data/results/detected_vulns.json');
-            if (!vulnRes.ok) throw new Error("Résultats de scan introuvables.");
             vulnsData = await vulnRes.json();
-            log(`Scan chargé : ${vulnsData.length} vulnérabilités.`);
-
             buildDynamicElements();
         } catch(e) { log(e.message, true); }
     }
 
-    function calculateRisk(cvss, isKev, isRce) {
-        let s = cvss * 6;
-        if (isKev) s += 25;
-        if (isRce) s += 15;
-        return Math.min(100, Math.round(s));
+    // --- NOUVEL ALGORITHME DE RISQUE COMBINÉ ---
+    function calculateAdvancedRisk(cvssArray, hasRce, hasKev) {
+        if (cvssArray.length === 0) return 0;
+
+        const maxCvss = Math.max(...cvssArray);
+        
+        // 1. Base Sévérité (Max * 7)
+        let score = maxCvss * 7;
+
+        // 2. Bonus de Volume par Sévérité
+        const criticals = cvssArray.filter(v => v >= 9.0).length;
+        const highs = cvssArray.filter(v => v >= 7.0 && v < 9.0).length;
+        
+        score += (criticals * 15); // Chaque critique est très pénalisante
+        score += (highs * 5);      // Les hautes s'accumulent
+
+        // 3. Bonus Vecteurs de Rupture
+        if (hasRce) score += 20; 
+        if (hasKev) score += 15;
+
+        // 4. Logarithme de volume pour les petites failles (pour ne pas ignorer le nombre)
+        score += Math.log10(cvssArray.length) * 2;
+
+        return Math.min(100, Math.round(score));
     }
 
     function buildDynamicElements() {
@@ -147,26 +158,25 @@
             const ecuId = item.component_id;
             const ecuName = item.description || "N/A";
 
-            // Ajouter au filtre
             const opt = document.createElement('option');
-            opt.value = ecuId;
-            opt.textContent = `${ecuId} - ${ecuName}`;
+            opt.value = ecuId; opt.textContent = `${ecuId} - ${ecuName}`;
             filter.appendChild(opt);
 
-            // Analyser les vulnérabilités pour cet ECU
             const ev = vulnsData.filter(v => v.ecu === ecuId);
-            let eMaxCvss = 0, eRiskSum = 0, eRceCount = 0, eCwes = new Set();
+            let eMaxCvss = 0, eRceCount = 0, eCwes = new Set();
             let detailRows = "";
+            
+            // Collecte des données pour l'algo de risque
+            let allCvss = ev.map(v => v.metrics?.baseScore || 0);
+            let hasRce = ev.some(v => v.description.toLowerCase().includes("remote code") || v.description.toLowerCase().includes(" rce "));
+            let hasKev = ev.some(v => v.is_kev);
 
             ev.forEach(v => {
                 const cvss = v.metrics?.baseScore || 0;
                 const isRce = v.description.toLowerCase().includes("remote code") || v.description.toLowerCase().includes(" rce ");
-                const risk = calculateRisk(cvss, v.is_kev, isRce);
-                
                 if (cvss > eMaxCvss) eMaxCvss = cvss;
                 if (cvss >= 7) gCrit++;
                 if (isRce) { eRceCount++; gRce++; }
-                eRiskSum += risk;
                 v.cwe_ids?.forEach(c => eCwes.add(c));
 
                 detailRows += `
@@ -176,33 +186,30 @@
                         <td>${v.description.substring(0,80)}... ${isRce?'<span class="badge bg-purple">RCE</span>':''}</td>
                         <td>${(v.cwe_ids||[]).map(c=>`<span class="badge bg-gray">${c}</span>`).join('')}</td>
                         <td><span class="badge ${cvss>=7?'bg-red':'bg-orange'}">${cvss.toFixed(1)}</span></td>
-                        <td style="text-align:right; font-weight:bold;">${risk}</td>
                     </tr>`;
             });
 
-            const eRiskAvg = ev.length ? Math.min(100, Math.round(eRiskSum / ev.length)) : 0;
-            gRiskSum += eRiskAvg; gTotal += ev.length;
+            const eRiskScore = calculateAdvancedRisk(allCvss, hasRce, hasKev);
+            gRiskSum += eRiskScore; gTotal += ev.length;
 
-            // Ligne de synthèse
             summaryBody.innerHTML += `
                 <tr class="summary-row" data-ecu="${ecuId}">
                     <td><strong style="color:var(--accent-blue)">${ecuId}</strong><br><small>${ecuName}</small></td>
                     <td>${ev.length} CVE ${eRceCount?`<span class="badge bg-purple">${eRceCount} RCE</span>`:''}</td>
                     <td><span class="badge ${eMaxCvss>=7?'bg-red':'bg-orange'}">${eMaxCvss.toFixed(1)}</span></td>
                     <td>${Array.from(eCwes).slice(0,3).map(c=>`<span class="badge bg-gray">${c}</span>`).join('')}</td>
-                    <td style="text-align:right;"><span style="font-weight:800; color:${eRiskAvg>70?'var(--accent-red)':eRiskAvg>30?'var(--accent-orange)':'var(--accent-green)'}">${eRiskAvg}/100</span></td>
+                    <td style="text-align:right;"><span style="font-weight:800; font-size:1.2rem; color:${eRiskScore>70?'var(--accent-red)':eRiskScore>30?'var(--accent-orange)':'var(--accent-green)'}">${eRiskScore}/100</span></td>
                 </tr>`;
 
-            // Bloc détail
             detailsContainer.innerHTML += `
                 <div class="ecu-section" data-ecu="${ecuId}">
                     <div class="ecu-header">
                         <h2 style="margin:0; font-size:1.1rem; color:var(--accent-blue)">${ecuId} — Détails</h2>
-                        <span class="badge bg-gray">RISK UNIT: ${eRiskAvg}/100</span>
+                        <span class="badge bg-gray">UNIT RISK: ${eRiskScore}/100</span>
                     </div>
                     <table class="table-res">
-                        <thead><tr><th>CVE</th><th>PRODUIT</th><th>DESC</th><th>CWE</th><th>CVSS</th><th style="text-align:right;">RISK</th></tr></thead>
-                        <tbody>${detailRows || '<tr><td colspan="6" style="text-align:center; padding:20px;">✅ Aucune vulnérabilité détectée.</td></tr>'}</tbody>
+                        <thead><tr><th>CVE</th><th>PRODUIT</th><th>DESC</th><th>CWE</th><th>CVSS</th></tr></thead>
+                        <tbody>${detailRows || '<tr><td colspan="5" style="text-align:center;">✅ Aucune vulnérabilité.</td></tr>'}</tbody>
                     </table>
                 </div>`;
         });
@@ -210,8 +217,7 @@
         document.getElementById('total-cve').innerText = gTotal;
         document.getElementById('total-crit').innerText = gCrit;
         document.getElementById('total-rce').innerText = gRce;
-        document.getElementById('avg-risk').innerText = inventory.length ? Math.round(gRiskSum / inventory.length) : 0;
-        document.getElementById('fleet-desc').innerText = `Analyse de ${inventory.length} composants actifs.`;
+        document.getElementById('avg-risk').innerText = Math.round(gRiskSum / inventory.length);
     }
 
     function applyFilter() {
