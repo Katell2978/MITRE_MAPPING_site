@@ -1,5 +1,13 @@
 [
   {
+    "component_id": "TEST-VULN",
+    "description": "CPE de test pour forcer des résultats",
+    "cpe_list": [
+      "cpe:2.3:a:openssl:openssl:1.0.1:*:*:*:*:*:*:*",
+      "cpe:2.3:a:apache:http_server:2.4.1:*:*:*:*:*:*:*"
+    ]
+  }
+  {
     "component_id": "ECU1-TCU",
     "description": "Telematics Control Unit - Connectivity Hub (5G, V2X, WiFi)",
     "source": "HBOM_v2.1_Final",
