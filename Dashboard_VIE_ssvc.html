@@ -2,8 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIE Advanced Risk Dashboard - Master</title>
+    <title>VIE Advanced Risk Dashboard - Full SSVC & KEV</title>
     <style>
         :root {
             --bg-dark: #0d1117; --card-dark: #161b22; --border-gray: #30363d;
@@ -13,41 +12,31 @@
         body { background: var(--bg-dark); color: #c9d1d9; font-family: -apple-system, sans-serif; padding: 20px; margin: 0; }
         .container { max-width: 1400px; margin: 0 auto; }
         
-        /* --- HEADER & FILTRE (Identique Image 4) --- */
+        /* Header & Debug V1 */
         .header-flex { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
         .header-left h1 { color: #58a6ff; margin: 0; font-size: 1.8rem; }
-        .header-left p { color: #8b949e; font-size: 0.9rem; margin: 5px 0; }
-        
         .filter-box { background: #161b22; border: 1px solid #30363d; padding: 15px; border-radius: 8px; min-width: 350px; display: flex; align-items: center; gap: 10px; }
-        .filter-box label { font-size: 0.65rem; color: #8b949e; text-transform: uppercase; width: 60px; }
         select { background: #0d1117; color: #58a6ff; border: 1px solid #30363d; padding: 10px; flex-grow: 1; border-radius: 6px; font-weight: bold; }
-
-        /* --- MONITEUR DEBUG (Identique Image 4) --- */
         #debug-monitor { background: #000; border: 1px solid #30363d; color: #3fb950; font-family: monospace; font-size: 0.75rem; padding: 12px; margin-bottom: 25px; border-radius: 4px; border-left: 4px solid #3fb950; }
 
-        /* --- STATS CARDS (Identique Image 4) --- */
+        /* Stats */
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 30px; }
         .stat-card { background: #161b22; border: 1px solid #30363d; padding: 25px; border-radius: 8px; text-align: center; }
-        .stat-value { font-size: 2.8rem; font-weight: 800; display: block; color: #fff; margin-bottom: 5px; }
-        .stat-label { color: #8b949e; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; }
+        .stat-value { font-size: 2.5rem; font-weight: 800; display: block; color: #fff; }
         .stat-card.crit { border-bottom: 3px solid #f85149; }
-        .stat-card.risk { border-bottom: 3px solid #3fb950; }
 
-        /* --- TABLES & BADGES --- */
+        /* Tables */
         .summary-wrapper { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; margin-bottom: 30px; }
-        .section-title { font-size: 0.9rem; color: #58a6ff; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
-        
         table { width: 100%; border-collapse: collapse; }
         th { text-align: left; font-size: 0.65rem; color: #8b949e; padding: 12px; border-bottom: 1px solid #30363d; text-transform: uppercase; }
-        td { padding: 14px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 0.85rem; }
 
-        .badge { padding: 3px 10px; border-radius: 12px; font-size: 0.65rem; font-weight: bold; border: 1px solid transparent; }
+        .badge { padding: 2px 8px; border-radius: 12px; font-size: 0.6rem; font-weight: bold; border: 1px solid transparent; margin-right: 4px; }
         .bg-red { background: rgba(248,81,73,0.1); color: #f85149; border-color: #f85149; }
         .bg-orange { background: rgba(240,136,62,0.1); color: #f0883e; border-color: #f0883e; }
         .bg-purple { background: rgba(188,140,255,0.1); color: #bc8cff; border-color: #bc8cff; }
+        .bg-blue { background: rgba(88,166,255,0.1); color: #58a6ff; border-color: #58a6ff; }
         
-        .decision-bar { display: flex; gap: 10px; margin-bottom: 15px; }
-        .pill-count { background: #0d1117; border: 1px solid #30363d; padding: 6px 15px; border-radius: 20px; font-size: 0.75rem; }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -56,93 +45,89 @@
 <div class="container">
     <div class="header-flex">
         <div class="header-left">
-            <h1>🛡️ VIE Advanced Risk Dashboard Demonstrateur</h1>
-            <p>Analyse de vulnérabilités. Bug produits et compléments à venir</p>
+            <h1>🛡️ VIE Advanced Risk Dashboard</h1>
+            <p>Analyse de vulnérabilités cyber-physiques. Logic SSVC v2.1</p>
         </div>
         <div class="filter-box">
-            <label>FILTRE UNITÉ :</label>
             <select id="ecuFilter" onchange="applyFilter()"></select>
         </div>
     </div>
 
-    <div id="debug-monitor">
-        > Chargement des modules de risque...<br>
-        > Analyse du fichier d'inventaire JSON [OK]<br>
-        > Dashboard rendu avec succès.
-    </div>
+    <div id="debug-monitor">> Chargement des modules... > Analyse SSVC complétée.</div>
 
     <div class="stats-grid">
-        <div class="stat-card"><span id="total-cve" class="stat-value">2034</span><span class="stat-label">CVE DÉTECTÉES</span></div>
-        <div class="stat-card crit"><span id="total-crit" class="stat-value" style="color:var(--accent-red)">665</span><span class="stat-label">RISQUES CRITIQUES</span></div>
-        <div class="stat-card"><span id="total-rce" class="stat-value" style="color:var(--accent-purple)">1</span><span class="stat-label">VECTEURS RCE</span></div>
-        <div class="stat-card risk"><span id="avg-risk" class="stat-value">60</span><span class="stat-label">SCORE RISQUE FLOTTE</span></div>
+        <div class="stat-card"><span id="total-cve" class="stat-value">0</span><span class="stat-label">CVE DÉTECTÉES</span></div>
+        <div class="stat-card crit"><span id="total-patch" class="stat-value" style="color:var(--accent-red)">0</span><span class="stat-label">PATCH IMMEDIATE</span></div>
+        <div class="stat-card"><span id="total-ca" class="stat-value" style="color:var(--accent-orange)">0</span><span class="stat-label">CYBER ANALYSIS REQ</span></div>
+        <div class="stat-card"><span id="avg-risk" class="stat-value">0</span><span class="stat-label">RISQUE FLOTTE</span></div>
     </div>
 
     <div class="summary-wrapper">
-        <div class="section-title">📊 Synthèse de l'état de santé</div>
+        <h3 style="color:var(--accent-blue); font-size:0.9rem;">📊 Synthèse Executive & KEV Status</h3>
         <table>
             <thead>
                 <tr>
                     <th>UNITÉ</th>
                     <th>VULNÉRABILITÉS</th>
-                    <th>SÉVÉRITÉ MAX</th>
-                    <th>TOP CWE</th>
-                    <th style="text-align:right;">VIE RISK SCORE</th>
+                    <th>KEV STATUS</th>
+                    <th>TOP DÉCISION</th>
+                    <th style="text-align:right;">RISK SCORE (V1)</th>
                 </tr>
             </thead>
             <tbody id="summary-body"></tbody>
         </table>
     </div>
 
+    <div id="ecu-details-container"></div>
+
     <div class="summary-wrapper">
-        <div class="section-title">⚖️ Synthèse des décisions SSVC</div>
-        <div class="decision-bar" id="global-decision-counts"></div>
-        <table>
+        <h3 style="color:var(--accent-purple); font-size:0.8rem;">⚖️ Matrice de Décision SSVC (Référentiel 15 Règles)</h3>
+        <table style="font-size:0.7rem;">
             <thead>
-                <tr>
-                    <th>UNITÉ</th>
-                    <th>PATCH IMMEDIATE</th>
-                    <th>CYBER ANALYSIS REQ</th>
-                    <th>TRACK / SCHEDULE</th>
-                    <th>DISMISS</th>
-                </tr>
+                <tr><th>Exploitation</th><th>Exposition</th><th>Safety Impact</th><th>Supplier</th><th>Décision</th></tr>
             </thead>
-            <tbody id="decision-summary-body"></tbody>
+            <tbody>
+                <tr><td>Active (KEV)</td><td>Oui</td><td>High/Med</td><td>Fix-ready</td><td><b style="color:var(--accent-red)">Patch_immediate</b></td></tr>
+                <tr><td>Active (KEV)</td><td>Oui</td><td>Any</td><td>Coop/None</td><td><b style="color:var(--accent-orange)">CyberAnalysisRequired</b></td></tr>
+                <tr><td>PoC</td><td>Oui</td><td>High/Med</td><td>Fix-ready</td><td><b style="color:var(--accent-purple)">Patch_schedule</b></td></tr>
+                <tr><td>None</td><td>Any</td><td>Any</td><td>Any</td><td><b style="color:var(--accent-blue)">Track</b></td></tr>
+            </tbody>
         </table>
     </div>
-
-    <div id="ecu-details-container"></div>
 </div>
 
 <script>
     let inventory = [];
     let vulnsData = [];
-    let globalDecisions = { Patch_immediate: 0, CyberAnalysisRequired: 0, Patch_schedule: 0, Track: 0, Dismiss: 0 };
+    let counts = { Patch_immediate: 0, CyberAnalysisRequired: 0, Patch_schedule: 0, Track: 0, Dismiss: 0 };
 
-    // --- MOTEUR SSVC CORRIGÉ ---
     function getSSVCDecision(v, ecu) {
         const cvss = v.metrics?.baseScore || 0;
-        const isKev = v.is_kev === true || v.is_kev === "true";
+        const isKev = (v.is_kev === true || v.is_kev === "true");
         const surface = ecu.is_exposed === true;
         const safety = (ecu.safety_impact === "High" || ecu.safety_impact === "Medium");
+        const supplier = ecu.supplier_involvement;
 
-        if (cvss >= 7 && isKev && surface) {
-            return safety ? { label: "Patch_immediate", color: "var(--accent-red)" } : { label: "CyberAnalysisRequired", color: "var(--accent-orange)" };
+        if (cvss >= 7) {
+            if (isKev && surface) {
+                // Si pas de fix prêt ou safety critique non géré par fournisseur = Analyse requise
+                if (safety && supplier === "Fix-ready") return { label: "Patch_immediate", color: "var(--accent-red)" };
+                return { label: "CyberAnalysisRequired", color: "var(--accent-orange)" };
+            }
+            if (isKev && !surface) return { label: "Track", color: "var(--accent-blue)" };
+            if (!isKev && surface && safety) return { label: "Patch_schedule", color: "var(--accent-purple)" };
         }
-        if (cvss >= 7 && isKev && !surface) return { label: "Track", color: "var(--accent-blue)" };
         return cvss < 7 ? { label: "Dismiss", color: "#6e7681" } : { label: "Track", color: "var(--accent-blue)" };
     }
 
-    // --- MODE DE CALCUL V1 (Image 5) ---
     function calculateV1Risk(cvssArray, hasRce) {
         if (cvssArray.length === 0) return 0;
-        const max = Math.max(...cvssArray);
-        let score = (max * 8) + (cvssArray.length * 2) + (hasRce ? 20 : 0);
+        const score = (Math.max(...cvssArray) * 8) + (cvssArray.length * 2) + (hasRce ? 20 : 0);
         return Math.min(100, Math.round(score));
     }
 
     async function init() {
-        // Chargement des données (simulé ici ou via fetch)
+        // Simulation chargement
         const invRes = await fetch('data/inventory/inventory_cpe.json');
         inventory = await invRes.json();
         const vulnRes = await fetch('data/results/detected_vulns.json');
@@ -151,47 +136,66 @@
         const filter = document.getElementById('ecuFilter');
         filter.innerHTML = '<option value="ALL">Tout le véhicule</option>';
         inventory.forEach(e => filter.innerHTML += `<option value="${e.component_id}">${e.component_id}</option>`);
-
         render();
     }
 
     function render() {
         const summaryBody = document.getElementById('summary-body');
-        const decBody = document.getElementById('decision-summary-body');
         const detailsContainer = document.getElementById('ecu-details-container');
+        let gRisk = 0;
 
         inventory.forEach(ecu => {
             const ev = vulnsData.filter(v => v.ecu === ecu.component_id);
-            let eMax = 0, eRce = false;
-            let dCounts = { Patch_immediate: 0, CyberAnalysisRequired: 0, Patch_schedule: 0, Track: 0, Dismiss: 0 };
+            let eMax = 0, eRce = false, eKevCount = 0;
+            let topDec = { label: "Track", color: "var(--accent-blue)" };
             let detailRows = "";
 
             ev.forEach(v => {
                 const cvss = v.metrics?.baseScore || 0;
-                if(cvss > eMax) eMax = cvss;
-                if(v.description.toLowerCase().includes("rce")) eRce = true;
+                const isKev = (v.is_kev === true || v.is_kev === "true");
+                const isRce = v.description.toLowerCase().includes("rce");
+                if (cvss > eMax) eMax = cvss;
+                if (isKev) eKevCount++;
+                if (isRce) eRce = true;
 
                 const ssvc = getSSVCDecision(v, ecu);
-                dCounts[ssvc.label]++;
-                globalDecisions[ssvc.label]++;
+                counts[ssvc.label]++;
+                if (ssvc.label === "Patch_immediate") topDec = ssvc;
+                else if (ssvc.label === "CyberAnalysisRequired" && topDec.label !== "Patch_immediate") topDec = ssvc;
 
-                detailRows += `<tr><td><strong>${v.cve_id}</strong></td><td>${v.description.substring(0,80)}...</td><td><span class="badge ${cvss>=7?'bg-red':'bg-orange'}">${cvss.toFixed(1)}</span></td><td style="font-weight:bold; color:${ssvc.color}">${ssvc.label}</td></tr>`;
+                detailRows += `<tr>
+                    <td><strong>${v.cve_id}</strong></td>
+                    <td>
+                        ${isKev ? '<span class="badge bg-red">KEV</span>' : ''}
+                        ${isRce ? '<span class="badge bg-purple">RCE</span>' : ''}
+                        ${v.description.substring(0,80)}...
+                    </td>
+                    <td><span class="badge ${cvss>=7?'bg-red':'bg-orange'}">${cvss}</span></td>
+                    <td style="color:${ssvc.color}; font-weight:bold">${ssvc.label}</td>
+                </tr>`;
             });
 
             const risk = calculateV1Risk(ev.map(v=>v.metrics?.baseScore||0), eRce);
+            gRisk += risk;
 
-            // Remplissage Tableau Santé
-            summaryBody.innerHTML += `<tr class="summary-row" data-ecu="${ecu.component_id}"><td><strong style="color:#58a6ff">${ecu.component_id}</strong><br><small style="color:#6e7681">${ecu.description}</small></td><td>${ev.length} CVE ${eRce?'<span class="badge bg-purple">RCE</span>':''}</td><td><span class="badge bg-red">${eMax.toFixed(1)}</span></td><td><span class="badge bg-gray">CWE-MIX</span></td><td style="text-align:right; font-weight:800; color:#f85149;">${risk}/100</td></tr>`;
+            summaryBody.innerHTML += `<tr class="summary-row" data-ecu="${ecu.component_id}">
+                <td><strong style="color:var(--accent-blue)">${ecu.component_id}</strong></td>
+                <td>${ev.length} CVE</td>
+                <td><span class="badge ${eKevCount>0?'bg-red':'bg-blue'}">${eKevCount} KEV Active</span></td>
+                <td><span class="badge" style="background:${topDec.color}22; color:${topDec.color}; border:1px solid ${topDec.color}">${topDec.label}</span></td>
+                <td style="text-align:right; font-weight:bold; color:var(--accent-red)">${risk}/100</td>
+            </tr>`;
 
-            // Remplissage Tableau Décisions
-            decBody.innerHTML += `<tr class="summary-row" data-ecu="${ecu.component_id}"><td><strong>${ecu.component_id}</strong></td><td style="color:#f85149; font-weight:bold;">${dCounts.Patch_immediate}</td><td style="color:#f0883e; font-weight:bold;">${dCounts.CyberAnalysisRequired}</td><td>${dCounts.Track}</td><td>${dCounts.Dismiss}</td></tr>`;
-
-            // Remplissage Détails
-            detailsContainer.innerHTML += `<div class="summary-wrapper ecu-section" data-ecu="${ecu.component_id}"><div class="section-title">🔍 Liste des CVE : ${ecu.component_id}</div><table><thead><tr><th>CVE</th><th>Description</th><th>CVSS</th><th>Décision</th></tr></thead><tbody>${detailRows}</tbody></table></div>`;
+            detailsContainer.innerHTML += `<div class="summary-wrapper ecu-section" data-ecu="${ecu.component_id}">
+                <h4 style="margin:0 0 15px 0; color:var(--accent-blue)">Détails CVE : ${ecu.component_id}</h4>
+                <table><thead><tr><th>CVE</th><th>Synthèse & Badges</th><th>CVSS</th><th>Décision</th></tr></thead>
+                <tbody>${detailRows}</tbody></table></div>`;
         });
 
-        const bar = document.getElementById('global-decision-counts');
-        Object.entries(globalDecisions).forEach(([k,v]) => { if(v > 0) bar.innerHTML += `<div class="pill-count"><b>${v}</b> ${k}</div>`; });
+        document.getElementById('total-cve').innerText = vulnsData.length;
+        document.getElementById('total-patch').innerText = counts.Patch_immediate;
+        document.getElementById('total-ca').innerText = counts.CyberAnalysisRequired;
+        document.getElementById('avg-risk').innerText = Math.round(gRisk / inventory.length);
     }
 
     function applyFilter() {
@@ -201,7 +205,6 @@
             else el.classList.add('hidden');
         });
     }
-
     window.onload = init;
 </script>
 </body>
