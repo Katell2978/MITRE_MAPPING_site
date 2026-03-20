@@ -90,6 +90,42 @@
             </thead>
             <tbody id="summary-body"></tbody>
         </table>
+        <div class="summary-wrapper">
+    <h3 style="margin-top:0; color:var(--accent-blue); font-size:1rem;">📊 Synthèse Executive</h3>
+    <table class="summary-table">
+        <thead>
+            <tr>
+                <th>UNITÉ</th>
+                <th>VULNÉRABILITÉS</th>
+                <th>SÉVÉRITÉ MAX</th>
+                <th>TOP CWE</th>
+                <th style="text-align:right;">VIE RISK SCORE</th>
+            </tr>
+        </thead>
+        <tbody id="summary-body">
+            </tbody>
+    </table>
+
+    <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border-gray);">
+        <h4 style="margin: 0 0 10px 0; color:var(--accent-blue); font-size:0.75rem; text-transform:uppercase; letter-spacing:1px;">
+            ℹ️ Méthodologie du VIE Risk Score (v2.1)
+        </h4>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+            <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 4px; border-left: 3px solid var(--accent-orange);">
+                <strong style="font-size:0.7rem; color:#eee;">SÉVÉRITÉ (70%)</strong>
+                <p style="font-size:0.65rem; color:#8b949e; margin:5px 0 0 0;">Basé sur le CVSS max. Un score de 10.0 génère une base de 70 points.</p>
+            </div>
+            <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 4px; border-left: 3px solid var(--accent-blue);">
+                <strong style="font-size:0.7rem; color:#eee;">EXPOSITION (15%)</strong>
+                <p style="font-size:0.65rem; color:#8b949e; margin:5px 0 0 0;">Bonus asymptotique selon le volume de CVE (se stabilise après 100 vulnérabilités).</p>
+            </div>
+            <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 4px; border-left: 3px solid var(--accent-purple);">
+                <strong style="font-size:0.7rem; color:#eee;">VECTEURS (+15%)</strong>
+                <p style="font-size:0.65rem; color:#8b949e; margin:5px 0 0 0;">Multiplicateurs de danger si une RCE ou une faille KEV est active sur l'unité.</p>
+            </div>
+        </div>
+    </div>
+</div>
     </div>
 
     <div id="ecu-details-container"></div>
@@ -122,30 +158,32 @@
     }
 
     // --- NOUVEL ALGORITHME DE RISQUE COMBINÉ ---
-    function calculateAdvancedRisk(cvssArray, hasRce, hasKev) {
-        if (cvssArray.length === 0) return 0;
+function calculateAdvancedRisk(cvssArray, hasRce, hasKev) {
+    if (cvssArray.length === 0) return 0;
 
-        const maxCvss = Math.max(...cvssArray);
-        
-        // 1. Base Sévérité (Max * 7)
-        let score = maxCvss * 7;
+    const maxCvss = Math.max(...cvssArray);
+    const count = cvssArray.length;
+    
+    // 1. BASE SÉVÉRITÉ (Plafonnée à 70 pts)
+    // Un CVSS de 10 donne 70 points de base.
+    let score = maxCvss * 7;
 
-        // 2. Bonus de Volume par Sévérité
-        const criticals = cvssArray.filter(v => v >= 9.0).length;
-        const highs = cvssArray.filter(v => v >= 7.0 && v < 9.0).length;
-        
-        score += (criticals * 15); // Chaque critique est très pénalisante
-        score += (highs * 5);      // Les hautes s'accumulent
+    // 2. FACTEUR D'EXPOSITION (Bonus max de +15 pts)
+    // Utilisation d'une courbe qui s'écrase : 
+    // 10 CVE = ~3pts | 100 CVE = ~10pts | 2000 CVE = ~14.7pts
+    let exposureBonus = 15 * (count / (count + 40)); 
+    score += exposureBonus;
 
-        // 3. Bonus Vecteurs de Rupture
-        if (hasRce) score += 20; 
-        if (hasKev) score += 15;
+    // 3. MULTIPLICATEURS DE DANGER (Non-additifs)
+    // On augmente le score de 10% si RCE, 5% si KEV.
+    // Cela permet de différencier deux ECU qui ont le même Max CVSS.
+    if (hasRce) score *= 1.10; 
+    if (hasKev) score *= 1.05;
 
-        // 4. Logarithme de volume pour les petites failles (pour ne pas ignorer le nombre)
-        score += Math.log10(cvssArray.length) * 2;
-
-        return Math.min(100, Math.round(score));
-    }
+    // 4. CAP FINAL À 100
+    return Math.min(100, Math.round(score));
+}
+    ///-- FIn Fontion risque
 
     function buildDynamicElements() {
         const filter = document.getElementById('ecuFilter');
