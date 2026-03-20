@@ -3,268 +3,192 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kat‑Force — VIE Dashboard</title>
+    <title>Kat‑Force — VIE Intelligence Engine</title>
     <link rel="stylesheet" href="style.css">
     <style>
         :root {
-            --bg-dark: #0d1117;
-            --card-dark: #161b22;
-            --border-gray: #30363d;
-            --text-main: #c9d1d9;
-            --text-muted: #8b949e;
-            --accent-blue: #58a6ff;
-            --accent-red: #f85149;
-            --accent-orange: #f0883e;
-            --accent-purple: #bc8cff;
+            --bg-dark: #0d1117; --card-dark: #161b22; --border-gray: #30363d;
+            --accent-blue: #58a6ff; --accent-red: #f85149; --accent-orange: #f0883e;
+            --accent-purple: #bc8cff; --accent-green: #3fb950;
         }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-main);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container { max-width: 1200px; margin: 0 auto; }
-
+        body { background: var(--bg-dark); color: #c9d1d9; font-family: sans-serif; padding: 20px; }
+        .container { max-width: 1300px; margin: 0 auto; }
+        
         /* Header & Filters */
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-gray);
-            padding-bottom: 15px;
-            margin-bottom: 25px;
-        }
+        .header-nav { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 25px; border-bottom: 1px solid var(--border-gray); padding-bottom: 20px; }
+        .filter-group { display: flex; gap: 15px; background: var(--card-dark); padding: 15px; border-radius: 8px; border: 1px solid var(--border-gray); }
+        select { background: #0d1117; color: var(--accent-blue); border: 1px solid var(--border-gray); padding: 8px; border-radius: 5px; font-weight: bold; }
 
-        .filter-box {
-            background: var(--card-dark);
-            border: 1px solid var(--border-gray);
-            padding: 10px 15px;
-            border-radius: 6px;
-        }
+        /* Stats */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .stat-card { background: var(--card-dark); border: 1px solid var(--border-gray); padding: 20px; border-radius: 8px; text-align: center; }
+        .stat-value { font-size: 2rem; font-weight: 800; display: block; }
+        .stat-label { color: #8b949e; font-size: 0.75rem; text-transform: uppercase; }
 
-        select {
-            background: #0d1117;
-            color: var(--accent-blue);
-            border: 1px solid var(--border-gray);
-            padding: 5px;
-            border-radius: 4px;
-            outline: none;
-            font-weight: bold;
-        }
-
-        /* Stats Grid */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .stat-card {
-            background: var(--card-dark);
-            border: 1px solid var(--border-gray);
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            transition: transform 0.2s;
-        }
-
-        .stat-card:hover { transform: translateY(-3px); }
-
-        .stat-value { font-size: 2.2rem; font-weight: 800; display: block; margin-bottom: 5px; }
-        .stat-label { color: var(--text-muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
-
-        /* Risk Formula Card */
-        .formula-card {
-            background: rgba(88, 166, 255, 0.05);
-            border: 1px dashed var(--accent-blue);
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 25px;
-        }
-
-        code { font-family: "SFMono-Regular", Consolas, monospace; color: var(--accent-blue); }
-
-        /* Results Table */
-        .table-container {
-            background: var(--card-dark);
-            border: 1px solid var(--border-gray);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        table { width: 100%; border-collapse: collapse; }
-        th { background: #1f242c; padding: 15px; text-align: left; font-size: 0.85rem; color: var(--text-muted); }
-        td { padding: 15px; border-bottom: 1px solid var(--border-gray); vertical-align: middle; }
-
-        /* Badges */
-        .badge {
-            padding: 3px 8px;
-            border-radius: 12px;
-            font-size: 0.7rem;
-            font-weight: bold;
-            display: inline-block;
-            margin-right: 5px;
-        }
-        .bg-red { background: rgba(248, 81, 73, 0.15); color: var(--accent-red); border: 1px solid var(--accent-red); }
-        .bg-orange { background: rgba(240, 136, 62, 0.15); color: var(--accent-orange); border: 1px solid var(--accent-orange); }
-        .bg-purple { background: var(--accent-purple); color: #000; }
-        .bg-kev { background: #f85149; color: #fff; animation: pulse 2s infinite; }
-
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+        /* Table & Badges */
+        .table-res { width: 100%; border-collapse: collapse; background: var(--card-dark); border: 1px solid var(--border-gray); border-radius: 8px; overflow: hidden; }
+        th { background: #1f242c; padding: 12px; text-align: left; color: #8b949e; font-size: 0.8rem; }
+        td { padding: 12px; border-bottom: 1px solid var(--border-gray); font-size: 0.85rem; vertical-align: top; }
+        
+        .badge { padding: 3px 8px; border-radius: 10px; font-size: 0.7rem; font-weight: bold; display: inline-block; margin: 2px; }
+        .bg-red { background: rgba(248,81,73,0.1); color: var(--accent-red); border: 1px solid var(--accent-red); }
+        .bg-purple { background: rgba(188,140,255,0.1); color: var(--accent-purple); border: 1px solid var(--accent-purple); }
+        .bg-orange { background: rgba(240,136,62,0.1); color: var(--accent-orange); border: 1px solid var(--accent-orange); }
+        .bg-blue { background: rgba(88,166,255,0.1); color: var(--accent-blue); border: 1px solid var(--accent-blue); }
+        
+        .ttp-box { background: #0d1117; padding: 5px; border-radius: 4px; border: 1px solid #30363d; margin-top: 5px; }
+        .btn-heatmap { background: var(--accent-green); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .btn-heatmap:hover { opacity: 0.8; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="dashboard-header">
+    <div class="header-nav">
         <div>
-            <h1 style="margin:0; color: var(--accent-blue);">VIE Dashboard</h1>
-            <p style="color: var(--text-muted); margin: 5px 0 0 0;">Demonstarteur avec fake data - Analyse des vulnérabilités par ECU Automobile</p>
+            <h1 style="margin:0; color: var(--accent-blue);">🛡️ VIE Dashboard</h1>
+            <p style="margin:5px 0; font-size: 0.9rem;">Vulnerability Intelligence Engine — Automotive Cybersecurity</p>
         </div>
-        <div class="filter-box">
-            <label>Cible :</label>
-            <select id="ecuFilter" onchange="renderDashboard()">
-                <option value="ALL">TOUT LE VÉHICULE</option>
-                <option value="ECU1-TCU">ECU1 (Telematics)</option>
-                <option value="ECU2-IVI">ECU2 (Infotainment)</option>
-                <option value="ECU3-ADAS">ECU3 (Driving Assist)</option>
-                <option value="ECU4-GW">ECU4 (Central Gateway)</option>
-            </select>
+        <div class="filter-group">
+            <div>
+                <label style="display:block; font-size:0.7rem;">CIBLE ECU</label>
+                <select id="ecuSelect" onchange="renderDashboard()">
+                    <option value="ALL">Tout le véhicule</option>
+                    <option value="ECU1-TCU">ECU1 - Telematics</option>
+                    <option value="ECU2-IVI">ECU2 - Infotainment</option>
+                    <option value="ECU3-ADAS">ECU3 - ADAS</option>
+                    <option value="ECU4-GW">ECU4 - Gateway</option>
+                </select>
+            </div>
+            <div>
+                <label style="display:block; font-size:0.7rem;">RÉFÉRENTIEL TTP</label>
+                <select id="matrixSelect" onchange="renderDashboard()">
+                    <option value="ics">MITRE ICS (Automotive)</option>
+                    <option value="auto_isac">Auto-ISAC ATM</option>
+                    <option value="embedded">MITRE Embedded</option>
+                    <option value="mobile">MITRE Mobile</option>
+                    <option value="enterprise">MITRE Enterprise</option>
+                </select>
+            </div>
         </div>
     </div>
 
     <div class="stats-grid">
-        <div class="stat-card">
-            <span id="stat-total" class="stat-value">0</span>
-            <span class="stat-label">Total CVE</span>
-        </div>
-        <div class="stat-card" style="border-top: 3px solid var(--accent-red);">
-            <span id="stat-critical" class="stat-value" style="color: var(--accent-red);">0</span>
-            <span class="stat-label">CVSS ≥ 7.0</span>
-        </div>
-        <div class="stat-card" style="border-top: 3px solid var(--accent-orange);">
-            <span id="stat-moderate" class="stat-value" style="color: var(--accent-orange);">0</span>
-            <span class="stat-label">CVSS < 7.0</span>
-        </div>
-        <div class="stat-card">
-            <span id="stat-kev" class="stat-value" style="color: #fff; background: var(--accent-red); border-radius: 4px;">0</span>
-            <span class="stat-label">CISA KEV</span>
-        </div>
-        <div class="stat-card">
-            <span id="stat-rce" class="stat-value" style="color: var(--accent-purple);">0</span>
-            <span class="stat-label">Exploits RCE</span>
-        </div>
+        <div class="stat-card"><span id="stat-total" class="stat-value">-</span><span class="stat-label">CVE Total</span></div>
+        <div class="stat-card" style="border-bottom: 3px solid var(--accent-red);"><span id="stat-crit" class="stat-value" style="color:var(--accent-red)">-</span><span class="stat-label">CVSS ≥ 7.0</span></div>
+        <div class="stat-card" style="border-bottom: 3px solid var(--accent-purple);"><span id="stat-rce" class="stat-value" style="color:var(--accent-purple)">-</span><span class="stat-label">Exploits RCE</span></div>
+        <div class="stat-card" style="border-bottom: 3px solid var(--accent-orange);"><span id="stat-kev" class="stat-value" style="color:var(--accent-orange)">-</span><span class="stat-label">CISA KEV</span></div>
     </div>
 
-    <div class="formula-card">
-        <strong>Modèle de Risque :</strong> 
-        <code>RiskScore = min(100, (CVSS_Base × 6) + (KEV_Bonus: 25) + (RCE_Bonus: 15))</code>
-    </div>
+    <table class="table-res">
+        <thead>
+            <tr>
+                <th>ECU</th>
+                <th>CVE & DESCRIPTION</th>
+                <th>SÉVÉRITÉ</th>
+                <th>MAPPING MITRE / TTP</th>
+                <th>RISK SCORE</th>
+            </tr>
+        </thead>
+        <tbody id="vulnTableBody"></tbody>
+    </table>
 
-    <div class="table-container">
-        <table>
-            <thead>
-                <tr>
-                    <th>UNITÉ</th>
-                    <th>IDENTIFIANT</th>
-                    <th>SÉVÉRITÉ</th>
-                    <th>CONTEXTE / FLAGS</th>
-                    <th>SCORE VIE</th>
-                </tr>
-            </thead>
-            <tbody id="vulnTableBody">
-                </tbody>
-        </table>
+    <div style="text-align: right; margin-top: 20px;">
+        <button class="btn-heatmap" onclick="generateHeatmap()">🔥 Générer Heatmap pour ATM VIEWER</button>
     </div>
 </div>
 
 <script>
-    let rawData = [];
+    let vulnsData = [];
+    let mitreMapping = {};
+    let activeTechniques = new Set();
 
-    // 1. Chargement des données produites par le script Python
-    async function fetchData() {
+    async function init() {
         try {
-            const response = await fetch('data/results/detected_vulns.json');
-            if (!response.ok) throw new Error("Fichier introuvable");
-            rawData = await response.json();
+            const [vRes, mRes] = await Promise.all([
+                fetch('data/results/detected_vulns.json'),
+                fetch('data/mapping_mitre.json')
+            ]);
+            vulnsData = await vRes.json();
+            mitreMapping = await mRes.json();
             renderDashboard();
-        } catch (err) {
-            console.error(err);
-            document.getElementById('vulnTableBody').innerHTML = `<tr><td colspan="5" style="text-align:center; padding:50px;">Aucune donnée disponible. Lancez le scanner NVD.</td></tr>`;
-        }
+        } catch (e) { console.error("Erreur init:", e); }
     }
 
-    // 2. Calcul du Risk Score "VIE"
-    function calculateVIE(cvss, isKEV, isRCE) {
-        let score = cvss * 6; // Ramène sur 60
-        if (isKEV) score += 25;
-        if (isRCE) score += 15;
-        return Math.min(100, Math.round(score));
+    function calculateRisk(cvss, isKev, isRce) {
+        let base = cvss * 6;
+        if (isKev) base += 25;
+        if (isRce) base += 15;
+        return Math.min(100, Math.round(base));
     }
 
-    // 3. Rendu du Tableau et des Stats
     function renderDashboard() {
-        const filter = document.getElementById('ecuFilter').value;
+        const ecuFilter = document.getElementById('ecuSelect').value;
+        const matrixType = document.getElementById('matrixSelect').value;
         const tbody = document.getElementById('vulnTableBody');
         tbody.innerHTML = "";
+        activeTechniques.clear();
 
-        const filtered = filter === "ALL" ? rawData : rawData.filter(d => d.ecu === filter);
-
-        let counters = { total: 0, crit: 0, mod: 0, kev: 0, rce: 0 };
+        const filtered = ecuFilter === "ALL" ? vulnsData : vulnsData.filter(v => v.ecu === ecuFilter);
+        let counters = { total: 0, crit: 0, rce: 0, kev: 0 };
 
         filtered.forEach(v => {
             counters.total++;
             const cvss = v.metrics.baseScore || 0;
-            const desc = v.description.toLowerCase();
-            const isRCE = desc.includes("remote code execution") || desc.includes(" rce ");
-            const isKEV = v.is_kev || false; // Détection KEV
+            const isRce = v.description.toLowerCase().includes("remote code execution") || v.description.toLowerCase().includes("rce");
+            const isKev = v.is_kev || false;
+            const risk = calculateRisk(cvss, isKev, isRce);
+            
+            if (cvss >= 7) counters.crit++;
+            if (isRce) counters.rce++;
+            if (isKev) counters.kev++;
 
-            if (cvss >= 7) counters.crit++; else counters.mod++;
-            if (isKEV) counters.kev++;
-            if (isRCE) counters.rce++;
+            // Mapping logic
+            let ttpHtml = `<span class="text-muted">Aucun mapping</span>`;
+            if (v.cwe_ids && v.cwe_ids.length > 0) {
+                const mapEntry = mitreMapping[v.cwe_ids[0]];
+                if (mapEntry && mapEntry.mappings[matrixType]) {
+                    const ttp = mapEntry.mappings[matrixType];
+                    activeTechniques.add(ttp.id); // Ajout pour la heatmap
+                    ttpHtml = `<div class="ttp-box">
+                        <span class="badge bg-blue">${ttp.id}</span><br/>
+                        <strong>${ttp.name}</strong><br/>
+                        <small style="color:var(--text-muted)">${ttp.tactic}</small>
+                    </div>`;
+                } else {
+                    ttpHtml = `<span class="badge">${v.cwe_ids[0]}</span>`;
+                }
+            }
 
-            const vieScore = calculateVIE(cvss, isKEV, isRCE);
-
-            const row = `
+            tbody.innerHTML += `
                 <tr>
-                    <td><strong style="color:var(--accent-blue)">${v.ecu}</strong></td>
+                    <td><span class="badge bg-blue">${v.ecu}</span></td>
                     <td>
                         <div style="font-weight:bold">${v.cve_id}</div>
-                        <div style="font-size:0.7rem; color:var(--text-muted)">Modifié: ${new Date(v.last_modified).toLocaleDateString()}</div>
+                        <div style="font-size:0.75rem; color:#8b949e; max-width:400px;">${v.description.substring(0,120)}...</div>
                     </td>
-                    <td>
-                        <span class="badge ${cvss >= 7 ? 'bg-red' : 'bg-orange'}">${cvss} / 10.0</span>
-                    </td>
-                    <td>
-                        ${isKEV ? '<span class="badge bg-kev">CISA KEV</span>' : ''}
-                        ${isRCE ? '<span class="badge bg-purple">RCE DETECTED</span>' : ''}
-                        <div style="font-size:0.75rem; margin-top:5px; max-width:400px; color:var(--text-muted)">${v.description.substring(0, 100)}...</div>
-                    </td>
-                    <td>
-                        <div style="font-size:1.2rem; font-weight:bold; color:${vieScore > 75 ? 'var(--accent-red)' : 'white'}">
-                            ${vieScore}<small style="font-size:0.7rem">/100</small>
-                        </div>
-                    </td>
-                </tr>
-            `;
-            tbody.innerHTML += row;
+                    <td><span class="badge ${cvss >= 7 ? 'bg-red' : 'bg-orange'}">${cvss}</span></td>
+                    <td>${ttpHtml}</td>
+                    <td><div style="font-size:1.2rem; font-weight:800; color:${risk > 70 ? 'var(--accent-red)' : 'white'}">${risk}<small>/100</small></div></td>
+                </tr>`;
         });
 
-        // Mise à jour des compteurs
         document.getElementById('stat-total').innerText = counters.total;
-        document.getElementById('stat-critical').innerText = counters.crit;
-        document.getElementById('stat-moderate').innerText = counters.mod;
-        document.getElementById('stat-kev').innerText = counters.kev;
+        document.getElementById('stat-crit').innerText = counters.crit;
         document.getElementById('stat-rce').innerText = counters.rce;
+        document.getElementById('stat-kev').innerText = counters.kev;
     }
 
-    // Lancement au démarrage
-    window.onload = fetchData;
-</script>
+    // Fonction Heatmap : Sauvegarde les techniques détectées en LocalStorage pour le Viewer
+    function generateHeatmap() {
+        const techArray = Array.from(activeTechniques);
+        localStorage.setItem('vie_heatmap_techniques', JSON.stringify(techArray));
+        alert(`Heatmap générée ! ${techArray.length} techniques envoyées au visualiseur ATM.`);
+        // Optionnel : Rediriger vers ton viewer
+        // window.location.href = "ATM_viewer.html";
+    }
 
+    window.onload = init;
+</script>
 </body>
 </html>
