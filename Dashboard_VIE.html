@@ -72,6 +72,7 @@
     <div class="stats-grid">
         <div class="stat-card"><span id="total-cve" class="stat-value">0</span><span class="stat-label">CVE Détectées</span></div>
         <div class="stat-card" style="border-bottom: 3px solid var(--accent-red);"><span id="total-crit" class="stat-value" style="color:var(--accent-red)">0</span><span class="stat-label">Risques Critiques</span></div>
+        <div class="stat-card"><span id="total-kev" class="stat-value" style="color:var(--accent-purple)">0</span><span class="stat-label">Vecteurs KEV</span></div>
         <div class="stat-card"><span id="total-rce" class="stat-value" style="color:var(--accent-purple)">0</span><span class="stat-label">Vecteurs RCE</span></div>
         <div class="stat-card" style="border-bottom: 3px solid var(--accent-green);"><span id="avg-risk" class="stat-value">0</span><span class="stat-label">Score Risque Véhicule</span></div>
     </div>
@@ -91,7 +92,6 @@
             <tbody id="summary-body"></tbody>
         </table>
         <div class="summary-wrapper">
-    <h3 style="margin-top:0; color:var(--accent-blue); font-size:1rem;">📊 Synthèse Executive</h3>
     <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border-gray);">
         <h4 style="margin: 0 0 10px 0; color:var(--accent-blue); font-size:0.75rem; text-transform:uppercase; letter-spacing:1px;">
             ℹ️ Méthodologie du VIE Risk Score (v2.1)
@@ -194,20 +194,29 @@ function calculateAdvancedRisk(cvssArray, hasRce, hasKev) {
             let allCvss = ev.map(v => v.metrics?.baseScore || 0);
             let hasRce = ev.some(v => v.description.toLowerCase().includes("remote code") || v.description.toLowerCase().includes(" rce "));
             let hasKev = ev.some(v => v.is_kev);
+            let eMaxCvss = 0, eRceCount = 0, eKevCount = 0, eCwes = new Set(); // Ajout de eKevCount
 
-            ev.forEach(v => {
+ev.forEach(v => {
                 const cvss = v.metrics?.baseScore || 0;
                 const isRce = v.description.toLowerCase().includes("remote code") || v.description.toLowerCase().includes(" rce ");
+                // ON AJOUTE LA DÉTECTION DU KEV ICI POUR L'AFFICHAGE
+                const isKev = v.is_kev === true || v.is_kev === "true"; 
+                
                 if (cvss > eMaxCvss) eMaxCvss = cvss;
                 if (cvss >= 7) gCrit++;
                 if (isRce) { eRceCount++; gRce++; }
+                if (isKev) { eKevCount++; } // AJOUT ICI : On compte les KEV pour cet ECU
                 v.cwe_ids?.forEach(c => eCwes.add(c));
 
                 detailRows += `
                     <tr>
                         <td><strong>${v.cve_id}</strong></td>
                         <td style="color:var(--accent-blue)">${cleanProductName(v.cpe)}</td>
-                        <td>${v.description.substring(0,80)}... ${isRce?'<span class="badge bg-purple">RCE</span>':''}</td>
+                        <td>
+                            <div style="margin-bottom:5px;">${v.description.substring(0,80)}...</div>
+                            ${isRce ? '<span class="badge bg-purple">RCE</span>' : ''}
+                            ${isKev ? '<span class="badge bg-red">CISA KEV</span>' : ''} 
+                        </td>
                         <td>${(v.cwe_ids||[]).map(c=>`<span class="badge bg-gray">${c}</span>`).join('')}</td>
                         <td><span class="badge ${cvss>=7?'bg-red':'bg-orange'}">${cvss.toFixed(1)}</span></td>
                     </tr>`;
@@ -219,8 +228,9 @@ function calculateAdvancedRisk(cvssArray, hasRce, hasKev) {
             summaryBody.innerHTML += `
                 <tr class="summary-row" data-ecu="${ecuId}">
                     <td><strong style="color:var(--accent-blue)">${ecuId}</strong><br><small>${ecuName}</small></td>
-                    <td>${ev.length} CVE ${eRceCount?`<span class="badge bg-purple">${eRceCount} RCE</span>`:''}</td>
-                    <td><span class="badge ${eMaxCvss>=7?'bg-red':'bg-orange'}">${eMaxCvss.toFixed(1)}</span></td>
+                    <td>${ev.length} CVE ${eRceCount?`<span class="badge bg-purple">${eRceCount} RCE</span>`:''}</td>    
+                    <td>${ev.length} CVE  ${eKevCount ? `<span class="badge bg-red">${eKevCount} KEV</span>` : ''} </td>
+                     <td><span class="badge ${eMaxCvss>=7?'bg-red':'bg-orange'}">${eMaxCvss.toFixed(1)}</span></td>
                     <td>${Array.from(eCwes).slice(0,3).map(c=>`<span class="badge bg-gray">${c}</span>`).join('')}</td>
                     <td style="text-align:right;"><span style="font-weight:800; font-size:1.2rem; color:${eRiskScore>70?'var(--accent-red)':eRiskScore>30?'var(--accent-orange)':'var(--accent-green)'}">${eRiskScore}/100</span></td>
                 </tr>`;
