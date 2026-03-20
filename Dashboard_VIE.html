@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kat‑Force — VIE Advanced Risk Dashboard</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Kat‑Force — VIE Master Dashboard</title>
     <style>
         :root {
             --bg-dark: #0d1117; --card-dark: #161b22; --border-gray: #30363d;
@@ -21,22 +20,24 @@
         
         #debug-monitor { background: #000; border: 1px solid var(--border-gray); color: var(--accent-green); font-family: monospace; font-size: 0.7rem; padding: 10px; margin-bottom: 20px; border-radius: 6px; max-height: 80px; overflow-y: auto; }
 
-        /* Stats */
+        /* Stats Grid */
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
         .stat-card { background: var(--card-dark); border: 1px solid var(--border-gray); padding: 20px; border-radius: 8px; text-align: center; }
         .stat-value { font-size: 2.2rem; font-weight: 800; display: block; color: #fff; }
         .stat-label { color: #8b949e; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* Tables */
+        /* Summary Wrapper */
         .summary-wrapper { background: var(--card-dark); border: 1px solid var(--border-gray); border-radius: 8px; margin-bottom: 40px; padding: 20px; }
         .summary-table, .table-res { width: 100%; border-collapse: collapse; }
         th { text-align: left; font-size: 0.75rem; color: #8b949e; padding: 12px; border-bottom: 2px solid var(--border-gray); text-transform: uppercase; }
         td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: top; }
 
+        /* ECU Detail Sections */
         .ecu-section { margin-bottom: 40px; background: var(--card-dark); border: 1px solid var(--border-gray); border-radius: 8px; overflow: hidden; }
         .ecu-header { background: #1c2128; padding: 15px 20px; border-bottom: 1px solid var(--border-gray); display: flex; justify-content: space-between; align-items: center; }
         
-        .badge { padding: 2px 8px; border-radius: 10px; font-size: 0.65rem; font-weight: bold; border: 1px solid transparent; display: inline-block; }
+        /* Badges */
+        .badge { padding: 2px 8px; border-radius: 10px; font-size: 0.65rem; font-weight: bold; border: 1px solid transparent; display: inline-block; margin-right: 4px; }
         .bg-red { background: rgba(248,81,73,0.15); color: var(--accent-red); border-color: var(--accent-red); }
         .bg-orange { background: rgba(240,136,62,0.15); color: var(--accent-orange); border-color: var(--accent-orange); }
         .bg-purple { background: rgba(188,140,255,0.15); color: var(--accent-purple); border-color: var(--accent-purple); }
@@ -49,36 +50,29 @@
 
 <div class="container">
     <div class="header-flex">
-        <nav>
-            <a href="index.html">🔍 Analyseur</a>
-            <a href="veille.html">🔭 Veille (Watchtower)</a>
-           <!-- <a href="CPEsearch.html">🔍Vuln by CPE</a>-->
-            <a href="Dashboard_VIE.html">🔍Vuln Dashbaord</a>
-          </nav>
         <div>
-            <h1 style="color:var(--accent-blue); margin:0;">🛡️ VIE Dashboard - Demonstrateur- avec FAKE DATA</h1>
-             <p id="fleet-desc" style="color:#8b949e; font-size: 0.9rem; margin:5px 0;">Calcul de risque pondéré par sévérité et vecteurs d'attaque.</p>
-            <p id="fleet-desc" style="color:#8b949e; font-size: 0.9rem; margin:5px 0;">Dev en cours quelques bugs à regler.</p>
+            <h1 style="color:var(--accent-blue); margin:0;">🛡️ VIE Advanced Risk Dashboard</h1>
+            <p id="fleet-desc" style="color:#8b949e; font-size: 0.9rem; margin:5px 0;">Analyse cyber-physique et évaluation des menaces actives.</p>
         </div>
         <div class="filter-box">
+            <label style="font-size:0.75rem; font-weight:bold; color:#8b949e;">FILTRE UNITÉ :</label>
             <select id="ecuFilter" onchange="applyFilter()">
-                <option value="ALL">Vue Flotte Complète</option>
+                <option value="ALL">Tout le véhicule</option>
             </select>
         </div>
     </div>
 
-    <div id="debug-monitor">> Initialisation des algorithmes de risque...</div>
+    <div id="debug-monitor">> Chargement des modules de risque...</div>
 
     <div class="stats-grid">
         <div class="stat-card"><span id="total-cve" class="stat-value">0</span><span class="stat-label">CVE Détectées</span></div>
         <div class="stat-card" style="border-bottom: 3px solid var(--accent-red);"><span id="total-crit" class="stat-value" style="color:var(--accent-red)">0</span><span class="stat-label">Risques Critiques</span></div>
-        <div class="stat-card"><span id="total-kev" class="stat-value" style="color:var(--accent-purple)">0</span><span class="stat-label">Vecteurs KEV</span></div>
         <div class="stat-card"><span id="total-rce" class="stat-value" style="color:var(--accent-purple)">0</span><span class="stat-label">Vecteurs RCE</span></div>
-        <div class="stat-card" style="border-bottom: 3px solid var(--accent-green);"><span id="avg-risk" class="stat-value">0</span><span class="stat-label">Score Risque Véhicule</span></div>
+        <div class="stat-card" style="border-bottom: 3px solid var(--accent-green);"><span id="avg-risk" class="stat-value">0</span><span class="stat-label">Score Risque Flotte</span></div>
     </div>
 
     <div class="summary-wrapper">
-        <h3 style="margin-top:0; color:var(--accent-blue); font-size:1rem;">📊 Synthèse Executive</h3>
+        <h3 style="margin-top:0; color:var(--accent-blue); font-size:1rem;">📊 Synthèse de l'état de santé</h3>
         <table class="summary-table">
             <thead>
                 <tr>
@@ -91,27 +85,24 @@
             </thead>
             <tbody id="summary-body"></tbody>
         </table>
-        <div class="summary-wrapper">
-    <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border-gray);">
-        <h4 style="margin: 0 0 10px 0; color:var(--accent-blue); font-size:0.75rem; text-transform:uppercase; letter-spacing:1px;">
-            ℹ️ Méthodologie du VIE Risk Score (v2.1)
-        </h4>
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
-            <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 4px; border-left: 3px solid var(--accent-orange);">
-                <strong style="font-size:0.7rem; color:#eee;">SÉVÉRITÉ (70%)</strong>
-                <p style="font-size:0.65rem; color:#8b949e; margin:5px 0 0 0;">Basé sur le CVSS max. Un score de 10.0 génère une base de 70 points.</p>
-            </div>
-            <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 4px; border-left: 3px solid var(--accent-blue);">
-                <strong style="font-size:0.7rem; color:#eee;">EXPOSITION (15%)</strong>
-                <p style="font-size:0.65rem; color:#8b949e; margin:5px 0 0 0;">Bonus asymptotique selon le volume de CVE (se stabilise après 100 vulnérabilités).</p>
-            </div>
-            <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 4px; border-left: 3px solid var(--accent-purple);">
-                <strong style="font-size:0.7rem; color:#eee;">VECTEURS (+15%)</strong>
-                <p style="font-size:0.65rem; color:#8b949e; margin:5px 0 0 0;">Multiplicateurs de danger si une RCE ou une faille KEV est active sur l'unité.</p>
+
+        <div style="margin-top: 25px; padding-top: 20px; border-top: 1px solid var(--border-gray);">
+            <h4 style="margin: 0 0 10px 0; color:var(--accent-blue); font-size:0.75rem; text-transform:uppercase; letter-spacing:1px;">ℹ️ Méthodologie du VIE Risk Score (v2.1)</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 4px; border-left: 3px solid var(--accent-orange);">
+                    <strong style="font-size:0.7rem; color:#eee;">SÉVÉRITÉ (70%)</strong>
+                    <p style="font-size:0.65rem; color:#8b949e; margin:5px 0 0 0;">Score basé sur le CVSS max. Un 10.0 génère une base de 70 pts.</p>
+                </div>
+                <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 4px; border-left: 3px solid var(--accent-blue);">
+                    <strong style="font-size:0.7rem; color:#eee;">EXPOSITION (15%)</strong>
+                    <p style="font-size:0.65rem; color:#8b949e; margin:5px 0 0 0;">Bonus logarithmique selon le volume de CVE détectées.</p>
+                </div>
+                <div style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 4px; border-left: 3px solid var(--accent-purple);">
+                    <strong style="font-size:0.7rem; color:#eee;">VECTEURS (+15%)</strong>
+                    <p style="font-size:0.65rem; color:#8b949e; margin:5px 0 0 0;">Multiplicateur si une RCE ou une faille KEV est confirmée.</p>
+                </div>
             </div>
         </div>
-    </div>
-</div>
     </div>
 
     <div id="ecu-details-container"></div>
@@ -133,45 +124,33 @@
         m.scrollTop = m.scrollHeight;
     }
 
+    // --- ALGORITHME DE RISQUE ASYMPTOTIQUE ---
+    function calculateAdvancedRisk(cvssArray, hasRce, hasKev) {
+        if (cvssArray.length === 0) return 0;
+        const maxCvss = Math.max(...cvssArray);
+        const count = cvssArray.length;
+        
+        let score = maxCvss * 7; // Base Sévérité
+        let volumeBonus = 15 * (count / (count + 40)); // Bonus Volume Asymptotique
+        score += volumeBonus;
+
+        if (hasRce) score *= 1.10; // +10% pour RCE
+        if (hasKev) score *= 1.05; // +5% pour KEV
+
+        return Math.min(100, Math.round(score));
+    }
+
     async function init() {
         try {
             const invRes = await fetch('data/inventory/inventory_cpe.json');
             inventory = await invRes.json();
             const vulnRes = await fetch('data/results/detected_vulns.json');
             vulnsData = await vulnRes.json();
-            buildDynamicElements();
+            renderDashboard();
         } catch(e) { log(e.message, true); }
     }
 
-    // --- NOUVEL ALGORITHME DE RISQUE COMBINÉ ---
-function calculateAdvancedRisk(cvssArray, hasRce, hasKev) {
-    if (cvssArray.length === 0) return 0;
-
-    const maxCvss = Math.max(...cvssArray);
-    const count = cvssArray.length;
-    
-    // 1. BASE SÉVÉRITÉ (Plafonnée à 70 pts)
-    // Un CVSS de 10 donne 70 points de base.
-    let score = maxCvss * 7;
-
-    // 2. FACTEUR D'EXPOSITION (Bonus max de +15 pts)
-    // Utilisation d'une courbe qui s'écrase : 
-    // 10 CVE = ~3pts | 100 CVE = ~10pts | 2000 CVE = ~14.7pts
-    let exposureBonus = 15 * (count / (count + 40)); 
-    score += exposureBonus;
-
-    // 3. MULTIPLICATEURS DE DANGER (Non-additifs)
-    // On augmente le score de 10% si RCE, 5% si KEV.
-    // Cela permet de différencier deux ECU qui ont le même Max CVSS.
-    if (hasRce) score *= 1.10; 
-    if (hasKev) score *= 1.05;
-
-    // 4. CAP FINAL À 100
-    return Math.min(100, Math.round(score));
-}
-    ///-- FIn Fontion risque
-
-    function buildDynamicElements() {
+    function renderDashboard() {
         const filter = document.getElementById('ecuFilter');
         const summaryBody = document.getElementById('summary-body');
         const detailsContainer = document.getElementById('ecu-details-container');
@@ -182,30 +161,29 @@ function calculateAdvancedRisk(cvssArray, hasRce, hasKev) {
             const ecuId = item.component_id;
             const ecuName = item.description || "N/A";
 
+            // Alimenter le filtre
             const opt = document.createElement('option');
             opt.value = ecuId; opt.textContent = `${ecuId} - ${ecuName}`;
             filter.appendChild(opt);
 
+            // Filtrer les vulnérabilités de cet ECU
             const ev = vulnsData.filter(v => v.ecu === ecuId);
-            let eMaxCvss = 0, eRceCount = 0, eCwes = new Set();
+            let eMaxCvss = 0, eRceCount = 0, eKevCount = 0, eCwes = new Set();
             let detailRows = "";
             
-            // Collecte des données pour l'algo de risque
             let allCvss = ev.map(v => v.metrics?.baseScore || 0);
             let hasRce = ev.some(v => v.description.toLowerCase().includes("remote code") || v.description.toLowerCase().includes(" rce "));
-            let hasKev = ev.some(v => v.is_kev);
-            let eMaxCvss = 0, eRceCount = 0, eKevCount = 0, eCwes = new Set(); // Ajout de eKevCount
+            let hasKev = ev.some(v => v.is_kev === true || v.is_kev === "true");
 
-ev.forEach(v => {
+            ev.forEach(v => {
                 const cvss = v.metrics?.baseScore || 0;
                 const isRce = v.description.toLowerCase().includes("remote code") || v.description.toLowerCase().includes(" rce ");
-                // ON AJOUTE LA DÉTECTION DU KEV ICI POUR L'AFFICHAGE
-                const isKev = v.is_kev === true || v.is_kev === "true"; 
-                
+                const isKev = v.is_kev === true || v.is_kev === "true";
+
                 if (cvss > eMaxCvss) eMaxCvss = cvss;
                 if (cvss >= 7) gCrit++;
                 if (isRce) { eRceCount++; gRce++; }
-                if (isKev) { eKevCount++; } // AJOUT ICI : On compte les KEV pour cet ECU
+                if (isKev) { eKevCount++; }
                 v.cwe_ids?.forEach(c => eCwes.add(c));
 
                 detailRows += `
@@ -215,7 +193,7 @@ ev.forEach(v => {
                         <td>
                             <div style="margin-bottom:5px;">${v.description.substring(0,80)}...</div>
                             ${isRce ? '<span class="badge bg-purple">RCE</span>' : ''}
-                            ${isKev ? '<span class="badge bg-red">CISA KEV</span>' : ''} 
+                            ${isKev ? '<span class="badge bg-red">CISA KEV</span>' : ''}
                         </td>
                         <td>${(v.cwe_ids||[]).map(c=>`<span class="badge bg-gray">${c}</span>`).join('')}</td>
                         <td><span class="badge ${cvss>=7?'bg-red':'bg-orange'}">${cvss.toFixed(1)}</span></td>
@@ -225,25 +203,30 @@ ev.forEach(v => {
             const eRiskScore = calculateAdvancedRisk(allCvss, hasRce, hasKev);
             gRiskSum += eRiskScore; gTotal += ev.length;
 
+            // Remplir synthèse
             summaryBody.innerHTML += `
                 <tr class="summary-row" data-ecu="${ecuId}">
                     <td><strong style="color:var(--accent-blue)">${ecuId}</strong><br><small>${ecuName}</small></td>
-                    <td>${ev.length} CVE ${eRceCount?`<span class="badge bg-purple">${eRceCount} RCE</span>`:''}</td>    
-                    <td>${ev.length} CVE  ${eKevCount ? `<span class="badge bg-red">${eKevCount} KEV</span>` : ''} </td>
-                     <td><span class="badge ${eMaxCvss>=7?'bg-red':'bg-orange'}">${eMaxCvss.toFixed(1)}</span></td>
+                    <td>
+                        ${ev.length} CVE 
+                        ${eRceCount ? `<span class="badge bg-purple">${eRceCount} RCE</span>` : ''}
+                        ${eKevCount ? `<span class="badge bg-red">${eKevCount} KEV</span>` : ''}
+                    </td>
+                    <td><span class="badge ${eMaxCvss>=7?'bg-red':'bg-orange'}">${eMaxCvss.toFixed(1)}</span></td>
                     <td>${Array.from(eCwes).slice(0,3).map(c=>`<span class="badge bg-gray">${c}</span>`).join('')}</td>
-                    <td style="text-align:right;"><span style="font-weight:800; font-size:1.2rem; color:${eRiskScore>70?'var(--accent-red)':eRiskScore>30?'var(--accent-orange)':'var(--accent-green)'}">${eRiskScore}/100</span></td>
+                    <td style="text-align:right;"><span style="font-weight:800; font-size:1.2rem; color:${eRiskScore>85?'var(--accent-red)':eRiskScore>50?'var(--accent-orange)':'var(--accent-green)'}">${eRiskScore}/100</span></td>
                 </tr>`;
 
+            // Remplir détails
             detailsContainer.innerHTML += `
                 <div class="ecu-section" data-ecu="${ecuId}">
                     <div class="ecu-header">
-                        <h2 style="margin:0; font-size:1.1rem; color:var(--accent-blue)">${ecuId} — Détails</h2>
-                        <span class="badge bg-gray">UNIT RISK: ${eRiskScore}/100</span>
+                        <h2 style="margin:0; font-size:1.1rem; color:var(--accent-blue)">${ecuId} — Analyse détaillée</h2>
+                        <span class="badge bg-gray" style="font-size:0.8rem;">RISK: ${eRiskScore}/100</span>
                     </div>
                     <table class="table-res">
-                        <thead><tr><th>CVE</th><th>PRODUIT</th><th>DESC</th><th>CWE</th><th>CVSS</th></tr></thead>
-                        <tbody>${detailRows || '<tr><td colspan="5" style="text-align:center;">✅ Aucune vulnérabilité.</td></tr>'}</tbody>
+                        <thead><tr><th>CVE</th><th>PRODUIT</th><th>DESC / VECTEURS</th><th>CWE</th><th>CVSS</th></tr></thead>
+                        <tbody>${detailRows || '<tr><td colspan="5" style="text-align:center; padding:20px;">✅ Aucune menace détectée.</td></tr>'}</tbody>
                     </table>
                 </div>`;
         });
@@ -252,6 +235,7 @@ ev.forEach(v => {
         document.getElementById('total-crit').innerText = gCrit;
         document.getElementById('total-rce').innerText = gRce;
         document.getElementById('avg-risk').innerText = Math.round(gRiskSum / inventory.length);
+        log("Dashboard rendu avec succès.");
     }
 
     function applyFilter() {
