@@ -1,0 +1,52 @@
+{
+  "CWE-119": {
+    "name": "Improper Restriction of Memory Buffer (Buffer Overflow)",
+    "mappings": {
+      "enterprise": { "id": "T1499", "name": "Endpoint Denial of Service", "tactic": "Impact" },
+      "mobile": { "id": "T1474", "name": "Exploitation for Privilege Escalation", "tactic": "Privilege Escalation" },
+      "ics": { "id": "T0814", "name": "Denial of Service", "tactic": "Inhibit Response Function" },
+      "auto_isac": { "id": "VEC-01", "name": "Unauthorized Control of Vehicle Function", "tactic": "Safety Impact" },
+      "embedded": { "id": "E1020", "name": "Buffer Overflow in Bootloader", "tactic": "Persistence" }
+    }
+  },
+  "CWE-20": {
+    "name": "Improper Input Validation",
+    "mappings": {
+      "enterprise": { "id": "T1210", "name": "Exploitation of Remote Services", "tactic": "Lateral Movement" },
+      "mobile": { "id": "T1458", "name": "Exploitation for Client Execution", "tactic": "Execution" },
+      "ics": { "id": "T0822", "name": "Exploitation of Remote Services", "tactic": "Lateral Movement" },
+      "auto_isac": { "id": "VEC-04", "name": "CAN Bus Message Injection", "tactic": "Execution" },
+      "embedded": { "id": "E1011", "name": "Exploitation of Debug Interface", "tactic": "Initial Access" }
+    }
+  },
+  "CWE-416": {
+    "name": "Use After Free",
+    "mappings": {
+      "enterprise": { "id": "T1203", "name": "Exploitation for Client Execution", "tactic": "Execution" },
+      "mobile": { "id": "T1476", "name": "Exploitation for Privilege Escalation", "tactic": "Privilege Escalation" },
+      "ics": { "id": "T0866", "name": "System Firmware Rollback", "tactic": "Persistence" },
+      "auto_isac": { "id": "VEC-09", "name": "ECU Memory Corruption", "tactic": "Impact" },
+      "embedded": { "id": "E1045", "name": "Malicious Firmware Update", "tactic": "Persistence" }
+    }
+  },
+  "CWE-798": {
+    "name": "Use of Hard-coded Credentials",
+    "mappings": {
+      "enterprise": { "id": "T1078", "name": "Valid Accounts", "tactic": "Defense Evasion" },
+      "mobile": { "id": "T1403", "name": "Access Sensitive Data in Logs", "tactic": "Credential Access" },
+      "ics": { "id": "T0812", "name": "Default Credentials", "tactic": "Initial Access" },
+      "auto_isac": { "id": "VEC-02", "name": "Backdoor via Engineering Port", "tactic": "Initial Access" },
+      "embedded": { "id": "E1004", "name": "Extraction of Embedded Keys", "tactic": "Credential Access" }
+    }
+  },
+  "CWE-1265": {
+    "name": "Unintended Re-entrant Invocation of Non-reentrant Code",
+    "mappings": {
+      "enterprise": { "id": "T1203", "name": "Exploitation for Client Execution", "tactic": "Execution" },
+      "mobile": { "id": "T1474", "name": "Exploitation for Privilege Escalation", "tactic": "Privilege Escalation" },
+      "ics": { "id": "T0834", "name": "Native API", "tactic": "Execution" },
+      "auto_isac": { "id": "VEC-12", "name": "Real-time Task Preemption", "tactic": "Safety Impact" },
+      "embedded": { "id": "E1022", "name": "Race Condition in Secure Boot", "tactic": "Defense Evasion" }
+    }
+  }
+}
