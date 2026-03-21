@@ -3,50 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VIE Master Dashboard V4 (FULL FAKE DATA)</title>
+    <title>VIE Master Dashboard — Expert Intelligence</title>
     <style>
         :root {
             --bg-dark: #0d1117; --card-dark: #161b22; --border-gray: #30363d;
             --accent-blue: #58a6ff; --accent-red: #f85149; --accent-orange: #f0883e;
             --accent-purple: #bc8cff; --accent-green: #3fb950; --text-gray: #8b949e;
         }
-        body { background: var(--bg-dark); color: #c9d1d9; font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; margin: 0; }
-        .container { max-width: 1750px; margin: 0 auto; }
+        body { background: var(--bg-dark); color: #c9d1d9; font-family: -apple-system, system-ui, sans-serif; padding: 20px; margin: 0; line-height: 1.5; }
+        .container { max-width: 1600px; margin: 0 auto; }
         
-        /* Layout */
-        .header-flex { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; border-bottom: 1px solid var(--border-gray); padding-bottom: 15px; }
-        .grid-kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px; }
-        .card { background: var(--card-dark); border: 1px solid var(--border-gray); border-radius: 8px; padding: 20px; margin-bottom: 25px; }
-        
-        /* Tables & Sorting */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
-        th { 
-            text-align: left; background: rgba(255,255,255,0.02); color: var(--text-gray); 
-            padding: 12px; border-bottom: 2px solid var(--border-gray); 
-            cursor: pointer; white-space: nowrap;
-        }
-        th:hover { color: var(--accent-blue); background: rgba(88,166,255,0.05); }
-        td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: top; }
+        /* Header */
+        .header-flex { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; border-bottom: 1px solid var(--border-gray); padding-bottom: 20px; }
+        .btn-index { color: var(--accent-blue); text-decoration: none; border: 1px solid var(--accent-blue); padding: 5px 15px; border-radius: 6px; font-size: 0.8rem; }
+        .btn-index:hover { background: rgba(88,166,255,0.1); }
 
+        /* KPI Cards */
+        .grid-kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 30px; }
+        .card { background: var(--card-dark); border: 1px solid var(--border-gray); border-radius: 8px; padding: 20px; }
+        .stat-card { text-align: center; }
+        .stat-value { font-size: 2.2rem; font-weight: 700; display: block; color: #fff; }
+        .stat-label { color: var(--text-gray); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
+        th { text-align: left; padding: 12px; border-bottom: 2px solid var(--border-gray); color: var(--text-gray); cursor: pointer; }
+        th:hover { color: #fff; }
+        td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: top; }
+        
         /* Badges */
-        .badge { padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; border: 1px solid transparent; display: inline-block; margin: 2px; }
+        .badge { padding: 3px 8px; border-radius: 12px; font-size: 0.65rem; font-weight: bold; border: 1px solid transparent; display: inline-block; }
         .bg-red { background: rgba(248,81,73,0.1); color: var(--accent-red); border-color: var(--accent-red); }
         .bg-orange { background: rgba(240,136,62,0.1); color: var(--accent-orange); border-color: var(--accent-orange); }
         .bg-purple { background: rgba(188,140,255,0.1); color: var(--accent-purple); border-color: var(--accent-purple); }
         .bg-blue { background: rgba(88,166,255,0.1); color: var(--accent-blue); border-color: var(--accent-blue); }
         .bg-green { background: rgba(63,185,80,0.1); color: var(--accent-green); border-color: var(--accent-green); }
-        
-        /* Sections Spécifiques */
-        .audit-trail { font-size: 0.72rem; color: #6e7681; margin-top: 6px; border-top: 1px dashed #30363d; padding-top: 4px; }
-        .attack-path-box { background: rgba(0,0,0,0.2); padding: 12px; border-radius: 6px; border-left: 3px solid var(--accent-purple); margin-top: 10px; font-size: 0.8rem; }
-        .method-info { font-size: 0.75rem; color: var(--text-gray); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-top: 10px; }
-        
-        .stat-card { text-align: center; border-top: 4px solid var(--border-gray); }
-        .stat-value { font-size: 2.2rem; font-weight: 800; color: #fff; display: block; }
-        .stat-label { font-size: 0.75rem; color: var(--text-gray); text-transform: uppercase; letter-spacing: 1px; }
+        .bg-gray { background: rgba(139,148,158,0.1); color: var(--text-gray); border-color: var(--text-gray); }
 
-        select { background: #0d1117; color: white; border: 1px solid var(--border-gray); padding: 8px; border-radius: 6px; min-width: 250px; }
-        .hidden { display: none; }
+        /* Logic Info Box */
+        .logic-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px; padding: 15px; background: rgba(88,166,255,0.03); border: 1px solid var(--border-gray); border-radius: 8px; font-size: 0.8rem; }
+        .logic-title { color: var(--accent-orange); font-weight: bold; display: block; margin-bottom: 5px; }
+
+        /* Attack Path Style */
+        .attack-path { margin-top: 15px; padding: 12px; background: rgba(0,0,0,0.2); border-left: 3px solid var(--accent-purple); border-radius: 4px; }
+        .justification { font-size: 0.72rem; color: var(--text-gray); font-style: italic; margin-top: 5px; display: block; }
+        
+        select { background: #0d1117; color: #fff; border: 1px solid var(--border-gray); padding: 8px; border-radius: 6px; width: 300px; }
     </style>
 </head>
 <body>
@@ -54,248 +56,224 @@
 <div class="container">
     <div class="header-flex">
         <div>
-            <h1 style="margin:0; color:var(--accent-blue);">VIE : Vulnerabilities Intelligence Engine</h1>
-            <p style="margin:5px 0; color:var(--text-gray);">Analyse de vulnérabilités unifiée — Basé sur l'état de l'art SSVC & CWE.</p>
+            <h1 style="margin:0; color:var(--accent-blue);">🛡️ Kat‑Force VIE — Master Analysis</h1>
+            <p style="margin:5px 0; color:var(--text-gray); font-size:0.9rem;">Intelligence Cyber-Physique & Décisions SSVC Automatisées</p>
         </div>
-        <div style="text-align:right;">
-            <a href="index.html" style="color:var(--accent-blue); text-decoration:none; font-weight:bold;">← RETOUR INDEX</a>
-            <div id="data-status" style="font-size:0.7rem; color:var(--accent-green); margin-top:5px;">Chargement des données...</div>
+        <a href="index.html" class="btn-index">INDEX PRINCIPAL</a>
+    </div>
+
+    <div class="logic-panel">
+        <div>
+            <span class="logic-title">⚙️ MOTEUR SSVC (AUTOMATIQUE)</span>
+            Les décisions sont basées sur le contexte détecté :<br>
+            • <b>IMMEDIATE_PATCH</b> : Si KEV (Exploité en milieu sauvage) + ECU Exposé.<br>
+            • <b>CYBER_ANALYSIS</b> : Si ECU Critique (Safety) + CVSS > 7.<br>
+            • <b>TRACK/DISMISS</b> : Basé sur le score temporel et la maturité de l'exploit.
+        </div>
+        <div>
+            <span class="logic-title">📈 MÉTHODES DE RISQUE CUMULÉ</span>
+            • <b>M1 (Standard)</b> : Score pondéré (Base CVSS + Temporal).<br>
+            • <b>M2 (Menace Active)</b> : Sur-pondération si KEV ou RCE détecté.<br>
+            • <b>M3 (Impact Asset)</b> : Score indexé sur la criticité Safety de l'ECU.
         </div>
     </div>
 
-    <div class="card" style="border-left: 4px solid var(--accent-orange);">
-        <h3 style="margin-top:0; font-size:0.9rem; color:var(--accent-orange);">🧠 Moteur de Décision & Logique de Risque Automatisée</h3>
-        <div class="method-info">
-            <div>
-                <b>RÈGLES SSVC (Stakeholder Context) :</b><br>
-                • <b>Immediate Patch :</b> KEV détecté + ECU Exposé (Telematics/V2X).<br>
-                • <b>CyberAnalyse :</b> ECU Safety-Critical (Freins/ADAS) + CVSS > 7.<br>
-                • <b>Track/Dismiss :</b> Basé sur le score temporel et l'exposition.
-            </div>
-            <div>
-                <b>MÉTHODES DE CALCUL DU RISQUE :</b><br>
-                • <b>M1 (Standard) :</b> Score pondéré CVSS Base(70%) + Temp(30%).<br>
-                • <b>M2 (Menace active) :</b> Focus KEV CISA et Vecteurs RCE.<br>
-                • <b>M3 (Asset Focus) :</b> Risque indexé sur la criticité ECU du fichier Inventory.
-            </div>
-            <div>
-                <b>AUTOMATISATION :</b><br>
-                Le système identifie l'exposition et la sécurité via les attributs <code>tags</code> ou <code>description</code> de votre inventaire matériel.
-            </div>
-        </div>
-    </div>
-
-    <div class="card" style="padding:15px; display:flex; gap:20px; align-items:center;">
-        <label>Filtrer par Unité :</label>
-        <select id="ecuFilter" onchange="render()"><option value="ALL">Toutes les unités (Vue Véhicule Complète)</option></select>
+    <div class="card" style="margin-bottom:20px; display:flex; align-items:center; gap:20px;">
+        <label>Sélectionner une unité :</label>
+        <select id="ecuFilter" onchange="renderDashboard()"><option value="ALL">Véhicule Complet (Global)</option></select>
+        <span id="data-count" style="font-size:0.8rem; color:var(--accent-green);"></span>
     </div>
 
     <div class="grid-kpi">
-        <div class="card stat-card" style="border-color: var(--accent-blue);"><span class="stat-value" id="kpi-total">0</span><span class="stat-label">Vulnérabilités Total</span></div>
-        <div class="card stat-card" style="border-color: var(--accent-red);"><span class="stat-value" id="kpi-kev">0</span><span class="stat-label">Menaces KEV (Priorité)</span></div>
-        <div class="card stat-card" style="border-color: var(--accent-purple);"><span class="stat-value" id="kpi-rce">0</span><span class="stat-label">Vecteurs RCE</span></div>
-        <div class="card stat-card" style="border-color: var(--accent-green);"><span class="stat-value" id="kpi-risk">0</span><span class="stat-label">Risque Moyen M1</span></div>
+        <div class="card stat-card" style="border-top: 4px solid var(--accent-blue);">
+            <span id="kpi-total" class="stat-value">0</span>
+            <span class="stat-label">Vulnérabilités</span>
+        </div>
+        <div class="card stat-card" style="border-top: 4px solid var(--accent-red);">
+            <span id="kpi-kev" class="stat-value">0</span>
+            <span class="stat-label">Menaces Actives (KEV)</span>
+        </div>
+        <div class="card stat-card" style="border-top: 4px solid var(--accent-purple);">
+            <span id="kpi-rce" class="stat-value">0</span>
+            <span class="stat-label">Vecteurs RCE</span>
+        </div>
+        <div class="card stat-card" style="border-top: 4px solid var(--accent-green);">
+            <span id="kpi-risk" class="stat-value">0</span>
+            <span class="stat-label">Risque Moyen (M1)</span>
+        </div>
     </div>
 
     <div class="card">
-        <h3 style="margin:0 0 15px 0;">📊 État de santé du Parc ECU</h3>
+        <h3 style="margin-top:0; font-size:1rem; color:var(--accent-blue);">📊 État de Santé des ECU</h3>
         <table id="summaryTable">
             <thead>
                 <tr>
-                    <th onclick="sortTable(0, 'summaryTable')">ECU / Composant</th>
+                    <th onclick="sortTable(0, 'summaryTable')">Unité ECU</th>
                     <th onclick="sortTable(1, 'summaryTable')">Vulns</th>
-                    <th onclick="sortTable(2, 'summaryTable')">Max CVSS</th>
-                    <th onclick="sortTable(3, 'summaryTable')">Statut Menace</th>
-                    <th onclick="sortTable(4, 'summaryTable')">Risque M1</th>
-                    <th onclick="sortTable(5, 'summaryTable')">Risque M2</th>
-                    <th onclick="sortTable(6, 'summaryTable')">Risque M3 (Safety)</th>
+                    <th onclick="sortTable(2, 'summaryTable')">Sévérité Max</th>
+                    <th onclick="sortTable(3, 'summaryTable')">M1 (Base)</th>
+                    <th onclick="sortTable(4, 'summaryTable')">M2 (Threat)</th>
+                    <th onclick="sortTable(5, 'summaryTable')">M3 (Safety)</th>
                 </tr>
             </thead>
             <tbody id="summaryBody"></tbody>
         </table>
     </div>
 
-    <div id="detailsContainer"></div>
+    <div id="detailedSections"></div>
 </div>
 
 <script>
-/**
- * DICTIONNAIRE CWE & ATTACK PATHS
- */
-const ATTACK_PATHS = {
-    "CWE-787": "Écriture hors-limites : Un attaquant injecte du code dans la mémoire vive pour détourner le flux d'exécution de l'ECU.",
-    "CWE-20": "Validation d'entrée : Permet l'envoi de messages CAN ou Ethernet malformés pour crasher le service.",
-    "CWE-125": "Lecture hors-limites : Extraction de clés cryptographiques ou de certificats depuis la mémoire.",
-    "CWE-416": "Use After Free : Corruption mémoire avancée menant généralement à une exécution de code (RCE).",
-    "CWE-200": "Fuite d'info : Révèle des détails sur l'architecture logicielle facilitant une attaque ciblée."
+// --- DICTIONNAIRE CWE ---
+const CWE_DESC = {
+    "CWE-787": "Écriture mémoire hors limites (Corruption)",
+    "CWE-125": "Lecture mémoire hors limites (Fuite d'info)",
+    "CWE-20": "Validation d'entrée insuffisante (Injection/Crash)",
+    "CWE-416": "Utilisation après libération (Escalade de privilèges)",
+    "CWE-200": "Exposition d'informations sensibles"
 };
 
-let inventoryData = [];
-let vulnsData = [];
+let inventory = [];
+let vulns = [];
 
-/**
- * LOGIQUE DE CALCUL ET DÉCISION
- */
-function getEcuContext(ecu) {
-    // Détection automatique du contexte basée sur les données du JSON
-    const desc = (ecu.description || "").toLowerCase();
+// --- LOGIQUE AUTOMATISÉE ---
+function getContext(ecu) {
     const id = (ecu.component_id || "").toLowerCase();
+    const desc = (ecu.description || "").toLowerCase();
     
-    // Un ECU est exposé s'il gère les communications externes
-    const isExposed = id.includes("gateway") || id.includes("telematics") || id.includes("v2x") || id.includes("infotainment");
-    // Un ECU est safety-critical s'il touche à la dynamique du véhicule
-    const isSafety = id.includes("adas") || id.includes("brake") || id.includes("engine") || id.includes("steering") || desc.includes("safety");
+    // Détection auto Exposition
+    const isExposed = id.includes("gateway") || id.includes("telematics") || id.includes("v2x") || id.includes("infotainment") || id.includes("wifi");
+    // Détection auto Safety
+    const isSafety = id.includes("adas") || id.includes("brake") || id.includes("steering") || id.includes("engine") || desc.includes("safety");
 
-    return { 
-        exposure: isExposed ? "High" : "Low", 
+    return {
+        exposure: isExposed ? "High" : "Low",
         safety: isSafety ? "Critical" : "Standard",
-        weight: isSafety ? 1.5 : 1.0
+        weight: isSafety ? 1.4 : 1.0
     };
 }
 
-function computeSSVC(v, ctx) {
+function getSSVC(v, ctx) {
     const score = v.metrics?.baseScore || 0;
     const isKev = v.is_kev === true || v.is_kev === "true";
     const isRce = (v.description || "").toLowerCase().includes("rce");
 
     if (isKev && ctx.exposure === "High") 
-        return { label: "IMMEDIATE_PATCH", color: "var(--accent-red)", logic: "Menace KEV + ECU exposé" };
+        return { label: "IMMEDIATE_PATCH", color: "var(--accent-red)", why: "KEV Actif sur ECU Exposé" };
     if (ctx.safety === "Critical" && score >= 7.5) 
-        return { label: "CYBER_ANALYSE", color: "var(--accent-orange)", logic: "Impact Safety potentiel (ASIL) sur ECU vital" };
+        return { label: "CYBER_ANALYSE", color: "var(--accent-orange)", why: "Sévérité haute sur ECU Vital" };
     if (isRce || score >= 8.5) 
-        return { label: "SCHEDULE_PATCH", color: "var(--accent-purple)", logic: "Sévérité élevée ou vecteur d'exécution de code" };
+        return { label: "SCHEDULE_PATCH", color: "var(--accent-purple)", why: "Vecteur critique ou sévérité > 8.5" };
     if (score >= 4.0) 
-        return { label: "TRACK", color: "var(--accent-blue)", logic: "Risque modéré, surveillance des exploits" };
+        return { label: "TRACK", color: "var(--accent-blue)", why: "Risque modéré : mise en veille" };
     
-    return { label: "DISMISS", color: "var(--text-gray)", logic: "Risque résiduel faible" };
+    return { label: "DISMISS", color: "var(--text-gray)", why: "Impact négligeable" };
 }
 
-/**
- * INITIALISATION ET CHARGEMENT
- */
+// --- RENDU ---
 async function init() {
     try {
-        // Chargement des fichiers réels
-        const [resInv, resVulns] = await Promise.all([
+        const [resInv, resVuln] = await Promise.all([
             fetch('data/inventory/inventory_cpe.json'),
             fetch('data/results/detected_vulns.json')
         ]);
-        
-        inventoryData = await resInv.json();
-        vulnsData = await resVulns.json();
+        inventory = await resInv.json();
+        vulns = await resVuln.json();
 
-        // Remplissage du sélecteur d'ECU
+        // Remplir le filtre
         const filter = document.getElementById('ecuFilter');
-        inventoryData.forEach(item => {
-            let opt = new Option(`${item.component_id} (${item.description})`, item.component_id);
-            filter.add(opt);
-        });
-
-        document.getElementById('data-status').innerText = `✅ ${vulnsData.length} vulnérabilités chargées.`;
-        render();
-    } catch (e) {
-        document.getElementById('data-status').innerText = "❌ Erreur de chargement des JSON.";
-        console.error(e);
-    }
+        inventory.forEach(e => filter.add(new Option(`${e.component_id} - ${e.description}`, e.component_id)));
+        
+        document.getElementById('data-count').innerText = `(${vulns.length} vulnérabilités traitées)`;
+        renderDashboard();
+    } catch (e) { console.error("Erreur chargement JSON:", e); }
 }
 
-function render() {
+function renderDashboard() {
     const filterVal = document.getElementById('ecuFilter').value;
     const summaryBody = document.getElementById('summaryBody');
-    const detailsContainer = document.getElementById('detailsContainer');
+    const detailedSections = document.getElementById('detailedSections');
     
     summaryBody.innerHTML = "";
-    detailsContainer.innerHTML = "";
+    detailedSections.innerHTML = "";
 
-    let stats = { total: 0, kev: 0, rce: 0, riskSum: 0 };
+    let kpis = { total: 0, kev: 0, rce: 0, riskSum: 0 };
 
-    inventoryData.forEach(ecu => {
+    inventory.forEach(ecu => {
         if (filterVal !== "ALL" && ecu.component_id !== filterVal) return;
 
-        const ev = vulnsData.filter(v => v.ecu === ecu.component_id);
-        if (ev.length === 0 && filterVal !== "ALL") return;
+        const ecuVulns = vulns.filter(v => v.ecu === ecu.component_id);
+        if (ecuVulns.length === 0 && filterVal !== "ALL") return;
 
-        const ctx = getEcuContext(ecu);
-        const cvssList = ev.map(v => v.metrics?.baseScore || 0);
-        const maxCvss = cvssList.length ? Math.max(...cvssList) : 0;
+        const ctx = getContext(ecu);
+        const maxCvss = ecuVulns.length ? Math.max(...ecuVulns.map(v => v.metrics?.baseScore || 0)) : 0;
         
-        // Calcul des scores par ECU (Moyennes/Max)
-        const m1 = ev.length ? Math.round(ev.reduce((acc, v) => acc + (v.metrics?.baseScore || 0) * 10, 0) / ev.length) : 0;
-        
-        stats.total += ev.length;
-        stats.kev += ev.filter(v => v.is_kev === true || v.is_kev === "true").length;
-        stats.rce += ev.filter(v => (v.description || "").toLowerCase().includes("rce")).length;
-        stats.riskSum += m1;
+        // Calcul des scores M1, M2, M3 pour la synthèse
+        const m1 = ecuVulns.length ? Math.round(ecuVulns.reduce((a, b) => a + (b.metrics?.baseScore || 0), 0) / ecuVulns.length * 10) : 0;
+        const m2 = Math.min(100, m1 * (ecuVulns.some(v => v.is_kev) ? 1.3 : 1));
+        const m3 = Math.min(100, Math.round(m1 * ctx.weight));
 
-        // Synthèse ECU
+        kpis.total += ecuVulns.length;
+        kpis.kev += ecuVulns.filter(v => v.is_kev === true || v.is_kev === "true").length;
+        kpis.rce += ecuVulns.filter(v => (v.description || "").toLowerCase().includes("rce")).length;
+        kpis.riskSum += m1;
+
+        // Ligne de synthèse
         summaryBody.innerHTML += `
             <tr>
-                <td><b>${ecu.component_id}</b><br><small style="color:var(--text-gray)">${ecu.description}</small></td>
-                <td><span class="badge bg-blue">${ev.length}</span></td>
-                <td><span class="badge ${maxCvss > 8 ? 'bg-red' : 'bg-orange'}">${maxCvss.toFixed(1)}</span></td>
-                <td>
-                    ${ctx.exposure === "High" ? '<span class="badge bg-purple">Exposé</span>' : ''}
-                    ${ctx.safety === "Critical" ? '<span class="badge bg-red">Safety-Critical</span>' : ''}
+                <td><b>${ecu.component_id}</b><br>
+                    <span class="badge bg-gray">${ctx.exposure} Expo</span> 
+                    <span class="badge bg-gray">${ctx.safety} Safety</span>
                 </td>
+                <td><span class="badge bg-blue">${ecuVulns.length}</span></td>
+                <td><span class="badge ${maxCvss >= 7 ? 'bg-red' : 'bg-orange'}">${maxCvss.toFixed(1)}</span></td>
                 <td>${m1}</td>
-                <td>${Math.min(100, Math.round(m1 * (ctx.exposure === "High" ? 1.2 : 1)))}</td>
-                <td><b>${Math.min(100, Math.round(m1 * ctx.weight))}</b></td>
+                <td>${m2}</td>
+                <td><b style="color:var(--accent-green)">${m3}</b></td>
             </tr>
         `;
 
-        // Tableau détaillé par CVE
-        if (ev.length > 0) {
-            let detailRows = ev.map(v => {
-                const decision = computeSSVC(v, ctx);
+        // Section détaillée
+        if (ecuVulns.length > 0) {
+            let detailRows = ecuVulns.map(v => {
+                const dec = getSSVC(v, ctx);
                 const score = v.metrics?.baseScore || 0;
-                
-                // Calcul des 3 scores par vuln
-                const s1 = Math.round(score * 10);
-                const s2 = Math.round((score * 8) + (v.is_kev ? 20 : 0));
-                const s3 = Math.round(score * 10 * ctx.weight);
-
+                const isKev = v.is_kev === true || v.is_kev === "true";
                 return `
                     <tr>
-                        <td><a href="index.html?cve=${v.cve_id}" style="color:var(--accent-blue); font-weight:bold;">${v.cve_id}</a></td>
+                        <td style="width:120px"><a href="index.html?cve=${v.cve_id}" style="color:var(--accent-blue); font-weight:bold;">${v.cve_id}</a></td>
                         <td>
-                            <div style="margin-bottom:5px;">${v.description}</div>
-                            <div class="audit-trail">
-                                <b>Trace Décision :</b> ${decision.logic} | 
-                                Context [Exp:${ctx.exposure}, Safe:${ctx.safety}]
-                            </div>
+                            ${v.description}
+                            ${isKev ? '<span class="badge bg-red">KEV CISA</span>' : ''}
+                            <span class="justification"><b>Logique :</b> ${dec.why}</span>
                         </td>
-                        <td>
-                            <div class="badge bg-gray">M1: ${s1}</div>
-                            <div class="badge bg-gray">M2: ${s2}</div>
-                            <div class="badge bg-gray">M3: ${s3}</div>
+                        <td style="width:100px">
+                            <b>${score}</b><br>
+                            <small style="color:var(--text-gray)">Temp: ${v.metrics?.temporalScore || 'N/A'}</small>
                         </td>
-                        <td>
-                            <div class="badge" style="border-color:${decision.color}; color:${decision.color}; background:${decision.color}11">
-                                ${decision.label}
-                            </div>
+                        <td style="width:160px">
+                            <span class="badge" style="border-color:${dec.color}; color:${dec.color}; background:${dec.color}11">${dec.label}</span>
+                        </td>
+                        <td style="width:100px; font-weight:bold;">
+                            ${Math.round(score * 10)}
                         </td>
                     </tr>
                 `;
             }).join('');
 
-            // Analyse CWE pour cet ECU
-            const uniqueCwes = [...new Set(ev.flatMap(v => v.cwe_ids || []))];
-            let pathsHtml = uniqueCwes.map(cwe => `
-                <div style="margin-bottom:5px;">
-                    <span class="badge bg-blue" style="width:70px">${cwe}</span> ${ATTACK_PATHS[cwe] || "Analyse de chemin complexe requise."}
-                </div>
-            `).join('');
+            const cwes = [...new Set(ecuVulns.flatMap(v => v.cwe_ids || []))];
+            let attackPathHtml = cwes.map(c => `<div style="margin-bottom:4px;"><span class="badge bg-purple">${c}</span> ${CWE_DESC[c] || "Faiblesse logicielle identifiée."}</div>`).join('');
 
-            detailsContainer.innerHTML += `
-                <div class="card" style="border-top: 2px solid var(--accent-blue);">
-                    <h3 style="margin-top:0; color:var(--accent-blue)">🔍 Analyse Détaillée : ${ecu.component_id}</h3>
+            detailedSections.innerHTML += `
+                <div class="card" style="margin-top:25px; border-left: 4px solid var(--accent-blue);">
+                    <h3 style="margin-top:0; color:var(--accent-blue)">🔍 Analyse Granulaire : ${ecu.component_id}</h3>
                     <table>
-                        <thead><tr><th>CVE ID</th><th>Analyse de Menace & Justification SSVC</th><th>Risques (M1,M2,M3)</th><th>Décision</th></tr></thead>
+                        <thead><tr><th>ID CVE</th><th>Menace & Justification SSVC</th><th>CVSS</th><th>Décision</th><th>Risque CVE</th></tr></thead>
                         <tbody>${detailRows}</tbody>
                     </table>
-                    <div class="attack-path-box">
-                        <div style="font-weight:bold; margin-bottom:10px; color:var(--accent-purple);">🧬 CHEMINS D'ATTAQUE IDENTIFIÉS (CWE STACK) :</div>
-                        ${pathsHtml || "Aucun chemin d'attaque standard détecté."}
+                    <div class="attack-path">
+                        <span style="font-weight:bold; color:var(--accent-purple); font-size:0.75rem; text-transform:uppercase;">🧬 Stack de Chemins d'Attaque :</span>
+                        <div style="margin-top:10px; font-size:0.8rem;">${attackPathHtml || "Aucun chemin CWE standardisé."}</div>
                     </div>
                 </div>
             `;
@@ -303,15 +281,12 @@ function render() {
     });
 
     // Update KPIs
-    document.getElementById('kpi-total').innerText = stats.total;
-    document.getElementById('kpi-kev').innerText = stats.kev;
-    document.getElementById('kpi-rce').innerText = stats.rce;
-    document.getElementById('kpi-risk').innerText = Math.round(stats.riskSum / (inventoryData.length || 1)) + "/100";
+    document.getElementById('kpi-total').innerText = kpis.total;
+    document.getElementById('kpi-kev').innerText = kpis.kev;
+    document.getElementById('kpi-rce').innerText = kpis.rce;
+    document.getElementById('kpi-risk').innerText = Math.round(kpis.riskSum / (inventory.length || 1)) + "/100";
 }
 
-/**
- * UTILITAIRE : TRI DE TABLEAU
- */
 function sortTable(n, tableId) {
     let table = document.getElementById(tableId);
     let rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
