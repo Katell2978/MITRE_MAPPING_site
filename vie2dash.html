@@ -36,7 +36,7 @@
         .ecu-section { margin-bottom: 40px; background: var(--card-dark); border: 1px solid var(--border-gray); border-radius: 8px; overflow: hidden; }
         .ecu-header { background: #1c2128; padding: 15px 20px; border-bottom: 1px solid var(--border-gray); display: flex; justify-content: space-between; align-items: center; }
         
-        .badge { padding: 2px 8px; border-radius: 10px; font-size: 0.65rem; font-weight: bold; border: 1px solid transparent; display: inline-block; margin-right: 4px; }
+        .badge { padding: 2px 8px; border-radius: 10px; font-size: 0.65rem; font-weight: bold; border: 1px solid transparent; display: inline-block; margin-right: 4px; cursor: help; }
         .bg-red { background: rgba(248,81,73,0.15); color: var(--accent-red); border-color: var(--accent-red); }
         .bg-orange { background: rgba(240,136,62,0.15); color: var(--accent-orange); border-color: var(--accent-orange); }
         .bg-purple { background: rgba(188,140,255,0.15); color: var(--accent-purple); border-color: var(--accent-purple); }
@@ -68,7 +68,7 @@
         <div class="stat-card"><span id="total-cve" class="stat-value">0</span><span class="stat-label">CVE Détectées</span></div>
         <div class="stat-card"><span id="total-kev" class="stat-value" style="color:var(--accent-red)">0</span><span class="stat-label">KEV Exploités</span></div>
         <div class="stat-card"><span id="total-rce" class="stat-value" style="color:var(--accent-purple)">0</span><span class="stat-label">Vecteurs RCE</span></div>
-        <div class="stat-card" style="border-bottom: 3px solid var(--accent-green);"><span id="avg-risk" class="stat-value">0</span><span class="stat-label">Score Risque Flotte</span></div>
+        <div class="stat-card" style="border-bottom: 3px solid var(--accent-green);"><span id="avg-risk" class="stat-value">0</span><span class="stat-label">Score Risque Scope</span></div>
     </div>
 
     <div class="summary-wrapper">
@@ -87,29 +87,13 @@
         </table>
     </div>
 
-    <div class="methodology-box">
-        <h3>🧮 Méthodologie du Calcul de Risque</h3>
-        <p style="font-size: 0.85rem; color: #8b949e;">Le score VIE permet d'ajuster la sévérité théorique (CVSS Base) à la réalité de la menace terrain.</p>
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
-            <div>
-                <strong style="color: #eee; font-size: 0.8rem;">1. SCORE PAR LIGNE (CVE Unitaire)</strong>
-                <span class="formula">Score = CVSS_Temporel × 10 [× 1.1 si RCE] [× 1.2 si KEV]</span>
-                <p style="font-size: 0.7rem; color: #8b949e;">Le score <strong>Temporel</strong> reflète l'état actuel des correctifs. Bonus appliqué si RCE ou KEV.</p>
-            </div>
-            <div>
-                <strong style="color: #eee; font-size: 0.8rem;">2. SCORE GLOBAL PAR ECU</strong>
-                <span class="formula">ECU_Score = (Max_Base × 7) + (Bonus_Log(Volume)) [Bonus KEV/RCE]</span>
-                <p style="font-size: 0.7rem; color: #8b949e;">L'agrégation privilégie la vulnérabilité la plus haute + volume de failles (max +15 pts).</p>
-            </div>
-        </div>
-    </div>
-
     <div id="ecu-details-container"></div>
 </div>
 
 <script>
     let inventory = [];
     let vulnsData = [];
+    let processedData = []; // Stockage global pour recalculer les KPIs au filtrage
 
     function cleanProductName(cpe) {
         if (!cpe) return "N/A";
@@ -146,11 +130,11 @@
     }
 
     function renderDashboard() {
-        const filter = document.getElementById('ecuFilter');
+        const filterSelect = document.getElementById('ecuFilter');
         const summaryBody = document.getElementById('summary-body');
         const detailsContainer = document.getElementById('ecu-details-container');
         
-        let gTotal = 0, gKev = 0, gRce = 0, gRiskSum = 0;
+        processedData = [];
 
         inventory.forEach(item => {
             const ecuId = item.component_id;
@@ -158,56 +142,61 @@
 
             const opt = document.createElement('option');
             opt.value = ecuId; opt.textContent = `${ecuId} - ${ecuName}`;
-            filter.appendChild(opt);
+            filterSelect.appendChild(opt);
 
             const ev = vulnsData.filter(v => v.ecu === ecuId);
-            let eMaxCvss = 0, eRceCount = 0, eKevCount = 0, detailRows = "";
+            let eRceCount = 0, eKevCount = 0;
             let allCvss = ev.map(v => v.metrics?.baseScore || 0);
 
-            ev.forEach(v => {
+            // Préparation des lignes détaillées avec calcul du risque individuel pour le tri
+            let detailItems = ev.map(v => {
                 const cvssBase = v.metrics?.baseScore || 0;
                 const cvssTemp = v.metrics?.temporalScore || (cvssBase * 0.9).toFixed(1);
                 const isRce = v.description.toLowerCase().includes("remote code") || v.description.toLowerCase().includes(" rce ");
                 const isKev = v.is_kev === true || v.is_kev === "true";
                 const lineRisk = calculateLineRisk(cvssTemp, isRce, isKev);
+                
+                if (isRce) eRceCount++;
+                if (isKev) eKevCount++;
 
-                if (cvssBase > eMaxCvss) eMaxCvss = cvssBase;
-                if (isRce) { eRceCount++; gRce++; }
-                if (isKev) { eKevCount++; gKev++; }
-
-                detailRows += `
-                    <tr>
-                        <td><a href="index.html?cve=${v.cve_id}" class="cve-link">${v.cve_id}</a></td>
-                        <td style="color:var(--accent-blue)">${cleanProductName(v.cpe)}</td>
-                        <td>
-                            <div style="margin-bottom:5px;">${v.description.substring(0,80)}...</div>
-                            ${isRce ? '<span class="badge bg-purple">RCE</span>' : ''}
-                            ${isKev ? '<span class="badge bg-red">KEV</span>' : ''}
-                        </td>
-                        <td><span class="badge bg-gray">${cvssBase.toFixed(1)}</span></td>
-                        <td><span class="badge bg-blue">${cvssTemp}</span></td>
-                        <td style="text-align:right;">
-                            <span style="font-weight:bold; color:${lineRisk > 85 ? 'var(--accent-red)' : lineRisk > 50 ? 'var(--accent-orange)' : 'white'}">${lineRisk}</span>
-                        </td>
-                    </tr>`;
+                return { ...v, cvssBase, cvssTemp, isRce, isKev, lineRisk };
             });
 
+            // TRI PAR RISQUE DÉCROISSANT
+            detailItems.sort((a, b) => b.lineRisk - a.lineRisk);
+
             const eRiskScore = calculateECURisk(allCvss, eRceCount > 0, eKevCount > 0);
-            gRiskSum += eRiskScore; gTotal += ev.length;
+            processedData.push({ ecuId, ecuName, vulns: detailItems, eRiskScore, eRceCount, eKevCount, eMaxCvss: Math.max(...allCvss, 0) });
+
+            let detailRows = detailItems.map(v => `
+                <tr>
+                    <td><a href="index.html?cve=${v.cve_id}" class="cve-link">${v.cve_id}</a></td>
+                    <td style="color:var(--accent-blue)">${cleanProductName(v.cpe)}</td>
+                    <td>
+                        <div style="margin-bottom:5px;">${v.description.substring(0,80)}...</div>
+                        ${v.isRce ? `<span class="badge bg-purple" title="ECU: ${ecuId} | CVE: ${v.cve_id}">RCE</span>` : ''}
+                        ${v.isKev ? `<span class="badge bg-red" title="ECU: ${ecuId} | CVE: ${v.cve_id}">KEV</span>` : ''}
+                    </td>
+                    <td><span class="badge bg-gray">${v.cvssBase.toFixed(1)}</span></td>
+                    <td><span class="badge bg-blue">${v.cvssTemp}</span></td>
+                    <td style="text-align:right;">
+                        <span style="font-weight:bold; color:${v.lineRisk > 85 ? 'var(--accent-red)' : v.lineRisk > 50 ? 'var(--accent-orange)' : 'white'}">${v.lineRisk}</span>
+                    </td>
+                </tr>`).join('');
 
             summaryBody.innerHTML += `
                 <tr class="summary-row" data-ecu="${ecuId}">
                     <td><strong style="color:var(--accent-blue)">${ecuId}</strong><br><small>${ecuName}</small></td>
-                    <td>${ev.length} CVE ${eRceCount ? `<span class="badge bg-purple">RCE</span>` : ''}</td>
-                    <td>${eKevCount > 0 ? `<span class="badge bg-red">${eKevCount}</span>` : `<span style="color:#444">—</span>`}</td>
-                    <td><span class="badge ${eMaxCvss>=7?'bg-red':'bg-orange'}">${eMaxCvss.toFixed(1)}</span></td>
+                    <td>${ev.length} CVE ${eRceCount ? `<span class="badge bg-purple" title="Contient des RCE">RCE</span>` : ''}</td>
+                    <td>${eKevCount > 0 ? `<span class="badge bg-red" title="Contient des KEV">${eKevCount}</span>` : `<span style="color:#444">—</span>`}</td>
+                    <td><span class="badge ${Math.max(...allCvss,0)>=7?'bg-red':'bg-orange'}">${Math.max(...allCvss,0).toFixed(1)}</span></td>
                     <td style="text-align:right;"><span style="font-weight:800; font-size:1.1rem; color:${eRiskScore>75?'var(--accent-red)':'var(--accent-green)'}">${eRiskScore}/100</span></td>
                 </tr>`;
 
             detailsContainer.innerHTML += `
                 <div class="ecu-section" data-ecu="${ecuId}">
                     <div class="ecu-header">
-                        <h2 style="margin:0; font-size:1.1rem; color:var(--accent-blue)">${ecuId} — Détails</h2>
+                        <h2 style="margin:0; font-size:1.1rem; color:var(--accent-blue)">${ecuId} — Détails (Triés par Risque)</h2>
                         <span class="badge bg-gray">ECU RISK: ${eRiskScore}/100</span>
                     </div>
                     <table class="table-res">
@@ -217,11 +206,22 @@
                 </div>`;
         });
 
-        document.getElementById('total-cve').innerText = gTotal;
-        document.getElementById('total-kev').innerText = gKev;
-        document.getElementById('total-rce').innerText = gRce;
-        document.getElementById('avg-risk').innerText = Math.round(gRiskSum / (inventory.length || 1));
-        document.getElementById('debug-monitor').innerText = "> Dashboard rendu.";
+        updateKPIs("ALL");
+        document.getElementById('debug-monitor').innerText = "> Dashboard prêt. Tri par risque activé.";
+    }
+
+    function updateKPIs(filterValue) {
+        let filtered = (filterValue === "ALL") ? processedData : processedData.filter(d => d.ecuId === filterValue);
+        
+        let totalCve = filtered.reduce((acc, d) => acc + d.vulns.length, 0);
+        let totalKev = filtered.reduce((acc, d) => acc + d.eKevCount, 0);
+        let totalRce = filtered.reduce((acc, d) => acc + d.eRceCount, 0);
+        let avgRisk = Math.round(filtered.reduce((acc, d) => acc + d.eRiskScore, 0) / (filtered.length || 1));
+
+        document.getElementById('total-cve').innerText = totalCve;
+        document.getElementById('total-kev').innerText = totalKev;
+        document.getElementById('total-rce').innerText = totalRce;
+        document.getElementById('avg-risk').innerText = avgRisk;
     }
 
     function applyFilter() {
@@ -229,6 +229,7 @@
         document.querySelectorAll('.summary-row, .ecu-section').forEach(el => {
             el.classList.toggle('hidden', val !== "ALL" && el.getAttribute('data-ecu') !== val);
         });
+        updateKPIs(val);
     }
 
     window.onload = init;
