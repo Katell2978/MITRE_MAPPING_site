@@ -13,36 +13,35 @@
         body { background: var(--bg-dark); color: #c9d1d9; font-family: -apple-system, system-ui, sans-serif; padding: 20px; margin: 0; }
         .container { max-width: 1400px; margin: 0 auto; }
         
-        /* Header & Filter */
         .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid var(--border-gray); padding-bottom: 20px; }
         .filter-box { background: var(--card-dark); border: 1px solid var(--border-gray); padding: 10px 15px; border-radius: 8px; display: flex; align-items: center; gap: 10px; }
         select { background: #0d1117; color: var(--accent-blue); border: 1px solid var(--border-gray); padding: 8px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; outline: none; }
         
         #debug-monitor { background: #000; border: 1px solid var(--border-gray); color: var(--accent-green); font-family: monospace; font-size: 0.7rem; padding: 10px; margin-bottom: 20px; border-radius: 6px; max-height: 80px; overflow-y: auto; }
 
-        /* Stats Grid */
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
         .stat-card { background: var(--card-dark); border: 1px solid var(--border-gray); padding: 20px; border-radius: 8px; text-align: center; }
         .stat-value { font-size: 2.2rem; font-weight: 800; display: block; color: #fff; }
         .stat-label { color: #8b949e; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* Summary Wrapper */
-        .summary-wrapper { background: var(--card-dark); border: 1px solid var(--border-gray); border-radius: 8px; margin-bottom: 40px; padding: 20px; }
+        .summary-wrapper { background: var(--card-dark); border: 1px solid var(--border-gray); border-radius: 8px; margin-bottom: 20px; padding: 20px; }
         .summary-table, .table-res { width: 100%; border-collapse: collapse; }
         th { text-align: left; font-size: 0.75rem; color: #8b949e; padding: 12px; border-bottom: 2px solid var(--border-gray); text-transform: uppercase; }
         td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: top; }
 
-        /* ECU Detail Sections */
+        /* Méthodologie Section */
+        .methodology-box { background: #1c2128; border: 1px dotted var(--border-gray); padding: 20px; margin-bottom: 30px; border-radius: 8px; }
+        .methodology-box h3 { color: var(--accent-orange); margin-top: 0; font-size: 0.9rem; text-transform: uppercase; }
+        .formula { font-family: monospace; background: #0d1117; padding: 10px; border-radius: 4px; display: block; margin: 10px 0; color: #eee; }
+
         .ecu-section { margin-bottom: 40px; background: var(--card-dark); border: 1px solid var(--border-gray); border-radius: 8px; overflow: hidden; }
         .ecu-header { background: #1c2128; padding: 15px 20px; border-bottom: 1px solid var(--border-gray); display: flex; justify-content: space-between; align-items: center; }
         
-        /* Badges */
         .badge { padding: 2px 8px; border-radius: 10px; font-size: 0.65rem; font-weight: bold; border: 1px solid transparent; display: inline-block; margin-right: 4px; }
         .bg-red { background: rgba(248,81,73,0.15); color: var(--accent-red); border-color: var(--accent-red); }
         .bg-orange { background: rgba(240,136,62,0.15); color: var(--accent-orange); border-color: var(--accent-orange); }
         .bg-purple { background: rgba(188,140,255,0.15); color: var(--accent-purple); border-color: var(--accent-purple); }
         .bg-gray { background: rgba(110,118,129,0.15); color: #c9d1d9; border-color: #444c56; }
-        .bg-blue { background: rgba(88,166,255,0.15); color: var(--accent-blue); border-color: var(--accent-blue); }
         
         .hidden { display: none !important; }
     </style>
@@ -52,40 +51,61 @@
 <div class="container">
     <div class="header-flex">
         <div>
-            <h1 style="color:var(--accent-blue); margin:0;">🛡️ VIE Advanced Risk Dashboard — KEV & Temporal Analysis</h1>
-            <p style="color:#8b949e; font-size: 0.9rem; margin:5px 0;">Analyse cyber-physique et suivi des vulnérabilités exploitées (CISA KEV).</p>
+            <h1 style="color:var(--accent-blue); margin:0;">🛡️ VIE Advanced Risk Dashboard</h1>
+            <p style="color:#8b949e; font-size: 0.9rem; margin:5px 0;">Analyse cyber-physique unitaire et globale.</p>
         </div>
         <div class="filter-box">
-            <label style="font-size:0.75rem; font-weight:bold; color:#8b949e;">FILTRE UNITÉ :</label>
-            <select id="ecuFilter" onchange="applyFilter()">
-                <option value="ALL">Tout le véhicule</option>
-            </select>
+            <select id="ecuFilter" onchange="applyFilter()"><option value="ALL">Tout le véhicule</option></select>
         </div>
     </div>
 
-    <div id="debug-monitor">> Chargement des modules de risque...</div>
+    <div id="debug-monitor">> Système prêt.</div>
 
     <div class="stats-grid">
         <div class="stat-card"><span id="total-cve" class="stat-value">0</span><span class="stat-label">CVE Détectées</span></div>
-        <div class="stat-card" style="border-bottom: 3px solid var(--accent-red);"><span id="total-kev" class="stat-value" style="color:var(--accent-red)">0</span><span class="stat-label">Exploits Actifs (KEV)</span></div>
-        <div class="stat-card" style="border-bottom: 3px solid var(--accent-purple);"><span id="total-rce" class="stat-value" style="color:var(--accent-purple)">0</span><span class="stat-label">Vecteurs RCE</span></div>
+        <div class="stat-card"><span id="total-kev" class="stat-value" style="color:var(--accent-red)">0</span><span class="stat-label">KEV Actifs</span></div>
+        <div class="stat-card"><span id="total-rce" class="stat-value" style="color:var(--accent-purple)">0</span><span class="stat-label">Vecteurs RCE</span></div>
         <div class="stat-card" style="border-bottom: 3px solid var(--accent-green);"><span id="avg-risk" class="stat-value">0</span><span class="stat-label">Score Risque Flotte</span></div>
     </div>
 
     <div class="summary-wrapper">
-        <h3 style="margin-top:0; color:var(--accent-blue); font-size:1rem;">📊 Synthèse de l'état de santé</h3>
+        <h3 style="margin-top:0; color:var(--accent-blue); font-size:1rem;">📊 Synthèse par Unité</h3>
         <table class="summary-table">
             <thead>
                 <tr>
                     <th>UNITÉ</th>
                     <th>VULNÉRABILITÉS</th>
-                    <th>KEV</th>
-                    <th>SÉVÉRITÉ MAX (BASE)</th>
-                    <th style="text-align:right;">VIE RISK SCORE</th>
+                    <th>SÉVÉRITÉ MAX</th>
+                    <th style="text-align:right;">UNIT RISK SCORE</th>
                 </tr>
             </thead>
             <tbody id="summary-body"></tbody>
         </table>
+    </div>
+
+    <div class="methodology-box">
+        <h3>🧮 Guide de Calcul du Risque (V3.0)</h3>
+        <p style="font-size: 0.85rem; color: #8b949e;">Pour chaque ligne et pour l'ECU global, nous appliquons une pondération basée sur la dangerosité réelle :</p>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+            <div>
+                <strong style="color: #eee; font-size: 0.8rem;">1. SCORE PAR LIGNE (Vulnérabilité unique)</strong>
+                <span class="formula">Score Ligne = CVSS_Base × 10 [× 1.1 si RCE] [× 1.2 si KEV]</span>
+                <ul style="font-size: 0.75rem; color: #8b949e;">
+                    <li>RCE : Présence de "Remote Code Execution" dans la description.</li>
+                    <li>KEV : Présence dans le catalogue CISA (Known Exploited Vulnerabilities).</li>
+                </ul>
+            </div>
+            <div>
+                <strong style="color: #eee; font-size: 0.8rem;">2. SCORE GLOBAL ECU (Agrégation)</strong>
+                <span class="formula">Score ECU = (Max_CVSS × 7) + (Bonus_Volume)</span>
+                <ul style="font-size: 0.75rem; color: #8b949e;">
+                    <li>Max_CVSS : La faille la plus haute définit la base (70%).</li>
+                    <li>Bonus Volume : Gain logarithmique selon le nombre de CVE.</li>
+                    <li>Multiplicateurs : Si l'ECU contient au moins 1 RCE (+10%) ou 1 KEV (+5%).</li>
+                </ul>
+            </div>
+        </div>
     </div>
 
     <div id="ecu-details-container"></div>
@@ -96,37 +116,39 @@
     let vulnsData = [];
 
     function cleanProductName(cpe) {
-        if (!cpe) return "Produit Inconnu";
+        if (!cpe) return "N/A";
         const p = cpe.split(':');
         return p.length > 4 ? `${p[3].toUpperCase()} ${p[4].replace(/_/g, ' ')}` : cpe;
     }
 
-    function log(msg, err=false) {
-        const m = document.getElementById('debug-monitor');
-        m.innerHTML += `<div style="color:${err?'#f85149':''}">> ${msg}</div>`;
-        m.scrollTop = m.scrollHeight;
+    function calculateLineRisk(cvss, isRce, isKev) {
+        let score = cvss * 10;
+        if (isRce) score *= 1.1;
+        if (isKev) score *= 1.2;
+        return Math.min(100, Math.round(score));
     }
 
-    function calculateAdvancedRisk(cvssArray, hasRce, hasKev) {
+    function calculateECURisk(cvssArray, hasRce, hasKev) {
         if (cvssArray.length === 0) return 0;
         const maxCvss = Math.max(...cvssArray);
         const count = cvssArray.length;
         let score = maxCvss * 7; 
-        let volumeBonus = 15 * (count / (count + 40));
-        score += volumeBonus;
-        if (hasRce) score *= 1.10; 
-        if (hasKev) score *= 1.05; 
+        score += 15 * (count / (count + 20)); 
+        if (hasRce) score *= 1.10;
+        if (hasKev) score *= 1.05;
         return Math.min(100, Math.round(score));
     }
 
     async function init() {
         try {
-            const invRes = await fetch('data/inventory/inventory_cpe.json');
+            const [invRes, vulnRes] = await Promise.all([
+                fetch('data/inventory/inventory_cpe.json'),
+                fetch('data/results/detected_vulns.json')
+            ]);
             inventory = await invRes.json();
-            const vulnRes = await fetch('data/results/detected_vulns.json');
             vulnsData = await vulnRes.json();
             renderDashboard();
-        } catch(e) { log(e.message, true); }
+        } catch(e) { document.getElementById('debug-monitor').innerText = "> Erreur: Fichiers de données introuvables."; }
     }
 
     function renderDashboard() {
@@ -145,61 +167,55 @@
             filter.appendChild(opt);
 
             const ev = vulnsData.filter(v => v.ecu === ecuId);
-            let eMaxCvss = 0, eRceCount = 0, eKevCount = 0;
-            let detailRows = "";
-            
+            let eMaxCvss = 0, eRceCount = 0, eKevCount = 0, detailRows = "";
             let allCvss = ev.map(v => v.metrics?.baseScore || 0);
-            let hasRce = ev.some(v => v.description.toLowerCase().includes("remote code") || v.description.toLowerCase().includes(" rce "));
-            let hasKev = ev.some(v => v.is_kev === true || v.is_kev === "true");
 
             ev.forEach(v => {
-                const cvssBase = v.metrics?.baseScore || 0;
-                // Simulation du score temporel (Base * 0.95 si patch dispo, ou Base si exploit public)
-                const cvssTemp = v.metrics?.temporalScore || (cvssBase * 0.9).toFixed(1);
+                const cvss = v.metrics?.baseScore || 0;
                 const isRce = v.description.toLowerCase().includes("remote code") || v.description.toLowerCase().includes(" rce ");
                 const isKev = v.is_kev === true || v.is_kev === "true";
+                const lineRisk = calculateLineRisk(cvss, isRce, isKev);
 
-                if (cvssBase > eMaxCvss) eMaxCvss = cvssBase;
+                if (cvss > eMaxCvss) eMaxCvss = cvss;
                 if (isRce) { eRceCount++; gRce++; }
                 if (isKev) { eKevCount++; gKev++; }
 
                 detailRows += `
                     <tr>
-                        <td>
-                            <strong>${v.cve_id}</strong>
-                            ${isKev ? '<br><span class="badge bg-red">KEV EXPLOITED</span>' : ''}
-                        </td>
+                        <td><strong>${v.cve_id}</strong></td>
                         <td style="color:var(--accent-blue)">${cleanProductName(v.cpe)}</td>
                         <td>
-                            <div style="margin-bottom:5px;">${v.description.substring(0,80)}...</div>
+                            <div style="margin-bottom:5px;">${v.description.substring(0,70)}...</div>
                             ${isRce ? '<span class="badge bg-purple">RCE</span>' : ''}
+                            ${isKev ? '<span class="badge bg-red">KEV</span>' : ''}
                         </td>
-                        <td><span class="badge bg-gray">${cvssBase.toFixed(1)}</span></td>
-                        <td><span class="badge ${cvssTemp>=7?'bg-orange':'bg-blue'}">${cvssTemp}</span></td>
+                        <td><span class="badge bg-gray">${cvss.toFixed(1)}</span></td>
+                        <td style="text-align:right;">
+                            <span style="font-weight:bold; color:${lineRisk > 80 ? 'var(--accent-red)' : 'white'}">${lineRisk}</span>
+                        </td>
                     </tr>`;
             });
 
-            const eRiskScore = calculateAdvancedRisk(allCvss, hasRce, hasKev);
+            const eRiskScore = calculateECURisk(allCvss, eRceCount > 0, eKevCount > 0);
             gRiskSum += eRiskScore; gTotal += ev.length;
 
             summaryBody.innerHTML += `
                 <tr class="summary-row" data-ecu="${ecuId}">
                     <td><strong style="color:var(--accent-blue)">${ecuId}</strong><br><small>${ecuName}</small></td>
-                    <td>${ev.length} CVE ${eRceCount ? `<span class="badge bg-purple">${eRceCount} RCE</span>` : ''}</td>
-                    <td>${eKevCount > 0 ? `<span class="badge bg-red">${eKevCount}</span>` : `<span style="color:#444">—</span>`}</td>
+                    <td>${ev.length} CVE</td>
                     <td><span class="badge ${eMaxCvss>=7?'bg-red':'bg-orange'}">${eMaxCvss.toFixed(1)}</span></td>
-                    <td style="text-align:right;"><span style="font-weight:800; font-size:1.2rem; color:${eRiskScore>85?'var(--accent-red)':eRiskScore>50?'var(--accent-orange)':'var(--accent-green)'}">${eRiskScore}/100</span></td>
+                    <td style="text-align:right;"><span style="font-weight:800; color:${eRiskScore>75?'var(--accent-red)':'var(--accent-green)'}">${eRiskScore}/100</span></td>
                 </tr>`;
 
             detailsContainer.innerHTML += `
                 <div class="ecu-section" data-ecu="${ecuId}">
                     <div class="ecu-header">
-                        <h2 style="margin:0; font-size:1.1rem; color:var(--accent-blue)">${ecuId} — Analyse détaillée</h2>
-                        <span class="badge bg-gray" style="font-size:0.8rem;">RISK: ${eRiskScore}/100</span>
+                        <h2 style="margin:0; font-size:1.1rem; color:var(--accent-blue)">${ecuId} — Détails</h2>
+                        <span class="badge bg-gray">ECU SCORE: ${eRiskScore}</span>
                     </div>
                     <table class="table-res">
-                        <thead><tr><th>CVE / STATUS</th><th>PRODUIT</th><th>DESC / VECTEURS</th><th>CVSS BASE</th><th>CVSS TEMP</th></tr></thead>
-                        <tbody>${detailRows || '<tr><td colspan="5" style="text-align:center; padding:20px;">✅ Aucune menace détectée.</td></tr>'}</tbody>
+                        <thead><tr><th>CVE</th><th>PRODUIT</th><th>DESC / VECTEURS</th><th>CVSS</th><th style="text-align:right;">RISK SCORE</th></tr></thead>
+                        <tbody>${detailRows || '<tr><td colspan="5" style="text-align:center;">✅ Sain</td></tr>'}</tbody>
                     </table>
                 </div>`;
         });
@@ -208,17 +224,12 @@
         document.getElementById('total-kev').innerText = gKev;
         document.getElementById('total-rce').innerText = gRce;
         document.getElementById('avg-risk').innerText = Math.round(gRiskSum / inventory.length);
-        log("Dashboard mis à jour avec KEV et CVSS Temporel.");
     }
 
     function applyFilter() {
         const val = document.getElementById('ecuFilter').value;
         document.querySelectorAll('.summary-row, .ecu-section').forEach(el => {
-            if (val === "ALL" || el.getAttribute('data-ecu') === val) {
-                el.classList.remove('hidden');
-            } else {
-                el.classList.add('hidden');
-            }
+            el.classList.toggle('hidden', val !== "ALL" && el.getAttribute('data-ecu') !== val);
         });
     }
 
