@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Vulnérabilités</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --kev-color: #eb4d4b;
+            --bg-color: #f4f7f6;
+            --text-color: #333;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* --- SYNTHÈSE DU HAUT --- */
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            text-transform: uppercase;
+        }
+
+        .stat-card p {
+            margin: 10px 0 0;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        /* Style spécifique pour la synthèse KEV */
+        .highlight-kev {
+            border: 2px solid var(--kev-color);
+        }
+
+        .highlight-kev p {
+            color: var(--kev-color);
+        }
+
+        /* --- TABLEAU --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            text-align: left;
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+
+        /* --- BADGE KEV --- */
+        .badge-kev {
+            background-color: var(--kev-color);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            margin-left: 10px;
+            display: inline-block;
+            vertical-align: middle;
+            letter-spacing: 0.5px;
+        }
+
+        .severity-critical { color: #c0392b; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Security Advisory Dashboard</h1>
+
+    <section class="summary">
+        <div class="stat-card">
+            <h3>Total Vulnérabilités</h3>
+            <p id="total-vulns">0</p>
+        </div>
+        <div class="stat-card highlight-kev">
+            <h3>Vulnérabilités KEV</h3>
+            <p id="kev-counter">0</p>
+        </div>
+    </section>
+
+    <table id="vuln-table">
+        <thead>
+            <tr>
+                <th>CVE ID</th>
+                <th>Description</th>
+                <th>Sévérité</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>CVE-2023-26360 <span class="badge badge-kev">KEV</span></td>
+                <td>Adobe ColdFusion Improper Access Control...</td>
+                <td class="severity-critical">Critical</td>
+            </tr>
+            <tr>
+                <td>CVE-2024-12345</td>
+                <td>Exemple de vulnérabilité non-exploitée activement.</td>
+                <td>High</td>
+            </tr>
+            <tr>
+                <td>CVE-2021-26084 <span class="badge badge-kev">KEV</span></td>
+                <td>Confluence Server Webwork OGNL injection...</td>
+                <td class="severity-critical">Critical</td>
+            </tr>
+            <tr>
+                <td>CVE-2023-4966 <span class="badge badge-kev">KEV</span></td>
+                <td>Citrix Bleed - Information Disclosure...</td>
+                <td class="severity-critical">Critical</td>
+            </tr>
+            <tr>
+                <td>CVE-2024-9999</td>
+                <td>Analyse de composant tiers en cours.</td>
+                <td>Medium</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function updateStatistics() {
+        // Compter toutes les lignes du tableau (hors entête)
+        const totalRows = document.querySelectorAll('#vuln-table tbody tr').length;
+        
+        // Compter uniquement les éléments ayant la classe badge-kev
+        const kevCount = document.querySelectorAll('.badge-kev').length;
+
+        // Mettre à jour l'affichage
+        document.getElementById('total-vulns').innerText = totalRows;
+        document.getElementById('kev-counter').innerText = kevCount;
+    }
+
+    // Exécuter la fonction au chargement de la page
+    window.onload = updateStatistics;
+</script>
+
+</body>
+</html>
