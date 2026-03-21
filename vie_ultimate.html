@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kat‑Force — VIE Master Dashboard V3 (FULL DATA)</title>
+    <title>Kat‑Force — VIE Master Dashboard V4</title>
     <style>
         :root {
             --bg-dark: #0d1117; --card-dark: #161b22; --border-gray: #30363d;
@@ -11,33 +11,37 @@
             --accent-purple: #bc8cff; --accent-green: #3fb950; --text-gray: #8b949e;
         }
         body { background: var(--bg-dark); color: #c9d1d9; font-family: 'Segoe UI', Tahoma, sans-serif; padding: 20px; margin: 0; line-height: 1.4; }
-        .container { max-width: 1700px; margin: 0 auto; }
+        .container { max-width: 1750px; margin: 0 auto; }
         
         .header-flex { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; border-bottom: 1px solid var(--border-gray); padding-bottom: 15px; }
-        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px; }
         .card { background: var(--card-dark); border: 1px solid var(--border-gray); border-radius: 8px; padding: 20px; margin-bottom: 20px; position: relative; }
         
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; }
-        th { text-align: left; background: rgba(255,255,255,0.02); color: var(--text-gray); padding: 12px; border-bottom: 2px solid var(--border-gray); cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 0.85rem; table-layout: auto; }
+        th { text-align: left; background: rgba(255,255,255,0.02); color: var(--text-gray); padding: 12px; border-bottom: 2px solid var(--border-gray); cursor: pointer; white-space: nowrap; }
         th:hover { color: var(--accent-blue); }
-        td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: top; }
+        td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; }
 
-        .badge { padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; border: 1px solid transparent; display: inline-block; margin-right: 5px; }
+        .badge { padding: 2px 8px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; border: 1px solid transparent; display: inline-block; margin-right: 4px; }
         .bg-red { background: rgba(248,81,73,0.1); color: var(--accent-red); border-color: var(--accent-red); }
         .bg-orange { background: rgba(240,136,62,0.1); color: var(--accent-orange); border-color: var(--accent-orange); }
         .bg-purple { background: rgba(188,140,255,0.1); color: var(--accent-purple); border-color: var(--accent-purple); }
         .bg-blue { background: rgba(88,166,255,0.1); color: var(--accent-blue); border-color: var(--accent-blue); }
         .bg-green { background: rgba(63,185,80,0.1); color: var(--accent-green); border-color: var(--accent-green); }
+        .bg-gray { background: rgba(139,148,158,0.1); color: var(--text-gray); border-color: var(--text-gray); }
         
-        .audit-trail { font-size: 0.7rem; color: var(--text-gray); display: block; margin-top: 4px; font-style: italic; }
-        .rule-box { font-size: 0.75rem; color: #8b949e; background: #0d1117; padding: 10px; border-radius: 4px; border-left: 3px solid var(--accent-blue); margin-bottom: 10px; }
-        .stat-card { text-align: center; border-top: 3px solid var(--border-gray); }
-        .stat-value { font-size: 2rem; font-weight: bold; color: #fff; display: block; }
-        .stat-label { font-size: 0.7rem; color: var(--text-gray); text-transform: uppercase; }
+        .ssvc-chain { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+        .chain-arrow { color: var(--border-gray); font-size: 0.8rem; }
 
         .config-panel { display: flex; gap: 20px; align-items: center; background: #1c2128; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--border-gray); }
-        select { background: #0d1117; color: white; border: 1px solid var(--border-gray); padding: 5px; border-radius: 4px; }
-        .attack-path { background: rgba(0,0,0,0.3); padding: 12px; border-radius: 6px; margin-top: 10px; border-left: 3px solid var(--accent-purple); }
+        select { background: #0d1117; color: white; border: 1px solid var(--border-gray); padding: 6px; border-radius: 4px; font-size: 0.8rem; }
+        
+        .stat-card { text-align: center; border-top: 3px solid var(--border-gray); }
+        .stat-value { font-size: 1.8rem; font-weight: bold; color: #fff; display: block; }
+        .stat-label { font-size: 0.7rem; color: var(--text-gray); text-transform: uppercase; }
+        
+        .cve-id { color: var(--accent-blue); font-weight: bold; text-decoration: none; border-bottom: 1px solid transparent; }
+        .cve-id:hover { border-bottom-color: var(--accent-blue); }
     </style>
 </head>
 <body>
@@ -45,57 +49,26 @@
 <div class="container">
     <div class="header-flex">
         <div>
-            <h1 style="margin:0; color:var(--accent-blue);">🛡️ Kat‑Force VIE Master Dashboard — Expert Analysis</h1>
-            <p style="margin:5px 0; color:var(--text-gray);">Analyse cyber-physique unifiée & Aide à la décision SSVC.</p>
+            <h1 style="margin:0; color:var(--accent-blue);">🛡️ Kat‑Force VIE Master Dashboard — Analyse Granulaire V4</h1>
+            <p style="margin:5px 0; color:var(--text-gray);">Arbre de décision SSVC & Corrélation Multi-Risques M1/M2/M3.</p>
         </div>
         <a href="index.html" style="color:var(--accent-blue); text-decoration:none; font-weight:bold;">← RETOUR INDEX</a>
     </div>
 
-    <div class="card">
-        <h3 style="margin-top:0; font-size:1rem; color:var(--accent-orange);">📖 Logique de Décision & Méthodes de Calcul</h3>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-            <div class="rule-box">
-                <b>Moteur SSVC (Decision Tree) :</b><br>
-                • <b>Immediate Patch :</b> (KEV=True ET Expo=High) OU (CVSS > 9 ET Safety=Critique)<br>
-                • <b>CyberAnalyse :</b> (CVSS > 7 ET Safety=Critique) -> Analyse d'impact requise.
-            </div>
-            <div class="rule-box" style="border-left-color: var(--accent-purple);">
-                <b>Calcul des Scores :</b><br>
-                • <b>M1 (Pondéré) :</b> Standard CVSS. | <b>M2 (Menace) :</b> Focus KEV CISA.<br>
-                • <b>M3 (Safety) :</b> Score indexé sur la criticité de l'ECU.
-            </div>
-        </div>
-    </div>
-
     <div class="config-panel">
-        <div><label>Unité ECU : </label> <select id="ecuFilter" onchange="render()"><option value="ALL">Tout le véhicule</option></select></div>
+        <strong style="font-size: 0.8rem; color: var(--accent-orange);">⚙️ CONFIGURATION SSVC :</strong>
+        <div><label>ECU : </label> <select id="ecuFilter" onchange="render()"><option value="ALL">Tout le véhicule</option></select></div>
+        <div><label>Exploitation (KEV) : </label> <select id="cfg-kev" onchange="render()"><option value="active">Active (CISA Confirmé)</option><option value="poc">PoC / Théorique</option></select></div>
         <div><label>Exposition : </label> <select id="cfg-exp" onchange="render()"><option value="high">Élevée (V2X/Internet)</option><option value="low">Interne (Bus CAN)</option></select></div>
-        <div><label>Impact Safety : </label> <select id="cfg-safety" onchange="render()"><option value="critical">Critique (Freins/ADAS)</option><option value="low">Confort (Infotainment)</option></select></div>
-        <div style="margin-left:auto;"><span id="data-info" style="font-size:0.75rem; color:var(--accent-green);">Données prêtes.</span></div>
+        <div><label>Impact Safety : </label> <select id="cfg-safety" onchange="render()"><option value="critical">Critique (Freins/ADAS)</option><option value="none">Aucun (Confort)</option></select></div>
+        <div style="margin-left:auto;"><span id="data-info" style="font-size:0.7rem; color:var(--accent-green);">Données synchronisées.</span></div>
     </div>
 
-    <div class="grid-3">
-        <div class="card stat-card" style="border-top-color: var(--accent-blue);"><span class="stat-value" id="kpi-count">0</span><span class="stat-label">Vulnérabilités</span></div>
-        <div class="card stat-card" style="border-top-color: var(--accent-red);"><span class="stat-value" id="kpi-kev">0</span><span class="stat-label">Alertes KEV Actives</span></div>
-        <div class="card stat-card" style="border-top-color: var(--accent-green);"><span class="stat-value" id="kpi-avg-risk">0</span><span class="stat-label">Risque Moyen (M1)</span></div>
-    </div>
-
-    <div class="card">
-        <h3 style="margin-top:0;">📊 Synthèse par Unité (ECU)</h3>
-        <table id="summaryTable">
-            <thead>
-                <tr>
-                    <th onclick="sortTable(0, 'summaryTable')">Unité ECU</th>
-                    <th onclick="sortTable(1, 'summaryTable')">Vulns</th>
-                    <th onclick="sortTable(2, 'summaryTable')">Max CVSS</th>
-                    <th onclick="sortTable(3, 'summaryTable')">Décision SSVC</th>
-                    <th onclick="sortTable(4, 'summaryTable')">M1 (Pondéré)</th>
-                    <th onclick="sortTable(5, 'summaryTable')">M2 (Menace)</th>
-                    <th onclick="sortTable(6, 'summaryTable')">M3 (Safety)</th>
-                </tr>
-            </thead>
-            <tbody id="summaryBody"></tbody>
-        </table>
+    <div class="grid-4">
+        <div class="card stat-card" style="border-top-color: var(--accent-blue);"><span class="stat-value" id="kpi-count">0</span><span class="stat-label">Vulnérabilités totales</span></div>
+        <div class="card stat-card" style="border-top-color: var(--accent-red);"><span class="stat-value" id="kpi-kev">0</span><span class="stat-label">KEV Actifs Détectés</span></div>
+        <div class="card stat-card" style="border-top-color: var(--accent-purple);"><span class="stat-value" id="kpi-rce">0</span><span class="stat-label">Vecteurs RCE</span></div>
+        <div class="card stat-card" style="border-top-color: var(--accent-green);"><span class="stat-value" id="kpi-risk">0</span><span class="stat-label">Moyen Risque (M1)</span></div>
     </div>
 
     <div id="details-container"></div>
@@ -105,35 +78,39 @@
 let inventory = [];
 let vulns = [];
 
-// Dictionnaire CWE Attack Paths
-const CWE_PATHS = {
-    "CWE-787": "Corruption mémoire -> Exécution de code (RCE).",
-    "CWE-20": "Déni de service ou Injection de commande.",
-    "CWE-125": "Fuite d'informations depuis la RAM.",
-    "CWE-416": "Élévation de privilèges (UAF)."
-};
-
-// Fonctions de calcul (M1, M2, M3) et SSVC
-function getDecision(v, safety, expo) {
+function getSSVCChain(v, cfgSafety, cfgExpo, cfgKev) {
     const cvss = v.metrics?.baseScore || 0;
     const isKev = v.is_kev === true || String(v.is_kev) === "true";
-    if (isKev && expo === "high") return { label: "IMMEDIATE_PATCH", color: "var(--accent-red)", reason: "KEV + Exposition critique" };
-    if (cvss >= 8.5 && safety === "critical") return { label: "CYBER_ANALYSE", color: "var(--accent-orange)", reason: "Critique Safety + Sévérité haute" };
-    if (cvss >= 7) return { label: "SCHEDULE_PATCH", color: "var(--accent-purple)", reason: "Haut risque technique" };
-    if (cvss >= 4) return { label: "TRACK", color: "var(--accent-blue)", reason: "Surveillance active" };
-    return { label: "DISMISS", color: "var(--text-gray)", reason: "Risque négligeable" };
+    const isRce = v.description?.toLowerCase().includes("remote code") || v.description?.toLowerCase().includes(" rce ");
+    
+    // Enchaînement des critères
+    let chain = [];
+    chain.push({l: cfgKev === 'active' && isKev ? "KEV:YES" : "KEV:NO", c: isKev ? "bg-red" : "bg-gray"});
+    chain.push({l: `EXP:${cfgExpo.toUpperCase()}`, c: cfgExpo === 'high' ? "bg-orange" : "bg-blue"});
+    chain.push({l: `SAFE:${cfgSafety.toUpperCase()}`, c: cfgSafety === 'critical' ? "bg-purple" : "bg-gray"});
+
+    // Logique de décision
+    let decision = { label: "TRACK", color: "var(--accent-blue)" };
+    if (isKev && cfgExpo === "high" && cfgKev === "active") decision = { label: "IMMEDIATE_PATCH", color: "var(--accent-red)" };
+    else if (cvss >= 8 && cfgSafety === "critical") decision = { label: "CYBER_ANALYSE", color: "var(--accent-orange)" };
+    else if (cvss >= 7 || isRce) decision = { label: "SCHEDULE_PATCH", color: "var(--accent-purple)" };
+    else if (cvss < 4) decision = { label: "DISMISS", color: "var(--text-gray)" };
+
+    return { chain, decision };
 }
 
 function calculateRisk(v, method, safety) {
     const base = v.metrics?.baseScore || 0;
+    const temp = v.metrics?.temporalScore || (base * 0.9);
     const isKev = v.is_kev === true || String(v.is_kev) === "true";
-    if (method === 1) return Math.min(100, Math.round(base * 10));
-    if (method === 2) return Math.min(100, Math.round((base * 7) + (isKev ? 30 : 0)));
-    if (method === 3) return Math.min(100, Math.round(base * (safety === "critical" ? 10 : 6)));
+    const isRce = v.description?.toLowerCase().includes("remote code") || v.description?.toLowerCase().includes(" rce ");
+
+    if (method === 1) return Math.min(100, Math.round(base * 10)); // Risque Brut
+    if (method === 2) return Math.min(100, Math.round((temp * 8) + (isKev ? 20 : 0))); // Risque Actif
+    if (method === 3) return Math.min(100, Math.round(base * (safety === "critical" ? 10 : 5) + (isRce ? 10 : 0))); // Impact Asset
     return 0;
 }
 
-// Chargement des données réelles
 async function init() {
     try {
         const [resInv, resVuln] = await Promise.all([
@@ -142,117 +119,97 @@ async function init() {
         ]);
         inventory = await resInv.json();
         vulns = await resVuln.json();
-
-        const filter = document.getElementById('ecuFilter');
-        inventory.forEach(e => filter.add(new Option(e.component_id, e.component_id)));
-        
-        document.getElementById('data-info').innerText = `✅ ${vulns.length} vulnérabilités chargées.`;
+        inventory.forEach(e => document.getElementById('ecuFilter').add(new Option(e.component_id, e.component_id)));
         render();
-    } catch (e) {
-        console.error("Erreur chargement JSON", e);
-    }
+    } catch (e) { console.error("Load Error", e); }
 }
 
 function render() {
     const selectedEcu = document.getElementById('ecuFilter').value;
-    const safety = document.getElementById('cfg-safety').value;
-    const expo = document.getElementById('cfg-exp').value;
+    const cfgSafety = document.getElementById('cfg-safety').value;
+    const cfgExpo = document.getElementById('cfg-exp').value;
+    const cfgKev = document.getElementById('cfg-kev').value;
     
-    const summaryBody = document.getElementById('summaryBody');
-    const detailsContainer = document.getElementById('details-container');
-    summaryBody.innerHTML = "";
-    detailsContainer.innerHTML = "";
-
-    let totalKev = 0;
-    let riskSum = 0;
+    const container = document.getElementById('details-container');
+    container.innerHTML = "";
+    
+    let stats = { count: 0, kev: 0, rce: 0, m1sum: 0 };
 
     inventory.forEach(ecu => {
         if (selectedEcu !== "ALL" && ecu.component_id !== selectedEcu) return;
-
         const ev = vulns.filter(v => v.ecu === ecu.component_id);
-        if (ev.length === 0 && selectedEcu !== "ALL") return;
+        if (ev.length === 0) return;
 
-        const maxCvss = ev.length ? Math.max(...ev.map(v => v.metrics?.baseScore || 0)) : 0;
-        const m1 = ev.length ? Math.max(...ev.map(v => calculateRisk(v, 1, safety))) : 0;
-        const m2 = ev.length ? Math.max(...ev.map(v => calculateRisk(v, 2, safety))) : 0;
-        const m3 = ev.length ? Math.max(...ev.map(v => calculateRisk(v, 3, safety))) : 0;
+        // Tri des vulnérabilités par Risque M1 décroissant
+        ev.sort((a, b) => calculateRisk(b, 1, cfgSafety) - calculateRisk(a, 1, cfgSafety));
 
-        totalKev += ev.filter(v => v.is_kev).length;
-        riskSum += m1;
+        let rows = ev.map(v => {
+            const riskM1 = calculateRisk(v, 1, cfgSafety);
+            const riskM2 = calculateRisk(v, 2, cfgSafety);
+            const riskM3 = calculateRisk(v, 3, cfgSafety);
+            const ssvc = getSSVCChain(v, cfgSafety, cfgExpo, cfgKev);
+            const isKev = v.is_kev === true || String(v.is_kev) === "true";
+            const isRce = v.description?.toLowerCase().includes("remote code") || v.description?.toLowerCase().includes(" rce ");
+            const temp = v.metrics?.temporalScore || (v.metrics?.baseScore * 0.9 || 0);
 
-        // Décision Majoritaire (la pire)
-        let topDec = { label: "DISMISS", color: "var(--text-gray)" };
-        ev.forEach(v => {
-            let d = getDecision(v, safety, expo);
-            if (d.label === "IMMEDIATE_PATCH") topDec = d;
-            else if (d.label === "CYBER_ANALYSE" && topDec.label !== "IMMEDIATE_PATCH") topDec = d;
-        });
+            stats.count++;
+            if (isKev) stats.kev++;
+            if (isRce) stats.rce++;
+            stats.m1sum += riskM1;
 
-        summaryBody.innerHTML += `
-            <tr>
-                <td><b>${ecu.component_id}</b></td>
-                <td><span class="badge bg-blue">${ev.length}</span></td>
-                <td><span class="badge ${maxCvss >= 7 ? 'bg-red' : 'bg-orange'}">${maxCvss.toFixed(1)}</span></td>
-                <td><b style="color:${topDec.color}">${topDec.label}</b></td>
-                <td>${m1}</td><td>${m2}</td><td><b>${m3}</b></td>
-            </tr>
-        `;
-
-        if (ev.length > 0) {
-            let rows = ev.map(v => {
-                const dec = getDecision(v, safety, expo);
-                return `
-                    <tr>
-                        <td><a href="index.html?cve=${v.cve_id}" style="color:var(--accent-blue); font-weight:bold;">${v.cve_id}</a></td>
-                        <td><div class="audit-trail"><b>Justification :</b> ${dec.reason}</div></td>
-                        <td><b>${v.metrics?.baseScore || 0}</b></td>
-                        <td><span class="badge" style="border-color:${dec.color}; color:${dec.color}; background:${dec.color}11">${dec.label}</span></td>
-                        <td>M1:${calculateRisk(v,1,safety)} | M3:${calculateRisk(v,3,safety)}</td>
-                    </tr>
-                `;
-            }).join('');
-
-            const cwes = [...new Set(ev.flatMap(v => v.cwe_ids || []))];
-            let pathsHtml = cwes.map(c => `<div><span class="badge bg-purple">${c}</span> ${CWE_PATHS[c] || "Analyse requise."}</div>`).join('');
-
-            detailsContainer.innerHTML += `
-                <div class="card" style="border-top: 2px solid var(--accent-blue);">
-                    <h3 style="margin:0; color:var(--accent-blue)">Analyse Granulaire : ${ecu.component_id}</h3>
-                    <table>
-                        <thead><tr><th>CVE ID</th><th>Éléments de Décision SSVC</th><th>CVSS</th><th>Décision</th><th>Scores de Risque</th></tr></thead>
-                        <tbody>${rows}</tbody>
-                    </table>
-                    <div class="attack-path"><b>🧬 STACK DES CHEMINS D'ATTAQUE :</b><div style="margin-top:10px;">${pathsHtml}</div></div>
-                </div>
+            return `
+                <tr>
+                    <td><a href="#" class="cve-id">${v.cve_id}</a></td>
+                    <td>
+                        <div class="ssvc-chain">
+                            ${ssvc.chain.map((c, i) => `
+                                <span class="badge ${c.c}">${c.l}</span>
+                                ${i < ssvc.chain.length - 1 ? '<span class="chain-arrow">→</span>' : ''}
+                            `).join('')}
+                        </div>
+                    </td>
+                    <td>
+                        <span class="badge bg-gray" title="CVSS Base">B: ${v.metrics?.baseScore || 0}</span>
+                        <span class="badge bg-blue" title="CVSS Temporal">T: ${temp.toFixed(1)}</span>
+                    </td>
+                    <td>
+                        ${isKev ? '<span class="badge bg-red">KEV</span>' : '<span class="badge bg-gray">KEV:NO</span>'}
+                        ${isRce ? '<span class="badge bg-purple">RCE</span>' : ''}
+                    </td>
+                    <td><b style="color:${ssvc.decision.color}">${ssvc.decision.label}</b></td>
+                    <td style="white-space:nowrap;">
+                        <span class="badge bg-orange">M1:${riskM1}</span>
+                        <span class="badge bg-gray">M2:${riskM2}</span>
+                        <span class="badge bg-gray">M3:${riskM3}</span>
+                    </td>
+                </tr>
             `;
-        }
+        }).join('');
+
+        container.innerHTML += `
+            <div class="card" style="border-left: 4px solid var(--accent-blue);">
+                <h3 style="margin:0 0 10px 0; font-size:1rem;">📦 Analyse Granulaire : ${ecu.component_id}</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th onclick="sortTable(0)">CVE ID</th>
+                            <th>Éléments de Décision SSVC (Enchaînement)</th>
+                            <th>CVSS (B / T)</th>
+                            <th>Indicateurs</th>
+                            <th>Décision</th>
+                            <th>Scores (M1 | M2 | M3)</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+        `;
     });
 
-    document.getElementById('kpi-count').innerText = vulns.length;
-    document.getElementById('kpi-kev').innerText = totalKev;
-    document.getElementById('kpi-avg-risk').innerText = Math.round(riskSum / (inventory.length || 1));
-}
-
-function sortTable(n, tableId) {
-    let table = document.getElementById(tableId);
-    let rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-    switching = true; dir = "asc";
-    while (switching) {
-        switching = false; rows = table.rows;
-        for (i = 1; i < (rows.length - 1); i++) {
-            shouldSwitch = false;
-            x = rows[i].getElementsByTagName("TD")[n];
-            y = rows[i + 1].getElementsByTagName("TD")[n];
-            let xVal = isNaN(parseFloat(x.innerText)) ? x.innerText.toLowerCase() : parseFloat(x.innerText);
-            let yVal = isNaN(parseFloat(y.innerText)) ? y.innerText.toLowerCase() : parseFloat(y.innerText);
-            if (dir == "asc" && xVal > yVal) { shouldSwitch = true; break; }
-            else if (dir == "desc" && xVal < yVal) { shouldSwitch = true; break; }
-        }
-        if (shouldSwitch) {
-            rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-            switching = true; switchcount++;
-        } else if (switchcount == 0 && dir == "asc") { dir = "desc"; switching = true; }
-    }
+    document.getElementById('kpi-count').innerText = stats.count;
+    document.getElementById('kpi-kev').innerText = stats.kev;
+    document.getElementById('kpi-rce').innerText = stats.rce;
+    document.getElementById('kpi-risk').innerText = Math.round(stats.m1sum / (stats.count || 1));
 }
 
 window.onload = init;
