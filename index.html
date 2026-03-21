@@ -629,7 +629,14 @@ Supplier_multiplier (SSVC SINV):
       log("ERROR add/download: " + e.message);
     }
   }
-
+// === AJOUT : Récupération auto de la CVE depuis l'URL (Ligne 622) ===
+  const urlParams = new URLSearchParams(window.location.search);
+  const cveParam = urlParams.get('cve');
+  if (cveParam && /^CVE-\d{4}-\d{4,}$/i.test(cveParam)) {
+      $("queryInput").value = cveParam.toUpperCase();
+      $("mode").value = "cve";
+  }
+  // =================================================================
   /* =========================================================
      Analyse CVE/CPE (logique existante, conservée)
      ========================================================= */
