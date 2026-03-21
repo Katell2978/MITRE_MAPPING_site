@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kat‑Force — VIE Master Dashboard ULTRA</title>
+    <style>
+        :root {
+            --bg-dark: #0d1117; --card-dark: #161b22; --border-gray: #30363d;
+            --accent-blue: #58a6ff; --accent-red: #f85149; --accent-orange: #f0883e;
+            --accent-purple: #bc8cff; --accent-green: #3fb950; --text-gray: #8b949e;
+        }
+        body { background: var(--bg-dark); color: #c9d1d9; font-family: 'Segoe UI', system-ui, sans-serif; padding: 20px; margin: 0; line-height: 1.5; }
+        .container { max-width: 1600px; margin: 0 auto; }
+        
+        /* Layouts */
+        .header-flex { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; border-bottom: 1px solid var(--border-gray); padding-bottom: 20px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px; }
+        
+        /* Components */
+        .card { background: var(--card-dark); border: 1px solid var(--border-gray); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
+        .stat-card { text-align: center; transition: transform 0.2s; }
+        .stat-card:hover { transform: translateY(-5px); }
+        .stat-value { font-size: 2.5rem; font-weight: 800; display: block; color: #fff; }
+        .stat-label { color: var(--text-gray); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th { text-align: left; font-size: 0.7rem; color: var(--text-gray); padding: 12px; border-bottom: 2px solid var(--border-gray); text-transform: uppercase; }
+        td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; font-size: 0.85rem; }
+        
+        /* Badges */
+        .badge { padding: 3px 10px; border-radius: 12px; font-size: 0.65rem; font-weight: bold; border: 1px solid transparent; display: inline-block; }
+        .bg-red { background: rgba(248,81,73,0.15); color: var(--accent-red); border-color: var(--accent-red); }
+        .bg-orange { background: rgba(240,136,62,0.15); color: var(--accent-orange); border-color: var(--accent-orange); }
+        .bg-purple { background: rgba(188,140,255,0.15); color: var(--accent-purple); border-color: var(--accent-purple); }
+        .bg-blue { background: rgba(88,166,255,0.15); color: var(--accent-blue); border-color: var(--accent-blue); }
+        .bg-green { background: rgba(63,185,80,0.15); color: var(--accent-green); border-color: var(--accent-green); }
+        .bg-gray { background: rgba(110,118,129,0.15); color: #c9d1d9; border-color: #444c56; }
+
+        /* Custom UI */
+        .config-panel { background: #1c2128; border: 1px solid var(--accent-blue); padding: 15px; border-radius: 8px; margin-bottom: 20px; display: flex; gap: 20px; align-items: center; }
+        .attack-path { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 6px; margin-top: 10px; border-left: 3px solid var(--accent-purple); }
+        .method-box { font-size: 0.75rem; border: 1px solid var(--border-gray); padding: 10px; border-radius: 6px; }
+        .method-title { font-weight: bold; color: var(--accent-blue); margin-bottom: 5px; display: block; }
+        
+        select, input { background: #0d1117; color: #fff; border: 1px solid var(--border-gray); padding: 6px; border-radius: 4px; outline: none; }
+        .hidden { display: none !important; }
+        a { color: var(--accent-blue); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-flex">
+        <div>
+            <h1 style="color:var(--accent-blue); margin:0;">🛡️ VIE Advanced Risk Intelligence Dashboard</h1>
+            <p style="color:var(--text-gray); margin:5px 0;">Analyse cyber-physique multi-critères & Aide à la décision SSVC.</p>
+        </div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <div class="method-box">
+                <span class="method-title">VUE ACTUELLE :</span>
+                <select id="ecuFilter" onchange="updateUI()"><option value="ALL">Tout le véhicule (Global)</option></select>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-3">
+        <div class="card stat-card" style="border-top: 4px solid var(--accent-blue);">
+            <span id="kpi-cve" class="stat-value">0</span>
+            <span class="stat-label">CVE Identifiées</span>
+        </div>
+        <div class="card stat-card" style="border-top: 4px solid var(--accent-red);">
+            <span id="kpi-threat" class="stat-value">0</span>
+            <span class="stat-label">Menaces Actives (KEV/RCE)</span>
+        </div>
+        <div class="card stat-card" style="border-top: 4px solid var(--accent-green);">
+            <span id="kpi-risk" class="stat-value">0</span>
+            <span class="stat-label">Score de Risque Moyen</span>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-top:0; font-size: 1rem; color: var(--accent-blue);">⚙️ Configurateur de Décision Dynamique (Modèle SSVC)</h3>
+        <div class="config-panel">
+            <div>
+                <label>Exposition :</label>
+                <select id="cfg-exp" onchange="updateUI()">
+                    <option value="high">Élevée (Connecté)</option>
+                    <option value="low">Interne (Bus CAN uniquement)</option>
+                </select>
+            </div>
+            <div>
+                <label>Impact Safety :</label>
+                <select id="cfg-safety" onchange="updateUI()">
+                    <option value="critical">Critique (Freinage/Direction)</option>
+                    <option value="low">Confort (Infotainment)</option>
+                </select>
+            </div>
+            <div style="color: var(--text-gray); font-size: 0.8rem; max-width: 400px;">
+                <i>L'ajustement de ces critères modifie en temps réel les propositions de patch et les scores de risque cumulés ci-dessous.</i>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid-3" style="margin-bottom: 20px;">
+        <div class="method-box">
+            <span class="method-title">M1 : Weighted Severity (v2.1)</span>
+            Score basé sur le Max CVSS (70%) + Volume de vulnérabilités (15%) + Vecteurs critiques (15%).
+        </div>
+        <div class="method-box">
+            <span class="method-title">M2 : Threat-Centric Score</span>
+            Priorité absolue à l'exploitabilité réelle. Multiplicateurs agressifs si KEV (CISA) ou RCE détecté.
+        </div>
+        <div class="method-box">
+            <span class="method-title">M3 : Asset-Impact (Safety)</span>
+            Score indexé sur la criticité de l'ECU. Une vulnérabilité mineure sur un Gateway = Risque majeur.
+        </div>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-top:0; color:var(--accent-blue);">📊 Synthèse de l'état de santé du parc ECU</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Unité (ECU)</th>
+                    <th>Vulnerabilités</th>
+                    <th>Max CVSS</th>
+                    <th>Décision SSVC</th>
+                    <th>M1 (Pondéré)</th>
+                    <th>M2 (Menace)</th>
+                    <th style="text-align:right;">M3 (Safety)</th>
+                </tr>
+            </thead>
+            <tbody id="summary-body"></tbody>
+        </table>
+    </div>
+
+    <div id="ecu-details-container"></div>
+</div>
+
+<script>
+/**
+ * CONFIGURATION ET DONNÉES
+ */
+let inventory = [];
+let vulnsData = [];
+
+// Mapping des CWE vers des descriptions de chemins d'attaque pour l'analyse cyber
+const CWE_PATH_MAP = {
+    "CWE-787": "Écriture hors limites -> Corruption mémoire -> Exécution de code arbitraire (RCE).",
+    "CWE-125": "Lecture hors limites -> Fuite d'informations sensibles (clés crypto).",
+    "CWE-20": "Validation d'entrée insuffisante -> Injection de commande ou Crash service.",
+    "CWE-416": "Use-after-free -> Instabilité du noyau -> Élévation de privilèges.",
+    "CWE-200": "Exposition d'informations à un acteur non autorisé -> Reconnaissance facilitée."
+};
+
+/**
+ * MOTEURS DE CALCUL DE RISQUE
+ */
+const Calculators = {
+    // M1 : Basé sur la formule v2.1 (Source 2/3)
+    method1: (cvssArray, hasRce, hasKev) => {
+        if (cvssArray.length === 0) return 0;
+        const max = Math.max(...cvssArray);
+        const n = cvssArray.length;
+        let score = max * 7; 
+        score += 15 * (n / (n + 30)); // Bonus volume asymptotique
+        if (hasRce) score *= 1.1;
+        if (hasKev) score *= 1.15;
+        return Math.min(100, Math.round(score));
+    },
+
+    // M2 : Focus Menace Active
+    method2: (cvssArray, hasRce, hasKev) => {
+        if (cvssArray.length === 0) return 0;
+        let base = Math.max(...cvssArray) * 6;
+        if (hasKev) base += 30; // KEV est un driver majeur
+        if (hasRce) base += 10;
+        return Math.min(100, Math.round(base));
+    },
+
+    // M3 : Focus Impact Asset (utilise les paramètres du configurateur)
+    method3: (cvssArray, safetyLevel) => {
+        if (cvssArray.length === 0) return 0;
+        const max = Math.max(...cvssArray);
+        let multiplier = (safetyLevel === 'critical') ? 10 : 6;
+        return Math.min(100, Math.round(max * multiplier));
+    },
+
+    // Moteur SSVC
+    getSSVC: (v, safetyCfg, expCfg) => {
+        const cvss = v.metrics?.baseScore || 0;
+        const isKev = v.is_kev === true || v.is_kev === "true";
+        
+        if (isKev && expCfg === "high") return { label: "IMMEDIATE_PATCH", color: "var(--accent-red)" };
+        if (cvss >= 8.5 && safetyCfg === "critical") return { label: "CYBER_ANALYSIS", color: "var(--accent-orange)" };
+        if (cvss >= 7) return { label: "SCHEDULE_PATCH", color: "var(--accent-purple)" };
+        if (cvss > 4) return { label: "TRACK", color: "var(--accent-blue)" };
+        return { label: "DISMISS", color: "var(--text-gray)" };
+    }
+};
+
+/**
+ * LOGIQUE DE RENDU
+ */
+async function init() {
+    try {
+        // Simulation des fetch (à adapter avec vos fichiers réels)
+        const invRes = await fetch('data/inventory/inventory_cpe.json');
+        inventory = await invRes.json();
+        const vulnRes = await fetch('data/results/detected_vulns.json');
+        vulnsData = await vulnRes.json();
+        
+        // Remplir le filtre
+        const filter = document.getElementById('ecuFilter');
+        inventory.forEach(item => {
+            const opt = document.createElement('option');
+            opt.value = item.component_id;
+            opt.textContent = `${item.component_id} - ${item.description}`;
+            filter.appendChild(opt);
+        });
+
+        updateUI();
+    } catch (e) {
+        console.error("Erreur d'initialisation :", e);
+    }
+}
+
+function updateUI() {
+    const selectedEcu = document.getElementById('ecuFilter').value;
+    const safetyCfg = document.getElementById('cfg-safety').value;
+    const expCfg = document.getElementById('cfg-exp').value;
+    
+    const summaryBody = document.getElementById('summary-body');
+    const detailsContainer = document.getElementById('ecu-details-container');
+    
+    summaryBody.innerHTML = "";
+    detailsContainer.innerHTML = "";
+
+    let totalCve = 0, totalThreat = 0, riskSum = 0;
+
+    inventory.forEach(ecu => {
+        if (selectedEcu !== "ALL" && ecu.component_id !== selectedEcu) return;
+
+        const ev = vulnsData.filter(v => v.ecu === ecu.component_id);
+        if (ev.length === 0 && selectedEcu !== "ALL") return;
+
+        const cvssList = ev.map(v => v.metrics?.baseScore || 0);
+        const hasRce = ev.some(v => v.description.toLowerCase().includes("rce"));
+        const hasKev = ev.some(v => v.is_kev === true || v.is_kev === "true");
+        
+        // Calculs des scores
+        const m1 = Calculators.method1(cvssList, hasRce, hasKev);
+        const m2 = Calculators.method2(cvssList, hasRce, hasKev);
+        const m3 = Calculators.method3(cvssList, safetyCfg);
+        
+        totalCve += ev.length;
+        if (hasRce || hasKev) totalThreat++;
+        riskSum += m1;
+
+        // Décision TOP (la plus critique des vuln de l'ECU)
+        let topDecision = { label: "DISMISS", color: "var(--text-gray)" };
+        ev.forEach(v => {
+            const d = Calculators.getSSVC(v, safetyCfg, expCfg);
+            if (d.label === "IMMEDIATE_PATCH") topDecision = d;
+            else if (d.label === "CYBER_ANALYSIS" && topDecision.label !== "IMMEDIATE_PATCH") topDecision = d;
+        });
+
+        // Rendu ligne synthèse
+        summaryBody.innerHTML += `
+            <tr>
+                <td><b style="color:var(--accent-blue)">${ecu.component_id}</b><br><small>${ecu.description}</small></td>
+                <td>${ev.length} CVE</td>
+                <td><span class="badge ${Math.max(...cvssList,0) >=7 ? 'bg-red' : 'bg-orange'}">${Math.max(...cvssList,0).toFixed(1)}</span></td>
+                <td><b style="color:${topDecision.color}">${topDecision.label}</b></td>
+                <td>${m1}/100</td>
+                <td>${m2}/100</td>
+                <td style="text-align:right; font-weight:800;">${m3}/100</td>
+            </tr>
+        `;
+
+        // Rendu section détails
+        let detailRows = ev.map(v => {
+            const d = Calculators.getSSVC(v, safetyCfg, expCfg);
+            const isRce = v.description.toLowerCase().includes("rce");
+            return `
+                <tr>
+                    <td><a href="index.html?cve=${v.cve_id}"><b>${v.cve_id}</b></a></td>
+                    <td>
+                        <div style="margin-bottom:4px;">${v.description.substring(0, 100)}...</div>
+                        ${v.is_kev ? '<span class="badge bg-red">KEV</span>' : ''}
+                        ${isRce ? '<span class="badge bg-purple">RCE</span>' : ''}
+                    </td>
+                    <td><span class="badge bg-gray">${v.metrics?.baseScore || 'N/A'}</span></td>
+                    <td><span class="badge bg-blue">${v.metrics?.temporalScore || 'N/A'}</span></td>
+                    <td><b style="color:${d.color}">${d.label}</b></td>
+                </tr>
+            `;
+        }).join('');
+
+        // Analyse CWE
+        const uniqueCwes = [...new Set(ev.flatMap(v => v.cwe_ids || []))];
+        let attackPathHtml = uniqueCwes.map(cwe => `
+            <div style="margin-bottom:8px;">
+                <span class="badge bg-gray">${cwe}</span> : 
+                <span style="font-size:0.8rem;">${CWE_PATH_MAP[cwe] || "Chemin d'attaque complexe nécessitant une analyse manuelle."}</span>
+            </div>
+        `).join('');
+
+        detailsContainer.innerHTML += `
+            <div class="card" style="border-left: 4px solid var(--accent-blue);">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h2 style="margin:0; font-size:1.1rem; color:var(--accent-blue)">${ecu.component_id} — Rapport Détaillé</h2>
+                    <span class="badge bg-gray">RISQUE CUMULÉ : ${m1}/100</span>
+                </div>
+                <table>
+                    <thead><tr><th>CVE</th><th>Description / Vecteurs</th><th>Base</th><th>Temp</th><th>Décision SSVC</th></tr></thead>
+                    <tbody>${detailRows || '<tr><td colspan="5" style="text-align:center;">✅ Aucun risque détecté</td></tr>'}</tbody>
+                </table>
+                <div class="attack-path">
+                    <h4 style="margin:0 0 10px 0; font-size:0.8rem; color:var(--accent-purple);">🧬 ANALYSE DES CHEMINS D'ATTAQUE (CWE STACK)</h4>
+                    ${attackPathHtml || "Aucune faiblesse logicielle connue."}
+                </div>
+            </div>
+        `;
+    });
+
+    // Update KPIs
+    document.getElementById('kpi-cve').innerText = totalCve;
+    document.getElementById('kpi-threat').innerText = totalThreat;
+    document.getElementById('kpi-risk').innerText = Math.round(riskSum / (inventory.length || 1)) + "/100";
+}
+
+window.onload = init;
+</script>
+</body>
+</html>
