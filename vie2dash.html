@@ -30,9 +30,9 @@
         td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: top; }
 
         /* Méthodologie Section */
-        .methodology-box { background: #1c2128; border: 1px dotted var(--border-gray); padding: 20px; margin-bottom: 30px; border-radius: 8px; }
-        .methodology-box h3 { color: var(--accent-orange); margin-top: 0; font-size: 0.9rem; text-transform: uppercase; }
-        .formula { font-family: monospace; background: #0d1117; padding: 10px; border-radius: 4px; display: block; margin: 10px 0; color: #eee; }
+        .methodology-box { background: #1c2128; border: 1px solid var(--border-gray); padding: 20px; margin-bottom: 30px; border-radius: 8px; border-left: 4px solid var(--accent-blue); }
+        .methodology-box h3 { color: var(--accent-blue); margin-top: 0; font-size: 0.9rem; text-transform: uppercase; }
+        .formula { font-family: monospace; background: #0d1117; padding: 10px; border-radius: 4px; display: block; margin: 10px 0; color: var(--accent-green); border: 1px solid var(--border-gray); }
 
         .ecu-section { margin-bottom: 40px; background: var(--card-dark); border: 1px solid var(--border-gray); border-radius: 8px; overflow: hidden; }
         .ecu-header { background: #1c2128; padding: 15px 20px; border-bottom: 1px solid var(--border-gray); display: flex; justify-content: space-between; align-items: center; }
@@ -42,6 +42,7 @@
         .bg-orange { background: rgba(240,136,62,0.15); color: var(--accent-orange); border-color: var(--accent-orange); }
         .bg-purple { background: rgba(188,140,255,0.15); color: var(--accent-purple); border-color: var(--accent-purple); }
         .bg-gray { background: rgba(110,118,129,0.15); color: #c9d1d9; border-color: #444c56; }
+        .bg-blue { background: rgba(88,166,255,0.15); color: var(--accent-blue); border-color: var(--accent-blue); }
         
         .hidden { display: none !important; }
     </style>
@@ -52,18 +53,18 @@
     <div class="header-flex">
         <div>
             <h1 style="color:var(--accent-blue); margin:0;">🛡️ VIE Advanced Risk Dashboard</h1>
-            <p style="color:#8b949e; font-size: 0.9rem; margin:5px 0;">Analyse cyber-physique unitaire et globale.</p>
+            <p style="color:#8b949e; font-size: 0.9rem; margin:5px 0;">Analyse cyber-physique unitaire et globale (KEV & Temporal compliant).</p>
         </div>
         <div class="filter-box">
             <select id="ecuFilter" onchange="applyFilter()"><option value="ALL">Tout le véhicule</option></select>
         </div>
     </div>
 
-    <div id="debug-monitor">> Système prêt.</div>
+    <div id="debug-monitor">> Chargement des moteurs de calcul...</div>
 
     <div class="stats-grid">
         <div class="stat-card"><span id="total-cve" class="stat-value">0</span><span class="stat-label">CVE Détectées</span></div>
-        <div class="stat-card"><span id="total-kev" class="stat-value" style="color:var(--accent-red)">0</span><span class="stat-label">KEV Actifs</span></div>
+        <div class="stat-card"><span id="total-kev" class="stat-value" style="color:var(--accent-red)">0</span><span class="stat-label">KEV Exploités</span></div>
         <div class="stat-card"><span id="total-rce" class="stat-value" style="color:var(--accent-purple)">0</span><span class="stat-label">Vecteurs RCE</span></div>
         <div class="stat-card" style="border-bottom: 3px solid var(--accent-green);"><span id="avg-risk" class="stat-value">0</span><span class="stat-label">Score Risque Flotte</span></div>
     </div>
@@ -75,7 +76,8 @@
                 <tr>
                     <th>UNITÉ</th>
                     <th>VULNÉRABILITÉS</th>
-                    <th>SÉVÉRITÉ MAX</th>
+                    <th>KEV</th>
+                    <th>SÉVÉRITÉ MAX (BASE)</th>
                     <th style="text-align:right;">UNIT RISK SCORE</th>
                 </tr>
             </thead>
@@ -84,26 +86,19 @@
     </div>
 
     <div class="methodology-box">
-        <h3>🧮 Guide de Calcul du Risque (V3.0)</h3>
-        <p style="font-size: 0.85rem; color: #8b949e;">Pour chaque ligne et pour l'ECU global, nous appliquons une pondération basée sur la dangerosité réelle :</p>
+        <h3>🧮 Méthodologie du Calcul de Risque</h3>
+        <p style="font-size: 0.85rem; color: #8b949e;">Le score VIE permet d'ajuster la sévérité théorique (CVSS Base) à la réalité de la menace terrain.</p>
         
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
             <div>
-                <strong style="color: #eee; font-size: 0.8rem;">1. SCORE PAR LIGNE (Vulnérabilité unique)</strong>
-                <span class="formula">Score Ligne = CVSS_Base × 10 [× 1.1 si RCE] [× 1.2 si KEV]</span>
-                <ul style="font-size: 0.75rem; color: #8b949e;">
-                    <li>RCE : Présence de "Remote Code Execution" dans la description.</li>
-                    <li>KEV : Présence dans le catalogue CISA (Known Exploited Vulnerabilities).</li>
-                </ul>
+                <strong style="color: #eee; font-size: 0.8rem;">1. SCORE PAR LIGNE (CVE Unitaire)</strong>
+                <span class="formula">Score = CVSS_Temporel × 10 [× 1.1 si RCE] [× 1.2 si KEV]</span>
+                <p style="font-size: 0.7rem; color: #8b949e;">On utilise le score <strong>Temporel</strong> (ou Base corrigé) car il reflète l'état actuel des correctifs. Les bonus RCE/KEV s'appliquent pour les failles critiques exploitables.</p>
             </div>
             <div>
-                <strong style="color: #eee; font-size: 0.8rem;">2. SCORE GLOBAL ECU (Agrégation)</strong>
-                <span class="formula">Score ECU = (Max_CVSS × 7) + (Bonus_Volume)</span>
-                <ul style="font-size: 0.75rem; color: #8b949e;">
-                    <li>Max_CVSS : La faille la plus haute définit la base (70%).</li>
-                    <li>Bonus Volume : Gain logarithmique selon le nombre de CVE.</li>
-                    <li>Multiplicateurs : Si l'ECU contient au moins 1 RCE (+10%) ou 1 KEV (+5%).</li>
-                </ul>
+                <strong style="color: #eee; font-size: 0.8rem;">2. SCORE GLOBAL PAR ECU</strong>
+                <span class="formula">ECU_Score = (Max_Base × 7) + (Bonus_Log(Volume)) [Bonus KEV/RCE]</span>
+                <p style="font-size: 0.7rem; color: #8b949e;">L'agrégation privilégie la vulnérabilité la plus haute. Le volume de failles ajoute un risque cumulatif logarithmique (max +15 pts).</p>
             </div>
         </div>
     </div>
@@ -121,18 +116,20 @@
         return p.length > 4 ? `${p[3].toUpperCase()} ${p[4].replace(/_/g, ' ')}` : cpe;
     }
 
-    function calculateLineRisk(cvss, isRce, isKev) {
-        let score = cvss * 10;
+    // Calcul du risque par ligne
+    function calculateLineRisk(cvssTemp, isRce, isKev) {
+        let score = cvssTemp * 10;
         if (isRce) score *= 1.1;
         if (isKev) score *= 1.2;
         return Math.min(100, Math.round(score));
     }
 
+    // Calcul du risque global par ECU
     function calculateECURisk(cvssArray, hasRce, hasKev) {
         if (cvssArray.length === 0) return 0;
-        const maxCvss = Math.max(...cvssArray);
+        const maxBase = Math.max(...cvssArray);
         const count = cvssArray.length;
-        let score = maxCvss * 7; 
+        let score = maxBase * 7; 
         score += 15 * (count / (count + 20)); 
         if (hasRce) score *= 1.10;
         if (hasKev) score *= 1.05;
@@ -141,14 +138,12 @@
 
     async function init() {
         try {
-            const [invRes, vulnRes] = await Promise.all([
-                fetch('data/inventory/inventory_cpe.json'),
-                fetch('data/results/detected_vulns.json')
-            ]);
+            const invRes = await fetch('data/inventory/inventory_cpe.json');
             inventory = await invRes.json();
+            const vulnRes = await fetch('data/results/detected_vulns.json');
             vulnsData = await vulnRes.json();
             renderDashboard();
-        } catch(e) { document.getElementById('debug-monitor').innerText = "> Erreur: Fichiers de données introuvables."; }
+        } catch(e) { log("Erreur au chargement des JSON", true); }
     }
 
     function renderDashboard() {
@@ -171,12 +166,17 @@
             let allCvss = ev.map(v => v.metrics?.baseScore || 0);
 
             ev.forEach(v => {
-                const cvss = v.metrics?.baseScore || 0;
+                const cvssBase = v.metrics?.baseScore || 0;
+                // On récupère le temporel, ou on l'estime si absent
+                const cvssTemp = v.metrics?.temporalScore || (cvssBase * 0.9).toFixed(1);
+                
                 const isRce = v.description.toLowerCase().includes("remote code") || v.description.toLowerCase().includes(" rce ");
                 const isKev = v.is_kev === true || v.is_kev === "true";
-                const lineRisk = calculateLineRisk(cvss, isRce, isKev);
+                
+                // Calcul du score de ligne basé sur le temporel
+                const lineRisk = calculateLineRisk(cvssTemp, isRce, isKev);
 
-                if (cvss > eMaxCvss) eMaxCvss = cvss;
+                if (cvssBase > eMaxCvss) eMaxCvss = cvssBase;
                 if (isRce) { eRceCount++; gRce++; }
                 if (isKev) { eKevCount++; gKev++; }
 
@@ -185,13 +185,14 @@
                         <td><strong>${v.cve_id}</strong></td>
                         <td style="color:var(--accent-blue)">${cleanProductName(v.cpe)}</td>
                         <td>
-                            <div style="margin-bottom:5px;">${v.description.substring(0,70)}...</div>
+                            <div style="margin-bottom:5px;">${v.description.substring(0,80)}...</div>
                             ${isRce ? '<span class="badge bg-purple">RCE</span>' : ''}
                             ${isKev ? '<span class="badge bg-red">KEV</span>' : ''}
                         </td>
-                        <td><span class="badge bg-gray">${cvss.toFixed(1)}</span></td>
+                        <td><span class="badge bg-gray">${cvssBase.toFixed(1)}</span></td>
+                        <td><span class="badge bg-blue">${cvssTemp}</span></td>
                         <td style="text-align:right;">
-                            <span style="font-weight:bold; color:${lineRisk > 80 ? 'var(--accent-red)' : 'white'}">${lineRisk}</span>
+                            <span style="font-weight:bold; color:${lineRisk > 85 ? 'var(--accent-red)' : lineRisk > 50 ? 'var(--accent-orange)' : 'white'}">${lineRisk}</span>
                         </td>
                     </tr>`;
             });
@@ -202,20 +203,21 @@
             summaryBody.innerHTML += `
                 <tr class="summary-row" data-ecu="${ecuId}">
                     <td><strong style="color:var(--accent-blue)">${ecuId}</strong><br><small>${ecuName}</small></td>
-                    <td>${ev.length} CVE</td>
+                    <td>${ev.length} CVE ${eRceCount ? `<span class="badge bg-purple">RCE</span>` : ''}</td>
+                    <td>${eKevCount > 0 ? `<span class="badge bg-red">${eKevCount}</span>` : `<span style="color:#444">—</span>`}</td>
                     <td><span class="badge ${eMaxCvss>=7?'bg-red':'bg-orange'}">${eMaxCvss.toFixed(1)}</span></td>
-                    <td style="text-align:right;"><span style="font-weight:800; color:${eRiskScore>75?'var(--accent-red)':'var(--accent-green)'}">${eRiskScore}/100</span></td>
+                    <td style="text-align:right;"><span style="font-weight:800; font-size:1.1rem; color:${eRiskScore>75?'var(--accent-red)':'var(--accent-green)'}">${eRiskScore}/100</span></td>
                 </tr>`;
 
             detailsContainer.innerHTML += `
                 <div class="ecu-section" data-ecu="${ecuId}">
                     <div class="ecu-header">
-                        <h2 style="margin:0; font-size:1.1rem; color:var(--accent-blue)">${ecuId} — Détails</h2>
-                        <span class="badge bg-gray">ECU SCORE: ${eRiskScore}</span>
+                        <h2 style="margin:0; font-size:1.1rem; color:var(--accent-blue)">${ecuId} — Détails Vulnérabilités</h2>
+                        <span class="badge bg-gray">ECU RISK: ${eRiskScore}/100</span>
                     </div>
                     <table class="table-res">
-                        <thead><tr><th>CVE</th><th>PRODUIT</th><th>DESC / VECTEURS</th><th>CVSS</th><th style="text-align:right;">RISK SCORE</th></tr></thead>
-                        <tbody>${detailRows || '<tr><td colspan="5" style="text-align:center;">✅ Sain</td></tr>'}</tbody>
+                        <thead><tr><th>CVE</th><th>PRODUIT</th><th>DESC / VECTEURS</th><th>BASE</th><th>TEMP</th><th style="text-align:right;">VIE RISK</th></tr></thead>
+                        <tbody>${detailRows || '<tr><td colspan="6" style="text-align:center; padding:20px;">✅ Aucune menace détectée.</td></tr>'}</tbody>
                     </table>
                 </div>`;
         });
@@ -223,7 +225,8 @@
         document.getElementById('total-cve').innerText = gTotal;
         document.getElementById('total-kev').innerText = gKev;
         document.getElementById('total-rce').innerText = gRce;
-        document.getElementById('avg-risk').innerText = Math.round(gRiskSum / inventory.length);
+        document.getElementById('avg-risk').innerText = Math.round(gRiskSum / (inventory.length || 1));
+        document.getElementById('debug-monitor').innerText = "> Dashboard rendu avec analyse temporelle.";
     }
 
     function applyFilter() {
