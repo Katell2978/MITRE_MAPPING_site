@@ -205,8 +205,7 @@ function render() {
                 const dec = getDecision(v, safety, expo);
                 return `
                     <tr>
-                        <td><a href="index.html?cve=${v.cve_id}" style="color:var(--accent-blue); font-weight:bold;">${v.cve_id}</a></td>
-                        <td>${/* v.description */ ''}
+                        <td><a href="index.html?cve=${v
                         <div class="audit-trail"><b>Justification :</b> ${dec.reason}</div></td>
                         <td><b>${v.metrics?.baseScore || 0}</b></td>
                         <td><span class="badge" style="border-color:${dec.color}; color:${dec.color}; background:${dec.color}11">${dec.label}</span></td>
