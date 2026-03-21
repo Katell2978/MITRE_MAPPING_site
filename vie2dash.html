@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Vulnérabilités</title>
+    <title>Dashboard de Vulnérabilités - CVSS Temporal</title>
     <style>
         :root {
             --primary-color: #2c3e50;
             --kev-color: #eb4d4b;
             --bg-color: #f4f7f6;
             --text-color: #333;
+            --accent-blue: #3498db;
         }
 
         body {
@@ -22,7 +23,7 @@
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
         }
 
@@ -56,7 +57,6 @@
             color: var(--primary-color);
         }
 
-        /* Style spécifique pour la synthèse KEV */
         .highlight-kev {
             border: 2px solid var(--kev-color);
         }
@@ -86,7 +86,7 @@
             font-weight: 600;
         }
 
-        /* --- BADGE KEV --- */
+        /* --- BADGES & SCORES --- */
         .badge-kev {
             background-color: var(--kev-color);
             color: white;
@@ -97,10 +97,20 @@
             margin-left: 10px;
             display: inline-block;
             vertical-align: middle;
-            letter-spacing: 0.5px;
+        }
+
+        .cvss-score {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            background: #ecf0f1;
+            color: #2c3e50;
         }
 
         .severity-critical { color: #c0392b; font-weight: bold; }
+        .severity-high { color: #e67e22; font-weight: bold; }
+
     </style>
 </head>
 <body>
@@ -125,6 +135,7 @@
                 <th>CVE ID</th>
                 <th>Description</th>
                 <th>Sévérité</th>
+                <th>CVSS Temporel</th>
             </tr>
         </thead>
         <tbody>
@@ -132,26 +143,25 @@
                 <td>CVE-2023-26360 <span class="badge badge-kev">KEV</span></td>
                 <td>Adobe ColdFusion Improper Access Control...</td>
                 <td class="severity-critical">Critical</td>
+                <td><span class="cvss-score">9.1</span></td>
             </tr>
             <tr>
                 <td>CVE-2024-12345</td>
-                <td>Exemple de vulnérabilité non-exploitée activement.</td>
-                <td>High</td>
+                <td>Vulnérabilité théorique sans exploit public connu.</td>
+                <td class="severity-high">High</td>
+                <td><span class="cvss-score">7.2</span></td>
             </tr>
             <tr>
                 <td>CVE-2021-26084 <span class="badge badge-kev">KEV</span></td>
                 <td>Confluence Server Webwork OGNL injection...</td>
                 <td class="severity-critical">Critical</td>
+                <td><span class="cvss-score">9.8</span></td>
             </tr>
             <tr>
                 <td>CVE-2023-4966 <span class="badge badge-kev">KEV</span></td>
                 <td>Citrix Bleed - Information Disclosure...</td>
                 <td class="severity-critical">Critical</td>
-            </tr>
-            <tr>
-                <td>CVE-2024-9999</td>
-                <td>Analyse de composant tiers en cours.</td>
-                <td>Medium</td>
+                <td><span class="cvss-score">8.9</span></td>
             </tr>
         </tbody>
     </table>
@@ -159,18 +169,18 @@
 
 <script>
     function updateStatistics() {
-        // Compter toutes les lignes du tableau (hors entête)
+        // Compte les lignes (tbody tr)
         const totalRows = document.querySelectorAll('#vuln-table tbody tr').length;
         
-        // Compter uniquement les éléments ayant la classe badge-kev
+        // Compte les badges KEV
         const kevCount = document.querySelectorAll('.badge-kev').length;
 
-        // Mettre à jour l'affichage
+        // Mise à jour de la synthèse
         document.getElementById('total-vulns').innerText = totalRows;
         document.getElementById('kev-counter').innerText = kevCount;
     }
 
-    // Exécuter la fonction au chargement de la page
+    // Initialisation
     window.onload = updateStatistics;
 </script>
 
