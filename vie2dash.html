@@ -29,7 +29,6 @@
         th { text-align: left; font-size: 0.75rem; color: #8b949e; padding: 12px; border-bottom: 2px solid var(--border-gray); text-transform: uppercase; }
         td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: top; }
 
-        /* Méthodologie Section */
         .methodology-box { background: #1c2128; border: 1px solid var(--border-gray); padding: 20px; margin-bottom: 30px; border-radius: 8px; border-left: 4px solid var(--accent-blue); }
         .methodology-box h3 { color: var(--accent-blue); margin-top: 0; font-size: 0.9rem; text-transform: uppercase; }
         .formula { font-family: monospace; background: #0d1117; padding: 10px; border-radius: 4px; display: block; margin: 10px 0; color: var(--accent-green); border: 1px solid var(--border-gray); }
@@ -44,6 +43,9 @@
         .bg-gray { background: rgba(110,118,129,0.15); color: #c9d1d9; border-color: #444c56; }
         .bg-blue { background: rgba(88,166,255,0.15); color: var(--accent-blue); border-color: var(--accent-blue); }
         
+        a.cve-link { color: var(--accent-blue); text-decoration: none; font-weight: bold; }
+        a.cve-link:hover { text-decoration: underline; }
+
         .hidden { display: none !important; }
     </style>
 </head>
@@ -88,17 +90,16 @@
     <div class="methodology-box">
         <h3>🧮 Méthodologie du Calcul de Risque</h3>
         <p style="font-size: 0.85rem; color: #8b949e;">Le score VIE permet d'ajuster la sévérité théorique (CVSS Base) à la réalité de la menace terrain.</p>
-        
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
             <div>
                 <strong style="color: #eee; font-size: 0.8rem;">1. SCORE PAR LIGNE (CVE Unitaire)</strong>
                 <span class="formula">Score = CVSS_Temporel × 10 [× 1.1 si RCE] [× 1.2 si KEV]</span>
-                <p style="font-size: 0.7rem; color: #8b949e;">On utilise le score <strong>Temporel</strong> (ou Base corrigé) car il reflète l'état actuel des correctifs. Les bonus RCE/KEV s'appliquent pour les failles critiques exploitables.</p>
+                <p style="font-size: 0.7rem; color: #8b949e;">Le score <strong>Temporel</strong> reflète l'état actuel des correctifs. Bonus appliqué si RCE ou KEV.</p>
             </div>
             <div>
                 <strong style="color: #eee; font-size: 0.8rem;">2. SCORE GLOBAL PAR ECU</strong>
                 <span class="formula">ECU_Score = (Max_Base × 7) + (Bonus_Log(Volume)) [Bonus KEV/RCE]</span>
-                <p style="font-size: 0.7rem; color: #8b949e;">L'agrégation privilégie la vulnérabilité la plus haute. Le volume de failles ajoute un risque cumulatif logarithmique (max +15 pts).</p>
+                <p style="font-size: 0.7rem; color: #8b949e;">L'agrégation privilégie la vulnérabilité la plus haute + volume de failles (max +15 pts).</p>
             </div>
         </div>
     </div>
@@ -116,7 +117,6 @@
         return p.length > 4 ? `${p[3].toUpperCase()} ${p[4].replace(/_/g, ' ')}` : cpe;
     }
 
-    // Calcul du risque par ligne
     function calculateLineRisk(cvssTemp, isRce, isKev) {
         let score = cvssTemp * 10;
         if (isRce) score *= 1.1;
@@ -124,7 +124,6 @@
         return Math.min(100, Math.round(score));
     }
 
-    // Calcul du risque global par ECU
     function calculateECURisk(cvssArray, hasRce, hasKev) {
         if (cvssArray.length === 0) return 0;
         const maxBase = Math.max(...cvssArray);
@@ -143,7 +142,7 @@
             const vulnRes = await fetch('data/results/detected_vulns.json');
             vulnsData = await vulnRes.json();
             renderDashboard();
-        } catch(e) { log("Erreur au chargement des JSON", true); }
+        } catch(e) { console.error(e); }
     }
 
     function renderDashboard() {
@@ -167,13 +166,9 @@
 
             ev.forEach(v => {
                 const cvssBase = v.metrics?.baseScore || 0;
-                // On récupère le temporel, ou on l'estime si absent
                 const cvssTemp = v.metrics?.temporalScore || (cvssBase * 0.9).toFixed(1);
-                
                 const isRce = v.description.toLowerCase().includes("remote code") || v.description.toLowerCase().includes(" rce ");
                 const isKev = v.is_kev === true || v.is_kev === "true";
-                
-                // Calcul du score de ligne basé sur le temporel
                 const lineRisk = calculateLineRisk(cvssTemp, isRce, isKev);
 
                 if (cvssBase > eMaxCvss) eMaxCvss = cvssBase;
@@ -182,7 +177,7 @@
 
                 detailRows += `
                     <tr>
-                        <td><strong>${v.cve_id}</strong></td>
+                        <td><a href="index.html?cve=${v.cve_id}" class="cve-link">${v.cve_id}</a></td>
                         <td style="color:var(--accent-blue)">${cleanProductName(v.cpe)}</td>
                         <td>
                             <div style="margin-bottom:5px;">${v.description.substring(0,80)}...</div>
@@ -212,7 +207,7 @@
             detailsContainer.innerHTML += `
                 <div class="ecu-section" data-ecu="${ecuId}">
                     <div class="ecu-header">
-                        <h2 style="margin:0; font-size:1.1rem; color:var(--accent-blue)">${ecuId} — Détails Vulnérabilités</h2>
+                        <h2 style="margin:0; font-size:1.1rem; color:var(--accent-blue)">${ecuId} — Détails</h2>
                         <span class="badge bg-gray">ECU RISK: ${eRiskScore}/100</span>
                     </div>
                     <table class="table-res">
@@ -226,7 +221,7 @@
         document.getElementById('total-kev').innerText = gKev;
         document.getElementById('total-rce').innerText = gRce;
         document.getElementById('avg-risk').innerText = Math.round(gRiskSum / (inventory.length || 1));
-        document.getElementById('debug-monitor').innerText = "> Dashboard rendu avec analyse temporelle.";
+        document.getElementById('debug-monitor').innerText = "> Dashboard rendu.";
     }
 
     function applyFilter() {
