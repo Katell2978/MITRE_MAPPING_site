@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kat‑Force — VIE Master Dashboard V3 (FULL DATA)</title>
+    <title>VIE Master Dashboard V3 (Demonstrateur with FAKE DATA)</title>
     <style>
         :root {
             --bg-dark: #0d1117; --card-dark: #161b22; --border-gray: #30363d;
@@ -45,7 +45,7 @@
 <div class="container">
     <div class="header-flex">
         <div>
-            <h1 style="margin:0; color:var(--accent-blue);">🛡️ Kat‑Force VIE Master Dashboard — Expert Analysis</h1>
+            <h1 style="margin:0; color:var(--accent-blue);"> VIE Master Dashboard — Expert Analysis with FAKE DATA</h1>
             <p style="margin:5px 0; color:var(--text-gray);">Analyse cyber-physique unifiée & Aide à la décision SSVC.</p>
         </div>
         <a href="index.html" style="color:var(--accent-blue); text-decoration:none; font-weight:bold;">← RETOUR INDEX</a>
@@ -69,8 +69,10 @@
 
     <div class="config-panel">
         <div><label>Unité ECU : </label> <select id="ecuFilter" onchange="render()"><option value="ALL">Tout le véhicule</option></select></div>
+        <!--
         <div><label>Exposition : </label> <select id="cfg-exp" onchange="render()"><option value="high">Élevée (V2X/Internet)</option><option value="low">Interne (Bus CAN)</option></select></div>
         <div><label>Impact Safety : </label> <select id="cfg-safety" onchange="render()"><option value="critical">Critique (Freins/ADAS)</option><option value="low">Confort (Infotainment)</option></select></div>
+        -->
         <div style="margin-left:auto;"><span id="data-info" style="font-size:0.75rem; color:var(--accent-green);">Données prêtes.</span></div>
     </div>
 
@@ -88,7 +90,7 @@
                     <th onclick="sortTable(0, 'summaryTable')">Unité ECU</th>
                     <th onclick="sortTable(1, 'summaryTable')">Vulns</th>
                     <th onclick="sortTable(2, 'summaryTable')">Max CVSS</th>
-                    <th onclick="sortTable(3, 'summaryTable')">Décision SSVC</th>
+                    <!-- Desision par vuln pas concervé <th onclick="sortTable(3, 'summaryTable')">Décision SSVC</th>-->
                     <th onclick="sortTable(4, 'summaryTable')">M1 (Pondéré)</th>
                     <th onclick="sortTable(5, 'summaryTable')">M2 (Menace)</th>
                     <th onclick="sortTable(6, 'summaryTable')">M3 (Safety)</th>
@@ -204,7 +206,8 @@ function render() {
                 return `
                     <tr>
                         <td><a href="index.html?cve=${v.cve_id}" style="color:var(--accent-blue); font-weight:bold;">${v.cve_id}</a></td>
-                        <td>${v.description}<div class="audit-trail"><b>Justification :</b> ${dec.reason}</div></td>
+                        <td>${/* v.description */ ''}
+                        <div class="audit-trail"><b>Justification :</b> ${dec.reason}</div></td>
                         <td><b>${v.metrics?.baseScore || 0}</b></td>
                         <td><span class="badge" style="border-color:${dec.color}; color:${dec.color}; background:${dec.color}11">${dec.label}</span></td>
                         <td>M1:${calculateRisk(v,1,safety)} | M3:${calculateRisk(v,3,safety)}</td>
