@@ -12,7 +12,7 @@
       "metrics": {
         "cvss": {
           "base_initial": 6.5,
-          "base_current": 6/5,
+          "base_current": 6.5,
           "vector": "CVSS:3.1/AV:A/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
         },
         "epss": {
