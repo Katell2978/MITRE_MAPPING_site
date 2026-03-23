@@ -2,8 +2,9 @@
   {
     "component_id": "ECU1-TCU",
     "description": "Telematics Control Unit - Connectivity Hub (5G, V2X, WiFi)",
-    "source": "HBOM_v2.1_Final",
+    "source": "Generated_by_IA_for_Demo",
     "is_exposed": true,
+    "network_zone": "Z1",
     "safety_impact": "Medium",
     "supplier_involvement": "Cooperative",
     "cpe_list": [
@@ -32,8 +33,9 @@
   {
     "component_id": "ECU2-IVI",
     "description": "In-Vehicle Infotainment - Multimedia & Cockpit Unit",
-    "source": "SBOM_v4.2_Build3",
+    "source": "Generated_by_IA_for_Demo",
     "is_exposed": true,
+    "network_zone": "Z1",
     "safety_impact": "Low",
     "supplier_involvement": "Cooperative",
     "cpe_list": [
@@ -62,8 +64,9 @@
   {
     "component_id": "ECU3-ADAS",
     "description": "ADAS ECU - Perception & Autonomous Driving Assistance",
-    "source": "HBOM_v1.0_Draft",
+    "source": "Generated_by_IA_for_Demo",
     "is_exposed": false,
+    "network_zone": "Z3",
     "safety_impact": "High",
     "supplier_involvement": "Unresponsive",
     "cpe_list": [
@@ -92,8 +95,9 @@
   {
     "component_id": "ECU4-GW",
     "description": "Central Gateway - Security & Data Routing",
-    "source": "HBOM_v3.0_Final",
+    "source": "Generated_by_IA_for_Demo",
     "is_exposed": false,
+    "network_zone": "Z2",
     "safety_impact": "High",
     "supplier_involvement": "Unresponsive",
     "cpe_list": [
