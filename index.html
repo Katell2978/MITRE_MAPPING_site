@@ -305,7 +305,24 @@ Supplier_multiplier (SSVC SINV):
       </div>
     </div>
   </div>
-
+<!---Début - Ajout Mitre Embedded  --->
+<!-- =========================================================
+ ✅ V2 – EMB3D Threat Analysis (CWE → Threat)
+ Ne modifie aucun flux existant
+ ========================================================= -->
+<div class="card" id="emb3dThreatCard">
+  <h2>Threat Analysis — EMB3D (MITRE)</h2>
+  <p class="small muted">
+    Analyse des menaces issues du modèle <b>MITRE EMB3D</b>,
+    corrélées dynamiquement aux CWE détectées.
+  </p>
+  <div id="emb3dThreatContent" class="muted">
+    —
+  </div>
+</div>
+<!--- Fin de l'Ajout Mitre Embedded  --->  
+  
+<!-- ----------------------------- FIN DE PAGE ------------------------>
   <!-- Optional drilldown -->
   <div class="card">
     <h2>Drilldown (optionnel) — CWE → CAPEC → ATT&CK</h2>
@@ -1116,23 +1133,6 @@ async function loadEmb3d() {
   // Auto-run
   analyze();
 </script>
-<!---Début - Ajout Mitre Embedded  --->
-<!-- =========================================================
- ✅ V2 – EMB3D Threat Analysis (CWE → Threat)
- Ne modifie aucun flux existant
- ========================================================= -->
-<div class="card" id="emb3dThreatCard">
-  <h2>Threat Analysis — EMB3D (MITRE)</h2>
-  <p class="small muted">
-    Analyse des menaces issues du modèle <b>MITRE EMB3D</b>,
-    corrélées dynamiquement aux CWE détectées.
-  </p>
-  <div id="emb3dThreatContent" class="muted">
-    —
-  </div>
-</div>
-<!--- Fin de l'Ajout Mitre Embedded  --->  
-
   
 <footer style="margin-top:40px; padding:20px; opacity:.7; font-size:.85em;">
   <hr style="border-color:#26325f;">
