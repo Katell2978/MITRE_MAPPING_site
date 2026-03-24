@@ -385,15 +385,65 @@ async function loadSecurityNews() {
   `).join('') + '</ul>';
 } // ligne 377:  <a href="index.html?cve=${i.cve}">Analyseur</a>   ajouté le 24/03 à 14h44
 // Ajout script pour analyse fichier json des sources de news à suivire data/veille-source.json
-  async function loadCuratedNews() {
-  const res = await fetch("data/veille-source.json");
-  const news = await res.json();
+/**  * Charge la veille "curated" (Option A) depuis data/veille-source.json  * et l'affiche dans #curatedNewsContent
+ */
+async function loadCuratedNews() {
+  const box = document.getElementById('curatedNewsContent');
+  if (!box) return;
 
-  // Filtre 7 jours
-  const since = Date.now() - 7*24*60*60*1000;
-  const recent = news.filter(n => new Date(n.date).getTime() >= since);
+  // Fenêtre 7 jours
+  const since = Date.now() - 7 * 24 * 60 * 60 * 1000;
 
-  // Rendu
+  try {
+    // 1) Lecture du JSON local (GitHub Pages friendly)
+    const res = await fetch('data/veille-source.json?t=' + Date.now());
+    if (!res.ok) throw new Error('data/veille-source.json introuvable');
+    const news = await res.json();
+
+    // 2) Filtre 7 jours + tri décroissant
+    const recent = (news || [])
+      .filter(n => new Date(n.date).getTime() >= since)
+      .sort((a,b) => new Date(b.date) - new Date(a.date));
+
+    // 3) Si vide : message clair
+    if (!recent.length) {
+      box.innerHTML = "<div class='muted'>Aucune actualité curated sur les 7 derniers jours.</div>";
+      return;
+    }
+
+    // 4) Helpers de rendu (petits badges cohérents avec veille.html)
+    const badge = (txt, cls) => `<span class="badge ${cls}" style="margin-left:6px">${txt}</span>`;
+    const impactBadge = (i) => {
+      // mapping simple : RCE=bad, Network=warn, le reste=ok (tu peux adapter)
+      if (i === 'RCE') return badge('RCE', 'bg-bad');
+      if (i === 'Network') return badge('Network', 'bg-warn');
+      return badge(i, 'bg-ok');
+    };
+
+    // 5) Rendu HTML
+    box.innerHTML = `
+      <ul style="margin:0; padding-left:18px">
+        ${recent.map(n => `
+          <li style="margin: 8px 0">
+            <b>[${(n.type || 'News').toUpperCase()}]</b>
+            <a href="${n.link}" target="_blank" rel="noreferrer" style="color:var(--accent); font-weight:900; text-decoration:none;">
+              ${n.title || 'Sans titre'}
+            </a>
+            <span class="muted">— ${n.vendor || n.source || 'source'} — ${n.date}</span>
+            <div class="muted" style="margin-top:4px;">
+              ${n.impact ? n.impact.map(impactBadge).join('') : ''}
+              ${n.confidence ? badge(n.confidence, 'bg-ok') : ''}
+              ${n.source ? `<span class="muted" style="margin-left:6px">(${n.source})</span>` : ''}
+            </div>
+          </li>
+        `).join('')}
+      </ul>
+    `;
+
+  } catch (e) {
+    console.error(e);
+    box.innerHTML = `<span style="color:var(--bad)">⚠️ Erreur actualités curated : ${e.message}</span>`;
+  }
 }
 // Lancement au démarrage
   loadSecurityNews(); //fonction actualité
