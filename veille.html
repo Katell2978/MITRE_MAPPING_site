@@ -57,6 +57,27 @@
     <button id="refreshBtn" onclick="refreshData()">🔄 Actualiser la veille</button>
   </div>
 
+<!-- =========================================================
+ ✅ ACTUALITÉS SÉCURITÉ – 7 JOURS
+ ========================================================= -->
+<div class="card" id="securityNewsCard">
+  <h2>📰 Actualités sécurité – 7 derniers jours</h2>
+
+  <div id="securityNewsContent" class="small muted">
+    Chargement des actualités…
+  </div>
+
+  <div class="small muted" style="margin-top:12px">
+    <b>Sources :</b>
+    <ul>
+      <li>CISA Known Exploited Vulnerabilities (KEV)</li>
+      <li>NVD – National Vulnerability Database</li>
+      <li>Automotive Security Research Group (ASRG / AutoVulnDB)</li>
+    </ul>
+  </div>
+</div>
+  <!--  FIN ACTUALITE ========================================================= -->
+  
   <div id="summary" style="margin: 20px 0; color: var(--accent); font-weight: bold;">Initialisation...</div>
 
   <div style="overflow-x: auto;">
@@ -230,6 +251,115 @@ function applySort(list) {
   });
 }
 
+/* =========================================================
+ ✅ ACTUALITÉS SÉCURITÉ – 7 JOURS
+ ========================================================= */
+async function loadSecurityNews() {
+  const box = document.getElementById("securityNewsContent");
+  if (!box) return;
+
+  const since = Date.now() - (7 * 24 * 60 * 60 * 1000);
+  const items = [];
+
+  /* --- 1) CISA KEV récents --- */
+  try {
+    const kev = await fetch(
+      "https://raw.githubusercontent.com/cisagov/kev-data/main/known_exploited_vulnerabilities.json"
+    ).then(r => r.json());
+
+    (kev.vulnerabilities || []).forEach(v => {
+      const added = new Date(v.dateAdded).getTime();
+      if (added >= since) {
+        items.push({
+          type: "KEV",
+          date: v.dateAdded,
+          label: `${v.cveID} – ajouté au CISA KEV`,
+          link: `https://nvd.nist.gov/vuln/detail/${v.cveID}`
+        });
+      }
+    });
+  } catch (e) {
+    console.warn("KEV fetch failed", e);
+  }
+
+  /* --- 2) NVD CVSS ≥ 9.7 publiées récemment --- */
+  try {
+    const nvd = await fetch(
+      "https://services.nvd.nist.gov/rest/json/cves/2.0?resultsPerPage=50&pubStartDate=" +
+      new Date(since).toISOString()
+    ).then(r => r.json());
+
+    (nvd.vulnerabilities || []).forEach(v => {
+      const cve = v.cve;
+      const score =
+        cve.metrics?.cvssMetricV31?.[0]?.cvssData?.baseScore ??
+        cve.metrics?.cvssMetricV30?.[0]?.cvssData?.baseScore ??
+        0;
+
+      if (score >= 9.7) {
+        items.push({
+          type: "NVD",
+          date: cve.published,
+          label: `${cve.id} – CVSS ${score}`,
+          link: `https://nvd.nist.gov/vuln/detail/${cve.id}`
+        });
+      }
+    });
+  } catch (e) {
+    console.warn("NVD fetch failed", e);
+  }
+
+  /* --- 3) ASRG (CNA Automotive Security Research Group) --- */
+  try {
+    const nvd = await fetch(
+      "https://services.nvd.nist.gov/rest/json/cves/2.0?resultsPerPage=50&pubStartDate=" +
+      new Date(since).toISOString()
+    ).then(r => r.json());
+
+    (nvd.vulnerabilities || []).forEach(v => {
+      const cve = v.cve;
+      if (
+        (cve.sourceIdentifier || "").includes("Automotive Security Research Group")
+      ) {
+        items.push({
+          type: "ASRG",
+          date: cve.published,
+          label: `${cve.id} – ASRG publication`,
+          link: `https://nvd.nist.gov/vuln/detail/${cve.id}`
+        });
+      }
+    });
+  } catch (e) {
+    console.warn("ASRG fetch failed", e);
+  }
+
+  /* --- Rendu --- */
+  if (!items.length) {
+    box.innerHTML = "<div class='muted'>Aucune actualité critique sur la période.</div>";
+    return;
+  }
+
+  items
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  box.innerHTML = `
+    <ul>
+      ${items.map(i => `
+        <li>
+          <b>[${i.type}]</b>
+          <a href="${i.link}" target="_blank" rel="noreferrer">
+            ${i.label}
+          </a>
+          <span class="muted">(${i.date})</span>
+        </li>
+      `).join("")}
+    </ul>
+  `;
+}
+
+/* Chargement auto */
+loadSecurityNews();
+  
 // Lancement au démarrage
 refreshData();
 </script>
