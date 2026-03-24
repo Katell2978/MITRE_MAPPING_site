@@ -201,6 +201,7 @@ function renderTable(list) {
 
     // --- Rendu de la ligne ---
     const row = document.createElement('tr');
+    // ajouter dans l'affichage de l'id de cve un lien vers page analyser https://katell2978.github.io/MITRE_MAPPING_site/index.html?cve=CVE-2019-12260
     row.innerHTML = `
       <td>
         <strong style="color:var(--accent)">${v.cve_id}</strong>
