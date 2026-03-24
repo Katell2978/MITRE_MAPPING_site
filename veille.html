@@ -40,6 +40,12 @@
     .dot-green { background: var(--ok); box-shadow: 0 0 5px var(--ok); }
 
     tr:hover { background: rgba(255,255,255,0.02); }
+    
+/* Badges actualités */
+.newsBadge { padding: 2px 8px; border-radius: 999px; font-size: .75em; font-weight: 800; margin-left: 6px; display:inline-block; }
+.newsNet { background: rgba(122,162,255,.22); border:1px solid rgba(122,162,255,.45); }
+.newsRce { background: rgba(248,113,113,.20); border:1px solid rgba(248,113,113,.45); }
+
   </style>
 </head>
 
@@ -254,6 +260,20 @@ function applySort(list) {
 /* =========================================================
  ✅ ACTUALITÉS SÉCURITÉ – 7 JOURS
  ========================================================= */
+function isNetworkFromVector(vectorString) {
+  const v = (vectorString || "");
+  return /AV:N\b/.test(v) || /AV:A\b/.test(v);
+}
+
+function isRceFromText(text) {
+  const t = (text || "").toLowerCase();
+  return (
+    t.includes("remote code execution") ||
+    t.includes("arbitrary code execution") ||
+    t.includes("code execution") ||
+    /\brce\b/.test(t)
+  );
+}
 async function loadSecurityNews() {
   const box = document.getElementById("securityNewsContent");
   if (!box) return;
@@ -270,13 +290,18 @@ async function loadSecurityNews() {
     (kev.vulnerabilities || []).forEach(v => {
       const added = new Date(v.dateAdded).getTime();
       if (added >= since) {
+        const vector = cve.metrics?.cvssMetricV31?.[0]?.cvssData?.vectorString ?? cve.metrics?.cvssMetricV30?.[0]?.cvssData?.vectorString ??  "";
+        const desc = cve.descriptions?.find(d => d.lang === "en")?.value ?? cve.descriptions?.[0]?.value ??  "";
+        const badgeNet = isNetworkFromVector(vector);
+        const badgeRce = isRceFromText(desc);
         items.push({
-          type: "KEV",
-          date: v.dateAdded,
-          label: `${v.cveID} – ajouté au CISA KEV`,
-          link: `https://nvd.nist.gov/vuln/detail/${v.cveID}`
-        });
-      }
+          type: "NVD",
+          date: cve.published,
+          label: `${cve.id} – CVSS ${score}`,
+          link: `https://nvd.nist.gov/vuln/detail/${cve.id}`,
+          badges: { net: badgeNet, rce: badgeRce }
+          });
+      } /* fin if */
     });
   } catch (e) {
     console.warn("KEV fetch failed", e);
