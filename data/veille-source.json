@@ -32,12 +32,12 @@
   },
   {
     "date": "2026-03-20",
-    "source": "LinkedIn – Android Security",
+    "source": "Android Security Bulletin",
     "type": "Social Post",
     "vendor": "Android Automotive",
     "title": "Android Automotive OS – March Security Update available",
     "impact": ["Platform"],
     "confidence": "Vendor Statement",
-    "link": "https://www.linkedin.com/posts/..."
+    "link": "https://source.android.com/docs/security/bulletin/aaos?hl=fr"
   }
 ]
