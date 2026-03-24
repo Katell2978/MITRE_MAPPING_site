@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <title>Vuln Intel Engine – Vulnerabilities Watchtower</title>
+  <title>OOAC : Vuln Intel Engine – Vulnerabilities Watchtower</title>
 
   <style>
     :root {
@@ -73,8 +73,7 @@
   </nav>
 
   <div class="header-flex">
-    <h1>🔭 Watchtower Intelligence</h1>
-    <p>TODO :Ajouter une veille - nouvelle KEV, nouvelle RCE, nouvelle vuln >9.8 dans les 10 jours</p>
+    <h1>🔭 Watchtower Intelligence- Veille cyber et veille de vuln in Track</h1>
     <button id="refreshBtn" onclick="refreshData()">🔄 Actualiser la veille</button>
   </div>
 <!--Actualités -->
@@ -88,10 +87,17 @@
     Sources :     CISA KEV · NVD · Automotive Security Research Group (ASRG)
   </div>
 </div>
+  <!-- Actu part 2 -->
+<div style="background:var(--card); border-radius:10px; padding:15px; margin-top:20px;">
+  <h2 style="margin-top:0;">📰 Actualités sécurité – 7 derniers jours - Sur base d'articles à automatiser</h2>
+  <!-- ✅ conteneur rendu par loadCuratedNews() -->
+  <div id="curatedNewsContent" class="muted">Chargement…</div>
+</div>
 
  <!-- Suivi Charrgement --> 
   <div id="summary" style="margin: 20px 0; color: var(--accent); font-weight: bold;">Initialisation...</div>
 <!--  Tableau des vuln suivies SSVC = Track   -->
+  <h2>Tableau listant les vulnerabilitées suivi (Track)</h2>
   <div style="overflow-x: auto;">
     <table>
       <thead>
@@ -111,6 +117,12 @@
         </tbody>
     </table>
   </div>
+
+    <!-- Actu part 3 : News candidates (RSS auto) -->
+<div style="background:var(--card); border-radius:10px; padding:15px; margin-top:20px;">
+  <h2 style="margin-top:0;">🧪 News candidates – flux RSS automatisé</h2>
+  <div id="candidateNewsContent" class="muted">Chargement…</div>
+</div>
 
 <script>
 const DATA_PATH = 'data/vuln-watch.json';
@@ -204,7 +216,7 @@ function renderTable(list) {
     // ajouter dans l'affichage de l'id de cve un lien vers page analyser https://katell2978.github.io/MITRE_MAPPING_site/index.html?cve=CVE-2019-12260
     row.innerHTML = `
       <td>
-        <strong style="color:var(--accent)">${v.cve_id}</strong>
+        <strong style="color:var(--accent)"><a href="index.html?cve=${v.cve_id}">${v.cve_id}</a></strong>
         ${evolutionBadge}
       </td>
       <td>
@@ -304,6 +316,7 @@ async function loadSecurityNews() {
           date: v.dateAdded,
           label: `${v.cveID} – ajouté au KEV`,
           link: `https://nvd.nist.gov/vuln/detail/${v.cveID}`,
+          cve: '${v.cveID}',
           rce: isRceFromText(v.vulnerabilityName + ' ' + v.shortDescription)
         });
       }
@@ -375,11 +388,146 @@ async function loadSecurityNews() {
       <span class="muted">(${i.date})</span>
     </li>
   `).join('') + '</ul>';
+} // ligne 377:  <a href="index.html?cve=${i.cve}">Analyseur</a>   ajouté le 24/03 à 14h44
+// Ajout script pour analyse fichier json des sources de news à suivire data/veille-source.json
+/**  * Charge la veille "curated" (Option A) depuis data/veille-source.json  * et l'affiche dans #curatedNewsContent
+ */
+async function loadCuratedNews() {
+  const box = document.getElementById('curatedNewsContent');
+  if (!box) return;
+
+  // Fenêtre 7 jours
+  const since = Date.now() - 7 * 24 * 60 * 60 * 1000;
+
+  try {
+    // 1) Lecture du JSON local (GitHub Pages friendly)
+    const res = await fetch('data/veille-source.json?t=' + Date.now());
+    if (!res.ok) throw new Error('data/veille-source.json introuvable');
+    const news = await res.json();
+
+    // 2) Filtre 7 jours + tri décroissant
+    const recent = (news || [])
+      .filter(n => new Date(n.date).getTime() >= since)
+      .sort((a,b) => new Date(b.date) - new Date(a.date));
+
+    // 3) Si vide : message clair
+    if (!recent.length) {
+      box.innerHTML = "<div class='muted'>Aucune actualité curated sur les 7 derniers jours.</div>";
+      return;
+    }
+
+    // 4) Helpers de rendu (petits badges cohérents avec veille.html)
+    const badge = (txt, cls) => `<span class="badge ${cls}" style="margin-left:6px">${txt}</span>`;
+    const impactBadge = (i) => {
+      // mapping simple : RCE=bad, Network=warn, le reste=ok (tu peux adapter)
+      if (i === 'RCE') return badge('RCE', 'bg-bad');
+      if (i === 'Network') return badge('Network', 'bg-warn');
+      return badge(i, 'bg-ok');
+    };
+
+    // 5) Rendu HTML
+    box.innerHTML = `
+      <ul style="margin:0; padding-left:18px">
+        ${recent.map(n => `
+          <li style="margin: 8px 0">
+            <b>[${(n.type || 'News').toUpperCase()}]</b>
+            <a href="${n.link}" target="_blank" rel="noreferrer" style="color:var(--accent); font-weight:900; text-decoration:none;">
+              ${n.title || 'Sans titre'}
+            </a>
+            <span class="muted">— ${n.vendor || n.source || 'source'} — ${n.date}</span>
+            <div class="muted" style="margin-top:4px;">
+              ${n.impact ? n.impact.map(impactBadge).join('') : ''}
+              ${n.confidence ? badge(n.confidence, 'bg-ok') : ''}
+              ${n.source ? `<span class="muted" style="margin-left:6px">(${n.source})</span>` : ''}
+            </div>
+          </li>
+        `).join('')}
+      </ul>
+    `;
+
+  } catch (e) {
+    console.error(e);
+    box.innerHTML = `<span style="color:var(--bad)">⚠️ Erreur actualités curated : ${e.message}</span>`;
+  }
+}
+// Fonction pour actu 3 RSS
+  /**
+ * Charge les news "candidates" (RSS automatisé)
+ * depuis data/news-candidates.json
+ */
+async function loadCandidateNews() {
+  const box = document.getElementById('candidateNewsContent');
+  if (!box) return;
+
+  // Fenêtre 7 jours
+  const since = Date.now() - 7 * 24 * 60 * 60 * 1000;
+
+  try {
+    const res = await fetch('data/news-candidates.json?t=' + Date.now());
+    if (!res.ok) throw new Error('data/news-candidates.json introuvable');
+
+    const news = await res.json();
+
+    const recent = (news || [])
+      .filter(n => new Date(n.date || n.datetime_utc).getTime() >= since)
+      .sort((a, b) =>
+        new Date(b.datetime_utc || b.date) -
+        new Date(a.datetime_utc || a.date)
+      );
+
+    if (!recent.length) {
+      box.innerHTML =
+        "<div class='muted'>Aucune news candidate sur les 7 derniers jours.</div>";
+      return;
+    }
+
+    box.innerHTML = `
+      <ul style="margin:0; padding-left:18px">
+        ${recent.map(n => `
+          <li style="margin: 8px 0">
+            <b>[RSS]</b>
+            <a href="${n.link}" target="_blank" rel="noreferrer"
+               style="color:var(--accent); font-weight:900; text-decoration:none;">
+              ${n.title || 'Sans titre'}
+            </a>
+            <span class="muted">
+              — ${n.source || 'source ?'} — ${n.date || ''}
+            </span>
+
+            ${n.summary ? `
+              <div class="muted" style="margin-top:4px;">
+                ${n.summary}
+              </div>` : ''}
+
+            <div style="margin-top:4px;">
+              ${n.cves && n.cves.length
+                ? n.cves.map(c =>
+                    `<span class="badge bg-warn" style="margin-right:4px">${c}</span>`
+                  ).join('')
+                : ''}
+              <span class="badge bg-ok" style="margin-left:6px">TO‑REVIEW</span>
+            </div>
+          </li>
+        `).join('')}
+      </ul>
+    `;
+  } catch (e) {
+    console.error(e);
+    box.innerHTML =
+      `<span style="color:var(--bad)">⚠️ Erreur news candidates : ${e.message}</span>`;
+  }
 }
 // Lancement au démarrage
   loadSecurityNews(); //fonction actualité
+  loadCandidateNews();
+  loadCuratedNews(); //sur base de site à consulté dans veille data json
 refreshData(); //fonction veille de vuln identifiée dans json data/vuln-watch.json
 </script>
-
+<footer style="margin-top:40px; padding:20px; opacity:.7; font-size:.85em;">
+  <hr style="border-color:#26325f;">
+      <div style="margin-top:8px;">
+    Références :  Sources : NVD / FIRST EPSS / CISA KEV /CERT / AND MULTIPLE OTHERS
+  </div>
+</footer>
 </body>
 </html>
