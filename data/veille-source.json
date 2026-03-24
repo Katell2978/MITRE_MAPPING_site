@@ -1,0 +1,32 @@
+[
+  {
+    "date": "2026-03-22",
+    "source": "Qualcomm Product Security",
+    "type": "Vendor Bulletin",
+    "vendor": "Qualcomm",
+    "title": "Qualcomm Security Bulletin – March 2026",
+    "impact": ["RCE", "Network"],
+    "confidence": "Official",
+    "link": "https://docs.qualcomm.com/securitybulletin/"
+  },
+  {
+    "date": "2026-03-21",
+    "source": "Renesas PSIRT",
+    "type": "Vendor Advisory",
+    "vendor": "Renesas",
+    "title": "RL78 Debug Port Security Protections Can Be Bypassed",
+    "impact": ["Physical", "RCE"],
+    "confidence": "Official",
+    "link": "https://www.renesas.com/support/renesas-psirt"
+  },
+  {
+    "date": "2026-03-20",
+    "source": "LinkedIn – Android Security",
+    "type": "Social Post",
+    "vendor": "Android Automotive",
+    "title": "Android Automotive OS – March Security Update available",
+    "impact": ["Platform"],
+    "confidence": "Vendor Statement",
+    "link": "https://www.linkedin.com/posts/..."
+  }
+]
