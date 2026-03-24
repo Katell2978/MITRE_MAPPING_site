@@ -377,6 +377,17 @@ async function loadSecurityNews() {
     </li>
   `).join('') + '</ul>';
 }
+// Ajout script pour analyse fichier json des sources de news à suivire data/veille-source.json
+  async function loadCuratedNews() {
+  const res = await fetch("data/veille-source.json");
+  const news = await res.json();
+
+  // Filtre 7 jours
+  const since = Date.now() - 7*24*60*60*1000;
+  const recent = news.filter(n => new Date(n.date).getTime() >= since);
+
+  // Rendu
+}
 // Lancement au démarrage
   loadSecurityNews(); //fonction actualité
 refreshData(); //fonction veille de vuln identifiée dans json data/vuln-watch.json
