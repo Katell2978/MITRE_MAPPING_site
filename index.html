@@ -1016,10 +1016,63 @@ Supplier_multiplier (SSVC SINV):
     $("riskPills").innerHTML = pills.join(" ");
   }
 
+//Debut Ajout pour Mitre Embededd
+/* =========================================================
+ ✅ EMB3D V2 — Chargement & Indexation des Threats
+ Compatible GitHub Pages / offline
+ ========================================================= */
+
+let EMB3D_INDEX = null;
+
+/**
+ * Charge et indexe le fichier EMB3D STIX
+ * Index par CWE → liste de threats
+ */
+async function loadEmb3d() {
+  if (EMB3D_INDEX) return EMB3D_INDEX;
+
+  const json = await fetchJson("./data/emb3d-stix-2.0.1.json");
+  const index = {};
+
+  (json.objects || []).forEach(obj => {
+    if (obj.type !== "vulnerability") return;
+
+    const cweText = obj["x_mitre_emb3d_threat_CWEs"] || "";
+    const matches = [...cweText.matchAll(/CWE-\d+/g)].map(m => m[0]);
+
+    matches.forEach(cwe => {
+      if (!index[cwe]) index[cwe] = [];
+      index[cwe].push(obj);
+    });
+  });
+
+  EMB3D_INDEX = index;
+  return index;
+}
+
+
+// Fin ajout pour Mitre EMbededd  
   // Auto-run
   analyze();
 </script>
+<!---Début - Ajout Mitre Embedded  --->
+<!-- =========================================================
+ ✅ V2 – EMB3D Threat Analysis (CWE → Threat)
+ Ne modifie aucun flux existant
+ ========================================================= -->
+<div class="card" id="emb3dThreatCard">
+  <h2>Threat Analysis — EMB3D (MITRE)</h2>
+  <p class="small muted">
+    Analyse des menaces issues du modèle <b>MITRE EMB3D</b>,
+    corrélées dynamiquement aux CWE détectées.
+  </p>
+  <div id="emb3dThreatContent" class="muted">
+    —
+  </div>
+</div>
+<!--- Fin de l'Ajout Mitre Embedded  --->  
 
+  
 <footer style="margin-top:40px; padding:20px; opacity:.7; font-size:.85em;">
   <hr style="border-color:#26325f;">
   <div>
