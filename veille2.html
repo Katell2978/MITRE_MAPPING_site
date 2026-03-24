@@ -94,11 +94,6 @@
   <!-- ✅ conteneur rendu par loadCuratedNews() -->
   <div id="curatedNewsContent" class="muted">Chargement…</div>
 </div>
-  <!-- Actu part 3 : News candidates (RSS auto) -->
-<div style="background:var(--card); border-radius:10px; padding:15px; margin-top:20px;">
-  <h2 style="margin-top:0;">🧪 News candidates – flux RSS automatisé</h2>
-  <div id="candidateNewsContent" class="muted">Chargement…</div>
-</div>
 
  <!-- Suivi Charrgement --> 
   <div id="summary" style="margin: 20px 0; color: var(--accent); font-weight: bold;">Initialisation...</div>
@@ -123,6 +118,12 @@
         </tbody>
     </table>
   </div>
+
+    <!-- Actu part 3 : News candidates (RSS auto) -->
+<div style="background:var(--card); border-radius:10px; padding:15px; margin-top:20px;">
+  <h2 style="margin-top:0;">🧪 News candidates – flux RSS automatisé</h2>
+  <div id="candidateNewsContent" class="muted">Chargement…</div>
+</div>
 
 <script>
 const DATA_PATH = 'data/vuln-watch.json';
