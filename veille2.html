@@ -88,6 +88,12 @@
     Sources :     CISA KEV · NVD · Automotive Security Research Group (ASRG)
   </div>
 </div>
+  <!-- Actu part 2 -->
+<div style="background:var(--card); border-radius:10px; padding:15px; margin-top:20px;">
+  <h2 style="margin-top:0;">📰 Actualités sécurité – 7 derniers jours</h2>
+  <!-- ✅ conteneur rendu par loadCuratedNews() -->
+  <div id="curatedNewsContent" class="muted">Chargement…</div>
+</div>
 
  <!-- Suivi Charrgement --> 
   <div id="summary" style="margin: 20px 0; color: var(--accent); font-weight: bold;">Initialisation...</div>
@@ -391,6 +397,7 @@ async function loadSecurityNews() {
 }
 // Lancement au démarrage
   loadSecurityNews(); //fonction actualité
+  loadCuratedNews(); //sur base de site à consulté dans veille data json
 refreshData(); //fonction veille de vuln identifiée dans json data/vuln-watch.json
 </script>
 
