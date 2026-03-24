@@ -311,7 +311,7 @@ async function loadSecurityNews() {
           date: v.dateAdded,
           label: `${v.cveID} – ajouté au KEV`,
           link: `https://nvd.nist.gov/vuln/detail/${v.cveID}`,
-          cve: ${v.cveID},
+          cve: '${v.cveID}',
           rce: isRceFromText(v.vulnerabilityName + ' ' + v.shortDescription)
         });
       }
