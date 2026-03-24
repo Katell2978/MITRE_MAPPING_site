@@ -707,6 +707,42 @@ Supplier_multiplier (SSVC SINV):
       const refs = (cve.references ?? []).map(r => r.url).filter(Boolean);
       const cwes = getCwes(cve.weaknesses);
 
+      /* =========================================================
+ ✅ EMB3D — Rendu Threats liées aux CWE détectées
+ ========================================================= */
+(async () => {
+  const container = $("emb3dThreatContent");
+  container.innerHTML = "";
+
+  if (!cwes.length) {
+    container.innerHTML = "<div class='muted'>Aucune CWE détectée.</div>";
+    return;
+  }
+
+  const index = await loadEmb3d();
+  let found = false;
+
+  cwes.forEach(cwe => {
+    const threats = index[cwe];
+    if (!threats) return;
+
+    found = true;
+    container.innerHTML += `
+      <h3 style="margin-top:20px">CWE ${esc(cwe)}</h3>
+      ${threats.map(renderEmb3dThreat).join("")}
+    `;
+  });
+
+  if (!found) {
+    container.innerHTML = `
+      <div class="muted">
+        Aucune menace EMB3D connue pour les CWE détectées.
+      </div>
+    `;
+  }
+})();
+      
+
       // EPSS
       let epssVal = null, epssPct = null;
       try {
@@ -1050,6 +1086,31 @@ async function loadEmb3d() {
   return index;
 }
 
+  function renderEmb3dThreat(threat) {
+  return `
+    <div class="riskBox" style="margin-top:14px">
+      <h3>${esc(threat.name || "Unnamed Threat")}</h3>
+
+      <table class="riskTable">
+        <tr><td>Threat ID</td><td><b>${esc(threat.x_mitre_emb3d_threat_id)}</b></td></tr>
+        <tr><td>Category</td><td>${esc(threat.x_mitre_emb3d_threat_category)}</td></tr>
+        <tr><td>Maturity</td><td>${esc(threat.x_mitre_emb3d_threat_maturity)}</td></tr>
+        <tr><td>Linked CWEs</td><td>${esc(threat.x_mitre_emb3d_threat_CWEs)}</td></tr>
+        <tr><td>Linked CVEs</td><td>${esc(threat.x_mitre_emb3d_threat_CVEs)}</td></tr>
+      </table>
+
+      <div class="small muted" style="margin-top:8px">
+        <b>Description</b><br>
+        ${esc(threat.description || "—")}
+      </div>
+
+      <details style="margin-top:10px">
+        <summary>Evidence / References</summary>
+        <div class="small mono">${esc(threat.x_mitre_emb3d_threat_evidence || "—")}</div>
+      </details>
+    </div>
+  `;
+}
 
 // Fin ajout pour Mitre EMbededd  
   // Auto-run
