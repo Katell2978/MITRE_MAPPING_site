@@ -75,9 +75,21 @@
     <p>TODO :Ajouter une veille - nouvelle KEV, nouvelle RCE, nouvelle vuln >9.8 dans les 10 jours</p>
     <button id="refreshBtn" onclick="refreshData()">🔄 Actualiser la veille</button>
   </div>
+<!--Actualités -->
 
+<div style="background:var(--card); border-radius:10px; padding:15px; margin-top:20px;">
+  <h2 style="margin-top:0;">📰 Actualités sécurité – 7 derniers jours</h2>
+  <div id="securityNewsContent" class="muted">
+    Chargement des actualités…
+  </div>
+  <div class="muted" style="margin-top:10px;">
+    Sources :     CISA KEV · NVD · Automotive Security Research Group (ASRG)
+  </div>
+</div>
+
+ <!-- Suivi Charrgement --> 
   <div id="summary" style="margin: 20px 0; color: var(--accent); font-weight: bold;">Initialisation...</div>
-
+<!--  Tableau des vuln suivies SSVC = Track   -->
   <div style="overflow-x: auto;">
     <table>
       <thead>
