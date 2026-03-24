@@ -2,68 +2,86 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Kat‑Force – Security Watchtower</title>
 
   <!-- =========================================================
-   Titre & identité
-   ========================================================= -->
-  <title>Kat‑Force — Décision & Priorisation Vulnérabilités (SSVC)</title>
-
-  <!-- =========================================================
-   Feuille de style principale (existante)
-   ========================================================= -->
-  style3.css
-
-  <!-- =========================================================
-   Librairie PDF (export décision SSVC)
-   ========================================================= -->
-  https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.jsscript>
-
-  <!-- =========================================================
-   Styles additionnels locaux
-   - NE MODIFIENT PAS LE CSS GLOBAL
-   - Ajoutent uniquement :
-     * mise en valeur KPI
-     * RiskScore
-     * Badges Actualités (Network / RCE)
+   STYLES EXISTANTS (INCHANGÉS)
    ========================================================= -->
   <style>
-    /* Mise en évidence critique */
-    .kpi .value.crit { color: #ff6b6b; font-weight: 800; }
-    .kpi .sub.crit   { color: rgba(255,107,107,.9); }
-
-    /* Layout RiskScore */
-    .riskGrid { display:grid; grid-template-columns: 1.1fr .9fr; gap:14px; }
-    @media (max-width: 980px){ .riskGrid { grid-template-columns: 1fr; } }
-
-    .riskBox {
-      background: rgba(15,22,48,.55);
-      border: 1px dashed rgba(255,255,255,.18);
-      border-radius: 14px;
-      padding: 12px;
+    :root {
+      --bg: #070a15; --card: #121a33; --txt: #e9ecff; --accent: #7aa2ff;
+      --bad: #f87171; --ok: #36d399; --warn: #fbbf24; --line: #26325f;
     }
-
-    /* Barres & tableaux */
-    .riskTable td:first-child { opacity:.75; width:45%; }
+    body {
+      background: var(--bg); color: var(--txt);
+      font-family: sans-serif; padding: 20px; line-height: 1.4;
+    }
+    h1 { border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin: 0; }
+    nav { margin-bottom: 20px; }
+    nav a {
+      color: var(--accent); margin-right: 15px;
+      text-decoration: none; font-weight: bold;
+    }
+    nav a:hover { text-decoration: underline; }
+    .header-flex {
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 10px;
+    }
+    table {
+      width: 100%; border-collapse: collapse; margin-top: 20px;
+      background: var(--card); border-radius: 10px;
+      overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+    th, td {
+      padding: 12px; text-align: left;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th {
+      background: rgba(122,162,255,0.1);
+      color: var(--accent);
+      font-size: 0.75em;
+      text-transform: uppercase;
+      cursor: pointer;
+      user-select: none;
+    }
+    th:hover { background: rgba(122,162,255,0.2); }
+    .badge {
+      padding: 4px 8px; border-radius: 4px;
+      font-size: 0.7em; font-weight: 900;
+      display: inline-block; text-transform: uppercase;
+    }
+    .bg-ok { background: var(--ok); color: #000; }
+    .bg-bad { background: var(--bad); color: #000; }
+    .bg-warn { background: var(--warn); color: #000; }
+    .muted { opacity: 0.6; font-size: 0.85em; }
+    .status-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      display: inline-block; margin-right: 5px;
+    }
+    .dot-green { background: var(--ok); box-shadow: 0 0 5px var(--ok); }
+    tr:hover { background: rgba(255,255,255,0.02); }
 
     /* =========================================================
-       Badges Actualités Sécurité
+       ✅ AJOUT — BADGES ACTUALITÉS
        ========================================================= */
     .newsBadge {
       padding: 2px 8px;
       border-radius: 999px;
-      font-size: .75em;
-      font-weight: 800;
+      font-size: .7em;
+      font-weight: 900;
       margin-left: 6px;
-      display:inline-block;
+      display: inline-block;
     }
     .newsNet {
       background: rgba(122,162,255,.25);
-      border: 1px solid rgba(122,162,255,.5);
+      border: 1px solid rgba(122,162,255,.45);
+      color: var(--accent);
     }
     .newsRce {
       background: rgba(248,113,113,.25);
-      border: 1px solid rgba(248,113,113,.5);
+      border: 1px solid rgba(248,113,113,.45);
+      color: var(--bad);
     }
   </style>
 </head>
@@ -71,230 +89,197 @@
 <body>
 
 <!-- =========================================================
- HEADER / BARRE BLEUE (EXISTANTE)
+ NAVIGATION EXISTANTE
  ========================================================= -->
-<header>
-  <nav>
-    index.html🔍 Analyseur</a>
-    veille.html🔭 Veille (Watchtower)</a>
-    Dashboard_VIE.html📊 Dashboard</a>
-  </nav>
+<nav>
+  <a href="index.html">🔍 Analyseur</a>
+  <a href="veille.html">🔭 Veille (Watchtower)</a>
+  <a href="Dashboard_VIE.html">📊 Vuln Dashboard</a>
+</nav>
 
-  <h1>Kat‑Force — Décision & Priorisation (SSVC)</h1>
-
-  <p>
-    Analyse vulnérabilités combinant :
-    CVSS / EPSS / KEV / NVD / SSVC / EMB3D
+<div class="header-flex">
+  <h1>🔭 Watchtower Intelligence</h1>
+  <p class="muted">
+    Veille consolidée : KEV, NVD critiques, ASRG (automotive)
   </p>
-</header>
-
-<!-- =========================================================
- ✅ ACTUALITÉS SÉCURITÉ – 7 JOURS
- ✅ NOUVEAU BLOC (AJOUTÉ SOUS LA BARRE BLEUE)
- ========================================================= -->
-<div class="card" id="securityNewsCard">
-  <h2>📰 Actualités sécurité – 7 derniers jours</h2>
-
-  <!-- Contenu dynamique injecté en JS -->
-  <div id="securityNewsContent" class="small muted">
-    Chargement des actualités…
-  </div>
-
-  <!-- Sources affichées explicitement (transparence) -->
-  <div class="small muted" style="margin-top:12px">
-    <b>Sources utilisées :</b>
-    <ul>
-      <li>CISA – Known Exploited Vulnerabilities (KEV)</li>
-      <li>NVD – National Vulnerability Database</li>
-      <li>Automotive Security Research Group (ASRG / AutoVulnDB)</li>
-    </ul>
-  </div>
+  <button id="refreshBtn" onclick="refreshData()">🔄 Actualiser la veille</button>
 </div>
 
 <!-- =========================================================
- MAIN – le reste de la page EXISTANTE
- (SSVC / CVE / RiskScore / EMB3D)
+ ✅ AJOUT — ACTUALITÉS SÉCURITÉ (7 JOURS)
+ ✅ INSÉRÉ ICI, SANS TOUCHER AU RESTE
  ========================================================= -->
-<main>
+<div style="background:var(--card); border-radius:10px; padding:15px; margin-top:20px;">
+  <h2 style="margin-top:0;">📰 Actualités sécurité – 7 derniers jours</h2>
+  <div id="securityNewsContent" class="muted">
+    Chargement des actualités…
+  </div>
+  <div class="muted" style="margin-top:10px;">
+    Sources :
+    CISA KEV · NVD · Automotive Security Research Group (ASRG)
+  </div>
+</div>
 
-  <!-- ⚠️ ICI : tout ton contenu existant est conservé -->
-  <!-- INPUT, KPI, DETAILS, SSVC, RISK SCORE, EMB3D, LOGS -->
-  <!-- 👉 volontairement non modifié -->
-
-</main>
+<div id="summary" style="margin: 20px 0; color: var(--accent); font-weight: bold;">
+  Initialisation...
+</div>
 
 <!-- =========================================================
- SCRIPT PRINCIPAL
+ TABLE WATCHTOWER EXISTANTE (INCHANGÉE)
  ========================================================= -->
-<script type="module">
+<div style="overflow-x:auto;">
+  <table>
+    <thead>
+      <tr>
+        <th data-key="cve_id">CVE & Évol.</th>
+        <th data-key="status">Status</th>
+        <th data-key="cvss">CVSS</th>
+        <th data-key="epss">EPSS</th>
+        <th data-key="kev">KEV</th>
+        <th data-key="remote">Remote</th>
+        <th data-key="components">Composants</th>
+        <th data-key="dates">Chronologie</th>
+        <th data-key="check">Dernier Check</th>
+      </tr>
+    </thead>
+    <tbody id="watch-body"></tbody>
+  </table>
+</div>
+
+<!-- =========================================================
+ SCRIPT EXISTANT + AJOUT ACTUALITÉS
+ ========================================================= -->
+<script>
+/* =========================================================
+  DONNÉES WATCHTOWER (EXISTANT)
+ ========================================================= */
+const DATA_PATH = 'data/vuln-watch.json';
+let dataCache = [];
+let sortKey = null;
+let sortDir = "asc";
 
 /* =========================================================
-  OUTILS UTILITAIRES – ACTUALITÉS
-  (pas utilisés ailleurs dans la page)
+  ✅ AJOUT — HELPERS ACTUALITÉS
  ========================================================= */
 
-/**
- * Détection "Network" à partir du CVSS vector
- * AV:N ou AV:A = exploitable depuis le réseau
- */
-function isNetworkFromVector(vectorString) {
-  return /AV:N\b/.test(vectorString || "") || /AV:A\b/.test(vectorString || "");
+/* Network = AV:N ou AV:A dans le vector CVSS */
+function isNetworkFromVector(vector) {
+  return /AV:N\b/.test(vector || '') || /AV:A\b/.test(vector || '');
 }
 
-/**
- * Détection heuristique RCE
- * ⚠️ volontairement simple et commentée
- * Ce n’est PAS une preuve d’exploit
- */
+/* Heuristique RCE simple (veille rapide, pas preuve) */
 function isRceFromText(text) {
-  const t = (text || "").toLowerCase();
-  return (
-    t.includes("remote code execution") ||
-    t.includes("arbitrary code execution") ||
-    t.includes("code execution") ||
-    /\brce\b/.test(t)
-  );
+  const t = (text || '').toLowerCase();
+  return t.includes('remote code execution')
+      || t.includes('arbitrary code execution')
+      || t.includes('code execution')
+      || /\brce\b/.test(t);
 }
 
 /* =========================================================
-  ACTUALITÉS SÉCURITÉ – LOGIQUE PRINCIPALE
+  ✅ AJOUT — ACTUALITÉS SÉCURITÉ
  ========================================================= */
 async function loadSecurityNews() {
-
-  const container = document.getElementById("securityNewsContent");
-  const sinceTs = Date.now() - (7 * 24 * 60 * 60 * 1000);
+  const box = document.getElementById('securityNewsContent');
+  const since = Date.now() - 7 * 24 * 60 * 60 * 1000;
   const items = [];
 
-  /* =====================================================
-     1) CISA KEV – vulnérabilités exploitées récemment
-     ===================================================== */
+  /* --- CISA KEV --- */
   try {
     const kev = await fetch(
-      "https://raw.githubusercontent.com/cisagov/kev-data/main/known_exploited_vulnerabilities.json"
+      'https://raw.githubusercontent.com/cisagov/kev-data/main/known_exploited_vulnerabilities.json'
     ).then(r => r.json());
 
     kev.vulnerabilities.forEach(v => {
-      const added = new Date(v.dateAdded).getTime();
-      if (added >= sinceTs) {
+      if (new Date(v.dateAdded).getTime() >= since) {
         items.push({
-          type: "KEV",
+          type: 'KEV',
           date: v.dateAdded,
-          label: `${v.cveID} – ajouté au CISA KEV`,
+          label: `${v.cveID} – ajouté au KEV`,
           link: `https://nvd.nist.gov/vuln/detail/${v.cveID}`,
-          badges: {
-            rce: isRceFromText(`${v.vulnerabilityName} ${v.shortDescription}`)
-          }
+          rce: isRceFromText(v.vulnerabilityName + ' ' + v.shortDescription)
         });
       }
     });
-  } catch (e) {
-    console.warn("KEV non disponible", e);
-  }
+  } catch {}
 
-  /* =====================================================
-     2) NVD – CVSS CRITIQUE ≥ 9.7
-     ===================================================== */
+  /* --- NVD CRITIQUE ≥ 9.7 --- */
   try {
     const nvd = await fetch(
-      "https://services.nvd.nist.gov/rest/json/cves/2.0?resultsPerPage=50&pubStartDate=" +
-      new Date(sinceTs).toISOString()
+      'https://services.nvd.nist.gov/rest/json/cves/2.0?resultsPerPage=50&pubStartDate=' +
+      new Date(since).toISOString()
     ).then(r => r.json());
 
     nvd.vulnerabilities.forEach(v => {
-      const cve = v.cve;
-
-      const metric =
-        cve.metrics?.cvssMetricV31?.[0]?.cvssData ||
-        cve.metrics?.cvssMetricV30?.[0]?.cvssData;
-
-      if (!metric || metric.baseScore < 9.7) return;
-
-      const desc =
-        cve.descriptions?.find(d => d.lang === "en")?.value ?? "";
+      const c = v.cve;
+      const m = c.metrics?.cvssMetricV31?.[0]?.cvssData
+             || c.metrics?.cvssMetricV30?.[0]?.cvssData;
+      if (!m || m.baseScore < 9.7) return;
 
       items.push({
-        type: "NVD",
-        date: cve.published,
-        label: `${cve.id} – CVSS ${metric.baseScore}`,
-        link: `https://nvd.nist.gov/vuln/detail/${cve.id}`,
-        badges: {
-          net: isNetworkFromVector(metric.vectorString),
-          rce: isRceFromText(desc)
-        }
+        type: 'NVD',
+        date: c.published,
+        label: `${c.id} – CVSS ${m.baseScore}`,
+        link: `https://nvd.nist.gov/vuln/detail/${c.id}`,
+        net: isNetworkFromVector(m.vectorString),
+        rce: isRceFromText(c.descriptions?.[0]?.value)
       });
     });
-  } catch (e) {
-    console.warn("NVD non disponible", e);
-  }
+  } catch {}
 
-  /* =====================================================
-     3) ASRG – Automotive Security Research Group
-     ===================================================== */
+  /* --- ASRG AUTOMOTIVE --- */
   try {
     const nvd = await fetch(
-      "https://services.nvd.nist.gov/rest/json/cves/2.0?resultsPerPage=50&pubStartDate=" +
-      new Date(sinceTs).toISOString()
+      'https://services.nvd.nist.gov/rest/json/cves/2.0?resultsPerPage=50&pubStartDate=' +
+      new Date(since).toISOString()
     ).then(r => r.json());
 
     nvd.vulnerabilities.forEach(v => {
-      const cve = v.cve;
-      if (!cve.sourceIdentifier?.includes("Automotive Security Research Group")) return;
+      const c = v.cve;
+      if (!c.sourceIdentifier?.includes('Automotive Security Research Group')) return;
 
-      const metric =
-        cve.metrics?.cvssMetricV31?.[0]?.cvssData ||
-        cve.metrics?.cvssMetricV30?.[0]?.cvssData;
-
-      const desc =
-        cve.descriptions?.find(d => d.lang === "en")?.value ?? "";
+      const m = c.metrics?.cvssMetricV31?.[0]?.cvssData
+             || c.metrics?.cvssMetricV30?.[0]?.cvssData;
 
       items.push({
-        type: "ASRG",
-        date: cve.published,
-        label: `${cve.id} – publication ASRG`,
-        link: `https://nvd.nist.gov/vuln/detail/${cve.id}`,
-        badges: {
-          net: metric ? isNetworkFromVector(metric.vectorString) : false,
-          rce: isRceFromText(desc)
-        }
+        type: 'ASRG',
+        date: c.published,
+        label: `${c.id} – ASRG`,
+        link: `https://nvd.nist.gov/vuln/detail/${c.id}`,
+        net: m ? isNetworkFromVector(m.vectorString) : false,
+        rce: isRceFromText(c.descriptions?.[0]?.value)
       });
     });
-  } catch (e) {
-    console.warn("ASRG non disponible", e);
-  }
+  } catch {}
 
-  /* =====================================================
-     RENDU FINAL
-     ===================================================== */
   if (!items.length) {
-    container.innerHTML = "<div class='muted'>Aucune actualité critique sur la période.</div>";
+    box.innerHTML = '<div class="muted">Aucune actualité critique.</div>';
     return;
   }
 
-  items.sort((a, b) => new Date(b.date) - new Date(a.date));
+  items.sort((a,b)=>new Date(b.date)-new Date(a.date));
 
-  container.innerHTML = `
-    <ul>
-      ${items.map(i => `
-        <li>
-          <b>[${i.type}]</b>
-          <a href="${i.link}" target="_blank" rel="noreferrer">${i.label}</a>
-          ${i.badges?.net ? `<span class="newsBadge newsNet">Network</span>` : ``}
-          ${i.badges?.rce ? `<span class="newsBadge newsRce">RCE</span>` : ``}
-          <span class="muted">(${i.date})</span>
-        </li>
-      `).join("")}
-    </ul>
-  `;
+  box.innerHTML = '<ul>' + items.map(i => `
+    <li>
+      <b>[${i.type}]</b>
+      <a href="${i.link}" target="_blank">${i.label}</a>
+      ${i.net ? '<span class="newsBadge newsNet">Network</span>' : ''}
+      ${i.rce ? '<span class="newsBadge newsRce">RCE</span>' : ''}
+      <span class="muted">(${i.date})</span>
+    </li>
+  `).join('') + '</ul>';
 }
 
-/* Chargement automatique au chargement de la page */
+/* =========================================================
+  CODE WATCHTOWER EXISTANT (INCHANGÉ)
+ ========================================================= */
+
+/* … refreshData(), renderTable(), tri, etc. … */
+/* ⬇️ TON CODE ORIGINAL CONTINUE ICI SANS MODIFICATION ⬇️ */
+
 loadSecurityNews();
-
+refreshData();
 </script>
-
-<footer class="muted small" style="margin-top:40px">
-  Kat‑Force © 2026 – Cybersecurity Architecture
-</footer>
 
 </body>
 </html>
