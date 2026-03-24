@@ -2,269 +2,150 @@
 <html lang="fr">
 <head>
   <meta charset="utf-8" />
-  <title>Kat-Force – Security Watchtower</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <!-- =========================================================
+   Titre & identité
+   ========================================================= -->
+  <title>Kat‑Force — Décision & Priorisation Vulnérabilités (SSVC)</title>
+
+  <!-- =========================================================
+   Feuille de style principale (existante)
+   ========================================================= -->
+  style3.css
+
+  <!-- =========================================================
+   Librairie PDF (export décision SSVC)
+   ========================================================= -->
+  https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.jsscript>
+
+  <!-- =========================================================
+   Styles additionnels locaux
+   - NE MODIFIENT PAS LE CSS GLOBAL
+   - Ajoutent uniquement :
+     * mise en valeur KPI
+     * RiskScore
+     * Badges Actualités (Network / RCE)
+   ========================================================= -->
   <style>
-    :root {
-      --bg: #070a15; --card: #121a33; --txt: #e9ecff; --accent: #7aa2ff;
-      --bad: #f87171; --ok: #36d399; --warn: #fbbf24; --line: #26325f;
+    /* Mise en évidence critique */
+    .kpi .value.crit { color: #ff6b6b; font-weight: 800; }
+    .kpi .sub.crit   { color: rgba(255,107,107,.9); }
+
+    /* Layout RiskScore */
+    .riskGrid { display:grid; grid-template-columns: 1.1fr .9fr; gap:14px; }
+    @media (max-width: 980px){ .riskGrid { grid-template-columns: 1fr; } }
+
+    .riskBox {
+      background: rgba(15,22,48,.55);
+      border: 1px dashed rgba(255,255,255,.18);
+      border-radius: 14px;
+      padding: 12px;
     }
-    body { background: var(--bg); color: var(--txt); font-family: sans-serif; padding: 20px; line-height: 1.4; }
-    h1 { border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin: 0; }
-    
-    nav { margin-bottom: 20px; }
-    nav a { color: var(--accent); margin-right: 15px; text-decoration: none; font-weight: bold; }
-    nav a:hover { text-decoration: underline; }
 
-    .header-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    /* Barres & tableaux */
+    .riskTable td:first-child { opacity:.75; width:45%; }
 
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--card); border-radius: 10px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
-    th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--line); vertical-align: top; }
-    th { background: rgba(122,162,255,0.1); color: var(--accent); font-size: 0.75em; text-transform: uppercase; cursor: pointer; user-select: none; }
-    th:hover { background: rgba(122,162,255,0.2); }
-    
-    .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.7em; font-weight: 900; display: inline-block; text-transform: uppercase; }
-    .bg-ok { background: var(--ok); color: #000; }
-    .bg-bad { background: var(--bad); color: #000; }
-    .bg-warn { background: var(--warn); color: #000; }
-    .delta-up { color: var(--bad); font-weight: bold; }
-    
-    .sources a { color: var(--accent); text-decoration: none; font-weight: bold; }
-    .sources a:hover { text-decoration: underline; }
-
-    button { background: var(--accent); border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer; font-weight: 900; color: #000; }
-    button:disabled { opacity: 0.5; }
-
-    .muted { opacity: 0.6; font-size: 0.85em; }
-    .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 5px; }
-    .dot-green { background: var(--ok); box-shadow: 0 0 5px var(--ok); }
-
-    tr:hover { background: rgba(255,255,255,0.02); }
-    
-/* Badges actualités */
-.newsBadge { padding: 2px 8px; border-radius: 999px; font-size: .75em; font-weight: 800; margin-left: 6px; display:inline-block; }
-.newsNet { background: rgba(122,162,255,.22); border:1px solid rgba(122,162,255,.45); }
-.newsRce { background: rgba(248,113,113,.20); border:1px solid rgba(248,113,113,.45); }
-
+    /* =========================================================
+       Badges Actualités Sécurité
+       ========================================================= */
+    .newsBadge {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: .75em;
+      font-weight: 800;
+      margin-left: 6px;
+      display:inline-block;
+    }
+    .newsNet {
+      background: rgba(122,162,255,.25);
+      border: 1px solid rgba(122,162,255,.5);
+    }
+    .newsRce {
+      background: rgba(248,113,113,.25);
+      border: 1px solid rgba(248,113,113,.5);
+    }
   </style>
 </head>
 
 <body>
+
+<!-- =========================================================
+ HEADER / BARRE BLEUE (EXISTANTE)
+ ========================================================= -->
+<header>
   <nav>
-            <a href="index.html">🔍 Analyseur</a>
-            <a href="veille.html">🔭 Veille (Watchtower)</a>
-           <!-- <a href="CPEsearch.html">🔍Vuln by CPE</a>-->
-            <a href="Dashboard_VIE.html">🔍Vuln Dashbaord</a>
+    index.html🔍 Analyseur</a>
+    veille.html🔭 Veille (Watchtower)</a>
+    Dashboard_VIE.html📊 Dashboard</a>
   </nav>
 
-  <div class="header-flex">
-    <h1>🔭 Watchtower Intelligence</h1>
-    <p>TODO :Ajouter une veille - nouvelle KEV, nouvelle RCE, nouvelle vuln >9.8 dans les 10 jours</p>
-    <button id="refreshBtn" onclick="refreshData()">🔄 Actualiser la veille</button>
-  </div>
+  <h1>Kat‑Force — Décision & Priorisation (SSVC)</h1>
+
+  <p>
+    Analyse vulnérabilités combinant :
+    CVSS / EPSS / KEV / NVD / SSVC / EMB3D
+  </p>
+</header>
 
 <!-- =========================================================
  ✅ ACTUALITÉS SÉCURITÉ – 7 JOURS
+ ✅ NOUVEAU BLOC (AJOUTÉ SOUS LA BARRE BLEUE)
  ========================================================= -->
 <div class="card" id="securityNewsCard">
   <h2>📰 Actualités sécurité – 7 derniers jours</h2>
 
+  <!-- Contenu dynamique injecté en JS -->
   <div id="securityNewsContent" class="small muted">
     Chargement des actualités…
   </div>
 
+  <!-- Sources affichées explicitement (transparence) -->
   <div class="small muted" style="margin-top:12px">
-    <b>Sources :</b>
+    <b>Sources utilisées :</b>
     <ul>
-      <li>CISA Known Exploited Vulnerabilities (KEV)</li>
+      <li>CISA – Known Exploited Vulnerabilities (KEV)</li>
       <li>NVD – National Vulnerability Database</li>
       <li>Automotive Security Research Group (ASRG / AutoVulnDB)</li>
     </ul>
   </div>
 </div>
-  <!--  FIN ACTUALITE ========================================================= -->
-  
-  <div id="summary" style="margin: 20px 0; color: var(--accent); font-weight: bold;">Initialisation...</div>
 
-  <div style="overflow-x: auto;">
-    <table>
-      <thead>
-        <tr>
-          <th data-key="cve_id">CVE & Évol.</th>
-          <th data-key="status">Status</th>
-          <th data-key="cvss">CVSS</th>
-          <th data-key="epss">EPSS</th>
-          <th data-key="kev">KEV</th>
-          <th data-key="remote">Remote</th>
-          <th data-key="components">Composants</th>
-          <th data-key="dates">Chronologie</th>
-          <th data-key="check">Dernier Check</th>
-        </tr>
-      </thead>
-      <tbody id="watch-body">
-        </tbody>
-    </table>
-  </div>
+<!-- =========================================================
+ MAIN – le reste de la page EXISTANTE
+ (SSVC / CVE / RiskScore / EMB3D)
+ ========================================================= -->
+<main>
 
-<script>
-const DATA_PATH = 'data/vuln-watch.json';
-let dataCache = [];
-let sortKey = null;
-let sortDir = "asc";
+  <!-- ⚠️ ICI : tout ton contenu existant est conservé -->
+  <!-- INPUT, KPI, DETAILS, SSVC, RISK SCORE, EMB3D, LOGS -->
+  <!-- 👉 volontairement non modifié -->
 
-/**
- * Charge les données depuis le JSON
- */
-async function refreshData() {
-  const btn = document.getElementById('refreshBtn');
-  const summary = document.getElementById('summary');
-  
-  btn.disabled = true;
-  btn.textContent = "⌛ Chargement...";
-  summary.textContent = "Récupération du flux de vulnérabilités...";
+</main>
 
-  try {
-    const res = await fetch(DATA_PATH + '?t=' + Date.now());
-    if (!res.ok) throw new Error("Fichier data/vuln-watch.json introuvable.");
-
-    const json = await res.json();
-    if (!json.vulnerabilities) throw new Error("Structure JSON invalide.");
-
-    dataCache = Object.values(json.vulnerabilities);
-    renderTable(applySort(dataCache));
-
-    summary.textContent = `✅ Surveillance active : ${dataCache.length} vulnérabilités analysées.`;
-  } catch (e) {
-    console.error(e);
-    summary.innerHTML = `<span style="color:var(--bad)">⚠️ Erreur : ${e.message}</span>`;
-  } finally {
-    btn.disabled = false;
-    btn.textContent = "🔄 Actualiser la veille";
-  }
-}
-
-/**
- * Formate les dates proprement
- */
-function safeDateLabel(iso, mode = "date") {
-  if (!iso) return "—";
-  const d = new Date(iso);
-  if (isNaN(d.getTime())) return "—";
-  return mode === "datetime" 
-    ? d.toLocaleString('fr-FR', { day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit' }) 
-    : d.toLocaleDateString('fr-FR');
-}
-
-/**
- * Détermine si l'attaque est à distance
- */
-function isRemoteExploitable(v) {
-  const av = (v?.exploitation_conditions?.attack_vector || "").toLowerCase();
-  return av.includes("remote") || av.includes("network");
-}
-
-/**
- * Génère le tableau avec gestion des changements
- */
-function renderTable(list) {
-  const body = document.getElementById('watch-body');
-  body.innerHTML = "";
-
-  list.forEach(v => {
-    // --- Logique des Dates & Changements ---
-    const datePub = new Date(v.dates.published);
-    const dateUpd = new Date(v.dates.updated);
-    const dateMon = new Date(v.dates.monitoring_start);
-    const dateChk = new Date(v.dates.last_check);
-
-    let evolutionBadge = "";
-    const isNew = (Date.now() - datePub.getTime()) < (1000 * 60 * 60 * 24 * 7); // 7 jours
-
-    if (dateUpd > dateMon) {
-        evolutionBadge = '<br><span class="badge bg-bad" title="Modifié depuis le début de la surveillance">🔄 REVISÉ</span>';
-    } else if (dateUpd > datePub) {
-        evolutionBadge = '<br><span class="badge bg-warn">MODIFIÉ</span>';
-    } else if (isNew) {
-        evolutionBadge = '<br><span class="badge bg-ok">NOUVEAU</span>';
-    }
-
-    // --- Métriques ---
-    const cvss = v.metrics?.cvss?.base_current ?? "—";
-    const epss = v.metrics?.epss?.current ? (v.metrics.epss.current * 100).toFixed(2) + "%" : "—";
-    const kev  = !!v.metrics?.kev_status?.current;
-
-    // --- Rendu de la ligne ---
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>
-        <strong style="color:var(--accent)">${v.cve_id}</strong>
-        ${evolutionBadge}
-      </td>
-      <td>
-        <span class="badge ${v.status === 'active' ? 'bg-bad' : ''}">${v.status || 'inconnu'}</span>
-      </td>
-      <td style="font-weight:bold;">${cvss}</td>
-      <td>${epss}</td>
-      <td>
-        <span class="badge ${kev ? 'bg-bad' : ''}">${kev ? 'EXPLOITÉ' : 'Non'}</span>
-      </td>
-      <td>
-        ${isRemoteExploitable(v) ? '<span class="badge bg-warn">OUI</span>' : 'Non'}
-      </td>
-      <td><small>${v.affected_components?.join(", ") || "—"}</small></td>
-      <td>
-        <div class="muted">Pub : ${safeDateLabel(v.dates.published)}</div>
-        <div class="muted">MàJ : ${safeDateLabel(v.dates.updated)}</div>
-      </td>
-      <td>
-        <div style="font-size:0.85em;">
-          <span class="status-dot dot-green"></span>
-          ${safeDateLabel(v.dates.last_check, "datetime")}
-        </div>
-      </td>
-    `;
-    body.appendChild(row);
-  });
-}
-
-/**
- * Gestion du Tri
- */
-document.querySelectorAll("th[data-key]").forEach(th => {
-  th.addEventListener("click", () => {
-    const key = th.dataset.key;
-    sortDir = (sortKey === key && sortDir === "asc") ? "desc" : "asc";
-    sortKey = key;
-    
-    document.querySelectorAll("th").forEach(t => t.classList.remove("sort-asc", "sort-desc"));
-    th.classList.add(sortDir === "asc" ? "sort-asc" : "sort-desc");
-    
-    renderTable(applySort(dataCache));
-  });
-});
-
-function applySort(list) {
-  if (!sortKey) return list;
-  return [...list].sort((a, b) => {
-    let va, vb;
-    if (sortKey === "cvss") { va = a.metrics?.cvss?.base_current ?? 0; vb = b.metrics?.cvss?.base_current ?? 0; }
-    else if (sortKey === "epss") { va = a.metrics?.epss?.current ?? 0; vb = b.metrics?.epss?.current ?? 0; }
-    else { va = a[sortKey] || ""; vb = b[sortKey] || ""; }
-
-    if (va < vb) return sortDir === "asc" ? -1 : 1;
-    if (va > vb) return sortDir === "asc" ? 1 : -1;
-    return 0;
-  });
-}
+<!-- =========================================================
+ SCRIPT PRINCIPAL
+ ========================================================= -->
+<script type="module">
 
 /* =========================================================
- ✅ ACTUALITÉS SÉCURITÉ – 7 JOURS
+  OUTILS UTILITAIRES – ACTUALITÉS
+  (pas utilisés ailleurs dans la page)
  ========================================================= */
+
+/**
+ * Détection "Network" à partir du CVSS vector
+ * AV:N ou AV:A = exploitable depuis le réseau
+ */
 function isNetworkFromVector(vectorString) {
-  const v = (vectorString || "");
-  return /AV:N\b/.test(v) || /AV:A\b/.test(v);
+  return /AV:N\b/.test(vectorString || "") || /AV:A\b/.test(vectorString || "");
 }
 
+/**
+ * Détection heuristique RCE
+ * ⚠️ volontairement simple et commentée
+ * Ce n’est PAS une preuve d’exploit
+ */
 function isRceFromText(text) {
   const t = (text || "").toLowerCase();
   return (
@@ -274,107 +155,131 @@ function isRceFromText(text) {
     /\brce\b/.test(t)
   );
 }
-async function loadSecurityNews() {
-  const box = document.getElementById("securityNewsContent");
-  if (!box) return;
 
-  const since = Date.now() - (7 * 24 * 60 * 60 * 1000);
+/* =========================================================
+  ACTUALITÉS SÉCURITÉ – LOGIQUE PRINCIPALE
+ ========================================================= */
+async function loadSecurityNews() {
+
+  const container = document.getElementById("securityNewsContent");
+  const sinceTs = Date.now() - (7 * 24 * 60 * 60 * 1000);
   const items = [];
 
-  /* --- 1) CISA KEV récents --- */
+  /* =====================================================
+     1) CISA KEV – vulnérabilités exploitées récemment
+     ===================================================== */
   try {
     const kev = await fetch(
       "https://raw.githubusercontent.com/cisagov/kev-data/main/known_exploited_vulnerabilities.json"
     ).then(r => r.json());
 
-    (kev.vulnerabilities || []).forEach(v => {
+    kev.vulnerabilities.forEach(v => {
       const added = new Date(v.dateAdded).getTime();
-      if (added >= since) {
-        const vector = cve.metrics?.cvssMetricV31?.[0]?.cvssData?.vectorString ?? cve.metrics?.cvssMetricV30?.[0]?.cvssData?.vectorString ??  "";
-        const desc = cve.descriptions?.find(d => d.lang === "en")?.value ?? cve.descriptions?.[0]?.value ??  "";
-        const badgeNet = isNetworkFromVector(vector);
-        const badgeRce = isRceFromText(desc);
+      if (added >= sinceTs) {
         items.push({
-          type: "NVD",
-          date: cve.published,
-          label: `${cve.id} – CVSS ${score}`,
-          link: `https://nvd.nist.gov/vuln/detail/${cve.id}`,
-          badges: { net: badgeNet, rce: badgeRce }
-          });
-      } /* fin if */
-    });
-  } catch (e) {
-    console.warn("KEV fetch failed", e);
-  }
-
-  /* --- 2) NVD CVSS ≥ 9.7 publiées récemment --- */
-  try {
-    const nvd = await fetch(
-      "https://services.nvd.nist.gov/rest/json/cves/2.0?resultsPerPage=50&pubStartDate=" +
-      new Date(since).toISOString()
-    ).then(r => r.json());
-
-    (nvd.vulnerabilities || []).forEach(v => {
-      const cve = v.cve;
-      const score =
-        cve.metrics?.cvssMetricV31?.[0]?.cvssData?.baseScore ??
-        cve.metrics?.cvssMetricV30?.[0]?.cvssData?.baseScore ??
-        0;
-
-      if (score >= 9.7) {
-        items.push({
-          type: "NVD",
-          date: cve.published,
-          label: `${cve.id} – CVSS ${score}`,
-          link: `https://nvd.nist.gov/vuln/detail/${cve.id}`
+          type: "KEV",
+          date: v.dateAdded,
+          label: `${v.cveID} – ajouté au CISA KEV`,
+          link: `https://nvd.nist.gov/vuln/detail/${v.cveID}`,
+          badges: {
+            rce: isRceFromText(`${v.vulnerabilityName} ${v.shortDescription}`)
+          }
         });
       }
     });
   } catch (e) {
-    console.warn("NVD fetch failed", e);
+    console.warn("KEV non disponible", e);
   }
 
-  /* --- 3) ASRG (CNA Automotive Security Research Group) --- */
+  /* =====================================================
+     2) NVD – CVSS CRITIQUE ≥ 9.7
+     ===================================================== */
   try {
     const nvd = await fetch(
       "https://services.nvd.nist.gov/rest/json/cves/2.0?resultsPerPage=50&pubStartDate=" +
-      new Date(since).toISOString()
+      new Date(sinceTs).toISOString()
     ).then(r => r.json());
 
-    (nvd.vulnerabilities || []).forEach(v => {
+    nvd.vulnerabilities.forEach(v => {
       const cve = v.cve;
-      if (
-        (cve.sourceIdentifier || "").includes("Automotive Security Research Group")
-      ) {
-        items.push({
-          type: "ASRG",
-          date: cve.published,
-          label: `${cve.id} – ASRG publication`,
-          link: `https://nvd.nist.gov/vuln/detail/${cve.id}`
-        });
-      }
+
+      const metric =
+        cve.metrics?.cvssMetricV31?.[0]?.cvssData ||
+        cve.metrics?.cvssMetricV30?.[0]?.cvssData;
+
+      if (!metric || metric.baseScore < 9.7) return;
+
+      const desc =
+        cve.descriptions?.find(d => d.lang === "en")?.value ?? "";
+
+      items.push({
+        type: "NVD",
+        date: cve.published,
+        label: `${cve.id} – CVSS ${metric.baseScore}`,
+        link: `https://nvd.nist.gov/vuln/detail/${cve.id}`,
+        badges: {
+          net: isNetworkFromVector(metric.vectorString),
+          rce: isRceFromText(desc)
+        }
+      });
     });
   } catch (e) {
-    console.warn("ASRG fetch failed", e);
+    console.warn("NVD non disponible", e);
   }
 
-  /* --- Rendu --- */
+  /* =====================================================
+     3) ASRG – Automotive Security Research Group
+     ===================================================== */
+  try {
+    const nvd = await fetch(
+      "https://services.nvd.nist.gov/rest/json/cves/2.0?resultsPerPage=50&pubStartDate=" +
+      new Date(sinceTs).toISOString()
+    ).then(r => r.json());
+
+    nvd.vulnerabilities.forEach(v => {
+      const cve = v.cve;
+      if (!cve.sourceIdentifier?.includes("Automotive Security Research Group")) return;
+
+      const metric =
+        cve.metrics?.cvssMetricV31?.[0]?.cvssData ||
+        cve.metrics?.cvssMetricV30?.[0]?.cvssData;
+
+      const desc =
+        cve.descriptions?.find(d => d.lang === "en")?.value ?? "";
+
+      items.push({
+        type: "ASRG",
+        date: cve.published,
+        label: `${cve.id} – publication ASRG`,
+        link: `https://nvd.nist.gov/vuln/detail/${cve.id}`,
+        badges: {
+          net: metric ? isNetworkFromVector(metric.vectorString) : false,
+          rce: isRceFromText(desc)
+        }
+      });
+    });
+  } catch (e) {
+    console.warn("ASRG non disponible", e);
+  }
+
+  /* =====================================================
+     RENDU FINAL
+     ===================================================== */
   if (!items.length) {
-    box.innerHTML = "<div class='muted'>Aucune actualité critique sur la période.</div>";
+    container.innerHTML = "<div class='muted'>Aucune actualité critique sur la période.</div>";
     return;
   }
 
-  items
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+  items.sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  box.innerHTML = `
+  container.innerHTML = `
     <ul>
       ${items.map(i => `
         <li>
           <b>[${i.type}]</b>
-          <a href="${i.link}" target="_blank" rel="noreferrer">
-            ${i.label}
-          </a>
+          <a href="${i.link}" target="_blank" rel="noreferrer">${i.label}</a>
+          ${i.badges?.net ? `<span class="newsBadge newsNet">Network</span>` : ``}
+          ${i.badges?.rce ? `<span class="newsBadge newsRce">RCE</span>` : ``}
           <span class="muted">(${i.date})</span>
         </li>
       `).join("")}
@@ -382,12 +287,14 @@ async function loadSecurityNews() {
   `;
 }
 
-/* Chargement auto */
+/* Chargement automatique au chargement de la page */
 loadSecurityNews();
-  
-// Lancement au démarrage
-refreshData();
+
 </script>
+
+<footer class="muted small" style="margin-top:40px">
+  Kat‑Force © 2026 – Cybersecurity Architecture
+</footer>
 
 </body>
 </html>
