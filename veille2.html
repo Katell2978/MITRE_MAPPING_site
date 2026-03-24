@@ -261,8 +261,121 @@ function applySort(list) {
   });
 }
 
+
+/* =========================================================
+  ✅ AJOUT — HELPERS ACTUALITÉS
+ ========================================================= */
+
+/* Network = AV:N ou AV:A dans le vector CVSS */
+function isNetworkFromVector(vector) {
+  return /AV:N\b/.test(vector || '') || /AV:A\b/.test(vector || '');
+}
+
+/* Heuristique RCE simple (veille rapide, pas preuve) */
+function isRceFromText(text) {
+  const t = (text || '').toLowerCase();
+  return t.includes('remote code execution')
+      || t.includes('arbitrary code execution')
+      || t.includes('code execution')
+      || /\brce\b/.test(t);
+}
+
+/* =========================================================
+  ✅ AJOUT — ACTUALITÉS SÉCURITÉ
+ ========================================================= */
+async function loadSecurityNews() {
+  const box = document.getElementById('securityNewsContent');
+  const since = Date.now() - 7 * 24 * 60 * 60 * 1000;
+  const items = [];
+
+  /* --- CISA KEV --- */
+  try {
+    const kev = await fetch(
+      'https://raw.githubusercontent.com/cisagov/kev-data/main/known_exploited_vulnerabilities.json'
+    ).then(r => r.json());
+
+    kev.vulnerabilities.forEach(v => {
+      if (new Date(v.dateAdded).getTime() >= since) {
+        items.push({
+          type: 'KEV',
+          date: v.dateAdded,
+          label: `${v.cveID} – ajouté au KEV`,
+          link: `https://nvd.nist.gov/vuln/detail/${v.cveID}`,
+          rce: isRceFromText(v.vulnerabilityName + ' ' + v.shortDescription)
+        });
+      }
+    });
+  } catch {}
+
+  /* --- NVD CRITIQUE ≥ 9.7 --- */
+  try {
+    const nvd = await fetch(
+      'https://services.nvd.nist.gov/rest/json/cves/2.0?resultsPerPage=50&pubStartDate=' +
+      new Date(since).toISOString()
+    ).then(r => r.json());
+
+    nvd.vulnerabilities.forEach(v => {
+      const c = v.cve;
+      const m = c.metrics?.cvssMetricV31?.[0]?.cvssData
+             || c.metrics?.cvssMetricV30?.[0]?.cvssData;
+      if (!m || m.baseScore < 9.7) return;
+
+      items.push({
+        type: 'NVD',
+        date: c.published,
+        label: `${c.id} – CVSS ${m.baseScore}`,
+        link: `https://nvd.nist.gov/vuln/detail/${c.id}`,
+        net: isNetworkFromVector(m.vectorString),
+        rce: isRceFromText(c.descriptions?.[0]?.value)
+      });
+    });
+  } catch {}
+
+  /* --- ASRG AUTOMOTIVE --- */
+  try {
+    const nvd = await fetch(
+      'https://services.nvd.nist.gov/rest/json/cves/2.0?resultsPerPage=50&pubStartDate=' +
+      new Date(since).toISOString()
+    ).then(r => r.json());
+
+    nvd.vulnerabilities.forEach(v => {
+      const c = v.cve;
+      if (!c.sourceIdentifier?.includes('Automotive Security Research Group')) return;
+
+      const m = c.metrics?.cvssMetricV31?.[0]?.cvssData
+             || c.metrics?.cvssMetricV30?.[0]?.cvssData;
+
+      items.push({
+        type: 'ASRG',
+        date: c.published,
+        label: `${c.id} – ASRG`,
+        link: `https://nvd.nist.gov/vuln/detail/${c.id}`,
+        net: m ? isNetworkFromVector(m.vectorString) : false,
+        rce: isRceFromText(c.descriptions?.[0]?.value)
+      });
+    });
+  } catch {}
+
+  if (!items.length) {
+    box.innerHTML = '<div class="muted">Aucune actualité critique.</div>';
+    return;
+  }
+
+  items.sort((a,b)=>new Date(b.date)-new Date(a.date));
+
+  box.innerHTML = '<ul>' + items.map(i => `
+    <li>
+      <b>[${i.type}]</b>
+      <a href="${i.link}" target="_blank">${i.label}</a>
+      ${i.net ? '<span class="newsBadge newsNet">Network</span>' : ''}
+      ${i.rce ? '<span class="newsBadge newsRce">RCE</span>' : ''}
+      <span class="muted">(${i.date})</span>
+    </li>
+  `).join('') + '</ul>';
+}
 // Lancement au démarrage
-refreshData();
+  loadSecurityNews(); //fonction actualité
+refreshData(); //fonction veille de vuln identifiée dans json data/vuln-watch.json
 </script>
 
 </body>
