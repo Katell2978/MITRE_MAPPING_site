@@ -33,7 +33,7 @@
   {
     "date": "2026-03-20",
     "source": "Android Security Bulletin",
-    "type": "Social Post",
+    "type":  "Vendor Bulletin",
     "vendor": "Android Automotive",
     "title": "Android Automotive OS – March Security Update available",
     "impact": ["Platform"],
