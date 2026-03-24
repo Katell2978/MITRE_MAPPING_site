@@ -120,6 +120,7 @@
       "cpe:2.3:a:st:stm32_hal:1.10.0:*:*:*:*:*:*:*",
       "cpe:2.3:a:fatfs_project:fatfs:r0.14:*:*:*:*:*:*:*",
       "cpe:2.3:a:nxp:s32_design_studio:3.4:*:*:*:*:*:*:*",
+      "cpe:2.3:o:qualcomm:smart_audio_400_platform_firmware:-:*:*:*:*:*:*:*",
       "cpe:2.3:a:renesas:can_fd_driver:*:*:*:*:*:*:*:*"
     ]
   }
