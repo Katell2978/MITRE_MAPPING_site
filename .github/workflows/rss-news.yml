@@ -1,32 +1,42 @@
 name: RSS Security News Aggregation
+
 on:
   schedule:
     # Tous les jours à 06:00 CET (04:00 UTC)
     - cron: '0 4 * * *'
-  workflow_dispatch: {}  # déclenchement manuel possible
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+
       - name: Install dependencies
         run: |
           pip install feedparser python-dateutil
+
       - name: Generate RSS security news candidates
         run: |
           python scripts/rss_to_news_candidates.py
+
       - name: Commit and push changes (if any)
         run: |
           if [[ -n "$(git status --porcelain)" ]]; then
             git config user.name "github-actions"
             git config user.email "github-actions@github.com"
             git add data/news-candidates.json
-            git commit -m "chore(veille): update RSS security news candidates"
+            git commit -m "chore(veille): update RSS news candidates"
             git push
           else
             echo "No changes to commit"
