@@ -305,6 +305,7 @@ async function loadSecurityNews() {
           date: v.dateAdded,
           label: `${v.cveID} – ajouté au KEV`,
           link: `https://nvd.nist.gov/vuln/detail/${v.cveID}`,
+          cve: ${v.cveID},
           rce: isRceFromText(v.vulnerabilityName + ' ' + v.shortDescription)
         });
       }
@@ -373,11 +374,11 @@ async function loadSecurityNews() {
       <a href="${i.link}" target="_blank">${i.label}</a>
       ${i.net ? '<span class="newsBadge newsNet">Network</span>' : ''}
       ${i.rce ? '<span class="newsBadge newsRce">RCE</span>' : ''}
-      <a href="index.html?cve=${v.cve_id}">Analyseur</a>
+      <a href="index.html?cve=${i.cve}">Analyseur</a>
       <span class="muted">(${i.date})</span>
     </li>
   `).join('') + '</ul>';
-} // ligne 376 ajouté le 24/03 à 14h44
+} // ligne 377 ajouté le 24/03 à 14h44
 // Ajout script pour analyse fichier json des sources de news à suivire data/veille-source.json
   async function loadCuratedNews() {
   const res = await fetch("data/veille-source.json");
