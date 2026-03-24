@@ -73,7 +73,7 @@
   </nav>
 
   <div class="header-flex">
-    <h1>🔭 Watchtower Intelligence</h1>
+    <h1>🔭 Watchtower Intelligence- Vaille cyber et veille de vuln in Track</h1>
     <p>TODO :Ajouter une veille - nouvelle KEV, nouvelle RCE, nouvelle vuln >9.8 dans les 10 jours</p>
     <button id="refreshBtn" onclick="refreshData()">🔄 Actualiser la veille</button>
   </div>
@@ -93,6 +93,11 @@
   <h2 style="margin-top:0;">📰 Actualités sécurité – 7 derniers jours - Sur base d'articles à automatiser</h2>
   <!-- ✅ conteneur rendu par loadCuratedNews() -->
   <div id="curatedNewsContent" class="muted">Chargement…</div>
+</div>
+  <!-- Actu part 3 : News candidates (RSS auto) -->
+<div style="background:var(--card); border-radius:10px; padding:15px; margin-top:20px;">
+  <h2 style="margin-top:0;">🧪 News candidates – flux RSS automatisé</h2>
+  <div id="candidateNewsContent" class="muted">Chargement…</div>
 </div>
 
  <!-- Suivi Charrgement --> 
@@ -445,8 +450,76 @@ async function loadCuratedNews() {
     box.innerHTML = `<span style="color:var(--bad)">⚠️ Erreur actualités curated : ${e.message}</span>`;
   }
 }
+// Fonction pour actu 3 RSS
+  /**
+ * Charge les news "candidates" (RSS automatisé)
+ * depuis data/news-candidates.json
+ */
+async function loadCandidateNews() {
+  const box = document.getElementById('candidateNewsContent');
+  if (!box) return;
+
+  // Fenêtre 7 jours
+  const since = Date.now() - 7 * 24 * 60 * 60 * 1000;
+
+  try {
+    const res = await fetch('data/news-candidates.json?t=' + Date.now());
+    if (!res.ok) throw new Error('data/news-candidates.json introuvable');
+
+    const news = await res.json();
+
+    const recent = (news || [])
+      .filter(n => new Date(n.date || n.datetime_utc).getTime() >= since)
+      .sort((a, b) =>
+        new Date(b.datetime_utc || b.date) -
+        new Date(a.datetime_utc || a.date)
+      );
+
+    if (!recent.length) {
+      box.innerHTML =
+        "<div class='muted'>Aucune news candidate sur les 7 derniers jours.</div>";
+      return;
+    }
+
+    box.innerHTML = `
+      <ul style="margin:0; padding-left:18px">
+        ${recent.map(n => `
+          <li style="margin: 8px 0">
+            <b>[RSS]</b>
+            <a href="${n.link}" target="_blank" rel="noreferrer"
+               style="color:var(--accent); font-weight:900; text-decoration:none;">
+              ${n.title || 'Sans titre'}
+            </a>
+            <span class="muted">
+              — ${n.source || 'source ?'} — ${n.date || ''}
+            </span>
+
+            ${n.summary ? `
+              <div class="muted" style="margin-top:4px;">
+                ${n.summary}
+              </div>` : ''}
+
+            <div style="margin-top:4px;">
+              ${n.cves && n.cves.length
+                ? n.cves.map(c =>
+                    `<span class="badge bg-warn" style="margin-right:4px">${c}</span>`
+                  ).join('')
+                : ''}
+              <span class="badge bg-ok" style="margin-left:6px">TO‑REVIEW</span>
+            </div>
+          </li>
+        `).join('')}
+      </ul>
+    `;
+  } catch (e) {
+    console.error(e);
+    box.innerHTML =
+      `<span style="color:var(--bad)">⚠️ Erreur news candidates : ${e.message}</span>`;
+  }
+}
 // Lancement au démarrage
   loadSecurityNews(); //fonction actualité
+  loadCandidateNews();
   loadCuratedNews(); //sur base de site à consulté dans veille data json
 refreshData(); //fonction veille de vuln identifiée dans json data/vuln-watch.json
 </script>
