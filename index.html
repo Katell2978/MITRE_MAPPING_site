@@ -1093,7 +1093,47 @@ async function loadEmb3d() {
   return index;
 }
 
-  function renderEmb3dThreat(threat) {
+  
+
+  /* =========================================================
+   ✅ AJOUT UNIQUEMENT : extraction PID depuis l'objet Threat
+   - supporte PID explicites (si un champ existe)
+   - supporte PID mentionnés dans les textes (PID-xxx)
+   ========================================================= */
+  function extractPids(threat) {
+    const pids = new Set();
+
+    // 1) Cas: champ explicite éventuel (selon la version EMB3D)
+    const direct =
+      threat?.x_mitre_emb3d_threat_PIDs ??
+      threat?.['x_mitre_emb3d_threat_PIDs'] ??
+      threat?.x_mitre_emb3d_PIDs ??
+      threat?.['x_mitre_emb3d_PIDs'] ??
+      '';
+
+    if (direct) {
+      String(direct).split(/[,;\n]/g).forEach(x => {
+        const v = x.trim();
+        if (v) pids.add(v);
+      });
+    }
+
+    // 2) Cas: PID-xxx présent dans description / evidence / autres champs texte
+    const blob = [
+      threat?.description ?? '',
+      threat?.x_mitre_emb3d_threat_evidence ?? '',
+      threat?.['x_mitre_emb3d_threat_evidence'] ?? '',
+      threat?.x_mitre_emb3d_threat_CWEs ?? '',
+      threat?.['x_mitre_emb3d_threat_CWEs'] ?? ''
+    ].join(' ');
+
+    [...blob.matchAll(/\bPID-\d+\b/gi)].forEach(m => pids.add(m[0]));
+
+    return [...pids];
+  }
+function renderEmb3dThreat(threat) {
+    const pids = extractPids(threat); // ✅ AJOUT PID UNIQUEMENT
+
   return `
     <div class="riskBox" style="margin-top:14px">
       <h3>${esc(threat.name || "Unnamed Threat")}</h3>
@@ -1105,6 +1145,17 @@ async function loadEmb3d() {
         <tr><td>Linked CWEs</td><td>${esc(threat.x_mitre_emb3d_threat_CWEs)}</td></tr>
         <tr><td>Linked CVEs</td><td>${esc(threat.x_mitre_emb3d_threat_CVEs)}</td></tr>
       </table>
+
+        <!-- ✅ AJOUT PID UNIQUEMENT : affichage sous forme de pills -->
+        <div class="small muted" style="margin-top:10px">
+          <b>Impacted PID</b><br>
+          ${
+            pids.length
+              ? pids.map(pid => `<span class="pill mono">${esc(pid)}</span>`).join(' ')
+              : `<span class="muted">Non spécifié</span>`
+          }
+        </div>
+
 
       <div class="small muted" style="margin-top:8px">
         <b>Description</b><br>
