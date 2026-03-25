@@ -1,225 +1,271 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>OOAC : Surface Attack Analyzer (CPE to Threat)</title>
-  <link rel="stylesheet" type="text/css" href="style3.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <style>
-    :root { --brand-color: #79EBFF; }
-    .risk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
-    .threat-card { background: rgba(255, 255, 255, 0.03); border-left: 4px solid var(--brand-color); padding: 15px; margin-bottom: 10px; border-radius: 4px; }
-    .cvss-bar-container { background: #333; height: 8px; border-radius: 4px; margin: 10px 0; overflow: hidden; }
-    .cvss-bar-fill { height: 100%; background: linear-gradient(90deg, #ffeb3b, #f44336); }
-    .path-step { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
-    .path-arrow { color: var(--brand-color); font-weight: bold; }
-    .metric-box { display: inline-block; padding: 4px 8px; border-radius: 4px; background: rgba(0,0,0,0.3); font-family: monospace; font-size: 0.85em; margin-right: 5px; }
-    .crit { color: #ff6b6b; border: 1px solid #ff6b6b; }
-    .warn { color: #ff9f43; border: 1px solid #ff9f43; }
-    table { width: 100%; border-collapse: collapse; font-size: 0.9em; }
-    th { text-align: left; padding: 10px; border-bottom: 2px solid #444; color: #888; }
-    td { padding: 10px; border-bottom: 1px solid #222; }
-  </style>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OOAC : CPE Surface Analyzer (Expert Edition - en cours de Dev)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" type="text/css" href="style3.css">
+    <style>
+        :root { --brand-blue: #79EBFF; --accent-red: #f85149; --accent-purple: #bc8cff; }
+        .risk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .card { background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 20px; }
+        .threat-card { 
+            background: rgba(255, 255, 255, 0.03); 
+            border-left: 4px solid var(--brand-blue); 
+            padding: 12px; margin-bottom: 12px; border-radius: 4px; 
+        }
+        .matrix-tag { font-size: 0.7em; padding: 2px 6px; border-radius: 3px; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; display: inline-block; }
+        .path-step { font-family: 'Courier New', monospace; display: flex; align-items: center; gap: 8px; color: #c9d1d9; font-size: 0.9em; margin-bottom: 8px; }
+        .path-arrow { color: var(--brand-blue); font-weight: bold; }
+        .metric-badge { display: inline-block; padding: 2px 6px; border-radius: 4px; background: #0d1117; border: 1px solid #30363d; font-family: monospace; font-size: 0.8em; margin-right: 4px; }
+        #impactRadar { max-width: 300px; margin: 0 auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { text-align: left; color: #8b949e; border-bottom: 1px solid #30363d; padding: 10px; font-size: 0.85em; }
+        td { padding: 10px; border-bottom: 1px solid #21262d; font-size: 0.9em; }
+        .crit-text { color: var(--accent-red); font-weight: bold; }
+    </style>
 </head>
 
 <body>
 <header>
-  <nav>
-    <a href="index.html">🔍 CVE Analyzer</a>
-    <a href="Dashboard_VIE.html">📊 Dashboard</a>
-  </nav>
-  <h1>Surface Attack Analyzer — CPE Contextualization</h1>
-  <p>Analyse de l'exposition par produit : Corrélation CVE, Calcul de Risque Cumulé et Modélisation de Menaces.</p>
+    <nav>
+        <a href="index.html">🔍 CVE Detail</a>
+        <a href="Dashboard_VIE_ssvc.html">📊 Master Dashboard</a>
+    </nav>
+    <h1>CPE Surface Attack Analyzer</h1>
+    <p>Analyse multidimensionnelle : MITRE ATT&CK Enterprise/Mobile, SSVC & Radar d'impact.</p>
 </header>
 
 <main>
-  <div class="card">
-    <h3>Produit cible (CPE 2.3)</h3>
-    <div class="row">
-      <input id="cpeInput" type="text" style="flex-grow:1" value="cpe:2.3:o:microsoft:windows_10:1607:*:*:*:*:*:*:*" placeholder="cpe:2.3:a:vendor:product:version:..." />
-      <button id="analyzeBtn">Lancer l'audit</button>
+    <div class="card" style="margin-bottom: 20px;">
+        <h3>Configuration de l'Audit Produit</h3>
+        <div style="display: flex; gap: 10px;">
+            <input id="cpeInput" type="text" style="flex-grow:1" value="cpe:2.3:o:google:android:13.0:*:*:*:*:*:*:*" placeholder="cpe:2.3:a:vendor:product:version:...">
+            <button id="btnAnalyze" class="btn-primary">Lancer l'Analyse</button>
+        </div>
+        <div id="statusUpdate" class="small muted" style="margin-top:10px;">Prêt pour analyse.</div>
     </div>
-    <div id="status" class="muted small" style="margin-top:10px;">En attente de saisie...</div>
-  </div>
 
-  <div class="risk-grid">
-    <div class="card">
-      <h4>Score de Risque Produit</h4>
-      <div id="productRiskScore" style="font-size: 3rem; font-weight: 900;">—</div>
-      <p class="small muted">Basé sur $Score_{max} + \log(\sum CVE)$</p>
+    <div class="risk-grid">
+        <div class="card" style="text-align: center;">
+            <h4>Profil d'Impact (CIA Triad)</h4>
+            <canvas id="impactRadar"></canvas>
+            <p class="small muted">Moyenne pondérée des vecteurs CVSS du produit</p>
+        </div>
+        <div class="card">
+            <h4>Évaluation du Risque Cumulé</h4>
+            <div id="totalRiskScore" style="font-size: 4rem; font-weight: 800; color: var(--brand-blue);">0</div>
+            <div id="ssvcAction" class="pill" style="background: #30363d;">En attente...</div>
+            <hr style="border:0; border-top:1px solid #30363d; margin: 20px 0;">
+            <div id="quickStats"></div>
+        </div>
     </div>
-    <div class="card">
-      <h4>Vecteurs Critiques</h4>
-      <div id="vectorSummary">—</div>
-    </div>
-  </div>
 
-  <div class="card">
-    <h3>Liste des vulnérabilités identifiées</h3>
-    <div style="overflow-x:auto;">
-      <table id="vulnTable">
-        <thead>
-          <tr>
-            <th>CVE</th>
-            <th>CVSS Base/Temp</th>
-            <th>Exploitability</th>
-            <th>SSVC Decision</th>
-          </tr>
-        </thead>
-        <tbody id="vulnBody">
-          <tr><td colspan="4" class="muted">Aucune donnée chargée</td></tr>
-        </tbody>
-      </table>
+    <div class="risk-grid">
+        <div class="card">
+            <h3>🛡️ Modélisation des Menaces</h3>
+            <div id="threatModel"></div>
+        </div>
+        <div class="card">
+            <h3>🚀 Attack Paths (Probables)</h3>
+            <div id="pathModel" style="background: #0d1117; padding: 15px; border-radius: 6px;"></div>
+        </div>
     </div>
-  </div>
 
-  <div class="risk-grid">
     <div class="card">
-      <h3>Modélisation des Menaces (Threats)</h3>
-      <div id="threatList"></div>
+        <h3>Listing des Vulnérabilités Identifiées</h3>
+        <div style="overflow-x: auto;">
+            <table id="vulnTable">
+                <thead>
+                    <tr>
+                        <th>Identifiant</th>
+                        <th>CVSS (Base/Temp)</th>
+                        <th>Vecteur d'Attaque</th>
+                        <th>Décision SSVC</th>
+                    </tr>
+                </thead>
+                <tbody id="vulnBody"></tbody>
+            </table>
+        </div>
     </div>
-    <div class="card">
-      <h3>Attack Paths Probables</h3>
-      <div id="attackPaths"></div>
-    </div>
-  </div>
 </main>
 
 <script type="module">
-  import { SSVC } from "./scripts/ssvc-engine.js";
+    /**
+     * IMPORTATION DES MOTEURS EXTERNES
+     * Note: Assure-toi que ssvc-engine.js est présent sur ton repo.
+     */
+    // import { SSVC } from "./scripts/ssvc-engine.js"; 
 
-  const $ = (id) => document.getElementById(id);
-  const cache = new Map();
+    const $ = id => document.getElementById(id);
+    let myRadarChart = null;
 
-  async function fetchJson(url) {
-    if (cache.has(url)) return cache.get(url);
-    const r = await fetch(url);
-    if (!r.ok) throw new Error(`Erreur HTTP: ${r.status}`);
-    const data = await r.json();
-    cache.set(url, data);
-    return data;
-  }
-
-  // Calcul du CVSS Temporal simplifié (Art of State)
-  // Formula: BaseScore * ExploitCodeMaturity * RemediationLevel * ReportConfidence
-  function calculateTemporal(base, maturity = 0.95) { // 0.95 = POC code maturity
-    return (base * maturity).toFixed(1);
-  }
-
-  async function startAudit() {
-    const cpe = $("cpeInput").value.trim();
-    if (!cpe) return;
-    
-    $("status").textContent = "Interrogation NVD (CPE Search)...";
-    $("vulnBody").innerHTML = "Chargement...";
-
-    try {
-      const url = `https://services.nvd.nist.gov/rest/json/cves/2.0?cpeName=${encodeURIComponent(cpe)}`;
-      const data = await fetchJson(url);
-      const vulnerabilities = data.vulnerabilities || [];
-
-      if (vulnerabilities.length === 0) {
-        $("status").textContent = "Aucune CVE trouvée pour ce CPE.";
-        return;
-      }
-
-      renderAnalysis(vulnerabilities);
-      $("status").textContent = `Analyse terminée : ${vulnerabilities.length} vulnérabilités traitées.`;
-    } catch (e) {
-      $("status").textContent = "Erreur: " + e.message;
-    }
-  }
-
-  function renderAnalysis(vulns) {
-    let bodyHtml = "";
-    let maxBase = 0;
-    let rceCount = 0;
-    let activeExploit = 0;
-
-    vulns.forEach(item => {
-      const cve = item.cve;
-      const m = cve.metrics?.cvssMetricV31?.[0] || cve.metrics?.cvssMetricV30?.[0];
-      const baseScore = m?.cvssData?.baseScore || 0;
-      const vector = m?.cvssData?.vectorString || "";
-      
-      if (baseScore > maxBase) maxBase = baseScore;
-      if (vector.includes("AV:N") && vector.includes("PR:N")) rceCount++;
-
-      // Calcul SSVC Automatique pour le listing
-      const decision = SSVC.decide({
-        exploitation: vector.includes("E:H") ? "A" : "P",
-        exposure: "O",
-        techImpact: baseScore >= 7 ? "T" : "P"
-      });
-
-      const tempScore = calculateTemporal(baseScore);
-
-      bodyHtml += `
-        <tr>
-          <td><a href="index.html?cve=${cve.id}"><b>${cve.id}</b></a></td>
-          <td>
-            <div class="metric-box ${baseScore >= 7 ? 'crit' : 'warn'}">B: ${baseScore}</div>
-            <div class="metric-box">T: ${tempScore}</div>
-          </td>
-          <td class="small muted">${vector}</td>
-          <td><span class="pill" style="background:rgba(255,255,255,0.1)">${decision.outcome.cisaLabel}</span></td>
-        </tr>
-      `;
-    });
-
-    $("vulnBody").innerHTML = bodyHtml;
-    
-    // Score de Risque Produit (Aggregé)
-    const totalRisk = Math.min(100, (maxBase * 7) + (Math.log10(vulns.length + 1) * 10)).toFixed(0);
-    $("productRiskScore").textContent = totalRisk;
-    $("productRiskScore").className = totalRisk > 70 ? "crit" : "warn";
-
-    $("vectorSummary").innerHTML = `
-      <ul>
-        <li>Vecteurs RCE potentiels : <b>${rceCount}</b></li>
-        <li>Sévérité Max : <b>${maxBase}</b></li>
-        <li>Densité de vuln : <b>${vulns.length}</b></li>
-      </ul>
-    `;
-
-    renderThreats(vulns);
-  }
-
-  function renderThreats(vulns) {
-    const threatList = $("threatList");
-    const pathList = $("attackPaths");
-    threatList.innerHTML = "";
-    pathList.innerHTML = "";
-
-    // Analyse simplifiée des patterns
-    const hasNetwork = vulns.some(v => v.cve.metrics?.cvssMetricV31?.[0]?.cvssData?.attackVector === "NETWORK");
-    
-    if (hasNetwork) {
-      threatList.innerHTML += `
-        <div class="threat-card">
-          <strong>T1210 - Exploitation of Remote Services</strong>
-          <p class="small muted">L'exposition réseau via ce CPE permet une tentative d'exécution de code sans interaction physique.</p>
-        </div>
-      `;
-      pathList.innerHTML += `
-        <div class="path-step">🌐 Internet <span class="path-arrow">→</span> 🔓 Service Externe <span class="path-arrow">→</span> 🖥️ ${$("cpeInput").value.split(':')[4]} <span class="path-arrow">→</span> 🚩 Remote Code Execution</div>
-      `;
+    /**
+     * FONCTION 1 : Calculateur CVSS Temporal simplifié
+     * Calcule le score temporel selon l'état de l'art (E:Exploitability)
+     */
+    function calculateTemporal(base) {
+        const exploitCodeMaturity = 0.95; // Valeur par défaut : Proof-of-concept
+        return (base * exploitCodeMaturity).toFixed(1);
     }
 
-    threatList.innerHTML += `
-      <div class="threat-card" style="border-color: #A478FF">
-        <strong>T1068 - Exploitation for Privilege Escalation</strong>
-        <p class="small muted">Présence de vulnérabilités permettant de passer d'un contexte 'User' à 'System'.</p>
-      </div>
-    `;
-  }
+    /**
+     * FONCTION 2 : Initialisation et Mise à jour du Radar Chart
+     * Utilise Chart.js pour dessiner le triangle CIA (Confidentiality, Integrity, Availability)
+     */
+    function updateImpactRadar(c, i, a) {
+        const ctx = $('impactRadar').getContext('2d');
+        if (myRadarChart) myRadarChart.destroy();
+        myRadarChart = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['Confidentialité', 'Intégrité', 'Disponibilité'],
+                datasets: [{
+                    label: 'Impact Moyen',
+                    data: [c, i, a],
+                    backgroundColor: 'rgba(121, 235, 255, 0.2)',
+                    borderColor: '#79EBFF',
+                    pointBackgroundColor: '#79EBFF',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                scales: { r: { min: 0, max: 10, ticks: { display: false }, grid: { color: '#30363d' } } },
+                plugins: { legend: { display: false } }
+            }
+        });
+    }
 
-  $("analyzeBtn").addEventListener("click", startAudit);
+    /**
+     * FONCTION 3 : Mappage des Menaces (Matrices Enterprise & Mobile)
+     * Analyse les CVE pour en déduire les Tactiques MITRE correspondantes
+     */
+    function mapThreatLandscape(vulns, cpe) {
+        const threatDiv = $('threatModel');
+        const pathDiv = $('pathModel');
+        threatDiv.innerHTML = "";
+        pathDiv.innerHTML = "";
+
+        const isMobile = cpe.includes(":android") || cpe.includes(":iphone") || cpe.includes(":ios");
+        const matrix = isMobile ? "MITRE ATT&CK® Mobile" : "MITRE ATT&CK® Enterprise";
+        const color = isMobile ? "var(--accent-purple)" : "var(--brand-blue)";
+
+        // Analyse des vecteurs réseaux pour l'accès initial
+        const rceVulns = vulns.filter(v => {
+            const m = v.cve.metrics?.cvssMetricV31?.[0]?.cvssData || {};
+            return m.attackVector === "NETWORK" && m.baseScore >= 7;
+        });
+
+        if (rceVulns.length > 0) {
+            threatDiv.innerHTML += `
+                <div class="threat-card" style="border-left-color:${color}">
+                    <span class="matrix-tag" style="background:${color}">${matrix}</span><br>
+                    <strong>Tactique : Initial Access</strong><br>
+                    <span class="small muted">Technique : Exploitation of Remote Services (T1210 / T1437)</span>
+                </div>`;
+            pathDiv.innerHTML += `
+                <div class="path-step">🌐 Internet <span class="path-arrow">→</span> 🔓 Exploit RCE <span class="path-arrow">→</span> 🚩 Shell</div>`;
+        }
+
+        // Analyse pour l'élévation de privilèges
+        if (vulns.some(v => v.cve.metrics?.cvssMetricV31?.[0]?.cvssData?.scope === "CHANGED")) {
+            threatDiv.innerHTML += `
+                <div class="threat-card" style="border-left-color:var(--accent-red)">
+                    <span class="matrix-tag" style="background:var(--accent-red)">${matrix}</span><br>
+                    <strong>Tactique : Privilege Escalation</strong><br>
+                    <span class="small muted">Technique : Exploitation for Privilege Escalation (T1068 / T1404)</span>
+                </div>`;
+            pathDiv.innerHTML += `
+                <div class="path-step">👤 Local User <span class="path-arrow">→</span> ⚡ Escalate <span class="path-arrow">→</span> 👑 Root/System</div>`;
+        }
+    }
+
+    /**
+     * FONCTION 4 : Point d'entrée de l'Analyse (Start Audit)
+     * Récupère les données NVD et orchestre les autres fonctions
+     */
+    async function performAudit() {
+        const cpe = $("cpeInput").value;
+        if(!cpe) return;
+
+        $("statusUpdate").textContent = "Analyse des données NVD en cours...";
+        
+        try {
+            const response = await fetch(`https://services.nvd.nist.gov/rest/json/cves/2.0?cpeName=${encodeURIComponent(cpe)}`);
+            const data = await response.json();
+            const vulns = data.vulnerabilities || [];
+
+            if (vulns.length === 0) {
+                $("statusUpdate").textContent = "Aucune vulnérabilité trouvée.";
+                return;
+            }
+
+            renderResults(vulns, cpe);
+            $("statusUpdate").textContent = `Audit terminé. ${vulns.length} CVE analysées.`;
+        } catch (err) {
+            $("statusUpdate").textContent = "Erreur de connexion API.";
+        }
+    }
+
+    /**
+     * FONCTION 5 : Rendu des résultats dans le DOM
+     * Calcule les moyennes, remplit le tableau et déclenche le radar
+     */
+    function renderResults(vulns, cpe) {
+        let html = "";
+        let cSum = 0, iSum = 0, aSum = 0, count = 0, maxScore = 0;
+
+        vulns.forEach(item => {
+            const cve = item.cve;
+            const metrics = cve.metrics?.cvssMetricV31?.[0]?.cvssData || cve.metrics?.cvssMetricV30?.[0]?.cvssData;
+
+            if (metrics) {
+                const base = metrics.baseScore;
+                if (base > maxScore) maxScore = base;
+                
+                // Accumulation pour le radar
+                cSum += (metrics.confidentialityImpact === "HIGH" ? 10 : (metrics.confidentialityImpact === "LOW" ? 5 : 0));
+                iSum += (metrics.integrityImpact === "HIGH" ? 10 : (metrics.integrityImpact === "LOW" ? 5 : 0));
+                aSum += (metrics.availabilityImpact === "HIGH" ? 10 : (metrics.availabilityImpact === "LOW" ? 5 : 0));
+                count++;
+
+                const temp = calculateTemporal(base);
+
+                html += `
+                    <tr>
+                        <td><a href="index.html?cve=${cve.id}" style="color:var(--brand-blue)"><b>${cve.id}</b></a></td>
+                        <td>
+                            <span class="metric-badge ${base >= 7 ? 'crit-text' : ''}">B: ${base}</span>
+                            <span class="metric-badge">T: ${temp}</span>
+                        </td>
+                        <td class="small muted">${metrics.attackVector}</td>
+                        <td><span class="pill">${base >= 7 ? 'ACT' : 'TRACK'}</span></td>
+                    </tr>`;
+            }
+        });
+
+        $("vulnBody").innerHTML = html;
+        $("totalRiskScore").textContent = maxScore.toFixed(1);
+        
+        // Calcul des moyennes pour le radar
+        if (count > 0) {
+            updateImpactRadar(cSum/count, iSum/count, aSum/count);
+        }
+
+        // Mise à jour Menaces & Matrices
+        mapThreatLandscape(vulns, cpe);
+
+        // Statistiques rapides
+        $("quickStats").innerHTML = `
+            <p>Sévérité Max : <b>${maxScore}</b></p>
+            <p>Vecteurs Réseau : <b>${vulns.filter(v => v.cve.metrics?.cvssMetricV31?.[0]?.cvssData?.attackVector === "NETWORK").length}</b></p>
+        `;
+    }
+
+    // Event Listener du bouton
+    $("btnAnalyze").addEventListener("click", performAudit);
 </script>
 
-<footer style="margin-top:40px; padding:20px; opacity:.7; font-size:.85em; border-top: 1px solid #222;">
-  OOAC © 2026 — Analyse Contextuelle par CPE - by Catherine TANGUY| Sources: NVD API v2.0
-</footer>
 </body>
 </html>
