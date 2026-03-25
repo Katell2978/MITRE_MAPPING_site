@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>OOAC — VIE Master Dashboard (SSVC & Export PDF)</title>
+    <title>OOAC — VIE Master Dashboard (SSVC + Exploit Maturity)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
@@ -10,34 +10,30 @@
         :root {
             --bg-dark: #0d1117; --card-dark: #161b22; --border-gray: #30363d;
             --accent-blue: #58a6ff; --accent-red: #f85149; --accent-orange: #f0883e;
-            --accent-purple: #bc8cff;
+            --accent-purple: #bc8cff; --accent-green: #3fb950;
         }
-        body { background: var(--bg-dark); color: #c9d1d9; font-family: sans-serif; padding: 20px; }
+        body { background: var(--bg-dark); color: #c9d1d9; font-family: -apple-system, sans-serif; padding: 20px; margin: 0; }
         .container { max-width: 1600px; margin: 0 auto; }
         
-        /* Contrôles */
         .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid var(--border-gray); padding-bottom: 20px; }
-        .controls { display: flex; gap: 10px; align-items: center; }
-        select, button { background: #21262d; color: white; border: 1px solid var(--border-gray); padding: 8px 12px; border-radius: 6px; cursor: pointer; }
-        button:hover { background: var(--accent-blue); }
-
-        /* Tableaux */
+        .controls { display: flex; gap: 10px; }
+        
+        select, button { background: #21262d; color: white; border: 1px solid var(--border-gray); padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
+        select:focus { border-color: var(--accent-blue); outline: none; }
+        
         .ecu-section { background: var(--card-dark); border: 1px solid var(--border-gray); border-radius: 8px; margin-bottom: 30px; padding: 20px; }
         table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        th { text-align: left; font-size: 0.75rem; color: #8b949e; text-transform: uppercase; padding: 12px; border-bottom: 2px solid var(--border-gray); }
+        th { text-align: left; font-size: 0.7rem; color: #8b949e; text-transform: uppercase; padding: 12px; border-bottom: 2px solid var(--border-gray); }
         td { padding: 12px; border-bottom: 1px solid #30363d; vertical-align: middle; font-size: 0.85rem; }
 
-        /* Badges */
-        .badge { padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; display: inline-block; }
-        .bg-red { background: rgba(248,81,73,0.2); color: var(--accent-red); border: 1px solid var(--accent-red); }
-        .bg-orange { background: rgba(240,136,62,0.2); color: var(--accent-orange); border: 1px solid var(--accent-orange); }
-        .bg-blue { background: rgba(88,166,255,0.2); color: var(--accent-blue); border: 1px solid var(--accent-blue); }
+        .badge { padding: 3px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; display: inline-block; border: 1px solid transparent; }
+        .bg-red { background: rgba(248,81,73,0.15); color: var(--accent-red); border-color: var(--accent-red); }
+        .bg-orange { background: rgba(240,136,62,0.15); color: var(--accent-orange); border-color: var(--accent-orange); }
+        .bg-blue { background: rgba(88,166,255,0.15); color: var(--accent-blue); border-color: var(--accent-blue); }
+        .bg-gray { background: rgba(110,118,129,0.15); color: #8b949e; border-color: #30363d; }
 
-        /* SSVC Case à cocher */
-        .decision-box { display: flex; align-items: center; gap: 8px; }
-        input[type="checkbox"] { transform: scale(1.2); }
-        
-        .vector-font { font-family: monospace; font-size: 0.75rem; color: #8b949e; }
+        .exploit-select { background: #0d1117; border: 1px solid #444; color: #fff; padding: 4px; border-radius: 4px; width: 100%; }
+        .vector-font { font-family: 'Courier New', monospace; font-size: 0.75rem; color: #8b949e; }
         .hidden { display: none !important; }
     </style>
 </head>
@@ -45,17 +41,26 @@
 
 <div class="container" id="report-content">
     <div class="header-flex">
-        <h1 style="color:var(--accent-blue);">🛡️ VIE Master Dashboard : Décisions SSVC</h1>
+        <div>
+            <h1 style="color:var(--accent-blue); margin:0;">🛡️ OOAC : Decision Dashboard</h1>
+            <p style="color:#8b949e; margin:5px 0 0 0;">Analyse SSVC croisée : Impact Safety x Maturité Exploit</p>
+        </div>
         <div class="controls">
             <select id="ecuFilter" onchange="applyFilter()"><option value="ALL">Toutes les ECU</option></select>
-            <select id="sortOrder" onchange="render()"><option value="score">Trier par Score</option><option value="id">Trier par ID</option></select>
-            <button onclick="exportPDF()">📥 Exporter Rapport PDF</button>
+            <button onclick="exportPDF()" style="background:var(--accent-green); border:none;">📥 Export PDF</button>
         </div>
     </div>
 
-    <div class="ecu-section" style="border-left: 4px solid var(--accent-purple);">
-        <h3 style="margin-top:0">⚖️ Référentiel SSVC (Stakeholder-Specific Vulnerability Categorization)</h3>
-        <p style="font-size: 0.8rem; opacity: 0.8;">La proposition automatique est basée sur le croisement de l'Exploitabilité (Base CVSS) et de l'Impact Sécurité (Config ECU).</p>
+    <div class="ecu-section" style="border-left: 4px solid var(--accent-purple); display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <h4 style="margin:0 0 10px 0;">⚖️ Logique SSVC Intégrée</h4>
+            <span class="badge bg-red">IMMEDIATE</span> : Exploit Active OU (POC + Safety High)<br>
+            <span class="badge bg-orange">SCHEDULED</span> : POC + Safety Low OU Unknown + Safety High<br>
+            <span class="badge bg-blue">TRACK</span> : Unknown + Safety Low
+        </div>
+        <div style="text-align: right; font-size: 0.8rem;" class="muted">
+            Mise à jour : <span id="current-date"></span>
+        </div>
     </div>
 
     <div id="ecu-details-container"></div>
@@ -65,75 +70,109 @@
     let inventory = [];
     let vulnsData = [];
 
-    // Logique de décision SSVC
-    function getSSVCDecision(score, ecu) {
-        const isSafetyHigh = ecu.safety_impact === "High";
-        if (score >= 9 && isSafetyHigh) return { label: "IMMEDIATE", class: "bg-red" };
-        if (score >= 7 || isSafetyHigh) return { label: "SCHEDULED", class: "bg-orange" };
+    // ✅ LOGIQUE SSVC MISE À JOUR
+    function calculateSSVC(score, exploitMaturity, safetyImpact) {
+        const isSafetyHigh = safetyImpact === "High";
+        
+        if (exploitMaturity === "Active") return { label: "IMMEDIATE", class: "bg-red" };
+        
+        if (exploitMaturity === "POC") {
+            return isSafetyHigh ? { label: "IMMEDIATE", class: "bg-red" } : { label: "SCHEDULED", class: "bg-orange" };
+        }
+        
+        if (exploitMaturity === "Unknown") {
+            return isSafetyHigh ? { label: "SCHEDULED", class: "bg-orange" } : { label: "TRACK", class: "bg-blue" };
+        }
+        
         return { label: "TRACK", class: "bg-blue" };
     }
 
     async function init() {
+        document.getElementById('current-date').innerText = new Date().toLocaleDateString();
         try {
-            const invRes = await fetch('data/inventory/inventory_cpe.json');
+            const [invRes, vulnRes] = await Promise.all([
+                fetch('data/inventory/inventory_cpe.json'),
+                fetch('data/results/detected_vulns.json')
+            ]);
             inventory = await invRes.json();
-            const vulnRes = await fetch('data/results/detected_vulns.json');
             vulnsData = await vulnRes.json();
             
-            // Remplir le filtre
             inventory.forEach(e => {
                 const opt = document.createElement('option');
                 opt.value = e.component_id; opt.textContent = e.component_id;
                 document.getElementById('ecuFilter').appendChild(opt);
             });
-            
             render();
-        } catch(e) { console.error("Erreur chargement", e); }
+        } catch(e) { console.error(e); }
+    }
+
+    function updateLineSSVC(cveId, ecuId) {
+        const select = document.getElementById(`exploit-${cveId}`);
+        const badgeCont = document.getElementById(`ssvc-badge-${cveId}`);
+        const ecu = inventory.find(i => i.component_id === ecuId);
+        const vuln = vulnsData.find(v => v.cve_id === cveId);
+        
+        const decision = calculateSSVC(vuln.metrics?.baseScore || 0, select.value, ecu.safety_impact);
+        badgeCont.innerHTML = `<span class="badge ${decision.class}">${decision.label}</span>`;
     }
 
     function render() {
         const container = document.getElementById('ecu-details-container');
-        const sortVal = document.getElementById('sortOrder').value;
         container.innerHTML = "";
 
         inventory.forEach(ecu => {
             let ev = vulnsData.filter(v => v.ecu === ecu.component_id);
             if (ev.length === 0) return;
 
-            // Tri
-            if (sortVal === "score") ev.sort((a,b) => (b.metrics?.baseScore||0) - (a.metrics?.baseScore||0));
-            else ev.sort((a,b) => a.cve_id.localeCompare(b.cve_id));
-
             let rows = ev.map(v => {
                 const bScore = v.metrics?.baseScore || 0;
-                const ssvc = getSSVCDecision(bScore, ecu);
                 const cwe = (v.cwe_ids && v.cwe_ids.length > 0) ? v.cwe_ids[0] : "N/A";
+                
+                // Détermination état initial
+                let initialExploit = "Unknown";
+                if (v.is_kev || v.description?.toLowerCase().includes("active exploit")) initialExploit = "Active";
+                
+                const ssvc = calculateSSVC(bScore, initialExploit, ecu.safety_impact);
 
                 return `
                 <tr>
-                    <td style="width:15%"><b>${v.cve_id}</b><br><span class="badge bg-gray" style="margin-top:5px">${cwe}</span></td>
-                    <td style="width:50%">
+                    <td style="width:12%"><b>${v.cve_id}</b><br><span class="badge bg-gray" style="margin-top:5px">${cwe}</span></td>
+                    <td style="width:38%">
                         <div class="vector-font"><b>BASE:</b> ${v.metrics?.vectorString || 'N/A'}</div>
-                        <div class="vector-font"><b>TEMP:</b> ${v.metrics?.vectorString || 'N/A'}/E:P/RL:O/RC:C</div>
+                        <div class="vector-font" style="margin-top:3px; opacity:0.7;">Temp: ${(bScore*0.95).toFixed(1)} (E:P/RL:O/RC:C)</div>
                     </td>
-                    <td style="width:10%">
-                        <span class="badge ${bScore>=7?'bg-red':'bg-orange'}">${bScore.toFixed(1)}</span>
+                    <td style="width:15%">
+                        <select class="exploit-select" id="exploit-${v.cve_id}" onchange="updateLineSSVC('${v.cve_id}', '${ecu.component_id}')">
+                            <option value="Unknown" ${initialExploit==='Unknown'?'selected':''}>🔘 Unknown</option>
+                            <option value="POC" ${initialExploit==='POC'?'selected':''}>🧪 POC</option>
+                            <option value="Active" ${initialExploit==='Active'?'selected':''}>🔥 Active</option>
+                        </select>
                     </td>
-                    <td style="width:25%">
-                        <div class="decision-box">
-                            <input type="checkbox" checked title="Valider cette décision">
-                            <span class="badge ${ssvc.class}">${ssvc.label}</span>
-                            <span style="font-size:0.7rem; opacity:0.7">(Conseillé)</span>
-                        </div>
+                    <td style="width:15%; text-align:center;" id="ssvc-badge-${v.cve_id}">
+                        <span class="badge ${ssvc.class}">${ssvc.label}</span>
+                    </td>
+                    <td style="width:20%; text-align:right;">
+                        <input type="checkbox" checked> <span style="font-size:0.8rem">Approuvé</span>
+                        <br><small class="muted">Par expert cyber</small>
                     </td>
                 </tr>`;
             }).join('');
 
             container.innerHTML += `
                 <div class="ecu-section" data-ecu="${ecu.component_id}">
-                    <h3 style="color:var(--accent-blue)">${ecu.component_id} <span style="font-size:0.8rem; color:#8b949e"> — Impact Safety: ${ecu.safety_impact}</span></h3>
+                    <h3 style="color:var(--accent-blue); margin-top:0;">
+                        ${ecu.component_id} <span style="font-size:0.8rem; color:#8b949e; font-weight:normal;"> — Impact Safety: ${ecu.safety_impact}</span>
+                    </h3>
                     <table>
-                        <thead><tr><th>CVE / CWE</th><th>Vecteurs CVSS</th><th>Score</th><th>Décision SSVC</th></tr></thead>
+                        <thead>
+                            <tr>
+                                <th>CVE / CWE</th>
+                                <th>Vecteurs Techniques</th>
+                                <th>État Exploit</th>
+                                <th style="text-align:center;">Proposition SSVC</th>
+                                <th style="text-align:right;">Décision Finale</th>
+                            </tr>
+                        </thead>
                         <tbody>${rows}</tbody>
                     </table>
                 </div>`;
@@ -148,25 +187,22 @@
         });
     }
 
-    // Fonction d'export PDF
     async function exportPDF() {
         const { jsPDF } = window.jspdf;
-        const doc = new jsPDF('p', 'mm', 'a4');
         const element = document.getElementById('report-content');
+        const controls = document.querySelector('.controls');
         
-        // On cache temporairement les contrôles pour le PDF
-        document.querySelector('.controls').style.display = 'none';
-
+        controls.style.visibility = 'hidden';
+        
         html2canvas(element, { backgroundColor: "#0d1117", scale: 2 }).then(canvas => {
             const imgData = canvas.toDataURL('image/png');
-            const imgProps = doc.getImageProperties(imgData);
+            const doc = new jsPDF('p', 'mm', 'a4');
             const pdfWidth = doc.internal.pageSize.getWidth();
-            const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+            const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
             
             doc.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-            doc.save(`OOAC_VDR_Report_${new Date().toISOString().slice(0,10)}.pdf`);
-            
-            document.querySelector('.controls').style.display = 'flex';
+            doc.save(`OOAC_SSVC_Decision_${new Date().toISOString().slice(0,10)}.pdf`);
+            controls.style.visibility = 'visible';
         });
     }
 
