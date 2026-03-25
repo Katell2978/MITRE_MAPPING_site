@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>OOAC — VIE Master Dashboard (Fix CWE_IDS)</title>
+    <title>OOAC — VIE Master Dashboard (Full Fix)</title>
     <style>
         :root {
             --bg-dark: #0d1117; --card-dark: #161b22; --border-gray: #30363d;
@@ -13,51 +13,59 @@
         .container { max-width: 1600px; margin: 0 auto; }
         
         .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid var(--border-gray); padding-bottom: 20px; }
+        
         .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 30px; }
         .stat-card { background: var(--card-dark); border: 1px solid var(--border-gray); padding: 20px; border-radius: 8px; text-align: center; }
-        .stat-value { font-size: 2rem; font-weight: 800; display: block; }
+        .stat-value { font-size: 2rem; font-weight: 800; display: block; color: #fff; }
 
-        .summary-wrapper, .ecu-section { background: var(--card-dark); border: 1px solid var(--border-gray); border-radius: 8px; margin-bottom: 30px; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        th { text-align: left; font-size: 0.75rem; color: #8b949e; text-transform: uppercase; padding: 10px; border-bottom: 2px solid var(--border-gray); }
-        td { padding: 12px 10px; border-bottom: 1px solid #30363d; vertical-align: middle; font-size: 0.85rem; word-wrap: break-word; }
+        .summary-wrapper, .ecu-section { background: var(--card-dark); border: 1px solid var(--border-gray); border-radius: 8px; margin-bottom: 30px; padding: 20px; overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; min-width: 1000px; }
+        th { text-align: left; font-size: 0.75rem; color: #8b949e; text-transform: uppercase; padding: 12px; border-bottom: 2px solid var(--border-gray); }
+        td { padding: 12px; border-bottom: 1px solid #30363d; vertical-align: middle; font-size: 0.85rem; word-wrap: break-word; }
 
-        .badge { padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; display: inline-block; }
-        .bg-red { background: rgba(248,81,73,0.2); color: var(--accent-red); border: 1px solid var(--accent-red); }
-        .bg-gray { background: rgba(110,118,129,0.2); color: #8b949e; border: 1px solid #30363d; }
+        .badge { padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; display: inline-block; border: 1px solid transparent; }
+        .bg-red { background: rgba(248,81,73,0.15); color: var(--accent-red); border-color: var(--accent-red); }
+        .bg-orange { background: rgba(240,136,62,0.15); color: var(--accent-orange); border-color: var(--accent-orange); }
+        .bg-purple { background: rgba(188,140,255,0.15); color: var(--accent-purple); border-color: var(--accent-purple); }
+        .bg-gray { background: rgba(110,118,129,0.15); color: #8b949e; border-color: #30363d; }
         
-        .vector-font { font-family: monospace; font-size: 0.75rem; color: #8b949e; }
+        /* Attack Path Style */
+        .path-visual { font-family: monospace; font-size: 0.8rem; display: flex; align-items: center; gap: 6px; background: rgba(0,0,0,0.3); padding: 6px 10px; border-radius: 6px; width: fit-content; border: 1px solid #30363d; }
+        .path-arrow { color: var(--accent-blue); font-weight: bold; }
+
+        .vector-font { font-family: 'Courier New', monospace; font-size: 0.75rem; color: #8b949e; line-height: 1.4; }
         .hidden { display: none !important; }
+        .muted { color: #8b949e; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header-flex">
-        <h1 style="color:var(--accent-blue);">🛡️ VIE Master Dashboard</h1>
-        <select id="ecuFilter" onchange="applyFilter()" style="background:#0d1117; color:white; padding:8px; border-radius:5px;">
-            <option value="ALL">Vue Globale</option>
+        <h1 style="color:var(--accent-blue); margin:0;">🛡️ VIE Master Dashboard</h1>
+        <select id="ecuFilter" onchange="applyFilter()" style="background:#0d1117; color:var(--accent-blue); padding:8px 15px; border:1px solid var(--border-gray); border-radius:6px; font-weight:bold;">
+            <option value="ALL">Vue Flotte Complète</option>
         </select>
     </div>
 
     <div class="stats-grid">
-        <div class="stat-card"> <span id="total-cve" class="stat-value">0</span> <span>CVE Total</span> </div>
-        <div class="stat-card"> <span id="total-crit" class="stat-value" style="color:var(--accent-red)">0</span> <span>Critiques</span> </div>
-        <div class="stat-card"> <span id="total-rce" class="stat-value" style="color:var(--accent-purple)">0</span> <span>RCE</span> </div>
-        <div class="stat-card"> <span id="avg-risk" class="stat-value">0</span> <span>Score Risque</span> </div>
+        <div class="stat-card"> <span id="total-cve" class="stat-value">0</span> <span class="muted">CVE Détectées</span> </div>
+        <div class="stat-card"> <span id="total-crit" class="stat-value" style="color:var(--accent-red)">0</span> <span class="muted">Critiques (>=7)</span> </div>
+        <div class="stat-card"> <span id="total-rce" class="stat-value" style="color:var(--accent-purple)">0</span> <span class="muted">Vecteurs RCE</span> </div>
+        <div class="stat-card"> <span id="avg-risk" class="stat-value">0</span> <span class="muted">Risque Moyen /100</span> </div>
     </div>
 
     <div class="summary-wrapper">
-        <h3>📊 Synthèse par Unité (ECU)</h3>
-        <table>
+        <h3 style="margin-top:0; color:var(--accent-blue)">📊 Synthèse par Unité (ECU)</h3>
+        <table style="table-layout: auto;">
             <thead>
                 <tr>
-                    <th style="width:15%">UNITÉ</th>
-                    <th style="width:15%">VOLUMES</th>
-                    <th style="width:20%">CVSS (Base / Temp)</th>
-                    <th style="width:15%">TOP CWE</th>
-                    <th style="width:20%">ATTACK PATH</th>
-                    <th style="width:15%; text-align:right;">RISK SCORE</th>
+                    <th>UNITÉ</th>
+                    <th>VOLUMES</th>
+                    <th>SÉVÉRITÉ (B/T)</th>
+                    <th>TOP CWE</th>
+                    <th>ATTACK PATH</th>
+                    <th style="text-align:right">VIE RISK SCORE</th>
                 </tr>
             </thead>
             <tbody id="summary-body"></tbody>
@@ -71,12 +79,28 @@
     let inventory = [];
     let vulnsData = [];
 
-    // ✅ SOLUTION : Accès au tableau cwe_ids détecté dans votre JSON
-    function getCWEValue(v) {
-        if (v.cwe_ids && Array.isArray(v.cwe_ids) && v.cwe_ids.length > 0) {
-            return v.cwe_ids[0]; // Prend le premier CWE de la liste
-        }
-        return v.cwe || v.cwe_id || "N/A";
+    // Récupération sécurisée du CWE depuis le tableau cwe_ids
+    function getCWE(v) {
+        if (v.cwe_ids && v.cwe_ids.length > 0) return v.cwe_ids[0];
+        return v.cwe || "N/A";
+    }
+
+    // Calcul Attack Path Dynamique
+    function getAttackPath(ecu, ev, hasRce, maxB) {
+        if (!ev.length) return `<span class="badge bg-gray">Aucun Risque</span>`;
+        // Entrée : Internet si exposé, sinon physique
+        const entry = (ecu.is_exposed !== false) ? "🌐 (Net)" : "🔌 (Phys)";
+        // Exploitation : RCE ou High Score
+        const exploit = hasRce ? "🔓 RCE" : (maxB >= 7 ? "💥 Exploit" : "⚠️ Limit");
+        // Impact : Selon Safety Impact de l'ECU
+        const impact = (ecu.safety_impact === "High") ? "☢️ CRIT" : "🚩 WARN";
+        
+        return `
+            <div class="path-visual">
+                <span>${entry}</span><span class="path-arrow">→</span>
+                <span>${exploit}</span><span class="path-arrow">→</span>
+                <span>${impact}</span>
+            </div>`;
     }
 
     async function init() {
@@ -86,48 +110,53 @@
             const vulnRes = await fetch('data/results/detected_vulns.json');
             vulnsData = await vulnRes.json();
             render();
-        } catch(e) { console.error("Erreur chargement JSON:", e); }
+        } catch(e) { console.error("Erreur d'initialisation", e); }
     }
 
     function render() {
         const summaryBody = document.getElementById('summary-body');
         const detailsContainer = document.getElementById('ecu-details-container');
-        let gTotal = 0, gCrit = 0, gRiskSum = 0;
+        let gTotal = 0, gCrit = 0, gRce = 0, gRiskSum = 0;
 
         inventory.forEach(ecu => {
             const ev = vulnsData.filter(v => v.ecu === ecu.component_id);
             if (ev.length === 0) return;
 
-            let maxB = 0;
+            let maxB = 0, hasRce = false;
             const cweCounts = {};
 
             ev.forEach(v => {
                 let s = v.metrics?.baseScore || 0;
                 if (s > maxB) maxB = s;
                 if (s >= 7) gCrit++;
+                if (v.is_rce || v.description?.toLowerCase().includes("remote code")) hasRce = true;
                 
-                let c = getCWEValue(v);
+                let c = getCWE(v);
                 cweCounts[c] = (cweCounts[c] || 0) + 1;
             });
 
+            if (hasRce) gRce++;
             const topCWE = Object.entries(cweCounts).sort((a,b)=>b[1]-a[1])[0][0];
-            const risk = Math.min(100, Math.round(maxB * 8 + (Math.log10(ev.length + 1) * 5)));
+            const risk = Math.min(100, Math.round(maxB * 8 + (Math.log10(ev.length + 1) * 5) + (hasRce ? 10 : 0)));
             gTotal += ev.length; gRiskSum += risk;
 
+            // Rendu de la ligne de synthèse
             summaryBody.innerHTML += `
                 <tr class="summary-row" data-ecu="${ecu.component_id}">
-                    <td><b>${ecu.component_id}</b></td>
-                    <td>${ev.length} CVE</td>
-                    <td><span class="badge bg-red">${maxB.toFixed(1)}</span> <span style="color:#8b949e">/ ${(maxB*0.95).toFixed(1)}</span></td>
+                    <td><b style="color:var(--accent-blue)">${ecu.component_id}</b></td>
+                    <td>${ev.length} CVE ${hasRce ? '<span class="badge bg-purple" style="margin-left:5px">RCE</span>' : ''}</td>
+                    <td><span class="badge ${maxB>=7?'bg-red':'bg-orange'}">${maxB.toFixed(1)}</span> <span class="muted">/ ${(maxB*0.95).toFixed(1)}</span></td>
                     <td><span class="badge bg-gray">${topCWE}</span></td>
-                    <td>🌐 → 🔓 → 🚩</td>
-                    <td style="text-align:right; font-weight:bold; color:${risk > 70 ? 'var(--accent-red)' : 'white'}">${risk}/100</td>
+                    <td>${getAttackPath(ecu, ev, hasRce, maxB)}</td>
+                    <td style="text-align:right; font-weight:bold; font-size:1rem; color:${risk > 70 ? 'var(--accent-red)' : 'white'}">${risk}/100</td>
                 </tr>`;
 
+            // Rendu des détails techniques
             let rows = ev.map(v => {
                 const bScore = v.metrics?.baseScore || 0;
-                const bVec = v.metrics?.vectorString || "N/A";
-                const cwe = getCWEValue(v);
+                const bVec = v.metrics?.vectorString || "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H";
+                const tScore = (bScore * 0.95).toFixed(1);
+                const cwe = getCWE(v);
 
                 return `
                 <tr>
@@ -138,16 +167,18 @@
                     </td>
                     <td style="width:20%; text-align:right;">
                         <span class="badge ${bScore >= 7 ? 'bg-red' : 'bg-gray'}">${bScore.toFixed(1)}</span>
-                        <div style="font-size:0.7rem; color:#8b949e; margin-top:4px;">Temp: ${(bScore*0.95).toFixed(1)}</div>
+                        <div class="muted" style="font-size:0.7rem; margin-top:4px;">Temp: ${tScore}</div>
                     </td>
                 </tr>`;
             }).join('');
 
             detailsContainer.innerHTML += `
                 <div class="ecu-section" data-ecu="${ecu.component_id}">
-                    <h4 style="border-left:3px solid var(--accent-blue); padding-left:10px;">${ecu.component_id} — Détail des vecteurs</h4>
+                    <h4 style="margin:0 0 15px 0; padding-bottom:10px; border-bottom:1px solid #30363d; color:var(--accent-blue)">
+                        ${ecu.component_id} — ${ecu.description}
+                    </h4>
                     <table>
-                        <thead><tr><th>CVE / CWE</th><th>VECTEURS CVSS</th><th style="text-align:right">SCORES</th></tr></thead>
+                        <thead><tr><th>CVE / CWE</th><th>VECTEURS CVSS TECHNIQUES</th><th style="text-align:right">SCORES (B/T)</th></tr></thead>
                         <tbody>${rows}</tbody>
                     </table>
                 </div>`;
@@ -159,6 +190,7 @@
 
         document.getElementById('total-cve').innerText = gTotal;
         document.getElementById('total-crit').innerText = gCrit;
+        document.getElementById('total-rce').innerText = gRce;
         document.getElementById('avg-risk').innerText = Math.round(gRiskSum / inventory.length);
     }
 
