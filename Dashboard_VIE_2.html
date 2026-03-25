@@ -208,6 +208,94 @@
             else el.classList.add('hidden');
         });
     }
+// function render pour tri du tableau 
+    function render() {
+    const summaryBody = document.getElementById('summary-body');
+    const detailsContainer = document.getElementById('ecu-details-container');
+    const sortVal = document.getElementById('sortOrder').value; // Récupération du choix de tri
+
+    // Reset des containers
+    summaryBody.innerHTML = "";
+    detailsContainer.innerHTML = "";
+
+    let gTotal = 0, gCrit = 0, gRce = 0, gRiskSum = 0;
+
+    inventory.forEach(ecu => {
+        let ev = vulnsData.filter(v => v.ecu === ecu.component_id);
+        if (ev.length === 0) return;
+
+        // ==========================================
+        // ✅ AJOUT : Logique de tri
+        // ==========================================
+        if (sortVal === "score") {
+            ev.sort((a, b) => (b.metrics?.baseScore || 0) - (a.metrics?.baseScore || 0));
+        } else {
+            ev.sort((a, b) => a.cve_id.localeCompare(b.cve_id));
+        }
+        // ==========================================
+
+        let maxB = 0, hasRce = false;
+        const cweCounts = {};
+
+        ev.forEach(v => {
+            let s = v.metrics?.baseScore || 0;
+            if (s > maxB) maxB = s;
+            if (s >= 7) gCrit++;
+            if (v.is_rce || v.description?.toLowerCase().includes("remote code")) hasRce = true;
+            
+            // Correction CWE_IDS (votre format JSON)
+            let c = (v.cwe_ids && v.cwe_ids.length > 0) ? v.cwe_ids[0] : (v.cwe || "N/A");
+            cweCounts[c] = (cweCounts[c] || 0) + 1;
+        });
+
+        if (hasRce) gRce++;
+        const topCWE = Object.entries(cweCounts).sort((a,b)=>b[1]-a[1])[0][0];
+        const risk = Math.min(100, Math.round(maxB * 8 + (Math.log10(ev.length + 1) * 5) + (hasRce ? 10 : 0)));
+        gTotal += ev.length; gRiskSum += risk;
+
+        // Rendu Synthèse (Attack Path inclus)
+        summaryBody.innerHTML += `
+            <tr class="summary-row" data-ecu="${ecu.component_id}">
+                <td><b style="color:var(--accent-blue)">${ecu.component_id}</b></td>
+                <td>${ev.length} CVE</td>
+                <td><span class="badge ${maxB>=7?'bg-red':'bg-orange'}">${maxB.toFixed(1)}</span></td>
+                <td><span class="badge bg-gray">${topCWE}</span></td>
+                <td>${getAttackPath(ecu, ev, hasRce, maxB)}</td>
+                <td style="text-align:right; font-weight:bold;">${risk}/100</td>
+            </tr>`;
+
+        // Rendu Détails (Vecteurs + CWE + Temp)
+        let rows = ev.map(v => {
+            const bScore = v.metrics?.baseScore || 0;
+            const bVec = v.metrics?.vectorString || "N/A";
+            const cwe = (v.cwe_ids && v.cwe_ids.length > 0) ? v.cwe_ids[0] : "N/A";
+
+            return `
+            <tr>
+                <td style="width:15%"><b>${v.cve_id}</b><br><span class="badge bg-gray" style="margin-top:5px">${cwe}</span></td>
+                <td style="width:65%">
+                    <div class="vector-font"><b style="color:var(--accent-blue)">BASE:</b> ${bVec}</div>
+                    <div class="vector-font" style="margin-top:4px"><b style="color:var(--accent-orange)">TEMP:</b> ${bVec}/E:P/RL:O/RC:C</div>
+                </td>
+                <td style="width:20%; text-align:right;">
+                    <span class="badge ${bScore >= 7 ? 'bg-red' : 'bg-gray'}">${bScore.toFixed(1)}</span>
+                    <div class="muted" style="font-size:0.7rem; margin-top:4px;">Temp: ${(bScore*0.95).toFixed(1)}</div>
+                </td>
+            </tr>`;
+        }).join('');
+
+        detailsContainer.innerHTML += `
+            <div class="ecu-section" data-ecu="${ecu.component_id}">
+                <h4 style="color:var(--accent-blue)">${ecu.component_id} — Détails triés</h4>
+                <table><tbody>${rows}</tbody></table>
+            </div>`;
+    });
+
+    // Update KPIs
+    document.getElementById('total-cve').innerText = gTotal;
+    document.getElementById('total-crit').innerText = gCrit;
+}
+    
     window.onload = init;
 </script>
 </body>
