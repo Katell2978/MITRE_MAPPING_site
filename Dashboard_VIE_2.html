@@ -11,24 +11,22 @@
             --accent-purple: #bc8cff; --accent-green: #3fb950;
         }
         body { background: var(--bg-dark); color: #c9d1d9; font-family: -apple-system, system-ui, sans-serif; padding: 20px; margin: 0; }
-        .container { max-width: 1550px; margin: 0 auto; }
+        .container { max-width: 1600px; margin: 0 auto; }
         
-        /* Header */
+        /* Header & KPIs */
         .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid var(--border-gray); padding-bottom: 20px; }
         .filter-box { background: var(--card-dark); border: 1px solid var(--border-gray); padding: 10px 15px; border-radius: 8px; }
         select { background: #0d1117; color: var(--accent-blue); border: 1px solid var(--border-gray); padding: 8px 12px; border-radius: 6px; font-weight: bold; cursor: pointer; }
-
-        /* Stats KPIs */
         .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 30px; }
         .stat-card { background: var(--card-dark); border: 1px solid var(--border-gray); padding: 20px; border-radius: 8px; text-align: center; }
         .stat-value { font-size: 2.2rem; font-weight: 800; display: block; color: #fff; }
         .stat-label { color: #8b949e; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; }
 
-        /* Tables Shared Style */
+        /* Tables Style */
         .summary-wrapper, .ecu-section { background: var(--card-dark); border: 1px solid var(--border-gray); border-radius: 8px; margin-bottom: 30px; padding: 20px; overflow-x: auto; }
-        table { width: 100%; border-collapse: collapse; min-width: 1000px; }
+        table { width: 100%; border-collapse: collapse; min-width: 1100px; table-layout: fixed; }
         th { text-align: left; font-size: 0.7rem; color: #8b949e; padding: 12px; border-bottom: 2px solid var(--border-gray); text-transform: uppercase; }
-        td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; font-size: 0.85rem; }
+        td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: middle; font-size: 0.85rem; word-wrap: break-word; }
 
         /* Badges & Attack Path */
         .badge { padding: 2px 6px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; border: 1px solid transparent; display: inline-block; }
@@ -36,14 +34,14 @@
         .bg-orange { background: rgba(240,136,62,0.15); color: var(--accent-orange); border-color: var(--accent-orange); }
         .bg-purple { background: rgba(188,140,255,0.15); color: var(--accent-purple); border-color: var(--accent-purple); }
         .bg-gray { background: rgba(110,118,129,0.15); color: #8b949e; border-color: #30363d; }
+        .vector-text { font-family: 'Courier New', monospace; font-size: 0.7rem; color: #8b949e; line-height: 1.4; }
         
         .path-visual { font-family: monospace; font-size: 0.75rem; display: flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.2); padding: 4px 8px; border-radius: 4px; width: fit-content; }
         .path-arrow { color: var(--accent-blue); font-weight: bold; }
 
-        /* Detail Headers */
         .ecu-header { background: #1c2128; padding: 12px 20px; border-bottom: 1px solid var(--border-gray); display: flex; justify-content: space-between; align-items: center; margin: -20px -20px 15px -20px; }
-        .muted { color: #8b949e; font-size: 0.8rem; }
         .hidden { display: none !important; }
+        .muted { color: #8b949e; }
     </style>
 </head>
 <body>
@@ -52,7 +50,7 @@
     <div class="header-flex">
         <div>
             <h1 style="color:var(--accent-blue); margin:0; font-size: 1.5rem;">🛡️ VIE Master Dashboard</h1>
-            <p style="color:#8b949e; font-size: 0.8rem; margin:5px 0;">Analyse Full-Stack : Vulnérabilités, CWE, SSVC & Attack Paths.</p>
+            <p style="color:#8b949e; font-size: 0.8rem; margin:5px 0;">Analyse Full-Stack : Vecteurs CVSS, CWE & Attack Paths.</p>
         </div>
         <div class="filter-box">
             <select id="ecuFilter" onchange="applyFilter()">
@@ -63,14 +61,14 @@
 
     <div class="stats-grid">
         <div class="stat-card"><span id="total-cve" class="stat-value">0</span><span class="stat-label">CVE Total</span></div>
-        <div class="stat-card"><span id="total-crit" class="stat-value" style="color:var(--accent-red)">0</span><span class="stat-label">Critiques (>=7)</span></div>
+        <div class="stat-card"><span id="total-crit" class="stat-value" style="color:var(--accent-red)">0</span><span class="stat-label">Critiques (B>=7)</span></div>
         <div class="stat-card"><span id="total-rce" class="stat-value" style="color:var(--accent-purple)">0</span><span class="stat-label">Vecteurs RCE</span></div>
-        <div class="stat-card"><span id="avg-risk" class="stat-value">0</span><span class="stat-label">Risque Flotte /100</span></div>
+        <div class="stat-card"><span id="avg-risk" class="stat-value">0</span><span class="stat-label">Score Risque Moyen</span></div>
     </div>
 
     <div class="summary-wrapper">
         <h3 style="margin:0 0 15px 0; color:var(--accent-blue); font-size:0.9rem;">📊 Synthèse de l'état de santé par Unité (ECU)</h3>
-        <table>
+        <table style="table-layout: auto;">
             <thead>
                 <tr>
                     <th>UNITÉ</th>
@@ -86,44 +84,21 @@
     </div>
 
     <div id="ecu-details-container"></div>
-
-    <div class="summary-wrapper" style="background: transparent; border-style: dashed; opacity: 0.8;">
-        <h3 style="margin:0 0 15px 0; color:var(--accent-blue); font-size:0.8rem; text-transform: uppercase;">⚖️ Logique SSVC & Score Temporel</h3>
-        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:30px; font-size:0.75rem;">
-            <div>
-                <strong>Calcul Temporel :</strong> Applique un coefficient de maturité d'exploit (E=0.95) simulant un état "Proof of Concept" fonctionnel.
-            </div>
-            <div>
-                <strong>Décision SSVC :</strong> 
-                <span style="color:var(--accent-red)">Immediate</span> (Critical/KEV + Safety Impact) | 
-                <span style="color:var(--accent-orange)">Scheduled</span> (High Score + Network Exposure) | 
-                <span style="color:var(--accent-blue)">Track</span> (Standard monitoring).
-            </div>
-        </div>
-    </div>
 </div>
 
 <script>
     let inventory = [];
     let vulnsData = [];
 
-    // Formule Score Temporel (Base * Maturité)
-    function calculateTemporal(base) {
-        return (base * 0.95).toFixed(1);
-    }
+    function calculateTemporal(base) { return (base * 0.95).toFixed(1); }
 
-    // Extraction CWE
     function getTopCWE(vulns) {
         if (!vulns.length) return "—";
         const counts = {};
-        vulns.forEach(v => {
-            const cwe = v.cwe || "CWE-Unknown";
-            counts[cwe] = (counts[cwe] || 0) + 1;
-        });
+        vulns.forEach(v => { const cwe = v.cwe || "N/A"; counts[cwe] = (counts[cwe] || 0) + 1; });
         return Object.entries(counts).sort((a,b) => b[1] - a[1])[0][0];
     }
 
-    // Logic Attack Path
     function generateAttackPath(ecu, vulnerabilities, rceCount, maxCvss) {
         if (vulnerabilities.length === 0) return `<span class="badge bg-gray">No Path</span>`;
         const entry = (ecu.is_exposed !== false) ? "🌐" : "🔐";
@@ -132,17 +107,6 @@
         return `<div class="path-visual"><span>${entry}</span><span class="path-arrow">→</span><span>${exploit}</span><span class="path-arrow">→</span><span>${impact}</span></div>`;
     }
 
-    // SSVC (Uniquement pour le tag dans le détail)
-    function getSSVCDecision(v, ecu) {
-        const cvss = v.metrics?.baseScore || 0;
-        const isKev = v.is_kev === true || v.is_kev === "true";
-        const isSafety = ecu.safety_impact === "High";
-        if (cvss >= 9 || (isKev && isSafety)) return { label: "Immediate", color: "var(--accent-red)" };
-        if (cvss >= 7) return { label: "Scheduled", color: "var(--accent-orange)" };
-        return { label: "Track", color: "var(--accent-blue)" };
-    }
-
-    // Risk Score
     function calculateRisk(cvssArray, hasRce) {
         if (cvssArray.length === 0) return 0;
         const max = Math.max(...cvssArray);
@@ -158,7 +122,7 @@
             const vulnRes = await fetch('data/results/detected_vulns.json');
             vulnsData = await vulnRes.json();
             renderDashboard();
-        } catch(e) { console.error("Loading Error", e); }
+        } catch(e) { console.error(e); }
     }
 
     function renderDashboard() {
@@ -180,63 +144,53 @@
                 if (v.description.toLowerCase().includes("rce")) { eRceCount++; gRce++; }
             });
 
-            const eTempScore = calculateTemporal(eMaxCvss);
             const eRiskScore = calculateRisk(ev.map(v=>v.metrics?.baseScore||0), eRceCount > 0);
-            const eTopCWE = getTopCWE(ev);
-            
             gTotal += ev.length; gRiskSum += eRiskScore;
 
-            // 1. Ligne de Synthèse
+            // Synthèse Row
             summaryBody.innerHTML += `
                 <tr class="summary-row" data-ecu="${ecuId}">
                     <td><strong style="color:var(--accent-blue)">${ecuId}</strong></td>
-                    <td>
-                        ${ev.length} CVE 
-                        ${eKevCount > 0 ? '<span class="badge bg-red">KEV</span>' : ''}
-                        ${eRceCount > 0 ? '<span class="badge bg-purple">RCE</span>' : ''}
-                    </td>
-                    <td>
-                        <span class="badge ${eMaxCvss >= 7 ? 'bg-red' : 'bg-orange'}">${eMaxCvss.toFixed(1)}</span>
-                        <span class="muted" style="margin-left:5px;">/ ${eTempScore}</span>
-                    </td>
-                    <td><span class="badge bg-gray">${eTopCWE}</span></td>
+                    <td>${ev.length} CVE ${eKevCount?'<span class="badge bg-red">KEV</span>':''} ${eRceCount?'<span class="badge bg-purple">RCE</span>':''}</td>
+                    <td><span class="badge ${eMaxCvss>=7?'bg-red':'bg-orange'}">${eMaxCvss.toFixed(1)}</span> <span class="muted">/ ${calculateTemporal(eMaxCvss)}</span></td>
+                    <td><span class="badge bg-gray">${getTopCWE(ev)}</span></td>
                     <td>${generateAttackPath(item, ev, eRceCount, eMaxCvss)}</td>
-                    <td style="text-align:right; font-weight:900; color:${eRiskScore > 70 ? 'var(--accent-red)' : 'white'};">${eRiskScore}/100</td>
+                    <td style="text-align:right; font-weight:900; color:${eRiskScore>70?'var(--accent-red)':'white'}">${eRiskScore}/100</td>
                 </tr>`;
 
-            // 2. Bloc Détails (AVEC CWE ET TEMP PAR LIGNE)
+            // Détails Techniques Row (Vecteurs CVSS)
             let detailRows = ev.map(v => {
                 const bScore = v.metrics?.baseScore || 0;
                 const tScore = calculateTemporal(bScore);
-                const cwe = v.cwe || "N/A";
-                const ssvc = getSSVCDecision(v, item);
-                
+                // On simule un vecteur temporel en ajoutant /E:P (Exploit Maturity: Proof-of-Concept)
+                const bVector = v.metrics?.vectorString || "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H";
+                const tVector = bVector + "/E:P/RL:O/RC:C"; 
+
                 return `
                 <tr>
-                    <td style="width:120px;"><strong>${v.cve_id}</strong></td>
-                    <td>
-                        <div style="font-size:0.75rem; color:var(--accent-blue); font-weight:bold; margin-bottom:4px;">${cwe}</div>
-                        ${v.description.substring(0,140)}...
+                    <td style="width:15%;"><strong>${v.cve_id}</strong><br><span class="badge bg-gray" style="margin-top:5px">${v.cwe || 'N/A'}</span></td>
+                    <td style="width:65%;">
+                        <div class="vector-text"><b style="color:var(--accent-blue)">BASE:</b> ${bVector}</div>
+                        <div class="vector-text" style="margin-top:4px;"><b style="color:var(--accent-orange)">TEMP:</b> ${tVector}</div>
                     </td>
-                    <td style="width:110px;">
-                        <span class="badge ${bScore >= 7 ? 'bg-red' : 'bg-orange'}">${bScore.toFixed(1)}</span>
-                        <div class="muted" style="font-size:0.65rem; margin-top:2px;">Temp: ${tScore}</div>
+                    <td style="width:20%; text-align:right;">
+                        <span class="badge ${bScore>=7?'bg-red':'bg-orange'}">${bScore.toFixed(1)}</span>
+                        <div class="muted" style="font-size:0.7rem; margin-top:4px;">Temp: ${tScore}</div>
                     </td>
-                    <td style="width:100px;"><span class="badge bg-gray" style="color:${ssvc.color}">${ssvc.label}</span></td>
                 </tr>`;
             }).join('');
 
             detailsContainer.innerHTML += `
                 <div class="ecu-section" data-ecu="${ecuId}">
                     <div class="ecu-header">
-                        <h4 style="margin:0">${ecuId} — Détail Technique</h4>
-                        <span class="badge bg-gray">${item.description}</span>
+                        <h4 style="margin:0">${ecuId} — Vecteurs de menace</h4>
+                        <span class="muted">${item.description}</span>
                     </div>
                     <table>
                         <thead>
-                            <tr><th>CVE</th><th>CWE / DESCRIPTION</th><th>CVSS (B/T)</th><th>SSVC</th></tr>
+                            <tr><th style="width:15%;">CVE / CWE</th><th style="width:65%;">VECTEURS CVSS (BASE & TEMP)</th><th style="width:20%; text-align:right;">SCORES</th></tr>
                         </thead>
-                        <tbody>${detailRows || '<tr><td colspan="4">Aucun risque identifié.</td></tr>'}</tbody>
+                        <tbody>${detailRows || '<tr><td colspan="3">Aucun vecteur à afficher.</td></tr>'}</tbody>
                     </table>
                 </div>`;
             
