@@ -47,6 +47,13 @@
             <option value="ALL">Vue Flotte Complète</option>
         </select>
     </div>
+    <div class="filter-box">
+    <span class="muted" style="font-size: 0.8rem; margin-right: 8px;">Trier par :</span>
+    <select id="sortOrder" onchange="render()">
+        <option value="score">Score CVSS (Décroissant)</option>
+        <option value="id">Identifiant CVE</option>
+    </select>
+    </div>
 
     <div class="stats-grid">
         <div class="stat-card"> <span id="total-cve" class="stat-value">0</span> <span class="muted">CVE Détectées</span> </div>
