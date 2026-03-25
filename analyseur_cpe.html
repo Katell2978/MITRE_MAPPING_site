@@ -52,6 +52,7 @@
             <h4>Profil d'Impact (CIA Triad)</h4>
             <canvas id="impactRadar"></canvas>
             <p class="small muted">Moyenne pondérée des vecteurs CVSS du produit</p>
+            <p class="small muted"> Impacts CVSS (Confidentialité, Intégrité, Disponibilité) de toutes les CVE du produit et en fait une moyenne. Cela te permet de voir immédiatement si le produit est une passoire à données (C élevé) ou s'il risque de d'indisponibilité (A élevé).</p>p>
         </div>
         <div class="card">
             <h4>Évaluation du Risque Cumulé</h4>
@@ -59,6 +60,27 @@
             <div id="ssvcAction" class="pill" style="background: #30363d;">En attente...</div>
             <hr style="border:0; border-top:1px solid #30363d; margin: 20px 0;">
             <div id="quickStats"></div>
+            <p class="small muted">Attack Paths, montre l'enchaînement logique d'une attaque en fonction des vulnérabilités trouvées.</p>
+            <!--  Construction de l'attaque path 
+            1. Analyse des Vecteurs d'Entrée (Initial Access)
+                Le chemin commence toujours par l'identification de la "porte d'entrée". Je scanne l'ensemble des CVE du CPE pour isoler le CVSS Attack Vector (AV) :
+                Si AV:N (Network) : L'attaque provient d'Internet ou du réseau local. C'est le point de départ classique.
+                Si AV:P (Physical) ou AV:L (Local) : Le chemin d'attaque commence par un accès physique ou un utilisateur déjà présent sur la machine.
+            2. Identification de la "Pivot Point" (Exploitation)
+                 je cherche la Capacité d'Exploitation. C'est ici que je mappe les CVE sur les Techniques MITRE ATT&CK :
+                Exécution de Code (RCE) : Si une CVE a un score critique et un vecteur réseau, j'en déduis une capacité de "Remote Shell".
+                Déni de Service (DoS) : Si l'impact CVSS est uniquement sur la Disponibilité, le chemin s'arrête à la paralysie du service.
+            
+            3. Analyse de la Propagation (Post-Exploitation)
+                C'est l'étape cruciale pour construire un chemin complet. Je regarde le paramètre Scope (S) du CVSS 3.1 :
+                Scope: Changed (S:C) : C'est l'indicateur d'une capacité de "Sandbox Escape" ou de "Pivot". L'attaquant peut quitter l'application vulnérable pour attaquer l'OS ou d'autres composants.
+                Privilege Escalation : Je cherche des CVE permettant de passer d'un accès Low à High (Privileges Required: None -> High).
+
+            4. Détermination de l'Objectif Final (Impact)
+                Le chemin se termine par l'impact majeur identifié dans la Triade CIA :
+                    Confidentialité Haute : Le chemin mène à l'Exfiltration de données.
+                    Intégrité Haute : Le chemin mène à la Corruption du système ou Ransomware.
+-->       
         </div>
     </div>
 
@@ -66,6 +88,7 @@
         <div class="card">
             <h3>🛡️ Modélisation des Menaces</h3>
             <div id="threatModel"></div>
+            <p class="small muted"> Double Matrice MITRE : La fonction mapThreatLandscape contient une logique de détection automatique. A ajuster </p>
         </div>
         <div class="card">
             <h3>🚀 Attack Paths (Probables)</h3>
@@ -89,6 +112,7 @@
             </table>
         </div>
     </div>
+    <!-- Ajouter arbre de décison ssvc utilisé --> 
 </main>
 
 <script type="module">
