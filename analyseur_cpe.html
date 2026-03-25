@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>OOAC : CPE Surface Analyzer (Expert Edition - en cours de Dev)</title>
+    <title>OOAC : CPE Vulnerabilites Analyzer (Expert Edition - en cours de Dev)</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" type="text/css" href="style3.css">
     <style>
@@ -33,18 +33,18 @@
         <a href="index.html">🔍 CVE Detail</a>
         <a href="Dashboard_VIE_ssvc.html">📊 Master Dashboard</a>
     </nav>
-    <h1>CPE Surface Attack Analyzer</h1>
+    <h1>CPE Vulns Analyzer</h1>
     <p>Analyse multidimensionnelle : MITRE ATT&CK Enterprise/Mobile, SSVC & Radar d'impact.</p>
 </header>
 
 <main>
     <div class="card" style="margin-bottom: 20px;">
-        <h3>Configuration de l'Audit Produit</h3>
+        <h3>Configuration pour analyse CPE</h3>
         <div style="display: flex; gap: 10px;">
             <input id="cpeInput" type="text" style="flex-grow:1" value="cpe:2.3:o:google:android:13.0:*:*:*:*:*:*:*" placeholder="cpe:2.3:a:vendor:product:version:...">
             <button id="btnAnalyze" class="btn-primary">Lancer l'Analyse</button>
         </div>
-        <div id="statusUpdate" class="small muted" style="margin-top:10px;">Prêt pour analyse.</div>
+        <div id="statusUpdate" class="small muted" style="margin-top:10px;">Prêt pour analyse.Attention l'anayse prend plusieurs minutes.</div>
     </div>
 
     <div class="risk-grid">
@@ -52,7 +52,7 @@
             <h4>Profil d'Impact (CIA Triad)</h4>
             <canvas id="impactRadar"></canvas>
             <p class="small muted">Moyenne pondérée des vecteurs CVSS du produit</p>
-            <p class="small muted"> Impacts CVSS (Confidentialité, Intégrité, Disponibilité) de toutes les CVE du produit et en fait une moyenne. Cela te permet de voir immédiatement si le produit est une passoire à données (C élevé) ou s'il risque de d'indisponibilité (A élevé).</p>p>
+            <p class="small muted"> Impacts CVSS (Confidentialité, Intégrité, Disponibilité) de toutes les CVE du produit et en fait une moyenne. Cela te permet de voir immédiatement si le produit est une passoire à données (C élevé) ou s'il risque de d'indisponibilité (A élevé).</p>
         </div>
         <div class="card">
             <h4>Évaluation du Risque Cumulé</h4>
@@ -60,7 +60,19 @@
             <div id="ssvcAction" class="pill" style="background: #30363d;">En attente...</div>
             <hr style="border:0; border-top:1px solid #30363d; margin: 20px 0;">
             <div id="quickStats"></div>
-            <p class="small muted">Attack Paths, montre l'enchaînement logique d'une attaque en fonction des vulnérabilités trouvées.</p>
+        </div>
+    </div>
+
+    <div class="risk-grid">
+        <div class="card">
+            <h3>🛡️ Modélisation des Menaces</h3>
+            <div id="threatModel"></div>
+            <p class="small muted"> Double Matrice MITRE : La fonction mapThreatLandscape contient une logique de détection automatique. A ajuster </p>
+        </div>
+        <div class="card">
+            <h3>🚀 Attack Paths (Probables)</h3>
+            <div id="pathModel" style="background: #0d1117; padding: 15px; border-radius: 6px;"></div>
+             <p class="small muted">Attack Paths, montre l'enchaînement logique d'une attaque en fonction des vulnérabilités trouvées.</p>
             <!--  Construction de l'attaque path 
             1. Analyse des Vecteurs d'Entrée (Initial Access)
                 Le chemin commence toujours par l'identification de la "porte d'entrée". Je scanne l'ensemble des CVE du CPE pour isoler le CVSS Attack Vector (AV) :
@@ -84,18 +96,6 @@
         </div>
     </div>
 
-    <div class="risk-grid">
-        <div class="card">
-            <h3>🛡️ Modélisation des Menaces</h3>
-            <div id="threatModel"></div>
-            <p class="small muted"> Double Matrice MITRE : La fonction mapThreatLandscape contient une logique de détection automatique. A ajuster </p>
-        </div>
-        <div class="card">
-            <h3>🚀 Attack Paths (Probables)</h3>
-            <div id="pathModel" style="background: #0d1117; padding: 15px; border-radius: 6px;"></div>
-        </div>
-    </div>
-
     <div class="card">
         <h3>Listing des Vulnérabilités Identifiées</h3>
         <div style="overflow-x: auto;">
@@ -113,6 +113,82 @@
         </div>
     </div>
     <!-- Ajouter arbre de décison ssvc utilisé --> 
+<div class="card" style="margin-top: 20px; border-top: 2px solid var(--brand-blue);">
+    <h3>⚖️ Logique de Décision SSVC (CISA Model)</h3>
+    <p class="small muted">Chaque vulnérabilité est passée au crible de l'arbre de décision pour déterminer la priorité de remédiation.</p>
+    
+    <div class="risk-grid">
+        <div id="ssvcTreeVisual" style="background: #0d1117; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.85em;">
+            <div style="color: var(--brand-blue); margin-bottom: 10px;">[ LOGIQUE DE CALCUL ]</div>
+            <div id="treeStep1">1. Exploitation : <span class="muted">Analyse des preuves...</span></div>
+            <div id="treeStep2">2. Exposition : <span class="muted">Vérification réseau...</span></div>
+            <div id="treeStep3">3. Impact Tech : <span class="muted">Calcul du score CVSS...</span></div>
+            <hr style="border:0; border-top: 1px solid #30363d; margin: 10px 0;">
+            <div id="treeResult" style="font-weight: bold; font-size: 1.1em;">DÉCISION FINALE : —</div>
+        </div>
+
+        <div>
+            <table style="font-size: 0.8em; background: rgba(0,0,0,0.2);">
+                <thead>
+                    <tr><th>Action</th><th>Délai cible</th><th>Description</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="pill" style="background:#f85149">ACT</span></td>
+                        <td>< 24h / 48h</td>
+                        <td>Menace immédiate. Exploitation active détectée.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="pill" style="background:#f0883e">ATTEND</span></td>
+                        <td>Prochain cycle</td>
+                        <td>A corriger rapidement. Risque d'exposition élevé.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="pill" style="background:#30363d">TRACK</span></td>
+                        <td>Standard</td>
+                        <td>Surveillance simple. Pas d'exploit public connu.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+/**
+ * FONCTION : updateSSVCExplainer
+ * Cette fonction met à jour visuellement l'explication de la décision
+ * pour la vulnérabilité la plus critique du CPE.
+ */
+function updateSSVCExplainer(topVuln) {
+    const metrics = topVuln.cve.metrics?.cvssMetricV31?.[0]?.cvssData || {};
+    
+    // 1. Détermination de l'Exploitation (Basé sur l'état de l'art)
+    let exploitation = "Aucune preuve";
+    let expoColor = "#8b949e";
+    if (metrics.baseScore >= 9) {
+        exploitation = "ACTIVE (Exploit Public)";
+        expoColor = "#f85149";
+    }
+
+    // 2. Détermination de l'Exposition
+    const exposure = (metrics.attackVector === "NETWORK") ? "OUVERTE (Internet/Réseau)" : "CONTRÔLÉE (Local/Physique)";
+    const meshColor = (metrics.attackVector === "NETWORK") ? "#f0883e" : "#3fb950";
+
+    // 3. Impact Technique
+    const techImpact = (metrics.baseScore >= 7) ? "TOTAL (Privilèges élevés)" : "PARTIEL";
+
+    // Mise à jour du DOM
+    document.getElementById('treeStep1').innerHTML = `1. Exploitation : <span style="color:${expoColor}">${exploitation}</span>`;
+    document.getElementById('treeStep2').innerHTML = `2. Exposition : <span style="color:${meshColor}">${exposure}</span>`;
+    document.getElementById('treeStep3').innerHTML = `3. Impact Tech : <span>${techImpact}</span>`;
+    
+    const finalDecision = (metrics.baseScore >= 8) ? "ACT (Urgent)" : (metrics.baseScore >= 5 ? "ATTEND" : "TRACK");
+    const resultEl = document.getElementById('treeResult');
+    resultEl.innerHTML = `DÉCISION FINALE : <span style="color:var(--brand-blue)">${finalDecision}</span>`;
+}
+</script>
+    <!-- ////////////////////// -->
 </main>
 
 <script type="module">
