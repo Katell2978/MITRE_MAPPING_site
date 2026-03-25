@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>OOAC — VIE Master Dashboard (SSVC + Auto-Exploit)</title>
+    <title>OOAC — VIE Master Dashboard (SSVC Configurable)</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     
@@ -12,43 +12,64 @@
             --accent-blue: #58a6ff; --accent-red: #f85149; --accent-orange: #f0883e;
             --accent-purple: #bc8cff; --accent-green: #3fb950;
         }
-        body { background: var(--bg-dark); color: #c9d1d9; font-family: -apple-system, sans-serif; padding: 20px; margin: 0; }
-        .container { max-width: 1600px; margin: 0 auto; }
+        body { background: var(--bg-dark); color: #c9d1d9; font-family: -apple-system, sans-serif; padding: 20px; line-height: 1.4; }
+        .container { max-width: 1400px; margin: 0 auto; }
         
+        /* Styles des sections */
         .header-flex { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid var(--border-gray); padding-bottom: 20px; }
-        .controls { display: flex; gap: 10px; }
+        .ecu-section, .logic-card { background: var(--card-dark); border: 1px solid var(--border-gray); border-radius: 8px; margin-bottom: 25px; padding: 20px; }
         
-        select, button { background: #21262d; color: white; border: 1px solid var(--border-gray); padding: 8px 12px; border-radius: 6px; cursor: pointer; }
-        
-        .ecu-section { background: var(--card-dark); border: 1px solid var(--border-gray); border-radius: 8px; margin-bottom: 30px; padding: 20px; }
+        /* Tableaux */
         table { width: 100%; border-collapse: collapse; table-layout: fixed; }
         th { text-align: left; font-size: 0.7rem; color: #8b949e; text-transform: uppercase; padding: 12px; border-bottom: 2px solid var(--border-gray); }
         td { padding: 12px; border-bottom: 1px solid #30363d; vertical-align: middle; font-size: 0.85rem; }
 
+        /* Badges & UI */
         .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; display: inline-block; border: 1px solid transparent; }
         .bg-red { background: rgba(248,81,73,0.15); color: var(--accent-red); border-color: var(--accent-red); }
         .bg-orange { background: rgba(240,136,62,0.15); color: var(--accent-orange); border-color: var(--accent-orange); }
         .bg-blue { background: rgba(88,166,255,0.15); color: var(--accent-blue); border-color: var(--accent-blue); }
         .bg-gray { background: rgba(110,118,129,0.15); color: #8b949e; border-color: #30363d; }
-
-        .exploit-select { background: #0d1117; border: 1px solid #444; color: #fff; padding: 6px; border-radius: 4px; width: 100%; font-weight: bold; }
-        .vector-font { font-family: 'Courier New', monospace; font-size: 0.75rem; color: #8b949e; }
-        .hidden { display: none !important; }
         
-        .auto-label { font-size: 0.65rem; color: var(--accent-green); display: block; margin-top: 4px; font-weight: bold; }
+        .exploit-select { background: #0d1117; border: 1px solid #444; color: #fff; padding: 5px; border-radius: 4px; width: 100%; cursor: pointer; }
+        .logic-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 15px; }
+        .rule-item { font-size: 0.8rem; border-left: 2px solid var(--border-gray); padding-left: 10px; }
+        
+        @media print { .no-print { display: none; } }
     </style>
 </head>
 <body>
 
 <div class="container" id="report-content">
+    
     <div class="header-flex">
         <div>
-            <h1 style="color:var(--accent-blue); margin:0;">🛡️ OOAC : Decision Dashboard</h1>
-            <p style="color:#8b949e; margin:5px 0 0 0;">Analyse SSVC avec maturité d'exploit auto-calculée (Score Temporel)</p>
+            <h1 style="color:var(--accent-blue); margin:0;">🛡️ VDR Report : SSVC Analysis</h1>
+            <p style="color:#8b949e; margin:5px 0 0 0;">Analyse automatisée basée sur les critères de maturité d'exploitation et l'impact critique.</p>
         </div>
-        <div class="controls">
-            <select id="ecuFilter" onchange="applyFilter()"><option value="ALL">Toutes les ECU</option></select>
-            <button onclick="exportPDF()" style="background:var(--accent-green); border:none;">📥 Export PDF</button>
+        <div class="no-print" style="display:flex; gap:10px;">
+            <select id="ecuFilter" onchange="applyFilter()"><option value="ALL">Vue Globale</option></select>
+            <button onclick="exportPDF()" style="background:var(--accent-green); color:white; border:none; padding:8px 15px; border-radius:6px; cursor:pointer;">📥 Export PDF</button>
+        </div>
+    </div>
+
+    <div class="logic-card">
+        <h3 style="margin-top:0; color:var(--accent-purple)">⚖️ Référentiel de Décision SSVC</h3>
+        <p style="font-size: 0.85rem; color:#8b949e;">L'algorithme SSVC calcule la priorité en croisant la maturité de l'exploit (Technique) et l'impact de l'unité (Métier).</p>
+        
+        <div class="logic-grid">
+            <div class="rule-item">
+                <strong class="badge bg-red">IMMEDIATE</strong>
+                <p>Action sous 24h/48h. S'applique si :<br>• Exploit est <b>ACTIF</b> (🔥)<br>• OU Exploit <b>POC</b> sur ECU <b>Critique</b>.</p>
+            </div>
+            <div class="rule-item">
+                <strong class="badge bg-orange">SCHEDULED</strong>
+                <p>Action au prochain cycle. S'applique si :<br>• Exploit <b>POC</b> sur ECU standard.<br>• OU Exploit <b>Inconnu</b> sur ECU <b>Critique</b>.</p>
+            </div>
+            <div class="rule-item">
+                <strong class="badge bg-blue">TRACK</strong>
+                <p>Surveillance simple. S'applique si :<br>• Aucun exploit public connu <b>ET</b> ECU à impact standard.</p>
+            </div>
         </div>
     </div>
 
@@ -59,29 +80,42 @@
     let inventory = [];
     let vulnsData = [];
 
-    // ✅ LOGIQUE SSVC
+    // =========================================================================
+    // ✅ CONFIGURATION DES RÈGLES SSVC (MODIFIEZ CES LIGNES)
+    // =========================================================================
     function calculateSSVC(exploitMaturity, safetyImpact) {
+        const isCritical = (safetyImpact === "High");
+
+        // RÈGLE 1 : Si l'exploit est actif sur le terrain (🔥) -> Priorité Maximale
         if (exploitMaturity === "Active") return { label: "IMMEDIATE", class: "bg-red" };
-        if (exploitMaturity === "POC") return safetyImpact === "High" ? { label: "IMMEDIATE", class: "bg-red" } : { label: "SCHEDULED", class: "bg-orange" };
-        return safetyImpact === "High" ? { label: "SCHEDULED", class: "bg-orange" } : { label: "TRACK", class: "bg-blue" };
+        
+        // RÈGLE 2 : Si c'est un POC (🧪)
+        if (exploitMaturity === "POC") {
+            return isCritical ? { label: "IMMEDIATE", class: "bg-red" } : { label: "SCHEDULED", class: "bg-orange" };
+        }
+        
+        // RÈGLE 3 : Si l'exploit est théorique/inconnu (🔘)
+        if (isCritical) return { label: "SCHEDULED", class: "bg-orange" };
+        
+        return { label: "TRACK", class: "bg-blue" };
     }
 
-    // ✅ LOGIQUE AUTO-PREDICT (Basée sur Score Temporel / CVSS)
+    // ✅ CONFIGURATION DE L'AUTO-PRÉDICTION (MODIFIEZ LES SEUILS ICI)
     function predictExploitMaturity(v) {
         const base = v.metrics?.baseScore || 0;
-        const vector = v.metrics?.vectorString || "";
         
-        // Si KEV présent -> Active
+        // Seuil 1 : Si marqué dans la base KEV (Known Exploited Vulnerabilities)
         if (v.is_kev === true || v.is_kev === "true") return "Active";
         
-        // Si Score >= 8.5 et Network -> Active probable
-        if (base >= 8.5 && vector.includes("AV:N")) return "Active";
+        // Seuil 2 : Si Score CVSS >= 8.5 -> On présume Active
+        if (base >= 8.5) return "Active";
         
-        // Si Score >= 7 -> POC probable
+        // Seuil 3 : Si Score CVSS >= 7.0 -> On présume qu'un POC existe
         if (base >= 7.0) return "POC";
         
         return "Unknown";
     }
+    // =========================================================================
 
     async function init() {
         try {
@@ -98,7 +132,7 @@
                 document.getElementById('ecuFilter').appendChild(opt);
             });
             render();
-        } catch(e) { console.error(e); }
+        } catch(e) { console.error("Erreur chargement données", e); }
     }
 
     function updateLineSSVC(cveId, ecuId) {
@@ -120,19 +154,18 @@
 
             let rows = ev.map(v => {
                 const bScore = v.metrics?.baseScore || 0;
-                const tScore = (bScore * 0.95).toFixed(1);
                 const cwe = (v.cwe_ids && v.cwe_ids.length > 0) ? v.cwe_ids[0] : "N/A";
-                
-                // Calcul auto du niveau d'exploit
                 const predictedExploit = predictExploitMaturity(v);
                 const ssvc = calculateSSVC(predictedExploit, ecu.safety_impact);
 
                 return `
                 <tr>
-                    <td style="width:12%"><b>${v.cve_id}</b><br><span class="badge bg-gray" style="margin-top:5px">${cwe}</span></td>
-                    <td style="width:38%">
-                        <div class="vector-font"><b>BASE:</b> ${v.metrics?.vectorString || 'N/A'}</div>
-                        <div class="vector-font" style="margin-top:3px; opacity:0.8;"><b>TEMP (Auto):</b> Score ${tScore} (E:P/RL:O/RC:C)</div>
+                    <td style="width:15%"><b>${v.cve_id}</b><br><small class="badge bg-gray" style="margin-top:4px">${cwe}</small></td>
+                    <td style="width:40%">
+                        <div style="font-family:monospace; font-size:0.75rem; color:#8b949e">
+                            <b>BASE:</b> ${v.metrics?.vectorString || 'N/A'}<br>
+                            <b>TEMP:</b> ${(bScore*0.95).toFixed(1)} (Auto-calc)
+                        </div>
                     </td>
                     <td style="width:15%">
                         <select class="exploit-select" id="exploit-${v.cve_id}" onchange="updateLineSSVC('${v.cve_id}', '${ecu.component_id}')">
@@ -140,33 +173,21 @@
                             <option value="POC" ${predictedExploit==='POC'?'selected':''}>🧪 POC</option>
                             <option value="Active" ${predictedExploit==='Active'?'selected':''}>🔥 Active</option>
                         </select>
-                        <span class="auto-label">✨ Auto-prédiction</span>
                     </td>
                     <td style="width:15%; text-align:center;" id="ssvc-badge-${v.cve_id}">
                         <span class="badge ${ssvc.class}">${ssvc.label}</span>
                     </td>
-                    <td style="width:20%; text-align:right;">
-                        <input type="checkbox" checked> <span style="font-size:0.8rem">Retenu</span>
-                        <br><small class="muted">Decision finale</small>
+                    <td style="width:15%; text-align:right;">
+                        <input type="checkbox" checked> <span style="font-size:0.75rem">Retenu</span>
                     </td>
                 </tr>`;
             }).join('');
 
             container.innerHTML += `
                 <div class="ecu-section" data-ecu="${ecu.component_id}">
-                    <h3 style="color:var(--accent-blue); margin-top:0; border-bottom: 1px solid #333; padding-bottom: 10px;">
-                        ${ecu.component_id} <span style="font-size:0.8rem; color:#8b949e; font-weight:normal;"> — Impact Safety: ${ecu.safety_impact}</span>
-                    </h3>
+                    <h3 style="color:var(--accent-blue); margin-top:0;">${ecu.component_id} <small style="color:#8b949e; font-weight:normal;">(Safety Impact: ${ecu.safety_impact})</small></h3>
                     <table>
-                        <thead>
-                            <tr>
-                                <th>CVE / CWE</th>
-                                <th>Vecteurs (B/T)</th>
-                                <th>Maturité Exploit</th>
-                                <th style="text-align:center;">Priorité SSVC</th>
-                                <th style="text-align:right;">Approbation</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>ID / CWE</th><th>Vecteurs CVSS</th><th>Maturité Exploit</th><th style="text-align:center">Décision SSVC</th><th style="text-align:right">Statut</th></tr></thead>
                         <tbody>${rows}</tbody>
                     </table>
                 </div>`;
@@ -175,7 +196,7 @@
 
     function applyFilter() {
         const val = document.getElementById('ecuFilter').value;
-        document.querySelectorAll('.ecu-section[data-ecu]').forEach(el => {
+        document.querySelectorAll('.ecu-section').forEach(el => {
             if (val === "ALL" || el.getAttribute('data-ecu') === val) el.classList.remove('hidden');
             else el.classList.add('hidden');
         });
