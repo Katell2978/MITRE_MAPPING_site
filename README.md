@@ -1,5 +1,4 @@
-OUTIL D'aide à l'anayse cyber - OAAC ?
-
+OUTIL d'Aide à l'Analyse Cyber - OAAC ?
 
 --- une partie mapping Mitre -----
 Mappng ATM-TTP-CWE
