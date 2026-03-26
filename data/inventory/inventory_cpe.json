@@ -1,7 +1,7 @@
 [
   {
     "component_id": "ECU1-TCU",
-    "description": "Telematics Control Unit - Connectivity Hub (5G, V2X, WiFi)",
+    "description": "Telematics Control Unit - Connectivity Hub (Build by IA for Demo)",
     "source": "Generated_by_IA_for_Demo",
     "is_exposed": true,
     "network_zone": "Z1",
@@ -31,7 +31,7 @@
   },
   {
     "component_id": "ECU2-IVI",
-    "description": "In-Vehicle Infotainment - Multimedia & Cockpit Unit",
+    "description": "In-Vehicle Infotainment - Multimedia & Cockpit Unit(Build by IA for demo)",
     "source": "Generated_by_IA_for_Demo",
     "is_exposed": true,
     "network_zone": "Z1",
@@ -62,7 +62,7 @@
   },
   {
     "component_id": "ECU3-ADAS",
-    "description": "ADAS ECU - Perception & Autonomous Driving Assistance",
+    "description": "ADAS ECU -( build by IA for Demo)",
     "source": "Generated_by_IA_for_Demo",
     "is_exposed": false,
     "network_zone": "Z3",
@@ -93,7 +93,7 @@
   },
   {
     "component_id": "ECU4-GW",
-    "description": "Central Gateway - Security & Data Routing",
+    "description": "Central Gateway - Security & Data Routing(Build by IA for Demo)",
     "source": "Generated_by_IA_for_Demo",
     "is_exposed": false,
     "network_zone": "Z2",
@@ -124,10 +124,24 @@
       "cpe:2.3:a:renesas:can_fd_driver:*:*:*:*:*:*:*:*"
     ]
   },
+
+    {
+    "component_id": "ECU6-T",
+    "description": "Test ECU ",
+    "source": "Generated_by_IA_for_Demo",
+    "is_exposed": false,
+    "network_zone": "Z1",
+    "safety_impact": "Low",
+    "supplier_involvement": "Unresponsive",
+    "cpe_list": [
+      "cpe:2.3:h:qualcomm:snapdragon_automotive_cockpit:*:*:*:*:*:*:*:*",
+      "cpe:2.3:a:renesas:*:*:*:*:*:*:*:*:*"
+    ]
+  },
   {
   "component_id": "ECU5",
-  "description": "Embedded Linux / Android-based ECU - Platform Services & Connectivity",
-  "source": "Provided_CPE_Inventory",
+  "description": "Embedded Linux / Android-based ECU - (Build by IA for Demo",
+  "source": "Generated_by_IA_for_Demo",
   "is_exposed": true,
   "network_zone": "Z1",
   "safety_impact": "Low",
