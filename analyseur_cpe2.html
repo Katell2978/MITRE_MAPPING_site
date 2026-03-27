@@ -15,6 +15,7 @@
         .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
         .btn-primary { background: #238636; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; }
         .btn-primary:hover { opacity: 0.8; }
+        .btn-primary:disabled { background: #21262d; color: #8b949e; cursor: not-allowed; }
         input[type="text"] { background: #0d1117; border: 1px solid var(--border); color: white; padding: 8px; border-radius: 6px; }
         .pill { font-size: 0.75em; padding: 2px 8px; border-radius: 12px; color: white; font-weight: bold; display: inline-block; }
         .metric-badge { display: inline-block; padding: 2px 6px; border-radius: 4px; background: #0d1117; border: 1px solid var(--border); font-family: monospace; margin-right: 4px; }
@@ -25,7 +26,7 @@
         .progress-bar { width: 100%; background: var(--border); height: 8px; border-radius: 4px; margin-top: 10px; overflow: hidden; }
         #progressInner { width: 0%; height: 100%; background: var(--brand-blue); transition: width 0.3s; }
         a { color: var(--brand-blue); text-decoration: none; }
-        a:hover { text-decoration: underline; }
+        .file-status { margin-top: 10px; padding: 10px; border-radius: 6px; font-size: 0.9em; display: none; }
     </style>
 </head>
 <body>
@@ -44,11 +45,17 @@
         <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
             <input id="cpeInput" type="text" style="flex-grow:1" value="cpe:2.3:o:google:android:13.0:*:*:*:*:*:*:*" placeholder="cpe:2.3:...">
             <button id="btnAnalyze" class="btn-primary">Analyser unique</button>
+            
             <input type="file" id="fileImport" style="display:none" accept=".json">
-            <button onclick="$('fileImport').click()" class="btn-primary" style="background:var(--accent-purple)">Importer Liste</button>
+            <button onclick="$('fileImport').click()" class="btn-primary" style="background:var(--accent-purple)">1. Charger Fichier</button>
+            
+            <button id="btnRunFile" class="btn-primary" style="background:#f0883e; display:none;">2. Lancer l'analyse du fichier</button>
+            
             <button id="btnDownloadTemplate" class="btn-primary" style="background:#30363d">Template JSON</button>
             <button id="btnExportJSON" class="btn-primary" style="background:#1f6feb; display:none;">Exporter l'Audit</button>
         </div>
+
+        <div id="fileStatus" class="file-status"></div>
         
         <div id="progressContainer" style="display:none; margin-top:15px;">
             <div style="display:flex; justify-content: space-between; font-size: 0.8em;">
@@ -94,24 +101,23 @@
     let myRadarChart = null;
     let globalAuditResults = [];
     let cisaKevData = [];
+    let pendingCpeList = [];
 
-    // Chargement du KEV CISA au démarrage
+    // Chargement KEV CISA
     window.onload = async () => {
         try {
             const resp = await fetch('https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json');
             const data = await resp.json();
             cisaKevData = data.vulnerabilities || [];
-            console.log("KEV Chargé");
         } catch(e) { console.error("Erreur KEV", e); }
     };
 
-    // --- LOGIQUE SSVC (Assessment vs Skip) ---
+    // --- LOGIQUE SSVC ---
     function getSSVCDecision(metrics, cveId, hasEuvd) {
         const score = metrics.baseScore || 0;
         const isKev = cisaKevData.some(v => v.cveID === cveId);
         const isRCE = (metrics.attackVector === "NETWORK" && score >= 7.0);
 
-        // Règle : Si score >= 7 OU RCE OU KEV OU EUVD -> Assessment
         if (score >= 7 || isRCE || isKev || hasEuvd) {
             let reason = isKev ? "CISA KEV Found" : (hasEuvd ? "EUVD Exploit Proof" : "High Severity/RCE");
             return { action: "ASSESSMENT", color: "var(--accent-red)", reason };
@@ -124,14 +130,14 @@
         globalAuditResults = [];
         $("vulnBody").innerHTML = "";
         $("progressContainer").style.display = "block";
-        $("btnExportJSON").style.display = "none";
+        $("btnRunFile").style.display = "none";
+        $("fileStatus").style.display = "none";
         
         let cSum = 0, iSum = 0, aSum = 0, countVuln = 0;
 
         for (let i = 0; i < list.length; i++) {
             const cpe = list[i];
-            const prog = ((i + 1) / list.length) * 100;
-            $("progressInner").style.width = `${prog}%`;
+            $("progressInner").style.width = `${((i + 1) / list.length) * 100}%`;
             $("progressText").textContent = `${i + 1} / ${list.length}`;
             $("statusUpdate").textContent = `Analyse : ${cpe}`;
 
@@ -145,7 +151,6 @@
                         const m = cve.metrics?.cvssMetricV31?.[0]?.cvssData || cve.metrics?.cvssMetricV30?.[0]?.cvssData;
                         if(!m) continue;
 
-                        // Check EUVD
                         let hasEuvd = false;
                         try {
                             const euvdResp = await fetch(`https://api.euvdb.eu/v1/cve/${cve.id}`);
@@ -158,21 +163,17 @@
                         const ssvc = getSSVCDecision(m, cve.id, hasEuvd);
                         const isKev = cisaKevData.some(v => v.cveID === cve.id);
 
-                        // Accumulation stats
                         cSum += (m.confidentialityImpact === "HIGH" ? 10 : 5);
                         iSum += (m.integrityImpact === "HIGH" ? 10 : 5);
                         aSum += (m.availabilityImpact === "HIGH" ? 10 : 5);
                         countVuln++;
 
-                        globalAuditResults.push({ cpe, cveId: cve.id, score: m.baseScore, ssvc: ssvc.action, kev: isKev, euvd: hasEuvd });
+                        globalAuditResults.push({ cpe, cveId: cve.id, score: m.baseScore, ssvc: ssvc.action });
 
                         $("vulnBody").innerHTML += `
                             <tr>
                                 <td><small class="muted">${cpe}</small><br><b>${cve.id}</b></td>
-                                <td>
-                                    <span class="metric-badge ${m.baseScore >= 7 ? 'crit-text' : ''}">B: ${m.baseScore}</span><br>
-                                    <span class="metric-badge">T: ${(m.baseScore * 0.95).toFixed(1)}</span>
-                                </td>
+                                <td><span class="metric-badge ${m.baseScore >= 7 ? 'crit-text' : ''}">B: ${m.baseScore}</span></td>
                                 <td>
                                     <div style="display:flex; flex-direction:column; gap:4px;">
                                         ${isKev ? `<a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" class="pill" style="background:var(--accent-red); text-align:center;">CISA KEV 🔗</a>` : ''}
@@ -184,63 +185,76 @@
                                     <span class="pill" style="background:${ssvc.color}; margin-top:5px;">${ssvc.action}</span>
                                     <div class="small muted" style="font-size:0.7em;">${ssvc.reason}</div>
                                 </td>
-                            </tr>
-                        `;
+                            </tr>`;
                     }
                 }
-                // Tempo pour NVD (6 sec)
                 if (list.length > 1 && i < list.length - 1) await new Promise(r => setTimeout(r, 6000));
             } catch (err) { console.error(err); }
         }
-
         $("statusUpdate").textContent = "Analyse terminée.";
         $("btnExportJSON").style.display = "inline-block";
-        updateInterface(cSum/countVuln, iSum/countVuln, aSum/countVuln);
+        updateStats(cSum/countVuln, iSum/countVuln, aSum/countVuln);
     }
 
-    function updateInterface(c, i, a) {
+    function updateStats(c, i, a) {
         const scores = globalAuditResults.map(r => r.score);
-        const max = scores.length ? Math.max(...scores) : 0;
-        $("totalRiskScore").textContent = max.toFixed(1);
-        $("quickStats").innerHTML = `Total CVE: ${globalAuditResults.length} | Assessment requis: ${globalAuditResults.filter(r => r.ssvc === 'ASSESSMENT').length}`;
+        $("totalRiskScore").textContent = scores.length ? Math.max(...scores).toFixed(1) : "0";
+        $("quickStats").innerHTML = `CVE: ${globalAuditResults.length} | Assessment: ${globalAuditResults.filter(r => r.ssvc === 'ASSESSMENT').length}`;
         
-        // Update Radar
-        const ctx = $('impactRadar').getContext('2d');
         if (myRadarChart) myRadarChart.destroy();
-        myRadarChart = new Chart(ctx, {
+        myRadarChart = new Chart($('impactRadar').getContext('2d'), {
             type: 'radar',
             data: {
-                labels: ['Confidentialité', 'Intégrité', 'Disponibilité'],
-                datasets: [{ label: 'Impact Moyen', data: [c||0, i||0, a||0], backgroundColor: 'rgba(121, 235, 255, 0.2)', borderColor: '#79EBFF' }]
+                labels: ['Conf.', 'Inté.', 'Disp.'],
+                datasets: [{ data: [c||0, i||0, a||0], backgroundColor: 'rgba(121, 235, 255, 0.2)', borderColor: '#79EBFF' }]
             },
-            options: { scales: { r: { min: 0, max: 10, ticks: { display: false }, grid: { color: '#30363d' } } } }
+            options: { scales: { r: { min: 0, max: 10, ticks: { display: false } } } }
         });
     }
 
-    // --- EVENTS ---
-    $("btnAnalyze").onclick = () => runAudit([$("cpeInput").value]);
-
+    // --- CONTROLE IMPORT ---
     $("fileImport").onchange = (e) => {
+        const file = e.target.files[0];
+        const status = $("fileStatus");
+        if (!file) return;
+
         const reader = new FileReader();
         reader.onload = (ev) => {
-            const data = JSON.parse(ev.target.result);
-            if(data.cpeList) runAudit(data.cpeList);
+            try {
+                const data = JSON.parse(ev.target.result);
+                if (data.cpeList && Array.isArray(data.cpeList)) {
+                    pendingCpeList = data.cpeList;
+                    status.style.display = "block";
+                    status.style.background = "rgba(35, 134, 54, 0.2)";
+                    status.style.color = "#7ee787";
+                    status.textContent = `✅ Fichier valide : ${pendingCpeList.length} CPE détectés. Cliquez sur le bouton orange pour lancer.`;
+                    $("btnRunFile").style.display = "inline-block";
+                } else {
+                    throw new Error("Format JSON invalide (clé 'cpeList' manquante)");
+                }
+            } catch (err) {
+                status.style.display = "block";
+                status.style.background = "rgba(248, 81, 73, 0.2)";
+                status.style.color = "#ff7b72";
+                status.textContent = `❌ Erreur : ${err.message}`;
+                $("btnRunFile").style.display = "none";
+            }
         };
-        reader.readAsText(e.target.files[0]);
+        reader.readAsText(file);
     };
 
+    $("btnRunFile").onclick = () => runAudit(pendingCpeList);
+    $("btnAnalyze").onclick = () => runAudit([$("cpeInput").value]);
+    
     $("btnDownloadTemplate").onclick = () => {
-        const blob = new Blob([JSON.stringify({cpeList: ["cpe:2.3:o:microsoft:windows_10:1909:*:*:*:*:*:*:*"]}, null, 2)], {type: 'application/json'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href = url; a.download = "template.json"; a.click();
+        const blob = new Blob([JSON.stringify({cpeList: ["cpe:2.3:o:google:android:13.0:*:*:*:*:*:*:*"]}, null, 2)], {type: 'application/json'});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "template.json"; a.click();
     };
 
     $("btnExportJSON").onclick = () => {
         const blob = new Blob([JSON.stringify(globalAuditResults, null, 2)], {type: 'application/json'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a'); a.href = url; a.download = "audit_results.json"; a.click();
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "audit_results.json"; a.click();
     };
 </script>
-
 </body>
 </html>
