@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OOAC : CPE Vulnerabilites Analyzer (Expert Edition)</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root { --brand-blue: #79EBFF; --accent-red: #f85149; --accent-purple: #bc8cff; --bg-dark: #0d1117; --card-bg: #161b22; --border: #30363d; }
+        body { background: var(--bg-dark); color: #c9d1d9; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; margin: 0; padding: 20px; }
+        header { border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 20px; }
+        nav { margin-bottom: 15px; }
+        nav a { color: var(--brand-blue); text-decoration: none; margin-right: 15px; font-size: 0.9em; }
+        .risk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; margin-bottom: 20px; }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+        .btn-primary { background: #238636; color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .btn-primary:hover { opacity: 0.8; }
+        input[type="text"] { background: #0d1117; border: 1px solid var(--border); color: white; padding: 8px; border-radius: 6px; }
+        .pill { font-size: 0.75em; padding: 2px 8px; border-radius: 12px; color: white; font-weight: bold; display: inline-block; }
+        .metric-badge { display: inline-block; padding: 2px 6px; border-radius: 4px; background: #0d1117; border: 1px solid var(--border); font-family: monospace; margin-right: 4px; }
+        .crit-text { color: var(--accent-red); font-weight: bold; }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th { text-align: left; color: #8b949e; border-bottom: 1px solid var(--border); padding: 10px; font-size: 0.85em; }
+        td { padding: 10px; border-bottom: 1px solid #21262d; font-size: 0.85em; vertical-align: top; }
+        .progress-bar { width: 100%; background: var(--border); height: 8px; border-radius: 4px; margin-top: 10px; overflow: hidden; }
+        #progressInner { width: 0%; height: 100%; background: var(--brand-blue); transition: width 0.3s; }
+        a { color: var(--brand-blue); text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <a href="#">🔍 CVE</a> <a href="#">🔭 Watchtower</a> <a href="#">🔍 CPE</a> <a href="#">📊 Dashboard</a>
+    </nav>
+    <h1>CPE Vulns Analyzer <span style="font-size: 0.5em; color: var(--accent-purple);">Expert Edition</span></h1>
+    <p>Analyse enrichie : NVD, CISA KEV, EUVD & SSVC Assessment.</p>
+</header>
+
+<main>
+    <div class="card" style="margin-bottom: 20px;">
+        <h3>Configuration & Import Bulk</h3>
+        <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+            <input id="cpeInput" type="text" style="flex-grow:1" value="cpe:2.3:o:google:android:13.0:*:*:*:*:*:*:*" placeholder="cpe:2.3:...">
+            <button id="btnAnalyze" class="btn-primary">Analyser unique</button>
+            <input type="file" id="fileImport" style="display:none" accept=".json">
+            <button onclick="$('fileImport').click()" class="btn-primary" style="background:var(--accent-purple)">Importer Liste</button>
+            <button id="btnDownloadTemplate" class="btn-primary" style="background:#30363d">Template JSON</button>
+            <button id="btnExportJSON" class="btn-primary" style="background:#1f6feb; display:none;">Exporter l'Audit</button>
+        </div>
+        
+        <div id="progressContainer" style="display:none; margin-top:15px;">
+            <div style="display:flex; justify-content: space-between; font-size: 0.8em;">
+                <span id="statusUpdate">Initialisation...</span>
+                <span id="progressText">0/0</span>
+            </div>
+            <div class="progress-bar"><div id="progressInner"></div></div>
+        </div>
+    </div>
+
+    <div class="risk-grid">
+        <div class="card" style="text-align: center;">
+            <h4>Radar d'Impact (CIA)</h4>
+            <canvas id="impactRadar" style="max-height: 250px;"></canvas>
+        </div>
+        <div class="card">
+            <h4>Risque Cumulé (Score Max)</h4>
+            <div id="totalRiskScore" style="font-size: 4rem; font-weight: 800; color: var(--brand-blue);">0</div>
+            <div id="quickStats" class="small muted">En attente d'analyse...</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Listing des Vulnérabilités & Décisions SSVC</h3>
+        <div style="overflow-x: auto;">
+            <table id="vulnTable">
+                <thead>
+                    <tr>
+                        <th>CPE / CVE</th>
+                        <th>CVSS (B/T)</th>
+                        <th>Preuves d'Exploit (KEV/EUVD)</th>
+                        <th>Vecteur & SSVC</th>
+                    </tr>
+                </thead>
+                <tbody id="vulnBody"></tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<script>
+    const $ = id => document.getElementById(id);
+    let myRadarChart = null;
+    let globalAuditResults = [];
+    let cisaKevData = [];
+
+    // Chargement du KEV CISA au démarrage
+    window.onload = async () => {
+        try {
+            const resp = await fetch('https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json');
+            const data = await resp.json();
+            cisaKevData = data.vulnerabilities || [];
+            console.log("KEV Chargé");
+        } catch(e) { console.error("Erreur KEV", e); }
+    };
+
+    // --- LOGIQUE SSVC (Assessment vs Skip) ---
+    function getSSVCDecision(metrics, cveId, hasEuvd) {
+        const score = metrics.baseScore || 0;
+        const isKev = cisaKevData.some(v => v.cveID === cveId);
+        const isRCE = (metrics.attackVector === "NETWORK" && score >= 7.0);
+
+        // Règle : Si score >= 7 OU RCE OU KEV OU EUVD -> Assessment
+        if (score >= 7 || isRCE || isKev || hasEuvd) {
+            let reason = isKev ? "CISA KEV Found" : (hasEuvd ? "EUVD Exploit Proof" : "High Severity/RCE");
+            return { action: "ASSESSMENT", color: "var(--accent-red)", reason };
+        }
+        return { action: "SKIP", color: "#30363d", reason: "Below Threshold" };
+    }
+
+    // --- MOTEUR D'ANALYSE ---
+    async function runAudit(list) {
+        globalAuditResults = [];
+        $("vulnBody").innerHTML = "";
+        $("progressContainer").style.display = "block";
+        $("btnExportJSON").style.display = "none";
+        
+        let cSum = 0, iSum = 0, aSum = 0, countVuln = 0;
+
+        for (let i = 0; i < list.length; i++) {
+            const cpe = list[i];
+            const prog = ((i + 1) / list.length) * 100;
+            $("progressInner").style.width = `${prog}%`;
+            $("progressText").textContent = `${i + 1} / ${list.length}`;
+            $("statusUpdate").textContent = `Analyse : ${cpe}`;
+
+            try {
+                const resp = await fetch(`https://services.nvd.nist.gov/rest/json/cves/2.0?cpeName=${encodeURIComponent(cpe)}`);
+                const data = await resp.json();
+                
+                if (data.vulnerabilities) {
+                    for (const item of data.vulnerabilities) {
+                        const cve = item.cve;
+                        const m = cve.metrics?.cvssMetricV31?.[0]?.cvssData || cve.metrics?.cvssMetricV30?.[0]?.cvssData;
+                        if(!m) continue;
+
+                        // Check EUVD
+                        let hasEuvd = false;
+                        try {
+                            const euvdResp = await fetch(`https://api.euvdb.eu/v1/cve/${cve.id}`);
+                            if(euvdResp.ok) {
+                                const euvdData = await euvdResp.json();
+                                hasEuvd = euvdData.exploits && euvdData.exploits.length > 0;
+                            }
+                        } catch(e) {}
+
+                        const ssvc = getSSVCDecision(m, cve.id, hasEuvd);
+                        const isKev = cisaKevData.some(v => v.cveID === cve.id);
+
+                        // Accumulation stats
+                        cSum += (m.confidentialityImpact === "HIGH" ? 10 : 5);
+                        iSum += (m.integrityImpact === "HIGH" ? 10 : 5);
+                        aSum += (m.availabilityImpact === "HIGH" ? 10 : 5);
+                        countVuln++;
+
+                        globalAuditResults.push({ cpe, cveId: cve.id, score: m.baseScore, ssvc: ssvc.action, kev: isKev, euvd: hasEuvd });
+
+                        $("vulnBody").innerHTML += `
+                            <tr>
+                                <td><small class="muted">${cpe}</small><br><b>${cve.id}</b></td>
+                                <td>
+                                    <span class="metric-badge ${m.baseScore >= 7 ? 'crit-text' : ''}">B: ${m.baseScore}</span><br>
+                                    <span class="metric-badge">T: ${(m.baseScore * 0.95).toFixed(1)}</span>
+                                </td>
+                                <td>
+                                    <div style="display:flex; flex-direction:column; gap:4px;">
+                                        ${isKev ? `<a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog" target="_blank" class="pill" style="background:var(--accent-red); text-align:center;">CISA KEV 🔗</a>` : ''}
+                                        ${hasEuvd ? `<a href="https://euvdb.eu/v1/cve/${cve.id}" target="_blank" class="pill" style="background:var(--accent-purple); text-align:center;">EUVD Exploit 🔗</a>` : '<span class="small muted">Aucun exploit public</span>'}
+                                    </div>
+                                </td>
+                                <td>
+                                    <code style="font-size:0.7em;">${m.vectorString}</code><br>
+                                    <span class="pill" style="background:${ssvc.color}; margin-top:5px;">${ssvc.action}</span>
+                                    <div class="small muted" style="font-size:0.7em;">${ssvc.reason}</div>
+                                </td>
+                            </tr>
+                        `;
+                    }
+                }
+                // Tempo pour NVD (6 sec)
+                if (list.length > 1 && i < list.length - 1) await new Promise(r => setTimeout(r, 6000));
+            } catch (err) { console.error(err); }
+        }
+
+        $("statusUpdate").textContent = "Analyse terminée.";
+        $("btnExportJSON").style.display = "inline-block";
+        updateInterface(cSum/countVuln, iSum/countVuln, aSum/countVuln);
+    }
+
+    function updateInterface(c, i, a) {
+        const scores = globalAuditResults.map(r => r.score);
+        const max = scores.length ? Math.max(...scores) : 0;
+        $("totalRiskScore").textContent = max.toFixed(1);
+        $("quickStats").innerHTML = `Total CVE: ${globalAuditResults.length} | Assessment requis: ${globalAuditResults.filter(r => r.ssvc === 'ASSESSMENT').length}`;
+        
+        // Update Radar
+        const ctx = $('impactRadar').getContext('2d');
+        if (myRadarChart) myRadarChart.destroy();
+        myRadarChart = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['Confidentialité', 'Intégrité', 'Disponibilité'],
+                datasets: [{ label: 'Impact Moyen', data: [c||0, i||0, a||0], backgroundColor: 'rgba(121, 235, 255, 0.2)', borderColor: '#79EBFF' }]
+            },
+            options: { scales: { r: { min: 0, max: 10, ticks: { display: false }, grid: { color: '#30363d' } } } }
+        });
+    }
+
+    // --- EVENTS ---
+    $("btnAnalyze").onclick = () => runAudit([$("cpeInput").value]);
+
+    $("fileImport").onchange = (e) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            const data = JSON.parse(ev.target.result);
+            if(data.cpeList) runAudit(data.cpeList);
+        };
+        reader.readAsText(e.target.files[0]);
+    };
+
+    $("btnDownloadTemplate").onclick = () => {
+        const blob = new Blob([JSON.stringify({cpeList: ["cpe:2.3:o:microsoft:windows_10:1909:*:*:*:*:*:*:*"]}, null, 2)], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = "template.json"; a.click();
+    };
+
+    $("btnExportJSON").onclick = () => {
+        const blob = new Blob([JSON.stringify(globalAuditResults, null, 2)], {type: 'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = "audit_results.json"; a.click();
+    };
+</script>
+
+</body>
+</html>
