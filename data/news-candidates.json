@@ -1,5 +1,19 @@
 [
   {
+    "date": "2026-03-30",
+    "datetime_utc": "2026-03-30T05:49:08+00:00",
+    "source": "BSI CERT-Bund (WID)",
+    "region": "DE",
+    "trust": "Government",
+    "category": "Security Advisories",
+    "title": "[UPDATE] [hoch] OpenClaw: Mehrere Schwachstellen",
+    "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-0743",
+    "summary": "Ein Angreifer kann mehrere Schwachstellen in OpenClaw ausnutzen, um seine Privilegien zu erhöhen und um vertrauliche Informationen offenzulegen.",
+    "cves": [],
+    "status": "to-review",
+    "origin": "RSS"
+  },
+  {
     "date": "2026-03-27",
     "datetime_utc": "2026-03-27T18:09:03+00:00",
     "source": "NCSC NL",
