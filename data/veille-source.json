@@ -17,7 +17,7 @@
     "title": "Sailflow Blog",
     "impact": ["EV Charging"],
     "confidence": "Community",
-    "link": "/https://www.saiflow.com/blog/"
+    "link": "https://www.saiflow.com/blog/"
   },
   
   {
@@ -29,6 +29,16 @@
     "impact": ["Physical", "RCE"],
     "confidence": "Official",
     "link": "https://www.renesas.com/support/renesas-psirt"
+  },
+  {
+    "date": "2026-03-25",
+    "source": "https://www.zerodayinitiative.com/",
+    "type": "Researchers",
+    "vendor": "",
+    "title":"(0Day) CarlinKit CPC200-CCPA Improper Verification of Cryptographic Signature Code Execution Vulnerability",
+    "impact": ["Physical", "RCE"],
+    "confidence": "Official",
+    "link": https://www.zerodayinitiative.com/advisories/ZDI-25-179/"
   },
   {
     "date": "2026-03-20",
