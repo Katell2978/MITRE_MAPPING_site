@@ -139,9 +139,8 @@
       "cpe:2.3:a:renesas:*:*:*:*:*:*:*:*:*"
     ]
   },
-
     {
-    "component_id": "ECU6-R",
+    "component_id": "ECUR",
     "description": "Test ECU R ",
     "source": "Generated_by_IA_for_Demo",
     "is_exposed": false,
@@ -149,10 +148,10 @@
     "safety_impact": "High",
     "supplier_involvement": "Unresponsive",
     "cpe_list": [
-      "cpe:2.3:h:renesas:rh850:*:*:*:*:*:*:*:* (Gateway/Cluster)",
-      "cpe:2.3:h:infineon:aurix_tc3xx:*:*:*:*:*:*:*:* (Powertrain/Safety)",
-      "cpe:2.3:h:nxp:s32k3:*:*:*:*:*:*:*:* (Body/BCM)",
-      "cpe:2.3:h:st:spc5_chorus:*:*:*:*:*:*:*:* (Gateway centrale)",
+      "cpe:2.3:h:renesas:rh850:*:*:*:*:*:*:*:*",
+      "cpe:2.3:h:infineon:aurix_tc3xx:*:*:*:*:*:*:*:*",
+      "cpe:2.3:h:nxp:s32k3:*:*:*:*:*:*:*:*",
+      "cpe:2.3:h:st:spc5_chorus:*:*:*:*:*:*:*:*",
     ]
   },
   {
