@@ -151,7 +151,7 @@
       "cpe:2.3:h:renesas:rh850:*:*:*:*:*:*:*:*",
       "cpe:2.3:h:infineon:aurix_tc3xx:*:*:*:*:*:*:*:*",
       "cpe:2.3:h:nxp:s32k3:*:*:*:*:*:*:*:*",
-      "cpe:2.3:h:st:spc5_chorus:*:*:*:*:*:*:*:*",
+      "cpe:2.3:h:st:spc5_chorus:*:*:*:*:*:*:*:*"
     ]
   },
   {
