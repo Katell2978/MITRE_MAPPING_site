@@ -88,7 +88,14 @@ FEEDS = [
         "url": "https://cert.ssi.gouv.fr/avis/feed/",
         "keyword_filter": True,
     },
-
+        {
+        "source": "BLOG-PERSO-FR",
+        "region": "FR",
+        "trust": "Blog",
+        "category": "Avis",
+        "url": "https://blog.stephane-robert.info/rss.xml",
+        "keyword_filter": True,
+    },
     # ---------------- EU ----------------
     {
         "source": "CERT-EU",
@@ -132,16 +139,6 @@ FEEDS = [
         "trust": "Government",
         "category": "News",
         "url": "https://www.ncsc.gov.uk/api/1/services/v1/news-rss-feed.xml",
-        "keyword_filter": True,
-    },
-
-    # ---------------- NL ----------------
-    {
-        "source": "NCSC NL",
-        "region": "NL",
-        "trust": "Government",
-        "category": "Security Advisories",
-        "url": "https://advisories.ncsc.nl/rss/advisories",
         "keyword_filter": True,
     },
 
