@@ -1,5 +1,19 @@
 [
   {
+    "date": "2026-04-25",
+    "datetime_utc": "2026-04-25T00:00:00+00:00",
+    "source": "BLOG-PERSO-FR",
+    "region": "FR",
+    "trust": "Blog",
+    "category": "Avis",
+    "title": "GitHub Actions 2026 : ce que change la nouvelle roadmap sécurité",
+    "link": "https://blog.stephane-robert.info/post/github-actions-securite-roadmap-2026/",
+    "summary": "GitHub renforce la sécurité de GitHub Actions avec dependency locking, policies d'exécution, secrets scopés, Actions Data Stream et egress firewall.",
+    "cves": [],
+    "status": "to-review",
+    "origin": "RSS"
+  },
+  {
     "date": "2026-04-24",
     "datetime_utc": "2026-04-24T16:18:39+00:00",
     "source": "CCB Belgium",
