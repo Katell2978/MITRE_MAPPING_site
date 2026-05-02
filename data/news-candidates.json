@@ -1,5 +1,19 @@
 [
   {
+    "date": "2026-05-01",
+    "datetime_utc": "2026-05-01T12:00:00+00:00",
+    "source": "NCSC UK",
+    "region": "UK",
+    "trust": "Government",
+    "category": "All",
+    "title": "Preparing for a ‘vulnerability patch wave’",
+    "link": "https://www.ncsc.gov.uk/blogs/prepare-for-vulnerability-patch-wave",
+    "summary": "Organisations must act now to prepare for a wave of patches that will address decades of technical debt.",
+    "cves": [],
+    "status": "to-review",
+    "origin": "RSS"
+  },
+  {
     "date": "2026-04-30",
     "datetime_utc": "2026-04-30T11:25:30+00:00",
     "source": "CERT-EU",
