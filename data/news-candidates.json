@@ -1,5 +1,19 @@
 [
   {
+    "date": "2026-05-11",
+    "datetime_utc": "2026-05-11T06:30:53+00:00",
+    "source": "BSI CERT-Bund (WID)",
+    "region": "DE",
+    "trust": "Government",
+    "category": "Security Advisories",
+    "title": "[UPDATE] [hoch] SmarterTools SmarterMail: Mehrere Schwachstellen",
+    "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-0619",
+    "summary": "Ein Angreifer kann mehrere Schwachstellen in SmarterTools SmarterMail ausnutzen, um erweiterte Privilegien zu erlangen, Sicherheitsmaßnahmen zu umgehen, Daten zu manipulieren, vertrauliche Informationen offenzulegen, einen Denial-of-Service-Zustand herbeizuführen oder andere, nicht näher spezifizierte Angriffe durchzuführen.",
+    "cves": [],
+    "status": "to-review",
+    "origin": "RSS"
+  },
+  {
     "date": "2026-05-08",
     "datetime_utc": "2026-05-08T16:28:10+00:00",
     "source": "CCB Belgium",
