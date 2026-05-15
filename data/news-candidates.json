@@ -1,5 +1,33 @@
 [
   {
+    "date": "2026-05-14",
+    "datetime_utc": "2026-05-14T09:55:50+00:00",
+    "source": "CCB Belgium",
+    "region": "BE",
+    "trust": "Government",
+    "category": "Advisories",
+    "title": "Warning: Ivanti has released security updates to address vulnerabilities affecting several of its products, Patch Immediately!",
+    "link": "https://ccb.belgium.be/advisories/warning-ivanti-has-released-security-updates-address-vulnerabilities-affecting-several",
+    "summary": "CCB Advisories",
+    "cves": [],
+    "status": "to-review",
+    "origin": "RSS"
+  },
+  {
+    "date": "2026-05-14",
+    "datetime_utc": "2026-05-14T07:08:08+00:00",
+    "source": "CCB Belgium",
+    "region": "BE",
+    "trust": "Government",
+    "category": "Advisories",
+    "title": "Warning: Multiple critical, high and medium vulnerabilities in Fortinet FortiSandbox, FortiOS, FortiAP, FortiAnalyzer, FortiManager, Patch Immediately!",
+    "link": "https://ccb.belgium.be/advisories/warning-multiple-critical-high-and-medium-vulnerabilities-fortinet-fortisandbox-fortios",
+    "summary": "CCB Advisories",
+    "cves": [],
+    "status": "to-review",
+    "origin": "RSS"
+  },
+  {
     "date": "2026-05-13",
     "datetime_utc": "2026-05-13T13:30:03+00:00",
     "source": "CCB Belgium",
