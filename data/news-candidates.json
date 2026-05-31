@@ -1,6 +1,20 @@
 [
   {
     "date": "2026-05-29",
+    "datetime_utc": "2026-05-29T14:43:49+00:00",
+    "source": "CCB Belgium",
+    "region": "BE",
+    "trust": "Government",
+    "category": "Advisories",
+    "title": "Warning: Multiple Vulnerabilities in Oracle Products, Patch Immediately!",
+    "link": "https://ccb.belgium.be/advisories/warning-multiple-vulnerabilities-oracle-products-patch-immediately-0",
+    "summary": "CCB Advisories",
+    "cves": [],
+    "status": "to-review",
+    "origin": "RSS"
+  },
+  {
+    "date": "2026-05-29",
     "datetime_utc": "2026-05-29T11:10:32+00:00",
     "source": "BSI CERT-Bund (WID)",
     "region": "DE",
@@ -303,6 +317,20 @@
     "title": "[NEU] [hoch] AMD Chipsätze: Mehrere Schwachstellen",
     "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-1697",
     "summary": "Ein Angreifer kann mehrere Schwachstellen in AMD Chipsätzen wie Radeon und Ryzen ausnutzen, um Daten zu manipulieren, um seine Privilegien zu erhöhen, um beliebigen Programmcode auszuführen, um einen Denial of Service Angriff durchzuführen, um Informationen offenzulegen, und um Sicherheitsvorkehrungen zu umgehen.",
+    "cves": [],
+    "status": "to-review",
+    "origin": "RSS"
+  },
+  {
+    "date": "2026-05-28",
+    "datetime_utc": "2026-05-28T07:26:09+00:00",
+    "source": "BSI CERT-Bund (WID)",
+    "region": "DE",
+    "trust": "Government",
+    "category": "Security Advisories",
+    "title": "[UPDATE] [hoch] Intel Prozessoren: Mehrere Schwachstellen",
+    "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-0379",
+    "summary": "Ein Angreifer kann mehrere Schwachstellen in Intel Prozessor und Intel Chipset ausnutzen, um seine Privilegien zu erhöhen, einen Denial-of-Service-Zustand zu verursachen oder vertrauliche Informationen offenzulegen.",
     "cves": [],
     "status": "to-review",
     "origin": "RSS"
@@ -8418,34 +8446,6 @@
     "title": "[NEU] [hoch] Apple macOS: Mehrere Schwachstellen",
     "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-0853",
     "summary": "Ein Angreifer kann mehrere Schwachstellen in Apple macOS ausnutzen, um Sicherheitsvorkehrungen zu umgehen, um einen Denial of Service Angriff durchzuführen, um Informationen offenzulegen, um Dateien zu manipulieren, und um seine Privilegien zu erhöhen.",
-    "cves": [],
-    "status": "to-review",
-    "origin": "RSS"
-  },
-  {
-    "date": "2026-03-25",
-    "datetime_utc": "2026-03-25T12:00:00+00:00",
-    "source": "NCSC UK",
-    "region": "UK",
-    "trust": "Government",
-    "category": "All",
-    "title": "Vulnerabilities affecting Citrix NetScaler ADC and Citrix NetScaler Gateway",
-    "link": "https://www.ncsc.gov.uk/news/vulnerabilities-affecting-citrix-netscaler-adc-gateway",
-    "summary": "UK organisations encouraged to take immediate action to mitigate two recently disclosed vulnerabilities affecting Citrix NetScaler ADC and Citrix NetScaler Gateway.",
-    "cves": [],
-    "status": "to-review",
-    "origin": "RSS"
-  },
-  {
-    "date": "2026-03-25",
-    "datetime_utc": "2026-03-25T11:50:50+00:00",
-    "source": "BSI CERT-Bund (WID)",
-    "region": "DE",
-    "trust": "Government",
-    "category": "Security Advisories",
-    "title": "[NEU] [mittel] IBM WebSphere Application Server Liberty: Mehrere Schwachstellen",
-    "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-0845",
-    "summary": "Ein entfernter, authentisierter Angreifer kann mehrere Schwachstellen in IBM WebSphere Application Server Liberty ausnutzen, um seine Privilegien zu erhöhen, Sicherheitsmaßnahmen zu umgehen und Informationen offenzulegen.",
     "cves": [],
     "status": "to-review",
     "origin": "RSS"
