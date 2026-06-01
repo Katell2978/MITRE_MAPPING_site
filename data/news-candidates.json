@@ -1,5 +1,19 @@
 [
   {
+    "date": "2026-06-01",
+    "datetime_utc": "2026-06-01T09:22:22+00:00",
+    "source": "BSI CERT-Bund (WID)",
+    "region": "DE",
+    "trust": "Government",
+    "category": "Security Advisories",
+    "title": "[NEU] [mittel] JetBrains PyCharm: Schwachstelle ermöglicht Cross-Site Scripting",
+    "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-1743",
+    "summary": "Ein entfernter, anonymer Angreifer kann eine Schwachstelle in JetBrains PyCharm ausnutzen, um einen Cross-Site Scripting Angriff durchzuführen.",
+    "cves": [],
+    "status": "to-review",
+    "origin": "RSS"
+  },
+  {
     "date": "2026-05-29",
     "datetime_utc": "2026-05-29T14:43:49+00:00",
     "source": "CCB Belgium",
@@ -8432,20 +8446,6 @@
     "title": "NCSC-2026-0102 [1.00] [M/H] Kwetsbaarheden verholpen in Apple macOS",
     "link": "https://advisories.ncsc.nl/advisory?id=NCSC-2026-0102",
     "summary": "Apple heeft meerdere kwetsbaarheden verholpen in macOS (Specifiek voor Sequoia 15.7.5, Sonoma 14.8.5, en Tahoe 26.4). De kwetsbaarheden omvatten verschillende problemen zoals onvoldoende validatie van invoer, onjuiste afhandeling van geheugen, en problemen met machtigingen die konden leiden tot ongeautoriseerde toegang tot gevoelige gebruikersdata. Aanvallers kunnen deze kwetsbaarheden misbruiken om toegang te krijgen tot beschermde systeembestanden, gegevens te wijzigen, of zelfs de stabiliteit van het systeem in gevaar te brengen. De kwetsbaarheden zijn opgelost door verbeterde validatie- en",
-    "cves": [],
-    "status": "to-review",
-    "origin": "RSS"
-  },
-  {
-    "date": "2026-03-25",
-    "datetime_utc": "2026-03-25T12:21:01+00:00",
-    "source": "BSI CERT-Bund (WID)",
-    "region": "DE",
-    "trust": "Government",
-    "category": "Security Advisories",
-    "title": "[NEU] [hoch] Apple macOS: Mehrere Schwachstellen",
-    "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-0853",
-    "summary": "Ein Angreifer kann mehrere Schwachstellen in Apple macOS ausnutzen, um Sicherheitsvorkehrungen zu umgehen, um einen Denial of Service Angriff durchzuführen, um Informationen offenzulegen, um Dateien zu manipulieren, und um seine Privilegien zu erhöhen.",
     "cves": [],
     "status": "to-review",
     "origin": "RSS"
