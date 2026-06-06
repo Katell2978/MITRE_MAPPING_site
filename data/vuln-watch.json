@@ -7,7 +7,7 @@
         "published": "2025-04-30T10:00:00Z",
         "updated": "2025-12-05T14:30:00Z",
         "monitoring_start": "2025-02-12T09:00:00Z",
-        "last_check": "2026-06-05T04:09:57Z"
+        "last_check": "2026-06-06T03:53:53Z"
       },
       "metrics": {
         "cvss": {
@@ -18,7 +18,7 @@
         "epss": {
           "initial": 0.0012,
           "current": 0.0005,
-          "percentile": 0.1506
+          "percentile": 0.1515
         },
         "kev_status": {
           "initial": false,
@@ -51,7 +51,7 @@
         "published": "2025-02-10T10:00:00Z",
         "updated": "2025-02-25T14:30:00Z",
         "monitoring_start": "2025-02-12T09:00:00Z",
-        "last_check": "2026-06-05T04:09:57Z"
+        "last_check": "2026-06-06T03:53:53Z"
       },
       "metrics": {
         "cvss": {
@@ -62,7 +62,7 @@
         "epss": {
           "initial": 0.0012,
           "current": 0.0001,
-          "percentile": 0.0243
+          "percentile": 0.0244
         },
         "kev_status": {
           "initial": false,
@@ -149,7 +149,7 @@
       ],
       "dates": {
         "monitoring_start": "2026-02-26T16:02:22Z",
-        "last_check": "2026-06-05T04:09:57Z"
+        "last_check": "2026-06-06T03:53:53Z"
       },
       "metrics": {
         "cvss": {
@@ -160,7 +160,7 @@
         "epss": {
           "initial": 0.0011,
           "current": 0.0014,
-          "percentile": 0.3377
+          "percentile": 0.3388
         },
         "kev_status": {
           "initial": false,
@@ -193,7 +193,7 @@
         "published": "2026-03-02T17:16:29Z",
         "updated": "2026-03-04T13:09:31Z",
         "monitoring_start": "2026-03-05T08:42:29.718314Z",
-        "last_check": "2026-06-05T04:09:57Z"
+        "last_check": "2026-06-06T03:53:54Z"
       },
       "metrics": {
         "cvss": {
@@ -204,7 +204,7 @@
         "epss": {
           "initial": 0.0034,
           "current": 0.0023,
-          "percentile": 0.4554
+          "percentile": 0.456
         },
         "kev_status": {
           "initial": true,
@@ -278,7 +278,7 @@
         "published": "2023-08-03T18:15:11.477",
         "updated": "2024-11-21T08:14:43.520",
         "monitoring_start": "2026-03-05T09:48:48.348Z",
-        "last_check": "2026-06-05T04:09:57Z"
+        "last_check": "2026-06-06T03:53:54Z"
       },
       "metrics": {
         "cvss": {
@@ -289,7 +289,7 @@
         "epss": {
           "initial": 0.00035,
           "current": 0.0004,
-          "percentile": 0.1273
+          "percentile": 0.1281
         },
         "kev_status": {
           "initial": false,
@@ -337,7 +337,7 @@
         "published": "2023-01-03T15:15:10Z",
         "updated": "2025-04-10T16:15:21Z",
         "monitoring_start": "2026-03-06T15:18:23Z",
-        "last_check": "2026-06-05T04:09:57Z"
+        "last_check": "2026-06-06T03:53:54Z"
       },
       "metrics": {
         "cvss": {
@@ -348,7 +348,7 @@
         "epss": {
           "initial": 0.0289,
           "current": 0.0234,
-          "percentile": 0.8514
+          "percentile": 0.8517
         },
         "kev_status": {
           "initial": false,
@@ -417,7 +417,7 @@
         "published": "2023-08-24T20:15:09Z",
         "updated": "2024-11-21T08:15:56Z",
         "monitoring_start": "2026-03-06T15:18:23Z",
-        "last_check": "2026-06-05T04:09:57Z"
+        "last_check": "2026-06-06T03:53:54Z"
       },
       "metrics": {
         "cvss": {
@@ -428,7 +428,7 @@
         "epss": {
           "initial": 0.00033,
           "current": 0.0004,
-          "percentile": 0.1111
+          "percentile": 0.112
         },
         "kev_status": {
           "initial": false,
@@ -497,7 +497,7 @@
         "published": "2026-02-15T11:15:54.307",
         "updated": "2026-02-18T17:52:22.253",
         "monitoring_start": "2026-03-10T13:37:57.154Z",
-        "last_check": "2026-06-05T04:09:57Z"
+        "last_check": "2026-06-06T03:53:55Z"
       },
       "metrics": {
         "cvss": {
@@ -508,7 +508,7 @@
         "epss": {
           "initial": 0.00037,
           "current": 0.0004,
-          "percentile": 0.1321
+          "percentile": 0.1328
         },
         "kev_status": {
           "initial": false,
@@ -556,7 +556,7 @@
         "published": "2026-03-02T09:16:16.600",
         "updated": "2026-03-03T12:52:46.900",
         "monitoring_start": "2026-03-31T10:45:35.256Z",
-        "last_check": "2026-06-05T04:09:57Z"
+        "last_check": "2026-06-06T03:53:55Z"
       },
       "metrics": {
         "cvss": {
@@ -567,7 +567,7 @@
         "epss": {
           "initial": 0.0001,
           "current": 0.0001,
-          "percentile": 0.0144
+          "percentile": 0.0145
         },
         "kev_status": {
           "initial": false,
@@ -610,6 +610,6 @@
     }
   },
   "meta": {
-    "generated_at": "2026-06-05T04:09:57Z"
+    "generated_at": "2026-06-06T03:53:53Z"
   }
 }
