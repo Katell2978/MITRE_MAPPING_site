@@ -339,6 +339,20 @@
   },
   {
     "date": "2026-06-03",
+    "datetime_utc": "2026-06-03T06:12:57+00:00",
+    "source": "BSI CERT-Bund (WID)",
+    "region": "DE",
+    "trust": "Government",
+    "category": "Security Advisories",
+    "title": "[UPDATE] [mittel] Red Hat Ansible Automation Platform: Mehrere Schwachstellen",
+    "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2025-2432",
+    "summary": "Ein entfernter, anonymer Angreifer kann mehrere Schwachstellen in Red Hat Ansible Automation Platform ausnutzen, um Dateien zu manipulieren, offenzulegen oder Privilegien zu eskalieren.",
+    "cves": [],
+    "status": "to-review",
+    "origin": "RSS"
+  },
+  {
+    "date": "2026-06-03",
     "datetime_utc": "2026-06-03T05:52:23+00:00",
     "source": "BSI CERT-Bund (WID)",
     "region": "DE",
@@ -8428,20 +8442,6 @@
     "title": "Écrire du code Terraform : providers, ressources et expressions",
     "link": "https://blog.stephane-robert.info/docs/infra-as-code/provisionnement/terraform/ecrire-code/",
     "summary": "Apprendre à écrire du code Terraform lisible et maintenable : providers, resources, variables, expressions, meta-arguments et style guide.",
-    "cves": [],
-    "status": "to-review",
-    "origin": "RSS"
-  },
-  {
-    "date": "2026-04-01",
-    "datetime_utc": "2026-04-01T00:00:00+00:00",
-    "source": "BLOG-PERSO-FR",
-    "region": "FR",
-    "trust": "Blog",
-    "category": "Avis",
-    "title": "Quiz Écrire du code Terraform",
-    "link": "https://blog.stephane-robert.info/docs/infra-as-code/provisionnement/terraform/ecrire-code/quiz/",
-    "summary": "Validez votre maîtrise des providers, resources, variables, expressions, meta-arguments et conventions d'écriture Terraform avec un quiz de section.",
     "cves": [],
     "status": "to-review",
     "origin": "RSS"
