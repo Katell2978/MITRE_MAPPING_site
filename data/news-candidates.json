@@ -1,6 +1,20 @@
 [
   {
     "date": "2026-06-12",
+    "datetime_utc": "2026-06-12T14:39:47+00:00",
+    "source": "CCB Belgium",
+    "region": "BE",
+    "trust": "Government",
+    "category": "Advisories",
+    "title": "Warning: Critical, Actively exploited RCE in Oracle PeopleSoft, Patch Immediately!",
+    "link": "https://ccb.belgium.be/advisories/warning-critical-actively-exploited-rce-oracle-peoplesoft-patch-immediately",
+    "summary": "CCB Advisories",
+    "cves": [],
+    "status": "to-review",
+    "origin": "RSS"
+  },
+  {
+    "date": "2026-06-12",
     "datetime_utc": "2026-06-12T11:00:53+00:00",
     "source": "BSI CERT-Bund (WID)",
     "region": "DE",
@@ -235,6 +249,20 @@
     "title": "[NEU] [hoch] Apache OFBiz: Mehrere Schwachstellen",
     "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-1888",
     "summary": "Ein entfernter, authentisierter Angreifer kann mehrere Schwachstellen in Apache OFBiz ausnutzen, um seine Privilegien zu erhöhen oder Code auszuführen.",
+    "cves": [],
+    "status": "to-review",
+    "origin": "RSS"
+  },
+  {
+    "date": "2026-06-11",
+    "datetime_utc": "2026-06-11T10:52:26+00:00",
+    "source": "BSI CERT-Bund (WID)",
+    "region": "DE",
+    "trust": "Government",
+    "category": "Security Advisories",
+    "title": "[UPDATE] [mittel] Eclipse Jetty: Schwachstelle ermöglicht Privilegieneskalation",
+    "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-1014",
+    "summary": "Ein entfernter, anonymer Angreifer kann eine Schwachstelle in Eclipse Jetty ausnutzen, um seine Privilegien zu erhöhen.",
     "cves": [],
     "status": "to-review",
     "origin": "RSS"
@@ -8412,34 +8440,6 @@
     "title": "[NEU] [niedrig] Palo Alto Networks Cortex XDR Agent: Schwachstelle ermöglicht Umgehen von Sicherheitsvorkehrungen",
     "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-1019",
     "summary": "Ein lokaler Angreifer kann eine Schwachstelle in Palo Alto Networks Cortex XDR Agent ausnutzen, um den Agenten zu deaktivieren, wodurch die Schutzmechanismen des Endgeräts effektiv umgangen werden und weitere böswillige Aktivitäten unbemerkt ausgeführt werden können.",
-    "cves": [],
-    "status": "to-review",
-    "origin": "RSS"
-  },
-  {
-    "date": "2026-04-09",
-    "datetime_utc": "2026-04-09T09:44:03+00:00",
-    "source": "BSI CERT-Bund (WID)",
-    "region": "DE",
-    "trust": "Government",
-    "category": "Security Advisories",
-    "title": "[NEU] [hoch] Palo Alto Networks Cortex XSOAR (Microsoft Teams Marketplace): Schwachstelle ermöglicht Umgehen von Sicherheitsvorkehrungen",
-    "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-1017",
-    "summary": "Ein entfernter, anonymer Angreifer kann eine Schwachstelle in Palo Alto Networks Cortex XSOAR ausnutzen, um Sicherheitsvorkehrungen zu umgehen, auf geschützte Ressourcen zuzugreifen und Daten zu manipulieren.",
-    "cves": [],
-    "status": "to-review",
-    "origin": "RSS"
-  },
-  {
-    "date": "2026-04-09",
-    "datetime_utc": "2026-04-09T09:38:58+00:00",
-    "source": "BSI CERT-Bund (WID)",
-    "region": "DE",
-    "trust": "Government",
-    "category": "Security Advisories",
-    "title": "[NEU] [mittel] Fleet: Schwachstelle ermöglicht Privilegieneskalation",
-    "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-1015",
-    "summary": "Ein lokaler Angreifer kann eine Schwachstelle in Fleet ausnutzen, um seine Privilegien zu erhöhen.",
     "cves": [],
     "status": "to-review",
     "origin": "RSS"
