@@ -217,14 +217,14 @@
 <div class="container">
     <div class="header-flex">
         <div>
-            <h1>Vuln Intel Engine — CPE → CVE / CVSS / KEV</h1>
+            <h1>Vuln Intel Engine — CPE → CVE / CVSS / </h1>
             <div class="muted" style="margin-top:8px; max-width:980px;">
-                Importez une liste de CPE au format CSV pour interroger le NVD, enrichir les CVE avec le statut KEV CISA,
+                Importez une liste de CPE au format CSV pour interroger le NVD, enrichir les CVE avec le statut  CISA,
                 afficher les vecteurs CVSS détaillés et exporter le résultat consolidé en JSON.
             </div>
         </div>
         <div class="top-right-meta small muted">
-            <div><b>Sources live :</b> NVD (CVE API 2.0) + CISA KEV JSON</div>
+            <div><b>Sources live :</b> NVD (CVE API 2.0) + CISA  JSON</div>
             <div id="sourceMeta" style="margin-top:6px;">Aucun chargement en cours</div>
         </div>
     </div>
@@ -250,7 +250,7 @@
                     <option value="base_desc">CVSS Base (décroissant)</option>
                     <option value="temporal_desc">CVSS Temporal (décroissant)</option>
                     <option value="published_desc">Date de publication (plus récente)</option>
-                    <option value="kev_first">KEV en premier</option>
+                    <option value="_first"> en premier</option>
                     <option value="cve_asc">Identifiant CVE</option>
                 </select>
             </div>
@@ -266,11 +266,11 @@
                 </select>
             </div>
             <div class="control span-3">
-                <label for="kevOnly">Statut KEV</label>
-                <select id="kevOnly" onchange="renderTable()">
+                <label for="Only">Statut </label>
+                <select id="Only" onchange="renderTable()">
                     <option value="ALL">Tous</option>
-                    <option value="YES">KEV uniquement</option>
-                    <option value="NO">Non-KEV uniquement</option>
+                    <option value="YES"> uniquement</option>
+                    <option value="NO">Non- uniquement</option>
                 </select>
             </div>
             <div class="control span-3">
@@ -323,7 +323,7 @@
     <div class="stats-grid">
         <div class="stat-card"><span id="stat-cpes" class="stat-value">0</span><span class="stat-label">CPE importés</span></div>
         <div class="stat-card"><span id="stat-cves" class="stat-value">0</span><span class="stat-label">CVE consolidées</span></div>
-        <div class="stat-card"><span id="stat-kev" class="stat-value" style="color:var(--accent-purple)">0</span><span class="stat-label">CVE KEV</span></div>
+        <div class="stat-card"><span id="stat-" class="stat-value" style="color:var(--accent-purple)">0</span><span class="stat-label">CVE </span></div>
         <div class="stat-card"><span id="stat-critical" class="stat-value" style="color:var(--accent-red)">0</span><span class="stat-label">Base ≥ 9.0</span></div>
         <div class="stat-card"><span id="stat-avg" class="stat-value">0.0</span><span class="stat-label">Moyenne CVSS Base</span></div>
     </div>
@@ -363,7 +363,8 @@
 
 <script>
 const NVD_CVE_API = 'https://services.nvd.nist.gov/rest/json/cves/2.0';
-const CISA_KEV_JSON = 'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json';
+const CISA_KEV_JSON = "https://raw.githubusercontent.com/cisagov/kev-data/develop/known_exploited_vulnerabilities.json";
+//const CISA_KEV_JSON = 'https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json';
 
 let importedCpes = [];
 let rawRows = [];
