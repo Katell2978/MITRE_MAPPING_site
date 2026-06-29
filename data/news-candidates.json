@@ -1,5 +1,19 @@
 [
   {
+    "date": "2026-06-29",
+    "datetime_utc": "2026-06-29T07:10:50+00:00",
+    "source": "BSI CERT-Bund (WID)",
+    "region": "DE",
+    "trust": "Government",
+    "category": "Security Advisories",
+    "title": "[UPDATE] [hoch] Linux Kernel: Schwachstelle ermöglicht Privilegieneskalation",
+    "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-1938",
+    "summary": "Ein lokaler Angreifer kann eine Schwachstelle im Linux Kernel ausnutzen, um Root-Rechte zu erlangen.",
+    "cves": [],
+    "status": "to-review",
+    "origin": "RSS"
+  },
+  {
     "date": "2026-06-26",
     "datetime_utc": "2026-06-26T11:11:31+00:00",
     "source": "BSI CERT-Bund (WID)",
@@ -8428,20 +8442,6 @@
     "title": "AI increases pressure on corporate cybersecurity",
     "link": "https://ccb.belgium.be/news/ai-increases-pressure-corporate-cybersecurity",
     "summary": "AI makes it possible to find, analyse and potentially exploit vulnerabilities more quickly.&amp;nbsp;&amp;nbsp;",
-    "cves": [],
-    "status": "to-review",
-    "origin": "RSS"
-  },
-  {
-    "date": "2026-04-20",
-    "datetime_utc": "2026-04-20T00:00:00+00:00",
-    "source": "CERT-FR",
-    "region": "FR",
-    "trust": "Government",
-    "category": "Avis",
-    "title": "Multiples vulnérabilités dans Spring Framework (20 avril 2026)",
-    "link": "https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0457/",
-    "summary": "De multiples vulnérabilités ont été découvertes dans Spring Framework. Elles permettent à un attaquant de provoquer un déni de service à distance et un contournement de la politique de sécurité.",
     "cves": [],
     "status": "to-review",
     "origin": "RSS"
