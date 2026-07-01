@@ -1,13 +1,6 @@
 [
   {
-    "component_id": "ECU1-IVI1_GEN3",
-    "description": "IVI1 Gen3 BOM - CPE inventory extracted from source file",
-    "source": "IVI1_Gen3_BOM_clean_cpe.csv",
-    "is_exposed": true,
-    "network_zone": "Z1",
-    "safety_impact": "Medium",
-    "supplier_involvement": "Cooperative",
-    "cpe_list": [
+    "cpes": [
       "cpe:2.3:a:*:aes:1.0:*:*:*:*:*:*:*",
       "cpe:2.3:a:*:apertis-customizations:1.2020:*:*:*:*:*:*:*",
       "cpe:2.3:a:*:apmd:3.2.2:*:*:*:*:*:*:*",
