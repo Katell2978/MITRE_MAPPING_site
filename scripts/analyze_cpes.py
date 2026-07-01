@@ -1,20 +1,22 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
 """
-Analyze CPE inventory with NVD CVE API 2.0 + CISA KEV.
+analyze_cpes.py
 
-Input:
-  data/inventory/cpelist.json
-
-Output:
+Lit data/inventory/cpelist.json, interroge NVD CVE API 2.0 par cpeName,
+enrichit avec CISA KEV, détecte RCE par heuristique, puis écrit :
   data/inventory/cve_inventory.json
 
-GitHub Actions secret expected:
-  NVD_API_KEY
-
-Usage:
-  python scripts/analyze_cpes.py
+Variables GitHub Actions supportées :
+  NVD_API_KEY                 secret NVD, utilisé dans le header apiKey
+  CPE_INPUT_FILE              défaut: data/inventory/cpelist.json
+  CVE_OUTPUT_FILE             défaut: data/inventory/cve_inventory.json
+  NVD_MAX_WORKERS             défaut: 3
+  NVD_RESULTS_PER_PAGE        défaut: 2000
+  NVD_REQUEST_DELAY_SECONDS   défaut: 0.7
+  NVD_MAX_RETRIES             défaut: 5
+  HTTP_TIMEOUT_SECONDS        défaut: 90
+  NVD_NO_REJECTED             défaut: true
 """
 
 import json
@@ -22,6 +24,8 @@ import os
 import re
 import sys
 import time
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
@@ -29,9 +33,9 @@ from typing import Any, Dict, Iterable, List, Optional, Set, Tuple
 import requests
 
 
-# ---------------------------------------------------------------------------
+# =============================================================================
 # Configuration
-# ---------------------------------------------------------------------------
+# =============================================================================
 
 API_KEY = os.getenv("NVD_API_KEY", None)
 
@@ -43,31 +47,20 @@ KEV_URL = (
     "known_exploited_vulnerabilities.json"
 )
 
-# Chemins repo GitHub Actions.
-# Si tu tiens absolument à /data/inventory/cpelist.json, le script essaie aussi
-# cette variante absolue si le chemin relatif n'existe pas.
 INPUT_FILE = Path(os.getenv("CPE_INPUT_FILE", "data/inventory/cpelist.json"))
 OUTPUT_FILE = Path(os.getenv("CVE_OUTPUT_FILE", "data/inventory/cve_inventory.json"))
 
+MAX_WORKERS = int(os.getenv("NVD_MAX_WORKERS", "3"))
 RESULTS_PER_PAGE = int(os.getenv("NVD_RESULTS_PER_PAGE", "2000"))
-
-# Délai entre appels NVD.
-# Avec clé API NVD, 0.7 s est généralement prudent pour des inventaires moyens.
 REQUEST_DELAY_SECONDS = float(os.getenv("NVD_REQUEST_DELAY_SECONDS", "0.7"))
-
-# Nombre de tentatives en cas de 429 / 5xx / erreur réseau.
 MAX_RETRIES = int(os.getenv("NVD_MAX_RETRIES", "5"))
-
-# Timeout HTTP.
 HTTP_TIMEOUT_SECONDS = int(os.getenv("HTTP_TIMEOUT_SECONDS", "90"))
-
-# Exclure les CVE rejetées.
-NO_REJECTED = os.getenv("NVD_NO_REJECTED", "true").lower() in ("1", "true", "yes", "y")
+NO_REJECTED = os.getenv("NVD_NO_REJECTED", "true").lower() in {"1", "true", "yes", "y"}
 
 
-# ---------------------------------------------------------------------------
+# =============================================================================
 # RCE heuristic
-# ---------------------------------------------------------------------------
+# =============================================================================
 
 RCE_KEYWORDS = [
     "remote code execution",
@@ -95,40 +88,81 @@ RCE_KEYWORDS = [
     "expression language injection",
 ]
 
-# CWE très souvent associés à des RCE.
-# Ce n'est pas une preuve absolue de RCE : on le sort en "heuristique".
 RCE_CWES = {
-    "CWE-77",    # Improper Neutralization of Special Elements used in a Command
-    "CWE-78",    # OS Command Injection
-    "CWE-94",    # Code Injection
-    "CWE-95",    # Eval Injection
-    "CWE-502",   # Deserialization of Untrusted Data
-    "CWE-917",   # Expression Language Injection
+    "CWE-77",
+    "CWE-78",
+    "CWE-94",
+    "CWE-95",
+    "CWE-502",
+    "CWE-917",
 }
 
 
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
+# =============================================================================
+# Thread-local HTTP session and global rate limiter
+# =============================================================================
+
+_thread_local = threading.local()
+_rate_lock = threading.Lock()
+_last_request_ts = 0.0
+
+
+def eprint(*args: Any) -> None:
+    print(*args, file=sys.stderr, flush=True)
+
 
 def utc_now_iso() -> str:
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
 
 
-def eprint(*args: Any) -> None:
-    print(*args, file=sys.stderr)
+def rate_limit_wait() -> None:
+    """
+    Limiteur global simple pour éviter de déclencher toutes les requêtes NVD
+    exactement en même temps, même avec plusieurs workers.
+    """
+    global _last_request_ts
 
+    with _rate_lock:
+        now = time.monotonic()
+        delta = now - _last_request_ts
+
+        if delta < REQUEST_DELAY_SECONDS:
+            time.sleep(REQUEST_DELAY_SECONDS - delta)
+
+        _last_request_ts = time.monotonic()
+
+
+def get_session() -> requests.Session:
+    """
+    Une session requests par thread.
+    """
+    if not hasattr(_thread_local, "session"):
+        session = requests.Session()
+        session.headers.update(
+            {
+                "User-Agent": "github-actions-cpe-nvd-kev-analyzer/1.0",
+                "Accept": "application/json",
+            }
+        )
+
+        if API_KEY:
+            session.headers.update({"apiKey": API_KEY})
+
+        _thread_local.session = session
+
+    return _thread_local.session
+
+
+# =============================================================================
+# Input loading
+# =============================================================================
 
 def resolve_input_file() -> Path:
-    """
-    Supporte :
-      - data/inventory/cpelist.json
-      - /data/inventory/cpelist.json
-    """
     if INPUT_FILE.exists():
         return INPUT_FILE
 
     absolute_variant = Path("/data/inventory/cpelist.json")
+
     if absolute_variant.exists():
         return absolute_variant
 
@@ -137,91 +171,95 @@ def resolve_input_file() -> Path:
     )
 
 
-def normalize_cpe(value: str) -> Optional[str]:
-    value = str(value).strip().strip('"').strip("'")
-    if value.startswith("cpe:2.3:"):
-        return value
+def extract_cpes_from_text(text: str) -> List[str]:
+    pattern = re.compile(r"cpe:2\.3:[^\s,;\"']+", re.IGNORECASE)
+    return sorted({match.group(0).strip() for match in pattern.finditer(text)})
+
+
+def normalize_cpe(value: Any) -> Optional[str]:
+    if value is None:
+        return None
+
+    text = str(value).strip().strip('"').strip("'")
+
+    if text.startswith("cpe:2.3:"):
+        return text
+
     return None
 
 
-def extract_cpes_from_text(text: str) -> List[str]:
-    """
-    Extrait tous les CPE 2.3 depuis un texte libre.
-    """
-    pattern = re.compile(r"cpe:2\.3:[aho]:[^\s,;\"']+", re.IGNORECASE)
-    return sorted(set(m.group(0).strip() for m in pattern.finditer(text)))
-
-
-def iter_values(obj: Any) -> Iterable[Any]:
-    """
-    Itère récursivement dans un JSON pour retrouver des champs CPE,
-    au cas où cpelist.json soit plus structuré qu'une simple liste.
-    """
+def iter_json_values(obj: Any) -> Iterable[Any]:
     if isinstance(obj, dict):
         for value in obj.values():
             yield value
-            yield from iter_values(value)
+            yield from iter_json_values(value)
+
     elif isinstance(obj, list):
         for item in obj:
             yield item
-            yield from iter_values(item)
+            yield from iter_json_values(item)
 
 
 def load_cpes(input_file: Path) -> List[str]:
     """
     Formats supportés :
 
-    1) Liste simple :
+    1. Liste simple :
        [
          "cpe:2.3:a:openssl:openssl:3.0.14:*:*:*:*:*:*:*"
        ]
 
-    2) Objet :
+    2. Objet avec cpes :
        {
          "cpes": [
            "cpe:2.3:a:openssl:openssl:3.0.14:*:*:*:*:*:*:*"
          ]
        }
 
-    3) Objets :
+    3. Objets imbriqués :
        {
          "items": [
-           {"cpe": "cpe:2.3:a:openssl:openssl:3.0.14:*:*:*:*:*:*:*"},
-           {"cpe23": "cpe:2.3:a:nginx:nginx:1.27.0:*:*:*:*:*:*:*"}
+           {"cpe": "cpe:2.3:a:openssl:openssl:3.0.14:*:*:*:*:*:*:*"}
          ]
        }
 
-    4) Texte JSON contenant des CPE dans des chaînes.
+    4. Tout JSON contenant des chaînes CPE.
     """
     raw_text = input_file.read_text(encoding="utf-8")
-    cpes: Set[str] = set()
 
-    # Extraction regex globale, utile même si la structure varie.
-    cpes.update(extract_cpes_from_text(raw_text))
+    cpes: Set[str] = set(extract_cpes_from_text(raw_text))
 
     try:
         data = json.loads(raw_text)
+
     except json.JSONDecodeError as exc:
         raise ValueError(f"JSON invalide dans {input_file}: {exc}") from exc
 
-    # Cas explicite {"cpes": [...]}
     if isinstance(data, dict) and isinstance(data.get("cpes"), list):
         for item in data["cpes"]:
             if isinstance(item, str):
                 cpe = normalize_cpe(item)
+
                 if cpe:
                     cpes.add(cpe)
-            elif isinstance(item, dict):
-                for key in ("cpe", "cpe23", "cpeName", "cpe_name", "criteria"):
-                    if key in item:
-                        cpe = normalize_cpe(str(item[key]))
-                        if cpe:
-                            cpes.add(cpe)
 
-    # Cas récursif plus générique.
-    for value in iter_values(data):
+            elif isinstance(item, dict):
+                for key in (
+                    "cpe",
+                    "cpe23",
+                    "cpeName",
+                    "cpe_name",
+                    "criteria",
+                ):
+                    cpe = normalize_cpe(item.get(key))
+
+                    if cpe:
+                        cpes.add(cpe)
+
+    for value in iter_json_values(data):
         if isinstance(value, str):
             cpe = normalize_cpe(value)
+
             if cpe:
                 cpes.add(cpe)
 
@@ -233,80 +271,94 @@ def load_cpes(input_file: Path) -> List[str]:
     return result
 
 
-def make_session() -> requests.Session:
-    session = requests.Session()
-    session.headers.update(
-        {
-            "User-Agent": "github-actions-cpe-nvd-kev-analyzer/1.0",
-            "Accept": "application/json",
-        }
-    )
-
-    if API_KEY:
-        session.headers.update({"apiKey": API_KEY})
-
-    return session
-
+# =============================================================================
+# HTTP helpers
+# =============================================================================
 
 def request_json_with_retries(
-    session: requests.Session,
     url: str,
     *,
     params: Optional[Dict[str, Any]] = None,
     timeout: int = HTTP_TIMEOUT_SECONDS,
 ) -> Dict[str, Any]:
-    last_exc: Optional[Exception] = None
+    session = get_session()
+    last_error: Optional[Exception] = None
 
     for attempt in range(1, MAX_RETRIES + 1):
         try:
-            response = session.get(url, params=params, timeout=timeout)
+            rate_limit_wait()
 
-            if response.status_code in (429, 500, 502, 503, 504):
+            response = session.get(
+                url,
+                params=params,
+                timeout=timeout,
+            )
+
+            if response.status_code in {429, 500, 502, 503, 504}:
                 message = response.headers.get("message", "")
-                wait = min(60, attempt * attempt * 2)
+                wait_seconds = min(90, 2 * attempt * attempt)
+
                 eprint(
-                    f"[WARN] HTTP {response.status_code} sur {url}. "
-                    f"Tentative {attempt}/{MAX_RETRIES}. "
-                    f"Message: {message}. Attente {wait}s."
+                    f"[WARN] HTTP {response.status_code} | "
+                    f"attempt={attempt}/{MAX_RETRIES} | "
+                    f"wait={wait_seconds}s | "
+                    f"message={message}"
                 )
-                time.sleep(wait)
+
+                time.sleep(wait_seconds)
                 continue
 
             if not response.ok:
                 message = response.headers.get("message", "")
                 body_preview = response.text[:500] if response.text else ""
+
                 raise RuntimeError(
-                    f"HTTP {response.status_code} sur {url}. "
-                    f"Message header: {message}. Body: {body_preview}"
+                    f"HTTP {response.status_code} on {url}. "
+                    f"Header message: {message}. "
+                    f"Body preview: {body_preview}"
                 )
 
             return response.json()
 
-        except (requests.RequestException, json.JSONDecodeError, RuntimeError) as exc:
-            last_exc = exc
-            wait = min(60, attempt * attempt * 2)
+        except (
+            requests.RequestException,
+            json.JSONDecodeError,
+            RuntimeError,
+        ) as exc:
+            last_error = exc
+            wait_seconds = min(90, 2 * attempt * attempt)
+
             eprint(
-                f"[WARN] Erreur requête tentative {attempt}/{MAX_RETRIES}: {exc}. "
-                f"Attente {wait}s."
+                f"[WARN] Request error | "
+                f"attempt={attempt}/{MAX_RETRIES} | "
+                f"wait={wait_seconds}s | "
+                f"error={exc}"
             )
-            time.sleep(wait)
 
-    raise RuntimeError(f"Échec après {MAX_RETRIES} tentatives: {last_exc}")
+            time.sleep(wait_seconds)
+
+    raise RuntimeError(f"Échec après {MAX_RETRIES} tentatives: {last_error}")
 
 
-# ---------------------------------------------------------------------------
-# KEV
-# ---------------------------------------------------------------------------
+# =============================================================================
+# KEV loading
+# =============================================================================
 
-def load_kev_catalog(session: requests.Session) -> Tuple[Set[str], Dict[str, Dict[str, Any]]]:
-    data = request_json_with_retries(session, KEV_URL)
+def load_kev_catalog() -> Tuple[Set[str], Dict[str, Dict[str, Any]]]:
+    data = request_json_with_retries(KEV_URL)
 
-    vulnerabilities = data.get("vulnerabilities", [])
+    vulnerabilities = data.get("vulnerabilities", []) or []
+
     kev_set: Set[str] = set()
     kev_map: Dict[str, Dict[str, Any]] = {}
 
     for item in vulnerabilities:
-        cve_id = item.get("cveID") or item.get("cve_id") or item.get("cve")
+        cve_id = (
+            item.get("cveID")
+            or item.get("cve_id")
+            or item.get("cve")
+        )
+
         if cve_id:
             kev_set.add(cve_id)
             kev_map[cve_id] = item
@@ -314,12 +366,12 @@ def load_kev_catalog(session: requests.Session) -> Tuple[Set[str], Dict[str, Dic
     return kev_set, kev_map
 
 
-# ---------------------------------------------------------------------------
+# =============================================================================
 # NVD parsing
-# ---------------------------------------------------------------------------
+# =============================================================================
 
 def get_english_description(cve: Dict[str, Any]) -> str:
-    descriptions = cve.get("descriptions", [])
+    descriptions = cve.get("descriptions", []) or []
 
     for item in descriptions:
         if item.get("lang") == "en":
@@ -332,25 +384,24 @@ def get_english_description(cve: Dict[str, Any]) -> str:
 
 
 def get_weaknesses(cve: Dict[str, Any]) -> List[str]:
-    weaknesses: List[str] = []
+    weaknesses: Set[str] = set()
 
-    for weakness in cve.get("weaknesses", []):
-        for desc in weakness.get("description", []):
+    for weakness in cve.get("weaknesses", []) or []:
+        for desc in weakness.get("description", []) or []:
             value = desc.get("value")
-            if value:
-                weaknesses.append(value)
 
-    return sorted(set(weaknesses))
+            if value:
+                weaknesses.add(value)
+
+    return sorted(weaknesses)
 
 
 def get_references(cve: Dict[str, Any]) -> List[Dict[str, Any]]:
-    refs = cve.get("references", [])
+    refs = cve.get("references", []) or []
 
-    # NVD 2.0 expose généralement references comme liste.
     if isinstance(refs, list):
         return refs
 
-    # Compatibilité éventuelle avec d'anciens formats.
     if isinstance(refs, dict):
         return refs.get("referenceData", []) or []
 
@@ -360,35 +411,36 @@ def get_references(cve: Dict[str, Any]) -> List[Dict[str, Any]]:
 def get_best_cvss_v3(cve: Dict[str, Any]) -> Dict[str, Any]:
     """
     Sélectionne le meilleur CVSS v3 :
-      1) Priorité aux métriques Primary
-      2) Puis CVSS 3.1 avant 3.0
-      3) Puis score le plus élevé si plusieurs candidats
+      1. Primary avant Secondary
+      2. CVSS 3.1 avant 3.0
+      3. Score le plus élevé
     """
     metrics = cve.get("metrics", {}) or {}
+
     candidates: List[Dict[str, Any]] = []
 
-    for metric_key, version_rank in (("cvssMetricV31", 31), ("cvssMetricV30", 30)):
+    for metric_key, version_rank in (
+        ("cvssMetricV31", 31),
+        ("cvssMetricV30", 30),
+    ):
         for metric in metrics.get(metric_key, []) or []:
             cvss_data = metric.get("cvssData", {}) or {}
-            score = cvss_data.get("baseScore")
 
             candidates.append(
                 {
-                    "metric_key": metric_key,
                     "version": cvss_data.get("version"),
                     "source": metric.get("source"),
                     "type": metric.get("type"),
-                    "base_score": score,
+                    "base_score": cvss_data.get("baseScore"),
                     "base_severity": (
                         cvss_data.get("baseSeverity")
                         or metric.get("baseSeverity")
-                        or None
                     ),
                     "vector": cvss_data.get("vectorString"),
                     "exploitability_score": metric.get("exploitabilityScore"),
                     "impact_score": metric.get("impactScore"),
-                    "_version_rank": version_rank,
                     "_type_rank": 1 if metric.get("type") == "Primary" else 0,
+                    "_version_rank": version_rank,
                 }
             )
 
@@ -405,10 +457,10 @@ def get_best_cvss_v3(cve: Dict[str, Any]) -> Dict[str, Any]:
         }
 
     candidates.sort(
-        key=lambda x: (
-            x["_type_rank"],
-            x["_version_rank"],
-            float(x["base_score"] or 0),
+        key=lambda item: (
+            item["_type_rank"],
+            item["_version_rank"],
+            float(item["base_score"] or 0),
         ),
         reverse=True,
     )
@@ -428,59 +480,53 @@ def get_best_cvss_v3(cve: Dict[str, Any]) -> Dict[str, Any]:
 
 
 def detect_rce(cve: Dict[str, Any]) -> Tuple[bool, List[str]]:
-    """
-    Détection RCE heuristique.
-    Retourne:
-      - bool
-      - liste de raisons
-    """
     reasons: List[str] = []
 
     description = get_english_description(cve)
-    description_low = description.lower()
+    description_lower = description.lower()
 
     for keyword in RCE_KEYWORDS:
-        if keyword in description_low:
+        if keyword in description_lower:
             reasons.append(f"description_keyword:{keyword}")
 
-    weaknesses = get_weaknesses(cve)
-    weakness_upper = {w.upper() for w in weaknesses}
+    weaknesses = {w.upper() for w in get_weaknesses(cve)}
 
-    matched_cwes = sorted(RCE_CWES.intersection(weakness_upper))
-    for cwe in matched_cwes:
+    for cwe in sorted(RCE_CWES.intersection(weaknesses)):
         reasons.append(f"weakness:{cwe}")
 
-    # Références : utile mais moins fort, on ne déclenche que si un mot-clé
-    # d'exécution existe aussi dans la description.
-    refs = get_references(cve)
-    ref_text = " ".join(
+    references = get_references(cve)
+
+    reference_text = " ".join(
         [
             " ".join(ref.get("tags", []) or [])
             + " "
             + str(ref.get("url", ""))
             + " "
             + str(ref.get("source", ""))
-            for ref in refs
+            for ref in references
         ]
     ).lower()
 
     if (
-        "exploit" in ref_text
+        "exploit" in reference_text
         and (
-            "command" in description_low
-            or "code execution" in description_low
-            or "execute arbitrary" in description_low
+            "command" in description_lower
+            or "code execution" in description_lower
+            or "execute arbitrary" in description_lower
         )
     ):
         reasons.append("reference:exploit_with_execution_context")
 
-    # Déduplication en conservant l'ordre.
     deduped = list(dict.fromkeys(reasons))
 
     return bool(deduped), deduped
 
 
-def compute_priority(kev: bool, rce: bool, cvss_score: Optional[float]) -> str:
+def compute_priority(
+    kev: bool,
+    rce: bool,
+    cvss_score: Optional[float],
+) -> str:
     score = float(cvss_score or 0)
 
     if kev and (rce or score >= 9.0):
@@ -507,36 +553,29 @@ def compute_priority(kev: bool, rce: bool, cvss_score: Optional[float]) -> str:
     return "UNKNOWN"
 
 
-def is_better_cvss(new_score: Optional[float], old_score: Optional[float]) -> bool:
-    return float(new_score or 0) > float(old_score or 0)
-
-
-# ---------------------------------------------------------------------------
+# =============================================================================
 # NVD querying
-# ---------------------------------------------------------------------------
+# =============================================================================
 
-def query_nvd_for_cpe(session: requests.Session, cpe: str) -> List[Dict[str, Any]]:
-    """
-    Retourne la liste complète des objets vulnerabilities NVD pour un cpeName.
-    """
+def query_nvd_for_cpe(cpe: str) -> List[Dict[str, Any]]:
     vulnerabilities: List[Dict[str, Any]] = []
 
     start_index = 0
-    total_results = None
 
     while True:
-        params: Dict[str, Any] = {
+  , Any] = {
             "cpeName": cpe,
             "resultsPerPage": RESULTS_PER_PAGE,
             "startIndex": start_index,
         }
 
         if NO_REJECTED:
-            # Paramètre booléen NVD API 2.0.
-            # requests l'encodera comme noRejected=.
             params["noRejected"] = ""
 
-        data = request_json_with_retries(session, NVD_URL, params=params)
+        data = request_json_with_retries(
+            NVD_URL,
+            params=params,
+        )
 
         page_items = data.get("vulnerabilities", []) or []
         vulnerabilities.extend(page_items)
@@ -545,8 +584,10 @@ def query_nvd_for_cpe(session: requests.Session, cpe: str) -> List[Dict[str, Any
         results_per_page = int(data.get("resultsPerPage", RESULTS_PER_PAGE))
 
         eprint(
-            f"[NVD] {cpe} | startIndex={start_index} | "
-            f"page={len(page_items)} | total={total_results}"
+            f"[NVD] cpe={cpe} | "
+            f"startIndex={start_index} | "
+            f"page={len(page_items)} | "
+            f"total={total_results}"
         )
 
         start_index += results_per_page
@@ -554,61 +595,22 @@ def query_nvd_for_cpe(session: requests.Session, cpe: str) -> List[Dict[str, Any
         if start_index >= total_results:
             break
 
-        time.sleep(REQUEST_DELAY_SECONDS)
-
     return vulnerabilities
 
 
-# ---------------------------------------------------------------------------
-# Main analysis
-# ---------------------------------------------------------------------------
+# =============================================================================
+# Worker and merge
+# =============================================================================
 
-def analyze() -> Dict[str, Any]:
-    input_file = resolve_input_file()
-    output_file = OUTPUT_FILE
+def analyze_one_cpe(
+    cpe: str,
+    kev_set: Set[str],
+    kev_map: Dict[str, Dict[str, Any]],
+) -> Dict[str, Any]:
+    try:
+        vulnerabilities = query_nvd_for_cpe(cpe)
 
-    eprint(f"[INFO] Input CPE file: {input_file}")
-    eprint(f"[INFO] Output CVE file: {output_file}")
-    eprint(f"[INFO] NVD API key present: {'yes' if API_KEY else 'no'}")
-
-    session = make_session()
-
-    cpes = load_cpes(input_file)
-    eprint(f"[INFO] CPE détectés: {len(cpes)}")
-
-    kev_set, kev_map = load_kev_catalog(session)
-    eprint(f"[INFO] KEV chargés: {len(kev_set)}")
-
-    inventory: Dict[str, Dict[str, Any]] = {}
-    by_cpe: Dict[str, Dict[str, Any]] = {}
-
-    errors: List[Dict[str, str]] = []
-
-    for index, cpe in enumerate(cpes, start=1):
-pes)}: {cpe}")
-
-        by_cpe.setdefault(
-            cpe,
-            {
-                "cpe": cpe,
-                "total_cves": 0,
-                "kev_cves": 0,
-                "rce_cves": 0,
-                "max_cvss_base_score": None,
-                "cves": [],
-                "error": None,
-            },
-        )
-
-        try:
-            vulnerabilities = query_nvd_for_cpe(session, cpe)
-
-        except Exception as exc:
-            error_msg = str(exc)
-            eprint(f"[ERROR] {cpe}: {error_msg}")
-            by_cpe[cpe]["error"] = error_msg
-            errors.append({"cpe": cpe, "error": error_msg})
-            continue
+        cve_records: List[Dict[str, Any]] = []
 
         for item in vulnerabilities:
             cve = item.get("cve", {}) or {}
@@ -619,141 +621,274 @@ pes)}: {cpe}")
 
             cvss = get_best_cvss_v3(cve)
             cvss_score = cvss["cvss_base_score"]
+
             kev = cve_id in kev_set
-            rce, rce_reasons = detect_rce(cve)
-            priority = compute_priority(kev, rce, cvss_score)
-
-            description = get_english_description(cve)
-            weaknesses = get_weaknesses(cve)
-
             kev_details = kev_map.get(cve_id, {}) if kev else {}
 
-            if cve_id not in inventory:
-                inventory[cve_id] = {
-                    "cve_id": cve_id,
-                    "published": cve.get("published"),
-                    "last_modified": cve.get("lastModified"),
-                    "vuln_status": cve.get("vulnStatus"),
-                    "description_en": description,
+            rce, rce_reasons = detect_rce(cve)
 
-                    "cvss_version": cvss["cvss_version"],
-                    "cvss_base_score": cvss_score,
-                    "cvss_base_severity": cvss["cvss_base_severity"],
-                    "cvss_vector": cvss["cvss_vector"],
-                    "cvss_source": cvss["cvss_source"],
-                    "cvss_type": cvss["cvss_type"],
-                    "cvss_exploitability_score": cvss["cvss_exploitability_score"],
-                    "cvss_impact_score": cvss["cvss_impact_score"],
+            priority = compute_priority(
+                kev=kev,
+                rce=rce,
+                cvss_score=cvss_score,
+            )
 
-                    "kev": kev,
-                    "kev_date_added": kev_details.get("dateAdded"),
-                    "kev_due_date": kev_details.get("dueDate"),
-                    "kev_known_ransomware_campaign_use": kev_details.get(
-                        "knownRansomwareCampaignUse"
-                    ),
-                    "kev_required_action": kev_details.get("requiredAction"),
-                    "kev_notes": kev_details.get("notes"),
+            record = {
+                "cve_id": cve_id,
+                "published": cve.get("published"),
+                "last_modified": cve.get("lastModified"),
+                "vuln_status": cve.get("vulnStatus"),
+                "description_en": get_english_description(cve),
 
-                    "rce": rce,
-                    "rce_reasons": rce_reasons,
+                "cvss_version": cvss["cvss_version"],
+                "cvss_base_score": cvss["cvss_base_score"],
+                "cvss_base_severity": cvss["cvss_base_severity"],
+                "cvss_vector": cvss["cvss_vector"],
+                "cvss_source": cvss["cvss_source"],
+                "cvss_type": cvss["cvss_type"],
+                "cvss_exploitability_score": cvss["cvss_exploitability_score"],
+                "cvss_impact_score": cvss["cvss_impact_score"],
 
-                    "priority": priority,
-                    "weaknesses": weaknesses,
+                "kev": kev,
+                "kev_date_added": kev_details.get("dateAdded"),
+                "kev_due_date": kev_details.get("dueDate"),
+                "kev_known_ransomware_campaign_use": kev_details.get(
+                    "knownRansomwareCampaignUse"
+                ),
+                "kev_required_action": kev_details.get("requiredAction"),
+                "kev_notes": kev_details.get("notes"),
 
-                    "cpes": [],
-                    "source_cpe_count": 0,
-                }
+                "rce": rce,
+                "rce_reasons": rce_reasons,
 
-            else:
-                existing = inventory[cve_id]
+                "priority": priority,
+                "weaknesses": get_weaknesses(cve),
 
-                # Si une autre entrée NVD donne un meilleur CVSS v3, on garde le plus élevé.
-                if is_better_cvss(cvss_score, existing.get("cvss_base_score")):
-                    existing.update(
-                        {
-                            "cvss_version": cvss["cvss_version"],
-                            "cvss_base_score": cvss_score,
-                            "cvss_base_severity": cvss["cvss_base_severity"],
-                            "cvss_vector": cvss["cvss_vector"],
-                            "cvss_source": cvss["cvss_source"],
-                            "cvss_type": cvss["cvss_type"],
-                            "cvss_exploitability_score": cvss[
-                                "cvss_exploitability_score"
-                            ],
-                            "cvss_impact_score": cvss["cvss_impact_score"],
-                        }
-                    )
+                "cpes": [cpe],
+                "source_cpe_count": 1,
+            }
 
-                # Fusion RCE.
-                existing["rce"] = bool(existing.get("rce")) or rce
-                existing["rce_reasons"] = sorted(
-                    set(existing.get("rce_reasons", []) + rce_reasons)
-                )
-
-                # Fusion weaknesses.
-                existing["weaknesses"] = sorted(
-                    set(existing.get("weaknesses", []) + weaknesses)
-                )
-
-                # La priorité peut changer après fusion.
-                existing["priority"] = compute_priority(
-                    bool(existing.get("kev")),
-                    bool(existing.get("rce")),
-                    existing.get("cvss_base_score"),
-                )
-
-            if cpe not in inventory[cve_id]["cpes"]:
-                inventory[cve_id]["cpes"].append(cpe)
-
-            if cve_id not in by_cpe[cpe]["cves"]:
-                by_cpe[cpe]["cves"].append(cve_id)
-
-        # Stats par CPE après traitement de la page complète.
-        cve_ids_for_cpe = by_cpe[cpe]["cves"]
-
-        by_cpe[cpe]["total_cves"] = len(cve_ids_for_cpe)
-        by_cpe[cpe]["kev_cves"] = sum(
-            1 for cve_id in cve_ids_for_cpe if inventory[cve_id]["kev"]
-        )
-        by_cpe[cpe]["rce_cves"] = sum(
-            1 for cve_id in cve_ids_for_cpe if inventory[cve_id]["rce"]
-        )
+            cve_records.append(record)
 
         scores = [
-            inventory[cve_id].get("cvss_base_score")
-            for cve_id in cve_ids_for_cpe
-            if inventory[cve_id].get("cvss_base_score") is not None
+            float(item["cvss_base_score"])
+            for item in cve_records
+            if item.get("cvss_base_score") is not None
         ]
 
-        by_cpe[cpe]["max_cvss_base_score"] = max(scores) if scores else None
+        max_cvss = max(scores) if scores else None
 
-        time.sleep(REQUEST_DELAY_SECONDS)
+        return {
+            "cpe": cpe,
+            "ok": True,
+            "error": None,
+            "cves": cve_records,
+            "by_cpe": {
+                "cpe": cpe,
+                "total_cves": len(cve_records),
+                "kev_cves": sum(1 for item in cve_records if item["kev"]),
+                "rce_cves": sum(1 for item in cve_records if item["rce"]),
+                "max_cvss_base_score": max_cvss,
+                "cves": sorted({item["cve_id"] for item in cve_records}),
+                "error": None,
+            },
+        }
 
-    # Finalisation source_cpe_count.
-    for cve_item in inventory.values():
-        cve_item["cpes"] = sorted(set(cve_item["cpes"]))
-        cve_item["source_cpe_count"] = len(cve_item["cpes"])
+    except Exception as exc:
+        error = str(exc)
+
+        eprint(f"[ERROR] cpe={cpe} | {error}")
+
+        return {
+            "cpe": cpe,
+            "ok": False,
+            "error": error,
+            "cves": [],
+            "by_cpe": {
+                "cpe": cpe,
+                "total_cves": 0,
+                "kev_cves": 0,
+                "rce_cves": 0,
+                "max_cvss_base_score": None,
+                "cves": [],
+                "error": error,
+            },
+        }
+
+
+def should_replace_cvss(
+    new_item: Dict[str, Any],
+    old_item: Dict[str, Any],
+) -> bool:
+    new_score = float(new_item.get("cvss_base_score") or 0)
+    old_score = float(old_item.get("cvss_base_score") or 0)
+
+    if new_score > old_score:
+        return True
+
+    if new_score < old_score:
+        return False
+
+    new_is_primary = new_item.get("cvss_type") == "Primary"
+    old_is_primary = old_item.get("cvss_type") == "Primary"
+
+    return new_is_primary and not old_is_primary
+
+
+def merge_cve(
+    inventory: Dict[str, Dict[str, Any]],
+    item: Dict[str, Any],
+) -> None:
+    cve_id = item["cve_id"]
+
+    if cve_id not in inventory:
+        inventory[cve_id] = dict(item)
+        inventory[cve_id]["cpes"] = sorted(set(item.get("cpes", [])))
+        inventory[cve_id]["source_cpe_count"] = len(inventory[cve_id]["cpes"])
+        return
+
+    existing = inventory[cve_id]
+
+    if should_replace_cvss(item, existing):
+        for key in (
+            "cvss_version",
+            "cvss_base_score",
+            "cvss_base_severity",
+            "cvss_vector",
+            "cvss_source",
+            "cvss_type",
+            "cvss_exploitability_score",
+            "cvss_impact_score",
+        ):
+            existing[key] = item.get(key)
+
+    existing["kev"] = bool(existing.get("kev")) or bool(item.get("kev"))
+    existing["rce"] = bool(existing.get("rce")) or bool(item.get("rce"))
+
+    existing["rce_reasons"] = sorted(
+        set(existing.get("rce_reasons", []) + item.get("rce_reasons", []))
+    )
+
+    existing["weaknesses"] = sorted(
+        set(existing.get("weaknesses", []) + item.get("weaknesses", []))
+    )
+
+    existing["cpes"] = sorted(
+        set(existing.get("cpes", []) + item.get("cpes", []))
+    )
+
+    existing["source_cpe_count"] = len(existing["cpes"])
+
+    existing["priority"] = compute_priority(
+        kev=bool(existing.get("kev")),
+        rce=bool(existing.get("rce")),
+        cvss_score=existing.get("cvss_base_score"),
+    )
+
+
+# =============================================================================
+# Main analysis
+# =============================================================================
+
+def analyze() -> Dict[str, Any]:
+    input_file = resolve_input_file()
+
+    eprint(f"[INFO] Input file: {input_file}")
+    eprint(f"[INFO] Output file: {OUTPUT_FILE}")
+    eprint(f"[INFO] NVD API key present: {'yes' if API_KEY else 'no'}")
+    eprint(f"[INFO] MAX_WORKERS={MAX_WORKERS}")
+    eprint(f"[INFO] RESULTS_PER_PAGE={RESULTS_PER_PAGE}")
+    eprint(f"[INFO] NO_REJECTED={NO_REJECTED}")
+
+    cpes = load_cpes(input_file)
+
+    eprint(f"[INFO] CPE loaded: {len(cpes)}")
+
+    kev_set, kev_map = load_kev_catalog()
+
+    eprint(f"[INFO] KEV loaded: {len(kev_set)}")
+
+    inventory: Dict[str, Dict[str, Any]] = {}
+    by_cpe: Dict[str, Dict[str, Any]] = {}
+    errors: List[Dict[str, str]] = []
+
+    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
+        future_map = {
+            executor.submit(
+                analyze_one_cpe,
+                cpe,
+                kev_set,
+                kev_map,
+            ): cpe
+            for cpe in cpes
+        }
+
+        done_count = 0
+
+        for future in as_completed(future_map):
+            cpe = future_map[future]
+            done_count += 1
+
+            eprint(f"[INFO] Completed {done_count}/{len(cpes)}: {cpe}")
+
+            try:
+                result = future.result()
+
+            except Exception as exc:
+                error = str(exc)
+
+                eprint(f"[ERROR] Worker failed for {cpe}: {error}")
+
+                errors.append(
+                    {
+                        "cpe": cpe,
+                        "error": error,
+                    }
+                )
+
+                by_cpe[cpe] = {
+                    "cpe": cpe,
+                    "total_cves": 0,
+                    "kev_cves": 0,
+                    "rce_cves": 0,
+                    "max_cvss_base_score": None,
+                    "cves": [],
+                    "error": error,
+                }
+
+                continue
+
+            by_cpe[cpe] = result["by_cpe"]
+
+            if not result["ok"]:
+                errors.append(
+                    {
+                        "cpe": cpe,
+                        "error": result["error"],
+                    }
+                )
+                continue
+
+            for cve_item in result["cves"]:
+                merge_cve(inventory, cve_item)
 
     cves_sorted = sorted(
         inventory.values(),
-        key=lambda x: (
-            # KEV d'abord
-            not bool(x.get("kev")),
-            # RCE ensuite
-            not bool(x.get("rce")),
-            # Score descendant
-            -float(x.get("cvss_base_score") or 0),
-            # Date publication descendante
-            str(x.get("published") or ""),
-            # CVE ID
-            str(x.get("cve_id") or ""),
+        key=lambda item: (
+            not bool(item.get("kev")),
+            not bool(item.get("rce")),
+            -float(item.get("cvss_base_score") or 0),
+            str(item.get("published") or ""),
+            str(item.get("cve_id") or ""),
         ),
     )
 
-    total_kev = sum(1 for x in cves_sorted if x.get("kev"))
-    total_rce = sum(1 for x in cves_sorted if x.get("rce"))
-    total_cvss_critical = sum(
-        1 for x in cves_sorted if float(x.get("cvss_base_score") or 0) >= 9.0
+    total_kev = sum(1 for item in cves_sorted if item.get("kev"))
+    total_rce = sum(1 for item in cves_sorted if item.get("rce"))
+    total_cvss_gte_9 = sum(
+        1
+        for item in cves_sorted
+        if float(item.get("cvss_base_score") or 0) >= 9.0
     )
 
     result = {
@@ -764,6 +899,8 @@ pes)}: {cpe}")
             "results_per_page": RESULTS_PER_PAGE,
             "no_rejected": NO_REJECTED,
             "api_key_present": bool(API_KEY),
+            "max_workers": MAX_WORKERS,
+            "request_delay_seconds": REQUEST_DELAY_SECONDS,
         },
         "kev_source": KEV_URL,
         "summary": {
@@ -771,11 +908,14 @@ pes)}: {cpe}")
             "total_cves": len(cves_sorted),
             "total_kev_cves": total_kev,
             "total_rce_cves": total_rce,
-            "total_cvss_base_score_gte_9": total_cvss_critical,
+            "total_cvss_base_score_gte_9": total_cvss_gte_9,
             "total_errors": len(errors),
         },
         "errors": errors,
-        "by_cpe": [by_cpe[cpe] for cpe in sorted(by_cpe.keys())],
+        "by_cpe": [
+            by_cpe[cpe]
+            for cpe in sorted(by_cpe.keys())
+        ],
         "cves": cves_sorted,
     }
 
@@ -786,18 +926,27 @@ def main() -> None:
     try:
         result = analyze()
 
-        OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
+        OUTPUT_FILE.parent.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
 
-        with OUTPUT_FILE.open("w", encoding="utf-8") as f:
-            json.dump(result, f, indent=2, ensure_ascii=False)
+        with OUTPUT_FILE.open("w", encoding="utf-8") as file:
+            json.dump(
+                result,
+                file,
+                indent=2,
+                ensure_ascii=False,
+            )
 
-        eprint(f"[OK] JSON généré: {OUTPUT_FILE}")
+        eprint(f"[OK] JSON generated: {OUTPUT_FILE}")
         eprint(
-            "[OK] Résumé: "
+            "[OK] Summary: "
             f"{result['summary']['total_cpes']} CPE, "
             f"{result['summary']['total_cves']} CVE, "
             f"{result['summary']['total_kev_cves']} KEV, "
-            f"{result['summary']['total_rce_cves']} RCE heuristiques."
+            f"{result['summary']['total_rce_cves']} RCE, "
+            f"{result['summary']['total_errors']} errors."
         )
 
     except Exception as exc:
