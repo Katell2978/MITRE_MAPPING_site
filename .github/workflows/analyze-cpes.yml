@@ -1,0 +1,98 @@
+name: Analyze CPE Inventory
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: analyze-cpes
+  cancel-in-progress: true
+
+jobs:
+
+  analyze:
+
+    runs-on: ubuntu-latest
+
+    env:
+      NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
+
+      # Paramètres de performance
+      NVD_MAX_WORKERS: "3"
+      NVD_RESULTS_PER_PAGE: "2000"
+      NVD_REQUEST_DELAY_SECONDS: "0.7"
+      NVD_NO_REJECTED: "true"
+
+      # Fichiers
+      CPE_INPUT_FILE: "data/inventory/cpelist.json"
+      CVE_OUTPUT_FILE: "data/inventory/cve_inventory.json"
+
+    steps:
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests
+
+      - name: Verify inventory file
+        run: |
+          echo "Checking inventory file..."
+          ls -lah data/inventory/
+          test -f data/inventory/cpelist.json
+
+      - name: Run analysis
+        run: |
+          python scripts/analyze_cpes.py
+
+      - name: Display summary
+        run: |
+          python - << 'EOF'
+          import json
+
+          with open("data/inventory/cve_inventory.json","r",encoding="utf-8") as f:
+              data=json.load(f)
+
+          print("")
+          print("========== SUMMARY ==========")
+          print("Generated :", data["generated_at"])
+          print("CPE       :", data["summary"]["total_cpes"])
+          print("CVE       :", data["summary"]["total_cves"])
+          print("KEV       :", data["summary"]["total_kev_cves"])
+          print("RCE       :", data["summary"]["total_rce_cves"])
+          print("Errors    :", data["summary"]["total_errors"])
+          print("=============================")
+          EOF
+
+      - name: Commit CVE inventory
+        run: |
+
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+
+          git add data/inventory/cve_inventory.json
+
+          if git diff --cached --quiet; then
+            echo "No changes detected"
+            exit 0
+          fi
+
+          git commit -m "Update CVE inventory"
+
+          git push
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cve_inventory
+          path: data/inventory/cve_inventory.json
+          retention-days: 30
