@@ -49,6 +49,10 @@ jobs:
           echo "Checking inventory file..."
           ls -lah data/inventory/
           test -f data/inventory/cpelist.json
+          
+    - name: Validate Python syntax
+      run: |    
+        python -m py_compile scripts/analyze_cpes.py
 
       - name: Run analysis
         run: |
