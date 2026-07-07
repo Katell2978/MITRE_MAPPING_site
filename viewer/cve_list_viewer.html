@@ -31,11 +31,11 @@
   <div class="header-flex">
     <div>
       <h1>Vulnerability Intelligence Dashboard — CVE Inventory</h1>
-      <div class="subtitle">Dashboard statique GitHub Pages pour <b>cve_inventory_ivi1_gen3.json</b> — look GitHub Dark, KEV priorisées en rouge foncé, histogrammes par année et sévérité CVSS.</div>
+      <div class="subtitle">Dashboard statique GitHub Pages pour <b>cve_inventory.json</b> — look GitHub Dark, KEV priorisées en rouge foncé, histogrammes par année et sévérité CVSS.</div>
     </div>
     <div class="toolbar"><button onclick="exportFilteredCSV()">Exporter CSV filtré</button><button onclick="exportFilteredJSON()">Exporter JSON filtré</button><button onclick="resetFilters()">Réinitialiser</button></div>
   </div>
-  <div id="status" class="status-box">Chargement de <b>./cve_inventory_ivi1_gen3.json</b>…</div>
+  <div id="status" class="status-box">Chargement de <b>./data/inventory/cve_inventory.json</b>…</div>
   <div class="drop-zone">Si le JSON n'est pas chargé automatiquement par GitHub Pages, sélectionner le fichier localement : <input id="fileInput" type="file" accept=".json,application/json" onchange="loadFromFile(event)" /></div>
 
   <div class="stats-grid">
