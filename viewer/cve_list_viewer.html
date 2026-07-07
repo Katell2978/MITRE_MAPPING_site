@@ -83,7 +83,7 @@
 </div>
 
 <script>
-  const DATA_URL = './cve_inventory_ivi1_gen3.json';
+  const DATA_URL = './data/inventory/cve_inventory.json';
   let rawData=null, allCves=[], allCpes=[], filteredCves=[];
   function setStatus(m,e=false){const x=document.getElementById('status');x.innerHTML=m;x.style.borderColor=e?'rgba(248,81,73,.55)':'rgba(88,166,255,.35)';x.style.background=e?'rgba(248,81,73,.09)':'rgba(88,166,255,.09)'}
   function safeArray(v){return Array.isArray(v)?v:[]} function asNumber(v){if(v===null||v===undefined||v==='')return null;const n=Number(v);return Number.isFinite(n)?n:null} function escapeHtml(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))} function uniq(a){return [...new Set((a||[]).filter(Boolean))]}
