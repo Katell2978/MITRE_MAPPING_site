@@ -1,5 +1,19 @@
 [
   {
+    "date": "2026-07-13",
+    "datetime_utc": "2026-07-13T06:37:08+00:00",
+    "source": "BSI CERT-Bund (WID)",
+    "region": "DE",
+    "trust": "Government",
+    "category": "Security Advisories",
+    "title": "[UPDATE] [mittel] Grafana: Schwachstelle ermöglicht Privilegieneskalation",
+    "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2024-0585",
+    "summary": "Ein entfernter, authentisierter Angreifer kann eine Schwachstelle in Grafana ausnutzen, um seine Privilegien zu erhöhen.",
+    "cves": [],
+    "status": "to-review",
+    "origin": "RSS"
+  },
+  {
     "date": "2026-07-10",
     "datetime_utc": "2026-07-10T07:26:52+00:00",
     "source": "BSI CERT-Bund (WID)",
@@ -8421,20 +8435,6 @@
     "title": "Multiples vulnérabilités dans MISP (30 avril 2026)",
     "link": "https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0515/",
     "summary": "De multiples vulnérabilités ont été découvertes dans MISP. Elles permettent à un attaquant de provoquer une élévation de privilèges, une injection SQL (SQLi) et un contournement de la politique de sécurité.",
-    "cves": [],
-    "status": "to-review",
-    "origin": "RSS"
-  },
-  {
-    "date": "2026-04-30",
-    "datetime_utc": "2026-04-30T00:00:00+00:00",
-    "source": "CERT-FR",
-    "region": "FR",
-    "trust": "Government",
-    "category": "Avis",
-    "title": "Vulnérabilité dans les produits Netgate (30 avril 2026)",
-    "link": "https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-0516/",
-    "summary": "Une vulnérabilité a été découverte dans les produits Netgate. Elle permet à un attaquant de provoquer une injection de code indirecte à distance (XSS).",
     "cves": [],
     "status": "to-review",
     "origin": "RSS"
