@@ -1,6 +1,20 @@
 [
   {
     "date": "2026-08-07",
+    "datetime_utc": "2026-08-07T14:02:31+00:00",
+    "source": "CCB Belgium",
+    "region": "BE",
+    "trust": "Government",
+    "category": "Advisories",
+    "title": "Warning: VM Escape Vulnerabilities in KVM, Patch Immediately!",
+    "link": "https://ccb.belgium.be/advisories/warning-vm-escape-vulnerabilities-kvm-patch-immediately",
+    "summary": "CCB Advisories",
+    "cves": [],
+    "status": "to-review",
+    "origin": "RSS"
+  },
+  {
+    "date": "2026-08-07",
     "datetime_utc": "2026-08-07T10:51:06+00:00",
     "source": "BSI CERT-Bund (WID)",
     "region": "DE",
@@ -8418,20 +8432,6 @@
     "title": "[NEU] [hoch] Microsoft Azure: Mehrere Schwachstellen",
     "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-1649",
     "summary": "Ein Angreifer kann mehrere Schwachstellen in Microsoft Azure und Microsoft Azure Stack ausnutzen, um Informationen offenzulegen, erweiterte Privilegien zu erlangen oder beliebigen Code auszuführen.",
-    "cves": [],
-    "status": "to-review",
-    "origin": "RSS"
-  },
-  {
-    "date": "2026-05-22",
-    "datetime_utc": "2026-05-22T09:20:32+00:00",
-    "source": "BSI CERT-Bund (WID)",
-    "region": "DE",
-    "trust": "Government",
-    "category": "Security Advisories",
-    "title": "[NEU] [hoch] LiteLLM: Mehrere Schwachstellen ermöglichen Privilegieneskalation",
-    "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-1647",
-    "summary": "Ein entfernter, authentisierter Angreifer kann mehrere Schwachstellen in LiteLLM ausnutzen, um seine Privilegien zu erhöhen.",
     "cves": [],
     "status": "to-review",
     "origin": "RSS"
