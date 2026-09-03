@@ -7,7 +7,7 @@
         "published": "2025-04-30T10:00:00Z",
         "updated": "2025-12-05T14:30:00Z",
         "monitoring_start": "2025-02-12T09:00:00Z",
-        "last_check": "2026-09-02T03:44:29Z"
+        "last_check": "2026-09-03T03:43:25Z"
       },
       "metrics": {
         "cvss": {
@@ -18,7 +18,7 @@
         "epss": {
           "initial": 0.0012,
           "current": 0.0315,
-          "percentile": 0.8704
+          "percentile": 0.8706
         },
         "kev_status": {
           "initial": false,
@@ -51,7 +51,7 @@
         "published": "2025-02-10T10:00:00Z",
         "updated": "2025-02-25T14:30:00Z",
         "monitoring_start": "2025-02-12T09:00:00Z",
-        "last_check": "2026-09-02T03:44:29Z"
+        "last_check": "2026-09-03T03:43:26Z"
       },
       "metrics": {
         "cvss": {
@@ -149,7 +149,7 @@
       ],
       "dates": {
         "monitoring_start": "2026-02-26T16:02:22Z",
-        "last_check": "2026-09-02T03:44:30Z"
+        "last_check": "2026-09-03T03:43:26Z"
       },
       "metrics": {
         "cvss": {
@@ -160,7 +160,7 @@
         "epss": {
           "initial": 0.0011,
           "current": 0.012,
-          "percentile": 0.6599
+          "percentile": 0.6602
         },
         "kev_status": {
           "initial": false,
@@ -193,7 +193,7 @@
         "published": "2026-03-02T17:16:29Z",
         "updated": "2026-03-04T13:09:31Z",
         "monitoring_start": "2026-03-05T08:42:29.718314Z",
-        "last_check": "2026-09-02T03:44:30Z"
+        "last_check": "2026-09-03T03:43:27Z"
       },
       "metrics": {
         "cvss": {
@@ -204,7 +204,7 @@
         "epss": {
           "initial": 0.0034,
           "current": 0.0107,
-          "percentile": 0.6247
+          "percentile": 0.6251
         },
         "kev_status": {
           "initial": true,
@@ -278,7 +278,7 @@
         "published": "2023-08-03T18:15:11.477",
         "updated": "2024-11-21T08:14:43.520",
         "monitoring_start": "2026-03-05T09:48:48.348Z",
-        "last_check": "2026-09-02T03:44:30Z"
+        "last_check": "2026-09-03T03:43:27Z"
       },
       "metrics": {
         "cvss": {
@@ -289,7 +289,7 @@
         "epss": {
           "initial": 0.00035,
           "current": 0.0051,
-          "percentile": 0.4177
+          "percentile": 0.4182
         },
         "kev_status": {
           "initial": false,
@@ -337,7 +337,7 @@
         "published": "2023-01-03T15:15:10Z",
         "updated": "2025-04-10T16:15:21Z",
         "monitoring_start": "2026-03-06T15:18:23Z",
-        "last_check": "2026-09-02T03:44:30Z"
+        "last_check": "2026-09-03T03:43:27Z"
       },
       "metrics": {
         "cvss": {
@@ -348,7 +348,7 @@
         "epss": {
           "initial": 0.0289,
           "current": 0.0069,
-          "percentile": 0.5037
+          "percentile": 0.5042
         },
         "kev_status": {
           "initial": false,
@@ -417,7 +417,7 @@
         "published": "2023-08-24T20:15:09Z",
         "updated": "2024-11-21T08:15:56Z",
         "monitoring_start": "2026-03-06T15:18:23Z",
-        "last_check": "2026-09-02T03:44:30Z"
+        "last_check": "2026-09-03T03:43:27Z"
       },
       "metrics": {
         "cvss": {
@@ -428,7 +428,7 @@
         "epss": {
           "initial": 0.00033,
           "current": 0.0045,
-          "percentile": 0.3758
+          "percentile": 0.3764
         },
         "kev_status": {
           "initial": false,
@@ -497,7 +497,7 @@
         "published": "2026-02-15T11:15:54.307",
         "updated": "2026-02-18T17:52:22.253",
         "monitoring_start": "2026-03-10T13:37:57.154Z",
-        "last_check": "2026-09-02T03:44:31Z"
+        "last_check": "2026-09-03T03:43:27Z"
       },
       "metrics": {
         "cvss": {
@@ -508,7 +508,7 @@
         "epss": {
           "initial": 0.00037,
           "current": 0.0038,
-          "percentile": 0.3094
+          "percentile": 0.31
         },
         "kev_status": {
           "initial": false,
@@ -556,7 +556,7 @@
         "published": "2026-03-02T09:16:16.600",
         "updated": "2026-03-03T12:52:46.900",
         "monitoring_start": "2026-03-31T10:45:35.256Z",
-        "last_check": "2026-09-02T03:44:31Z"
+        "last_check": "2026-09-03T03:43:28Z"
       },
       "metrics": {
         "cvss": {
@@ -610,6 +610,6 @@
     }
   },
   "meta": {
-    "generated_at": "2026-09-02T03:44:29Z"
+    "generated_at": "2026-09-03T03:43:25Z"
   }
 }
