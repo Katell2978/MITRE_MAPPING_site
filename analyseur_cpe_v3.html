@@ -75,14 +75,14 @@
 <header class="border-b border-brand-border pb-5 mb-6">
     <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-  <nav>
-            <a href="index.html">🔍 Analyseur by CVE</a>
-            <a href="veille.html">🔭 Veille (Watchtower)</a>
-            <a href="analyseur_cpe.html">🔍Analyseur by CPE</a>
-            <a href="Dashboard_VIE.html">🔍Vuln Dashbaord</a>
-            <a href="Dashboard_VIE_2.html"> 🔍Vuln Dashbaord cumul V2</a>
-            <a href="analyseur_cpe_v3.html">Analseur File list</a>
-  </nav>
+            <nav class="flex flex-wrap gap-3 text-xs mb-2 text-slate-400">
+                <a href="index.html" class="hover:text-brand-blue">🔍 Analyseur by CVE</a>
+                <a href="veille.html" class="hover:text-brand-blue">🔭 Veille (Watchtower)</a>
+                <a href="analyseur_cpe.html" class="hover:text-brand-blue">🔍 Analyseur by CPE</a>
+                <a href="Dashboard_VIE.html" class="hover:text-brand-blue">🔍 Vuln Dashboard</a>
+                <a href="Dashboard_VIE_2.html" class="hover:text-brand-blue">🔍 Vuln Dashboard cumul V2</a>
+                <a href="analyseur_cpe_v3.html" class="text-brand-blue font-semibold">Analyseur File list</a>
+            </nav>
             <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white flex items-center gap-3">
                 CPE Vulns Analyzer 
                 <span class="text-xs px-2.5 py-1 rounded-full bg-blue-950/80 text-blue-300 border border-blue-600/50 font-mono">
@@ -161,7 +161,7 @@
         <div class="kpi-card rounded-xl p-4 flex flex-col justify-between">
             <div>
                 <div class="flex justify-between items-start">
-                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Vulnerabilités</span>
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Vulnérabilités</span>
                     <span class="text-xs font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">CVSS v3.1</span>
                 </div>
                 <div id="kpiTotalVulns" class="text-4xl font-black text-brand-blue my-2">0</div>
@@ -256,7 +256,7 @@
     </section>
 
     <section class="bg-brand-card border border-brand-border rounded-xl p-5 shadow-lg">
-        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-4">
             <div>
                 <h2 class="text-lg font-bold text-white flex items-center gap-2">
                     📋 Listing des Vulnérabilités & Décisions SSVC
@@ -264,16 +264,37 @@
                 <p class="text-xs text-slate-400">Évaluation basée sur l'arbre de décision CISA Coordinateur (SSVC v2).</p>
             </div>
             
-            <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                <input id="tableSearch" type="text" placeholder="Filtrer CVE, CPE..." 
-                       class="bg-brand-dark border border-brand-border text-xs text-slate-200 rounded-lg p-2 font-mono outline-none focus:border-brand-blue w-full md:w-48">
+            <!-- Barre de Filtres et Tri -->
+            <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
+                <!-- Recherche par texte -->
+                <input id="tableSearch" type="text" placeholder="🔍 Filtrer CVE, CPE..." 
+                       class="bg-brand-dark border border-brand-border text-xs text-slate-200 rounded-lg p-2 font-mono outline-none focus:border-brand-blue w-full sm:w-44">
                 
+                <!-- Filtre Décision SSVC -->
                 <select id="filterSSVC" class="bg-brand-dark border border-brand-border text-xs text-slate-200 rounded-lg p-2 outline-none focus:border-brand-blue">
-                    <option value="ALL">Tous les SSVC</option>
+                    <option value="ALL">Tous SSVC</option>
                     <option value="Act">Act (Action immédiate)</option>
-                    <option value="Attend">Attend (Traitement prioritaire)</option>
-                    <option value="Track*">Track* (Surveillance accrue)</option>
-                    <option value="Track">Track (Maintenance routine)</option>
+                    <option value="Attend">Attend (Prioritaire)</option>
+                    <option value="Track*">Track* (Surveillance)</option>
+                    <option value="Track">Track (Routine)</option>
+                </select>
+
+                <!-- Filtre Vecteurs de Menaces -->
+                <select id="filterThreat" class="bg-brand-dark border border-brand-border text-xs text-slate-200 rounded-lg p-2 outline-none focus:border-brand-blue">
+                    <option value="ALL">Toutes menaces</option>
+                    <option value="KEV">🔥 CISA KEV (Exploité)</option>
+                    <option value="RCE">🎯 RCE Potentiel</option>
+                    <option value="AUTO">🤖 Automatisable</option>
+                    <option value="EUVD">⚡ EUVD Proof</option>
+                </select>
+
+                <!-- Tri -->
+                <select id="sortSelect" class="bg-brand-dark border border-brand-border text-xs text-slate-200 rounded-lg p-2 outline-none focus:border-brand-blue">
+                    <option value="score-desc">Tri : Score CVSS (↓)</option>
+                    <option value="score-asc">Tri : Score CVSS (↑)</option>
+                    <option value="ssvc-desc">Tri : Priorité SSVC (Act → Track)</option>
+                    <option value="cve-asc">Tri : CVE ID (A-Z)</option>
+                    <option value="date-desc">Tri : Date (Plus récente)</option>
                 </select>
             </div>
         </div>
@@ -353,11 +374,6 @@
     let pendingCpeList = [];
 
     // Table de correspondance SSVC CISA Coordinateur v2.0 officielle
-    // Decision Points:
-    // E : Exploitation (None / PoC / Active)
-    // A : Automatable (No / Yes)
-    // TI: Technical Impact (Partial / Total)
-    // PE: Public Exposure (Low / High)
     const CISA_COORDINATOR_MAPPING = [
         // Active Exploitation
         { E: 'Active', A: 'Yes', TI: 'Total',   PE: 'High', outcome: 'Act' },
@@ -523,8 +539,10 @@
     }
 
     function renderAuditResults() {
-        const tableSearch = $("tableSearch").value.toLowerCase();
+        const tableSearch = $("tableSearch").value.toLowerCase().trim();
         const filterSSVC = $("filterSSVC").value;
+        const filterThreat = $("filterThreat").value;
+        const sortOption = $("sortSelect").value;
 
         // 1. Calculate KPI Metrics
         const total = globalAuditResults.length;
@@ -577,13 +595,33 @@
             $("barAct").style.width = $("barAttend").style.width = $("barTrackStar").style.width = $("barTrack").style.width = "0%";
         }
 
-        // 2. Render Table Rows
-        const filtered = globalAuditResults.filter(r => {
+        // 2. Filtrage des données
+        let filtered = globalAuditResults.filter(r => {
             const matchesText = r.cveId.toLowerCase().includes(tableSearch) || r.cpe.toLowerCase().includes(tableSearch);
             const matchesSSVC = (filterSSVC === 'ALL') || (r.ssvc.outcome === filterSSVC);
-            return matchesText && matchesSSVC;
+
+            let matchesThreat = true;
+            if (filterThreat === 'KEV') matchesThreat = r.ssvc.isKev;
+            else if (filterThreat === 'RCE') matchesThreat = r.ssvc.isRCE;
+            else if (filterThreat === 'AUTO') matchesThreat = r.ssvc.isAutomatable;
+            else if (filterThreat === 'EUVD') matchesThreat = r.hasEuvd;
+
+            return matchesText && matchesSSVC && matchesThreat;
         });
 
+        // 3. Tri des données
+        const ssvcPriorityMap = { 'Act': 4, 'Attend': 3, 'Track*': 2, 'Track': 1 };
+
+        filtered.sort((a, b) => {
+            if (sortOption === 'score-desc') return b.score - a.score;
+            if (sortOption === 'score-asc') return a.score - b.score;
+            if (sortOption === 'ssvc-desc') return (ssvcPriorityMap[b.ssvc.outcome] || 0) - (ssvcPriorityMap[a.ssvc.outcome] || 0);
+            if (sortOption === 'cve-asc') return a.cveId.localeCompare(b.cveId);
+            if (sortOption === 'date-desc') return new Date(b.published) - new Date(a.published);
+            return 0;
+        });
+
+        // 4. Rendu dans la table
         const tbody = $("vulnBody");
         tbody.innerHTML = "";
 
@@ -653,9 +691,12 @@
         });
     }
 
-    // Filter Handlers
+    // Écouteurs d'événements pour le filtrage et le tri
     $("tableSearch").oninput = renderAuditResults;
     $("filterSSVC").onchange = renderAuditResults;
+    $("filterThreat").onchange = renderAuditResults;
+    $("sortSelect").onchange = renderAuditResults;
+
     $("peToggle").onchange = () => {
         if (globalAuditResults.length > 0) {
             const isPE = $("peToggle").checked;
