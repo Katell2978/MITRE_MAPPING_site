@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>OOAC : CPE Vulnerabilities Analyzer V3 (CISA BOD 26-04 Edition)</title>
+    <title>OOAC : CPE Vulnerabilities Analyzer V3 (CISA SSVC Coordinator Edition)</title>
     
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -15,11 +15,10 @@
                     colors: {
                         brand: { blue: '#79EBFF', dark: '#0d1117', card: '#161b22', border: '#30363d' },
                         ssvc: {
-                            fsu: '#388bfd',
-                            d60: '#d29922',
-                            d14: '#f0883e',
-                            d3: '#f85149',
-                            d3f: '#a40e26'
+                            track: '#388bfd',
+                            trackstar: '#d29922',
+                            attend: '#f0883e',
+                            act: '#f85149'
                         }
                     }
                 }
@@ -55,11 +54,10 @@
             background: #484f58;
         }
 
-        .badge-3df { background: rgba(164, 14, 38, 0.25); color: #ff7b72; border: 1px solid #f85149; }
-        .badge-3d  { background: rgba(248, 81, 73, 0.2); color: #ffa198; border: 1px solid rgba(248, 81, 73, 0.5); }
-        .badge-14d { background: rgba(240, 136, 62, 0.2); color: #ffa657; border: 1px solid rgba(240, 136, 62, 0.5); }
-        .badge-60d { background: rgba(210, 153, 34, 0.2); color: #d29922; border: 1px solid rgba(210, 153, 34, 0.5); }
-        .badge-fsu { background: rgba(56, 139, 253, 0.15); color: #58a6ff; border: 1px solid rgba(56, 139, 253, 0.4); }
+        .badge-act { background: rgba(248, 81, 73, 0.25); color: #ff7b72; border: 1px solid #f85149; }
+        .badge-attend { background: rgba(240, 136, 62, 0.25); color: #ffa657; border: 1px solid rgba(240, 136, 62, 0.5); }
+        .badge-trackstar { background: rgba(210, 153, 34, 0.25); color: #e3b341; border: 1px solid rgba(210, 153, 34, 0.5); }
+        .badge-track { background: rgba(56, 139, 253, 0.15); color: #58a6ff; border: 1px solid rgba(56, 139, 253, 0.4); }
 
         .kpi-card {
             background: #161b22;
@@ -88,20 +86,20 @@
             </nav>
             <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white flex items-center gap-3">
                 CPE Vulns Analyzer 
-                <span class="text-xs px-2.5 py-1 rounded-full bg-purple-950/80 text-purple-300 border border-purple-600/50 font-mono">
-                    Version 3.0 (CISA BOD 26-04)
+                <span class="text-xs px-2.5 py-1 rounded-full bg-blue-950/80 text-blue-300 border border-blue-600/50 font-mono">
+                    Version 3.0 (CISA Coordinator SSVC)
                 </span>
             </h1>
             <p class="text-xs md:text-sm text-slate-400 mt-1">
-                Analyse enrichie NVD, CISA KEV, EUVD & Moteur de décision SSVC CISA BOD 26-04.
+                Analyse enrichie NVD, CISA KEV, EUVD & Moteur de décision SSVC v2 (Rôle CISA Coordinateur).
             </p>
         </div>
         
         <!-- Environment Context Toggle -->
         <div class="bg-brand-card border border-brand-border rounded-lg p-3 flex items-center gap-3">
             <div class="text-xs">
-                <span class="font-semibold block text-slate-200">Exposition Réseau (Publicly Exposed)</span>
-                <span class="text-slate-400 text-[11px]">Paramètre PE pour l'évaluation BOD 26-04</span>
+                <span class="font-semibold block text-slate-200">Exposition Système (Public Exposure)</span>
+                <span class="text-slate-400 text-[11px]">Paramètre d'exposition pour le calcul SSVC</span>
             </div>
             <label class="relative inline-flex items-center cursor-pointer">
                 <input type="checkbox" id="peToggle" class="sr-only peer" checked>
@@ -217,48 +215,42 @@
             </div>
         </div>
 
-        <!-- KPI 3: SSVC Decision Breakdown (Timelines BOD 26-04) -->
+        <!-- KPI 3: SSVC Decision Breakdown (CISA Coordinator) -->
         <div class="kpi-card rounded-xl p-4 col-span-1 md:col-span-2 flex flex-col justify-between">
             <div class="flex justify-between items-center mb-2">
-                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Synthèse Délais SSVC CISA BOD 26-04</span>
-                <span class="text-[11px] text-slate-400">Actions requises</span>
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Synthèse Décisions SSVC Coordinateur</span>
+                <span class="text-[11px] text-slate-400">Recommandations CISA</span>
             </div>
             
-            <div class="grid grid-cols-5 gap-2 my-1">
+            <div class="grid grid-cols-4 gap-2 my-1">
                 <div class="text-center p-2 rounded-lg bg-red-950/40 border border-red-800">
-                    <div class="text-[10px] font-bold text-red-400 uppercase tracking-wider">3DF</div>
-                    <div id="kpi3DF" class="text-xl font-extrabold text-red-200 font-mono my-0.5">0</div>
-                    <div class="text-[9px] text-red-300/80">3d + Triage</div>
-                </div>
-                <div class="text-center p-2 rounded-lg bg-red-900/30 border border-red-600/50">
-                    <div class="text-[10px] font-bold text-red-400 uppercase tracking-wider">3D</div>
-                    <div id="kpi3D" class="text-xl font-extrabold text-red-300 font-mono my-0.5">0</div>
-                    <div class="text-[9px] text-red-300/70">3 Jours</div>
+                    <div class="text-[10px] font-bold text-red-400 uppercase tracking-wider">Act</div>
+                    <div id="kpiAct" class="text-xl font-extrabold text-red-200 font-mono my-0.5">0</div>
+                    <div class="text-[9px] text-red-300/80">Action immédiate</div>
                 </div>
                 <div class="text-center p-2 rounded-lg bg-amber-900/30 border border-amber-600/50">
-                    <div class="text-[10px] font-bold text-amber-400 uppercase tracking-wider">14D</div>
-                    <div id="kpi14D" class="text-xl font-extrabold text-amber-300 font-mono my-0.5">0</div>
-                    <div class="text-[9px] text-amber-300/70">14 Jours</div>
+                    <div class="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Attend</div>
+                    <div id="kpiAttend" class="text-xl font-extrabold text-amber-300 font-mono my-0.5">0</div>
+                    <div class="text-[9px] text-amber-300/70">Traitement prioritaire</div>
                 </div>
                 <div class="text-center p-2 rounded-lg bg-yellow-900/30 border border-yellow-600/50">
-                    <div class="text-[10px] font-bold text-yellow-400 uppercase tracking-wider">60D</div>
-                    <div id="kpi60D" class="text-xl font-extrabold text-yellow-300 font-mono my-0.5">0</div>
-                    <div class="text-[9px] text-yellow-300/70">60 Jours</div>
+                    <div class="text-[10px] font-bold text-yellow-400 uppercase tracking-wider">Track*</div>
+                    <div id="kpiTrackStar" class="text-xl font-extrabold text-yellow-300 font-mono my-0.5">0</div>
+                    <div class="text-[9px] text-yellow-300/70">Surveillance accrue</div>
                 </div>
-                <div class="text-center p-2 rounded-lg bg-slate-800 border border-slate-700">
-                    <div class="text-[10px] font-bold text-slate-300 uppercase tracking-wider">FSU</div>
-                    <div id="kpiFSU" class="text-xl font-extrabold text-slate-300 font-mono my-0.5">0</div>
-                    <div class="text-[9px] text-slate-400">Upgrade Mjr</div>
+                <div class="text-center p-2 rounded-lg bg-blue-950/40 border border-blue-700/50">
+                    <div class="text-[10px] font-bold text-blue-400 uppercase tracking-wider">Track</div>
+                    <div id="kpiTrack" class="text-xl font-extrabold text-blue-300 font-mono my-0.5">0</div>
+                    <div class="text-[9px] text-blue-300/80">Maintenance routine</div>
                 </div>
             </div>
 
             <!-- Visual Bar Progress for Priorities -->
             <div class="w-full bg-slate-900 rounded-full h-2.5 flex overflow-hidden border border-slate-800 mt-2">
-                <div id="bar3DF" class="bg-red-700 h-full transition-all duration-300" style="width: 0%" title="3DF"></div>
-                <div id="bar3D"  class="bg-red-500 h-full transition-all duration-300" style="width: 0%" title="3D"></div>
-                <div id="bar14D" class="bg-amber-500 h-full transition-all duration-300" style="width: 0%" title="14D"></div>
-                <div id="bar60D" class="bg-yellow-500 h-full transition-all duration-300" style="width: 0%" title="60D"></div>
-                <div id="barFSU" class="bg-slate-600 h-full transition-all duration-300" style="width: 0%" title="FSU"></div>
+                <div id="barAct"       class="bg-red-600 h-full transition-all duration-300" style="width: 0%" title="Act"></div>
+                <div id="barAttend"    class="bg-amber-500 h-full transition-all duration-300" style="width: 0%" title="Attend"></div>
+                <div id="barTrackStar" class="bg-yellow-500 h-full transition-all duration-300" style="width: 0%" title="Track*"></div>
+                <div id="barTrack"     class="bg-blue-500 h-full transition-all duration-300" style="width: 0%" title="Track"></div>
             </div>
         </div>
 
@@ -270,7 +262,7 @@
                 <h2 class="text-lg font-bold text-white flex items-center gap-2">
                     📋 Listing des Vulnérabilités & Décisions SSVC
                 </h2>
-                <p class="text-xs text-slate-400">Évaluation basée sur les arbres de décision formels CISA BOD 26-04.</p>
+                <p class="text-xs text-slate-400">Évaluation basée sur l'arbre de décision CISA Coordinateur (SSVC v2).</p>
             </div>
             
             <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
@@ -279,11 +271,10 @@
                 
                 <select id="filterSSVC" class="bg-brand-dark border border-brand-border text-xs text-slate-200 rounded-lg p-2 outline-none focus:border-brand-blue">
                     <option value="ALL">Tous les SSVC</option>
-                    <option value="3DF">3DF (3 Jours + Forensics)</option>
-                    <option value="3D">3D (3 Jours)</option>
-                    <option value="14D">14D (14 Jours)</option>
-                    <option value="60D">60D (60 Jours)</option>
-                    <option value="FSU">FSU (System Upgrade)</option>
+                    <option value="Act">Act (Action immédiate)</option>
+                    <option value="Attend">Attend (Traitement prioritaire)</option>
+                    <option value="Track*">Track* (Surveillance accrue)</option>
+                    <option value="Track">Track (Maintenance routine)</option>
                 </select>
             </div>
         </div>
@@ -296,7 +287,7 @@
                         <th class="p-3">Score CVSS</th>
                         <th class="p-3">Preuves d'Exploit & Menaces</th>
                         <th class="p-3">Points de Décision SSVC</th>
-                        <th class="p-3">Décision CISA BOD 26-04</th>
+                        <th class="p-3">Décision CISA Coordinateur</th>
                     </tr>
                 </thead>
                 <tbody id="vulnBody" class="divide-y divide-slate-800/60 text-xs font-mono">
@@ -319,10 +310,10 @@
                 <h3 class="text-sm font-bold text-slate-200 flex items-center gap-2">
                     🌳 Métadonnées de l'Arbre SSVC Implémenté
                 </h3>
-                <p class="text-[11px] text-slate-400">Règles formelles issues de la spécification officielle CISA BOD 26-04.</p>
+                <p class="text-[11px] text-slate-400">Règles officielles de l'arbre SSVC CISA rôle Coordinateur (v2.0.0).</p>
             </div>
             <span class="px-2.5 py-1 rounded bg-slate-800 text-slate-300 font-mono text-[11px] border border-slate-700">
-                DT_BOD2604 v1.0.0
+                DT_CISA_COORDINATOR v2.0.0
             </span>
         </div>
 
@@ -333,21 +324,21 @@
             </div>
             <div class="bg-slate-900/60 p-2 rounded border border-slate-800">
                 <span class="text-slate-500 block text-[10px]">KEY</span>
-                <span class="text-slate-200 font-bold">DT_BOD2604</span>
+                <span class="text-slate-200 font-bold">DT_COORDINATOR</span>
             </div>
             <div class="bg-slate-900/60 p-2 rounded border border-slate-800">
                 <span class="text-slate-500 block text-[10px]">VERSION / SCHEMA</span>
-                <span class="text-purple-300 font-bold">1.0.0 / 2.0.0</span>
+                <span class="text-purple-300 font-bold">2.0.0 / 2.0.0</span>
             </div>
             <div class="bg-slate-900/60 p-2 rounded border border-slate-800">
                 <span class="text-slate-500 block text-[10px]">OUTCOME SCHEME</span>
-                <span class="text-emerald-400 font-bold">cisa:BOD2604:1.0.0</span>
+                <span class="text-emerald-400 font-bold">cisa:coordinator:2.0.0</span>
             </div>
         </div>
 
         <div class="text-[11px] text-slate-400 leading-relaxed font-sans pt-1">
-            <span class="font-semibold text-slate-300">Table de Décision Formelle (16 règles) :</span> 
-            Évalue séquentiellement <code>KEV</code> (In CISA KEV), <code>PE</code> (Publicly Exposed), <code>Automatable</code> (SSVC v2.0.0: AV:N/AC:L/PR:N/UI:N) et <code>Technical Impact</code> (Partial vs Total).
+            <span class="font-semibold text-slate-300">Table de Décision Formelle SSVC Coordinateur :</span> 
+            Évalue séquentiellement <code>Exploitation</code> (None / PoC / Active), <code>Automatable</code> (No / Yes), <code>Technical Impact</code> (Partial / Total) et <code>Public Exposure</code> (Low / High).
         </div>
     </div>
     
@@ -362,24 +353,42 @@
     let globalAuditResults = [];
     let pendingCpeList = [];
 
-    // Table de correspondance SSVC CISA BOD 26-04 officielle (16 règles formelles)
-    const CISA_BOD_26_04_MAPPING = [
-        { KEV: 'N', PE: 'N', A: 'N', TI: 'P', outcome: 'FSU' },
-        { KEV: 'Y', PE: 'N', A: 'N', TI: 'P', outcome: '14D' },
-        { KEV: 'N', PE: 'Y', A: 'N', TI: 'P', outcome: '60D' },
-        { KEV: 'N', PE: 'N', A: 'Y', TI: 'P', outcome: '60D' },
-        { KEV: 'N', PE: 'N', A: 'N', TI: 'T', outcome: 'FSU' },
-        { KEV: 'Y', PE: 'Y', A: 'N', TI: 'P', outcome: '14D' },
-        { KEV: 'Y', PE: 'N', A: 'Y', TI: 'P', outcome: '14D' },
-        { KEV: 'N', PE: 'Y', A: 'Y', TI: 'P', outcome: '14D' },
-        { KEV: 'Y', PE: 'N', A: 'N', TI: 'T', outcome: '14D' },
-        { KEV: 'N', PE: 'Y', A: 'N', TI: 'T', outcome: '14D' },
-        { KEV: 'N', PE: 'N', A: 'Y', TI: 'T', outcome: '60D' },
-        { KEV: 'Y', PE: 'Y', A: 'Y', TI: 'P', outcome: '3D'  },
-        { KEV: 'Y', PE: 'Y', A: 'N', TI: 'T', outcome: '3DF' },
-        { KEV: 'Y', PE: 'N', A: 'Y', TI: 'T', outcome: '3DF' },
-        { KEV: 'N', PE: 'Y', A: 'Y', TI: 'T', outcome: '3D'  },
-        { KEV: 'Y', PE: 'Y', A: 'Y', TI: 'T', outcome: '3DF' }
+    // Table de correspondance SSVC CISA Coordinateur v2.0 officielle
+    // Decision Points:
+    // E : Exploitation (None / PoC / Active)
+    // A : Automatable (No / Yes)
+    // TI: Technical Impact (Partial / Total)
+    // PE: Public Exposure (Low / High)
+    const CISA_COORDINATOR_MAPPING = [
+        // Active Exploitation
+        { E: 'Active', A: 'Yes', TI: 'Total',   PE: 'High', outcome: 'Act' },
+        { E: 'Active', A: 'Yes', TI: 'Total',   PE: 'Low',  outcome: 'Act' },
+        { E: 'Active', A: 'Yes', TI: 'Partial', PE: 'High', outcome: 'Act' },
+        { E: 'Active', A: 'Yes', TI: 'Partial', PE: 'Low',  outcome: 'Attend' },
+        { E: 'Active', A: 'No',  TI: 'Total',   PE: 'High', outcome: 'Act' },
+        { E: 'Active', A: 'No',  TI: 'Total',   PE: 'Low',  outcome: 'Attend' },
+        { E: 'Active', A: 'No',  TI: 'Partial', PE: 'High', outcome: 'Attend' },
+        { E: 'Active', A: 'No',  TI: 'Partial', PE: 'Low',  outcome: 'Attend' },
+
+        // PoC Exploitation
+        { E: 'PoC',    A: 'Yes', TI: 'Total',   PE: 'High', outcome: 'Act' },
+        { E: 'PoC',    A: 'Yes', TI: 'Total',   PE: 'Low',  outcome: 'Attend' },
+        { E: 'PoC',    A: 'Yes', TI: 'Partial', PE: 'High', outcome: 'Attend' },
+        { E: 'PoC',    A: 'Yes', TI: 'Partial', PE: 'Low',  outcome: 'Track*' },
+        { E: 'PoC',    A: 'No',  TI: 'Total',   PE: 'High', outcome: 'Attend' },
+        { E: 'PoC',    A: 'No',  TI: 'Total',   PE: 'Low',  outcome: 'Track*' },
+        { E: 'PoC',    A: 'No',  TI: 'Partial', PE: 'High', outcome: 'Track*' },
+        { E: 'PoC',    A: 'No',  TI: 'Partial', PE: 'Low',  outcome: 'Track' },
+
+        // None Exploitation
+        { E: 'None',   A: 'Yes', TI: 'Total',   PE: 'High', outcome: 'Attend' },
+        { E: 'None',   A: 'Yes', TI: 'Total',   PE: 'Low',  outcome: 'Track*' },
+        { E: 'None',   A: 'Yes', TI: 'Partial', PE: 'High', outcome: 'Track*' },
+        { E: 'None',   A: 'Yes', TI: 'Partial', PE: 'Low',  outcome: 'Track' },
+        { E: 'None',   A: 'No',  TI: 'Total',   PE: 'High', outcome: 'Track*' },
+        { E: 'None',   A: 'No',  TI: 'Total',   PE: 'Low',  outcome: 'Track' },
+        { E: 'None',   A: 'No',  TI: 'Partial', PE: 'High', outcome: 'Track' },
+        { E: 'None',   A: 'No',  TI: 'Partial', PE: 'Low',  outcome: 'Track' }
     ];
 
     window.onload = async () => {
@@ -395,50 +404,54 @@
         }
     };
 
-    function evaluateSSVC(cveId, cvssData, isPubliclyExposed) {
-        // 1. KEV Evaluation
+    function evaluateSSVC(cveId, cvssData, isPubliclyExposed, hasEuvdProof = false) {
+        // 1. Exploitation (E: None, PoC, Active)
         const isKev = cisaKevData.some(v => v.cveID === cveId);
-        const kevKey = isKev ? 'Y' : 'N';
+        let exploitationKey = 'None';
+        if (isKev) {
+            exploitationKey = 'Active';
+        } else if (hasEuvdProof) {
+            exploitationKey = 'PoC';
+        }
 
-        // 2. Publicly Exposed (PE)
-        const peKey = isPubliclyExposed ? 'Y' : 'N';
-
-        // 3. Automatable (ssvc:A:2.0.0)
-        // Automatable = Yes si AV:NETWORK && AC:LOW && PR:NONE && UI:NONE
+        // 2. Automatable (A: No, Yes)
         const av = cvssData.attackVector || '';
         const ac = cvssData.attackComplexity || '';
         const pr = cvssData.privilegesRequired || '';
         const ui = cvssData.userInteraction || '';
 
         const isAutomatable = (av === 'NETWORK' && ac === 'LOW' && pr === 'NONE' && ui === 'NONE');
-        const autoKey = isAutomatable ? 'Y' : 'N';
+        const autoKey = isAutomatable ? 'Yes' : 'No';
 
-        // 4. Technical Impact (ssvc:TI:1.0.0)
-        // Total = C:HIGH && I:HIGH && A:HIGH, sinon Partial
+        // 3. Technical Impact (TI: Partial, Total)
         const c = cvssData.confidentialityImpact || '';
         const i = cvssData.integrityImpact || '';
         const a = cvssData.availabilityImpact || '';
 
         const isTotalImpact = (c === 'HIGH' && i === 'HIGH' && a === 'HIGH');
-        const tiKey = isTotalImpact ? 'T' : 'P';
+        const tiKey = isTotalImpact ? 'Total' : 'Partial';
 
-        // Match with 16 rules mapping
-        const rule = CISA_BOD_26_04_MAPPING.find(r => 
-            r.KEV === kevKey && r.PE === peKey && r.A === autoKey && r.TI === tiKey
+        // 4. Public Exposure (PE: Low, High)
+        const peKey = isPubliclyExposed ? 'High' : 'Low';
+
+        // Match with SSVC CISA Coordinator lookup table
+        const rule = CISA_COORDINATOR_MAPPING.find(r => 
+            r.E === exploitationKey && r.A === autoKey && r.TI === tiKey && r.PE === peKey
         );
 
-        const outcome = rule ? rule.outcome : 'FSU';
+        const outcome = rule ? rule.outcome : 'Track';
 
-        // RCE Evaluation (Remote Code Execution) : Network vector with Total Impact or High C/I
+        // RCE Evaluation (Remote Code Execution)
         const isRCE = (av === 'NETWORK' && (c === 'HIGH' || i === 'HIGH'));
 
         return {
             outcome,
             isKev,
+            hasEuvdProof,
             isAutomatable,
             isTotalImpact,
             isRCE,
-            decisionPoints: { KEV: kevKey, PE: peKey, A: autoKey, TI: tiKey }
+            decisionPoints: { E: exploitationKey, A: autoKey, TI: tiKey, PE: peKey }
         };
     }
 
@@ -480,7 +493,7 @@
                                 }
                             } catch(e) { /* silent EUVD fail fallback */ }
 
-                            const ssvc = evaluateSSVC(cve.id, m, isPubliclyExposed);
+                            const ssvc = evaluateSSVC(cve.id, m, isPubliclyExposed, hasEuvd);
 
                             const auditItem = {
                                 cpe,
@@ -518,7 +531,7 @@
         const total = globalAuditResults.length;
         let scoreLow = 0, scoreMed = 0, scoreHigh = 0;
         let kevCount = 0, autoRceCount = 0, kevAutoRceCount = 0;
-        let count3DF = 0, count3D = 0, count14D = 0, count60D = 0, countFSU = 0;
+        let countAct = 0, countAttend = 0, countTrackStar = 0, countTrack = 0;
 
         globalAuditResults.forEach(r => {
             // Scores
@@ -531,13 +544,12 @@
             if (r.ssvc.isAutomatable && r.ssvc.isRCE) autoRceCount++;
             if (r.ssvc.isKev && r.ssvc.isAutomatable && r.ssvc.isRCE) kevAutoRceCount++;
 
-            // SSVC Timelines
+            // SSVC Coordinator Outcomes
             switch(r.ssvc.outcome) {
-                case '3DF': count3DF++; break;
-                case '3D':  count3D++; break;
-                case '14D': count14D++; break;
-                case '60D': count60D++; break;
-                case 'FSU': countFSU++; break;
+                case 'Act':       countAct++; break;
+                case 'Attend':    countAttend++; break;
+                case 'Track*':    countTrackStar++; break;
+                case 'Track':     countTrack++; break;
             }
         });
 
@@ -551,21 +563,19 @@
         $("kpiAutoRceCount").textContent = autoRceCount;
         $("kpiKevAutoRceCount").textContent = kevAutoRceCount;
 
-        $("kpi3DF").textContent = count3DF;
-        $("kpi3D").textContent = count3D;
-        $("kpi14D").textContent = count14D;
-        $("kpi60D").textContent = count60D;
-        $("kpiFSU").textContent = countFSU;
+        $("kpiAct").textContent = countAct;
+        $("kpiAttend").textContent = countAttend;
+        $("kpiTrackStar").textContent = countTrackStar;
+        $("kpiTrack").textContent = countTrack;
 
         // Progress Bar Breakdown
         if (total > 0) {
-            $("bar3DF").style.width = `${(count3DF / total) * 100}%`;
-            $("bar3D").style.width  = `${(count3D / total) * 100}%`;
-            $("bar14D").style.width = `${(count14D / total) * 100}%`;
-            $("bar60D").style.width = `${(count60D / total) * 100}%`;
-            $("barFSU").style.width = `${(countFSU / total) * 100}%`;
+            $("barAct").style.width       = `${(countAct / total) * 100}%`;
+            $("barAttend").style.width    = `${(countAttend / total) * 100}%`;
+            $("barTrackStar").style.width = `${(countTrackStar / total) * 100}%`;
+            $("barTrack").style.width     = `${(countTrack / total) * 100}%`;
         } else {
-            $("bar3DF").style.width = $("bar3D").style.width = $("bar14D").style.width = $("bar60D").style.width = $("barFSU").style.width = "0%";
+            $("barAct").style.width = $("barAttend").style.width = $("barTrackStar").style.width = $("barTrack").style.width = "0%";
         }
 
         // 2. Render Table Rows
@@ -590,19 +600,17 @@
 
         filtered.forEach(r => {
             const ssvcBadgeClass = {
-                '3DF': 'badge-3df',
-                '3D':  'badge-3d',
-                '14D': 'badge-14d',
-                '60D': 'badge-60d',
-                'FSU': 'badge-fsu'
-            }[r.ssvc.outcome] || 'badge-fsu';
+                'Act':       'badge-act',
+                'Attend':    'badge-attend',
+                'Track*':    'badge-trackstar',
+                'Track':     'badge-track'
+            }[r.ssvc.outcome] || 'badge-track';
 
             const ssvcDesc = {
-                '3DF': '3 jours & Investigation forensique',
-                '3D':  '3 jours d\'action corrective',
-                '14D': '14 jours d\'action corrective',
-                '60D': '60 jours d\'action corrective',
-                'FSU': 'Corriger lors de la prochaine mise à jour majeure'
+                'Act':       'Action corrective immédiate (Urgence requise)',
+                'Attend':    'Traitement prioritaire hors cycle standard',
+                'Track*':    'Surveillance accrue et suivi rapproché',
+                'Track':     'Traitement lors des cycles de maintenance de routine'
             }[r.ssvc.outcome];
 
             const tr = document.createElement("tr");
@@ -629,10 +637,10 @@
                 </td>
                 <td class="p-3">
                     <div class="grid grid-cols-2 gap-1 text-[10px] font-mono">
-                        <span class="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">KEV: <b class="${r.ssvc.decisionPoints.KEV === 'Y' ? 'text-red-400' : 'text-slate-400'}">${r.ssvc.decisionPoints.KEV}</b></span>
-                        <span class="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">PE: <b class="${r.ssvc.decisionPoints.PE === 'Y' ? 'text-emerald-400' : 'text-slate-400'}">${r.ssvc.decisionPoints.PE}</b></span>
-                        <span class="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">Auto: <b class="${r.ssvc.decisionPoints.A === 'Y' ? 'text-amber-400' : 'text-slate-400'}">${r.ssvc.decisionPoints.A}</b></span>
-                        <span class="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">TI: <b class="${r.ssvc.decisionPoints.TI === 'T' ? 'text-rose-400' : 'text-slate-400'}">${r.ssvc.decisionPoints.TI}</b></span>
+                        <span class="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">E: <b class="${r.ssvc.decisionPoints.E === 'Active' ? 'text-red-400' : (r.ssvc.decisionPoints.E === 'PoC' ? 'text-amber-400' : 'text-slate-400')}">${r.ssvc.decisionPoints.E}</b></span>
+                        <span class="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">A: <b class="${r.ssvc.decisionPoints.A === 'Yes' ? 'text-amber-400' : 'text-slate-400'}">${r.ssvc.decisionPoints.A}</b></span>
+                        <span class="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">TI: <b class="${r.ssvc.decisionPoints.TI === 'Total' ? 'text-rose-400' : 'text-slate-400'}">${r.ssvc.decisionPoints.TI}</b></span>
+                        <span class="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">PE: <b class="${r.ssvc.decisionPoints.PE === 'High' ? 'text-emerald-400' : 'text-slate-400'}">${r.ssvc.decisionPoints.PE}</b></span>
                     </div>
                 </td>
                 <td class="p-3">
@@ -662,7 +670,7 @@
                     integrityImpact: r.ssvc.isTotalImpact ? 'HIGH' : '',
                     availabilityImpact: r.ssvc.isTotalImpact ? 'HIGH' : ''
                 };
-                r.ssvc = evaluateSSVC(r.cveId, cvssDummy, isPE);
+                r.ssvc = evaluateSSVC(r.cveId, cvssDummy, isPE, r.hasEuvd);
             });
             renderAuditResults();
         }
@@ -721,14 +729,14 @@
     $("btnExportJSON").onclick = () => {
         const exportData = {
             timestamp: new Date().toISOString(),
-            treeVersion: "CISA BOD 26-04 v1.0.0",
+            treeVersion: "CISA SSVC Coordinator v2.0.0",
             totalEvaluated: globalAuditResults.length,
             results: globalAuditResults
         };
         const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = `audit_ssvc_bod2604_${new Date().toISOString().slice(0,10)}.json`;
+        a.download = `audit_ssvc_coordinator_${new Date().toISOString().slice(0,10)}.json`;
         a.click();
     };
 </script>
