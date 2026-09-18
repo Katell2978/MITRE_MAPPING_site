@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vuln Intel Engine (VIE) - Gestion des Risques & KEV</title>
-    
+    <title>Vuln Intel Engine (VIE) - Master Dashboard</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -14,976 +13,980 @@
                 extend: {
                     colors: {
                         cyber: {
-                            50: '#f0f6ff',
-                            100: '#e0edff',
-                            800: '#0b132b',
-                            900: '#050a18',
-                            border: '#1e293b',
-                            accent: '#00f0ff',
-                            kev: '#ff3366',
-                            warning: '#ff9900'
+                            900: '#0b0f19',
+                            800: '#111827',
+                            700: '#1f2937',
+                            accent: '#6366f1',
+                            critical: '#ef4444',
+                            high: '#f97316',
+                            medium: '#eab308',
+                            low: '#10b981',
+                            kev: '#ec4899'
                         }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'Fira Code', 'monospace']
                     }
                 }
             }
         }
     </script>
-
-    <!-- Google Fonts & FontAwesome Icons -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #050a18;
-            color: #e2e8f0;
-        }
-
-        /* Custom subtle scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
             height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #0b132b;
+            background: #0b0f19;
         }
         ::-webkit-scrollbar-thumb {
-            background: #334155;
+            background: #374151;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #475569;
+            background: #4b5563;
         }
-
+        .glow-critical {
+            box-shadow: 0 0 15px rgba(239, 68, 68, 0.25);
+        }
         .glow-kev {
-            box-shadow: 0 0 15px rgba(255, 51, 102, 0.35);
+            box-shadow: 0 0 15px rgba(236, 72, 153, 0.25);
         }
-
-        .glow-cyan {
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.2);
-        }
-
-        .pulse-kev {
-            animation: pulse-red 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
-        @keyframes pulse-red {
-            0%, 100% { opacity: 1; }
-            50% { opacity: .5; }
-        }
-
-        @media print {
-            .no-print { display: none !important; }
-            body { background: white !important; color: black !important; }
-            .print-card { border: 1px solid #ccc !important; box-shadow: none !important; background: white !important; color: black !important; }
+        .glass-panel {
+            background: rgba(17, 24, 39, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between selection:bg-cyan-500 selection:text-black">
+<body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col antialiased">
 
-    <!-- NAVIGATION BAR -->
-    <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur-md sticky top-0 z-30">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-30 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4">
             <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-700 flex items-center justify-center text-white shadow-lg shadow-cyan-500/20">
-                    <i class="fa-solid fa-shield-halved text-lg"></i>
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/20">
+                    <i class="fa-solid font-bold fa-shield-halved text-xl"></i>
                 </div>
                 <div>
-                    <span class="text-lg font-extrabold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-200 to-slate-400">
-                        VULN INTEL ENGINE <span class="text-xs text-cyan-400 font-mono px-1.5 py-0.5 rounded bg-cyan-950/80 border border-cyan-800/50">v2.4 KEV</span>
-                    </span>
-                    <p class="text-xs text-slate-400">Évaluation des Risques & Calculateurs Tactiques</p>
+                    <h1 class="font-bold text-lg leading-tight tracking-tight text-white flex items-center gap-2">
+                        Vuln Intel Engine <span class="text-xs font-mono px-2 py-0.5 rounded bg-indigo-950 text-indigo-400 border border-indigo-800/50">v2.4-PRO</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Cyber Threat Intelligence & CISA KEV Risk Scoring</p>
                 </div>
             </div>
 
-            <!-- Top Header Actions -->
-            <div class="flex items-center space-x-3">
-                <button id="btn-open-simulator" onclick="openSimulatorModal()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-cyan-500/30 transition flex items-center gap-2">
-                    <i class="fa-solid fa-calculator text-cyan-400"></i>
-                    <span>Simulateur KEV</span>
+            <!-- Header Action Controls -->
+            <div class="flex items-center gap-2 flex-wrap">
+                <button id="btn-load-demo" onclick="loadDemoDataset()" class="px-3 py-2 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 transition flex items-center gap-2">
+                    <i class="fa-solid fa-flask text-indigo-400"></i> Charger Démo KEV
                 </button>
-                
-                <div id="active-file-badge" class="hidden items-center gap-2 px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-xs text-slate-300">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span id="active-file-name" class="font-mono text-slate-200">donnees.json</span>
-                    <button onclick="resetData()" class="ml-1 text-slate-400 hover:text-rose-400 transition" title="Fermer ce fichier">
-                        <i class="fa-solid fa-xmark"></i>
-                    </button>
-                </div>
-
-                <button id="btn-export-pdf" onclick="exportReport()" class="hidden px-3 py-1.5 rounded-lg text-xs font-semibold bg-cyan-600 hover:bg-cyan-500 text-white shadow-md shadow-cyan-600/20 transition flex items-center gap-2">
-                    <i class="fa-solid fa-file-pdf"></i>
-                    <span>Exporter Rapport</span>
+                <button onclick="openImportModal()" class="px-3 py-2 text-xs font-medium bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg transition shadow-md shadow-indigo-600/20 flex items-center gap-2">
+                    <i class="fa-solid fa-file-import"></i> Importer Fichier
+                </button>
+                <button id="btn-export" onclick="exportFilteredData()" disabled class="px-3 py-2 text-xs font-medium bg-slate-800 text-slate-500 rounded-lg border border-slate-800 cursor-not-allowed transition flex items-center gap-2">
+                    <i class="fa-solid fa-download"></i> Exporter JSON
                 </button>
             </div>
         </div>
     </header>
 
-    <!-- MAIN CONTENT AREA -->
-    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 py-6 space-y-6">
 
-        <!-- 1. EMPTY STATE / IMPORT DROPZONE (DISPLAYED BY DEFAULT) -->
-        <section id="empty-state-view" class="py-12 flex flex-col items-center justify-center min-h-[75vh]">
-            <div class="text-center max-w-2xl mx-auto mb-8">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-semibold mb-4">
-                    <i class="fa-solid fa-fire-flame-curved"></i>
-                    <span>Moteur d'analyse KEV CISA Intégré</span>
-                </div>
-                <h1 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">
-                    Évaluation de Vulnérabilité & Risque Équipement
-                </h1>
-                <p class="text-slate-400 text-sm sm:text-base leading-relaxed">
-                    Importez votre fichier d'inventaire (<span class="font-mono text-cyan-400">.json</span> ou <span class="font-mono text-cyan-400">.csv</span>) pour calculer le score de risque global de vos calculateurs en intégrant le catalogue CISA KEV et les métriques EPSS.
-                </p>
-            </div>
-
-            <!-- Drag and drop zone -->
-            <div class="w-full max-w-xl bg-slate-900/60 border-2 border-dashed border-slate-700 hover:border-cyan-500/60 rounded-2xl p-8 sm:p-10 text-center transition-all duration-300 group shadow-2xl relative"
-                 id="drop-zone"
-                 ondragover="handleDragOver(event)"
-                 ondragleave="handleDragLeave(event)"
-                 ondrop="handleFileDrop(event)">
-                
-                <input type="file" id="file-input" accept=".json,.csv" class="hidden" onchange="handleFileSelect(event)">
-                
-                <div class="w-16 h-16 rounded-2xl bg-slate-800 group-hover:bg-cyan-500/10 flex items-center justify-center mx-auto mb-4 text-slate-400 group-hover:text-cyan-400 transition">
-                    <i class="fa-solid fa-cloud-arrow-up text-3xl"></i>
-                </div>
-
-                <h3 class="text-lg font-bold text-slate-200 mb-1">
-                    Déposez votre fichier ici
-                </h3>
-                <p class="text-xs text-slate-400 mb-6">
-                    Formats supportés : JSON de métriques de vulnérabilités ou fichiers CSV
-                </p>
-
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
-                    <button onclick="document.getElementById('file-input').click()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-xs tracking-wide transition shadow-lg shadow-cyan-500/20">
-                        <i class="fa-solid fa-folder-open mr-2"></i> Parcourir les fichiers
-                    </button>
-                    
-                    <button onclick="loadDemoData()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-600 font-semibold text-xs transition">
-                        <i class="fa-solid fa-bolt text-amber-400 mr-2"></i> Charger données démo
-                    </button>
+        <!-- Toast Notification Alert Banner -->
+        <div id="toast-banner" class="hidden rounded-xl p-4 border transition-all duration-300 flex items-start justify-between gap-3 shadow-lg">
+            <div class="flex items-start gap-3">
+                <i id="toast-icon" class="fa-solid fa-circle-info text-lg mt-0.5"></i>
+                <div>
+                    <h4 id="toast-title" class="text-sm font-semibold">Message</h4>
+                    <p id="toast-message" class="text-xs text-slate-300 mt-0.5"></p>
                 </div>
             </div>
+            <button onclick="hideToast()" class="text-slate-400 hover:text-white text-sm">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
 
-            <!-- Features Quick Info -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl w-full mt-12">
-                <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800 text-center">
-                    <i class="fa-solid fa-fire text-rose-500 text-xl mb-2"></i>
-                    <h4 class="text-xs font-bold text-slate-200">Facteur KEV CISA</h4>
-                    <p class="text-[11px] text-slate-400 mt-1">Multiplicateur d'urgence pour les vulnérabilités activement exploitées.</p>
-                </div>
-                <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800 text-center">
-                    <i class="fa-solid fa-chart-line text-cyan-400 text-xl mb-2"></i>
-                    <h4 class="text-xs font-bold text-slate-200">Score Probabiliste EPSS</h4>
-                    <p class="text-[11px] text-slate-400 mt-1">Pondération en fonction de la probabilité réelle d'attaque à 30 jours.</p>
-                </div>
-                <div class="p-4 rounded-xl bg-slate-900/40 border border-slate-800 text-center">
-                    <i class="fa-solid fa-microchip text-indigo-400 text-xl mb-2"></i>
-                    <h4 class="text-xs font-bold text-slate-200">Criticité Équipement</h4>
-                    <p class="text-[11px] text-slate-400 mt-1">Coefficient ajusté selon l'impact de l'actif (1.0x à 2.0x).</p>
-                </div>
+        <div id="empty-state" class="glass-panel rounded-2xl p-8 md:p-12 text-center border border-slate-800 my-8">
+            <div class="w-20 h-20 mx-auto rounded-full bg-slate-900 border border-slate-800 flex items-center justify-center text-indigo-400 mb-6 shadow-inner">
+                <i class="fa-solid fa-cloud-arrow-up text-3xl"></i>
             </div>
-        </section>
+            <h2 class="text-2xl font-bold text-white mb-2">Aucune donnée de vulnérabilité chargée</h2>
+            <p class="text-slate-400 max-w-xl mx-auto text-sm mb-6 leading-relaxed">
+                Importez un fichier au format <span class="text-indigo-300 font-mono">JSON</span> ou <span class="text-indigo-300 font-mono">CSV</span>. Le moteur de traitement normalise automatiquement toutes les structures (tableaux bruts, objets encapsulés avec clés <code class="text-xs bg-slate-800 px-1 py-0.5 rounded text-indigo-300">vulnerabilities</code>, <code class="text-xs bg-slate-800 px-1 py-0.5 rounded text-indigo-300">cves</code>, <code class="text-xs bg-slate-800 px-1 py-0.5 rounded text-indigo-300">data</code>, <code class="text-xs bg-slate-800 px-1 py-0.5 rounded text-indigo-300">items</code> ou CVE unique).
+            </p>
+            <div class="flex flex-wrap items-center justify-center gap-4">
+                <button onclick="openImportModal()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-xl transition shadow-lg shadow-indigo-600/30 flex items-center gap-2">
+                    <i class="fa-solid fa-upload"></i> Parcourir mes fichiers
+                </button>
+                <button onclick="loadDemoDataset()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-semibold rounded-xl border border-slate-700 transition flex items-center gap-2">
+                    <i class="fa-solid fa-bolt text-amber-400"></i> Charger le Dataset d'exemple (CISA KEV)
+                </button>
+            </div>
+        </div>
 
+        <div id="dashboard-content" class="hidden space-y-6">
 
-        <!-- 2. DASHBOARD VIEW (HIDDEN UNTIL DATA IS LOADED) -->
-        <section id="dashboard-view" class="hidden space-y-6">
-
-            <!-- Formula Summary Banner -->
-            <div class="p-4 rounded-2xl bg-gradient-to-r from-slate-900 via-slate-900 to-slate-950 border border-slate-800 text-slate-300 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                <div class="flex items-center gap-3">
-                    <div class="p-2.5 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400">
-                        <i class="fa-solid fa-calculator text-lg"></i>
-                    </div>
+            <!-- Dynamic KPI Stat Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div class="glass-panel p-4 rounded-xl border border-slate-800 flex items-center justify-between">
                     <div>
-                        <h4 class="text-xs font-bold text-white uppercase tracking-wider">Formule de Risque Opérationnel VIE</h4>
-                        <p class="text-xs text-slate-400 font-mono mt-0.5">
-                            Score = [ (CVSS × 0.35) + (EPSS % × 0.35) + (KEV Score × 0.30) ] × Criticité Équipement
-                        </p>
+                        <p class="text-xs text-slate-400 font-medium">Total Vulnérabilités</p>
+                        <h3 id="kpi-total" class="text-2xl font-bold text-white mt-1">0</h3>
+                        <p class="text-[11px] text-slate-500 mt-1">Éléments dans le dataset</p>
                     </div>
-                </div>
-                <div class="flex items-center gap-2">
-                    <span class="text-[11px] text-slate-400">Pondération KEV :</span>
-                    <span class="px-2 py-0.5 rounded bg-rose-950 border border-rose-800 text-rose-300 font-mono text-xs font-bold">×1.8 (Standard)</span>
-                    <span class="px-2 py-0.5 rounded bg-purple-950 border border-purple-800 text-purple-300 font-mono text-xs font-bold">+Ransomware Bonus</span>
-                </div>
-            </div>
-
-            <!-- KPI METRICS GRID -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                <!-- KPI 1 -->
-                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 relative overflow-hidden group">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Risque Global Moyen</p>
-                            <h3 id="kpi-avg-score" class="text-3xl font-extrabold text-white font-mono mt-2">0.0</h3>
-                        </div>
-                        <div class="w-10 h-10 rounded-xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center">
-                            <i class="fa-solid fa-gauge-high"></i>
-                        </div>
-                    </div>
-                    <div class="mt-3 flex items-center gap-2 text-xs">
-                        <span id="kpi-avg-severity" class="px-2 py-0.5 rounded text-[10px] font-bold">Calcul en cours</span>
-                        <span class="text-slate-400">sur l'ensemble du parc</span>
+                    <div class="w-10 h-10 rounded-lg bg-indigo-950/80 border border-indigo-800/50 flex items-center justify-center text-indigo-400">
+                        <i class="fa-solid fa-list-check text-lg"></i>
                     </div>
                 </div>
 
-                <!-- KPI 2 -->
-                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 relative overflow-hidden group border-l-4 border-l-rose-500">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Vulnérabilités KEV Actives</p>
-                            <h3 id="kpi-kev-count" class="text-3xl font-extrabold text-rose-400 font-mono mt-2">0</h3>
-                        </div>
-                        <div class="w-10 h-10 rounded-xl bg-rose-500/10 text-rose-500 flex items-center justify-center glow-kev">
-                            <i class="fa-solid fa-fire-flame-curved text-lg animate-bounce"></i>
-                        </div>
+                <div class="glass-panel p-4 rounded-xl border border-slate-800 flex items-center justify-between glow-kev">
+                    <div>
+                        <p class="text-xs text-pink-400 font-semibold uppercase tracking-wider">CISA KEV Actifs</p>
+                        <h3 id="kpi-kev" class="text-2xl font-bold text-pink-400 mt-1">0</h3>
+                        <p id="kpi-kev-pct" class="text-[11px] text-pink-300/70 mt-1">0% du dataset</p>
                     </div>
-                    <div class="mt-3 flex items-center gap-2 text-xs">
-                        <span id="kpi-kev-percent" class="text-rose-400 font-bold font-mono">0%</span>
-                        <span class="text-slate-400">du total des vulnérabilités</span>
+                    <div class="w-10 h-10 rounded-lg bg-pink-950/80 border border-pink-800/50 flex items-center justify-center text-pink-400">
+                        <i class="fa-solid fa-triangle-exclamation text-lg"></i>
                     </div>
                 </div>
 
-                <!-- KPI 3 -->
-                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 relative overflow-hidden group">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Alerte Ransomware KEV</p>
-                            <h3 id="kpi-ransomware-count" class="text-3xl font-extrabold text-purple-400 font-mono mt-2">0</h3>
-                        </div>
-                        <div class="w-10 h-10 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center">
-                            <i class="fa-solid fa-skull-crossbones"></i>
-                        </div>
+                <div class="glass-panel p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-red-400 font-semibold uppercase tracking-wider">Critiques (CVSS &ge; 9)</p>
+                        <h3 id="kpi-critical" class="text-2xl font-bold text-red-400 mt-1">0</h3>
+                        <p class="text-[11px] text-slate-500 mt-1">Sévérité maximale</p>
                     </div>
-                    <div class="mt-3 flex items-center gap-2 text-xs">
-                        <span class="text-purple-400 font-bold">Risque Majeur</span>
-                        <span class="text-slate-400">exploité en campagne ransomware</span>
+                    <div class="w-10 h-10 rounded-lg bg-red-950/80 border border-red-800/50 flex items-center justify-center text-red-400">
+                        <i class="fa-solid fa-skull-crossbones text-lg"></i>
                     </div>
                 </div>
 
-                <!-- KPI 4 -->
-                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 relative overflow-hidden group">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Calculateurs à Risque Élevé</p>
-                            <h3 id="kpi-critical-assets" class="text-3xl font-extrabold text-amber-400 font-mono mt-2">0</h3>
-                        </div>
-                        <div class="w-10 h-10 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center">
-                            <i class="fa-solid fa-microchip"></i>
-                        </div>
+                <div class="glass-panel p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-amber-400 font-medium">EPSS Élevé (&gt; 50%)</p>
+                        <h3 id="kpi-epss" class="text-2xl font-bold text-amber-400 mt-1">0</h3>
+                        <p class="text-[11px] text-slate-500 mt-1">Exploitation très probable</p>
                     </div>
-                    <div class="mt-3 flex items-center gap-2 text-xs">
-                        <span class="text-amber-400 font-bold">Priorité Patch</span>
-                        <span class="text-slate-400">Équipements critiques touchés</span>
+                    <div class="w-10 h-10 rounded-lg bg-amber-950/80 border border-amber-800/50 flex items-center justify-center text-amber-400">
+                        <i class="fa-solid fa-chart-line text-lg"></i>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+                    <div>
+                        <p class="text-xs text-slate-400 font-medium">Indice de Risque Moyen</p>
+                        <h3 id="kpi-risk-avg" class="text-2xl font-bold text-indigo-400 mt-1">0.0</h3>
+                        <p class="text-[11px] text-slate-500 mt-1">Sur une échelle de 10</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-lg bg-indigo-950/80 border border-indigo-800/50 flex items-center justify-center text-indigo-400">
+                        <i class="fa-solid fa-gauge-high text-lg"></i>
                     </div>
                 </div>
             </div>
 
-            <!-- CHARTS SECTION -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Chart 1: Distribution Severity & KEV -->
-                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 flex flex-col justify-between">
+                <!-- Chart 1: Severity Profile -->
+                <div class="glass-panel p-5 rounded-2xl border border-slate-800 flex flex-col justify-between">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-chart-pie text-cyan-400"></i>
-                            Répartition des Sévérités & KEV
+                        <h3 class="text-sm font-semibold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-chart-pie text-indigo-400"></i> Répartition par Sévérité
                         </h3>
+                        <span class="text-[11px] text-slate-400 font-mono">CVSS v3.1</span>
                     </div>
-                    <div class="relative h-60 w-full">
+                    <div class="relative h-56 flex items-center justify-center">
                         <canvas id="chart-severity"></canvas>
                     </div>
                 </div>
 
-                <!-- Chart 2: CVSS vs EPSS Scatter Matrix -->
-                <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 flex flex-col justify-between lg:col-span-2">
+                <!-- Chart 2: Threat Matrix (CVSS vs EPSS) -->
+                <div class="glass-panel p-5 rounded-2xl border border-slate-800 flex flex-col justify-between">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="text-xs font-bold text-slate-200 uppercase tracking-wider flex items-center gap-2">
-                            <i class="fa-solid fa-diagram-project text-cyan-400"></i>
-                            Matrice d'Exploitabilité (CVSS vs EPSS vs KEV)
+                        <h3 class="text-sm font-semibold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-layer-group text-pink-400"></i> Statut d'Exploitation & CISA KEV
                         </h3>
-                        <span class="text-[11px] text-slate-400">Points rouges = Vulnérabilités KEV Actives</span>
+                        <span class="text-[11px] text-pink-400 font-mono">Real-time CTI</span>
                     </div>
-                    <div class="relative h-60 w-full">
-                        <canvas id="chart-matrix"></canvas>
+                    <div class="relative h-56 flex items-center justify-center">
+                        <canvas id="chart-kev-threat"></canvas>
+                    </div>
+                </div>
+
+                <!-- Chart 3: Top Affected Vendors -->
+                <div class="glass-panel p-5 rounded-2xl border border-slate-800 flex flex-col justify-between">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-sm font-semibold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-building-shield text-amber-400"></i> Top Editeurs Touchés
+                        </h3>
+                        <span class="text-[11px] text-slate-400 font-mono">Vendors</span>
+                    </div>
+                    <div class="relative h-56 flex items-center justify-center">
+                        <canvas id="chart-vendors"></canvas>
                     </div>
                 </div>
             </div>
 
-            <!-- VULNERABILITY TABLE & FILTERS -->
-            <div class="p-5 rounded-2xl bg-slate-900/80 border border-slate-800 space-y-4">
-                
-                <!-- Table Header & Controls -->
-                <div class="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between">
-                    <div>
-                        <h3 class="text-sm font-bold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-list-check text-cyan-400"></i>
-                            Inventaire Détaillé des Vulnérabilités
-                        </h3>
-                        <p class="text-xs text-slate-400">Équipements, calculateurs et analyse de risque VIE</p>
+            <div class="glass-panel p-5 rounded-2xl border border-slate-800 space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <!-- Search Input -->
+                    <div class="relative flex-grow max-w-md">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                        <input type="text" id="filter-search" oninput="applyFilters()" placeholder="Rechercher par CVE, Éditeur, Produit ou Mots-clés..." 
+                            class="w-full pl-9 pr-4 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
                     </div>
 
-                    <!-- Search and Filter Buttons -->
-                    <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
-                        <!-- Search input -->
-                        <div class="relative flex-grow md:flex-grow-0 min-w-[220px]">
-                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-slate-500 text-xs"></i>
-                            <input type="text" id="table-search" oninput="applyFilters()" placeholder="Rechercher CVE, équipement..." 
-                                   class="w-full bg-slate-950 border border-slate-800 rounded-lg pl-8 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500">
-                        </div>
+                    <!-- Filters Group -->
+                    <div class="flex items-center gap-3 flex-wrap">
+                        <!-- Severity Filter -->
+                        <select id="filter-severity" onchange="applyFilters()" class="px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+                            <option value="ALL">Toutes sévérités</option>
+                            <option value="CRITICAL">Critique uniquement</option>
+                            <option value="HIGH">Élevée</option>
+                            <option value="MEDIUM">Moyenne</option>
+                            <option value="LOW">Faible</option>
+                        </select>
 
-                        <!-- Quick KEV Filter Button -->
-                        <button id="btn-filter-kev" onclick="toggleKevFilter()" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 border border-slate-700 text-slate-300 hover:border-rose-500/50 transition flex items-center gap-1.5">
-                            <i class="fa-solid fa-fire text-rose-500"></i>
-                            <span>🔥 KEV Uniquement</span>
-                        </button>
+                        <!-- CISA KEV Filter -->
+                        <select id="filter-kev" onchange="applyFilters()" class="px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+                            <option value="ALL">Tous les statuts KEV</option>
+                            <option value="KEV_ONLY">Présent CISA KEV 🔥</option>
+                            <option value="NON_KEV">Hors CISA KEV</option>
+                        </select>
 
-                        <!-- Severity Selector -->
-                        <select id="severity-filter" onchange="applyFilters()" class="bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-cyan-500">
-                            <option value="ALL">Toutes les sévérités</option>
-                            <option value="CRITICAL">Critiques (≥ 80)</option>
-                            <option value="HIGH font-bold">Élevées (60 - 79)</option>
-                            <option value="MEDIUM">Moyennes (30 - 59)</option>
-                            <option value="LOW">Faibles (&lt; 30)</option>
+                        <!-- Ransomware Filter -->
+                        <select id="filter-ransomware" onchange="applyFilters()" class="px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+                            <option value="ALL">Tous types d'attaques</option>
+                            <option value="RANSOMWARE_ONLY">Lié au Ransomware ☣️</option>
+                        </select>
+
+                        <!-- Sort By Filter -->
+                        <select id="filter-sort" onchange="applyFilters()" class="px-3 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+                            <option value="RISK_DESC">Tri: Score de Risque VIE (Décroissant)</option>
+                            <option value="EPSS_DESC">Tri: EPSS (Décroissant)</option>
+                            <option value="CVSS_DESC">Tri: CVSS (Décroissant)</option>
+                            <option value="CVE_ASC">Tri: Identifiant CVE</option>
                         </select>
                     </div>
                 </div>
 
-                <!-- Vulnerability Table Container -->
-                <div class="overflow-x-auto rounded-xl border border-slate-800/80">
+                <!-- EPSS Threshold Range Slider -->
+                <div class="flex items-center gap-4 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                    <span class="text-xs text-slate-400 font-medium whitespace-nowrap">
+                        <i class="fa-solid fa-filter text-indigo-400"></i> Seuil d'exploitabilité minimum (EPSS &ge; <span id="epss-slider-val" class="font-bold text-white font-mono">0%</span>) :
+                    </span>
+                    <input type="range" id="filter-epss-min" min="0" max="100" value="0" step="5" oninput="updateEpssSliderLabel(); applyFilters();" class="w-full accent-indigo-500 cursor-pointer">
+                </div>
+            </div>
+
+            <div class="glass-panel rounded-2xl border border-slate-800 overflow-hidden shadow-2xl">
+                <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs text-slate-300">
-                        <thead class="bg-slate-950/80 text-slate-400 font-semibold uppercase text-[10px] tracking-wider border-b border-slate-800">
+                        <thead class="bg-slate-900/90 text-slate-400 uppercase font-mono border-b border-slate-800">
                             <tr>
-                                <th class="py-3 px-4">Identifiant / Équipement</th>
-                                <th class="py-3 px-4 text-center">Score CVSS</th>
-                                <th class="py-3 px-4 text-center">EPSS Prob.</th>
-                                <th class="py-3 px-4 text-center">Statut CISA KEV</th>
-                                <th class="py-3 px-4 text-center">Criticité Actif</th>
-                                <th class="py-3 px-4 text-center cursor-pointer select-none hover:text-white" onclick="toggleSortRisk()">
-                                    Score Risque VIE <i class="fa-solid fa-sort text-slate-500 ml-1"></i>
-                                </th>
-                                <th class="py-3 px-4 text-right">Actions</th>
+                                <th class="p-4">Vulnérabilité (CVE)</th>
+                                <th class="p-4">Éditeur / Produit</th>
+                                <th class="p-4 text-center">Score CVSS</th>
+                                <th class="p-4 text-center">Probabilité EPSS</th>
+                                <th class="p-4 text-center">Tags Menaces</th>
+                                <th class="p-4 text-center">Calculateur de Risque VIE</th>
+                                <th class="p-4 text-right">Action</th>
                             </tr>
                         </thead>
-                        <tbody id="vuln-table-body" class="divide-y divide-slate-800/60 bg-slate-900/30">
-                            <!-- Rows generated dynamically -->
+                        <tbody id="vuln-table-body" class="divide-y divide-slate-800/60">
+                            <!-- Rows populated dynamically via JS -->
                         </tbody>
                     </table>
                 </div>
-
-                <!-- Table Footer Pagination Info -->
-                <div class="flex justify-between items-center text-xs text-slate-400 pt-2">
-                    <span id="table-count-info">Affichage de 0 sur 0 vulnérabilités</span>
-                    <div class="flex gap-2">
-                        <button onclick="downloadJsonExport()" class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition">
-                            <i class="fa-solid fa-download mr-1"></i> Exporter JSON
-                        </button>
+                <!-- Table Footer Pagination/Status -->
+                <div class="p-4 bg-slate-900/60 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+                    <div>
+                        Affichage de <span id="table-count" class="font-bold text-white">0</span> vulnérabilité(s) filtrée(s)
+                    </div>
+                    <div id="table-hint" class="text-[11px] text-slate-500 italic">
+                        Cliquez sur "Simuler / Détails" pour ouvrir l'estimateur de réduction du risque.
                     </div>
                 </div>
-
             </div>
-        </section>
+
+        </div>
     </main>
 
-    <!-- MODAL 1: DETAIL CVE & DECOMPOSITION MATH -->
-    <div id="cve-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-2xl w-full p-6 shadow-2xl relative max-h-[90vh] overflow-y-auto">
-            
-            <button onclick="closeCveModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
+    <div id="import-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="glass-panel max-w-lg w-full rounded-2xl border border-slate-800 p-6 space-y-5 relative shadow-2xl">
+            <button onclick="closeImportModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
                 <i class="fa-solid fa-xmark"></i>
             </button>
-
-            <!-- Modal Header -->
-            <div class="flex items-center gap-3 mb-4">
-                <div id="modal-cve-badge" class="px-2.5 py-1 rounded-md text-xs font-bold font-mono bg-rose-500/20 text-rose-400 border border-rose-500/30">
-                    CVE-2024-XXXX
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-indigo-900/50 border border-indigo-700/50 text-indigo-400 flex items-center justify-center">
+                    <i class="fa-solid fa-file-code text-lg"></i>
                 </div>
-                <h3 id="modal-cve-title" class="text-lg font-bold text-white">Titre de la vulnérabilité</h3>
+                <div>
+                    <h3 class="text-base font-bold text-white">Importer un fichier CTI</h3>
+                    <p class="text-xs text-slate-400">Supporte JSON (toutes structures) et CSV</p>
+                </div>
             </div>
 
-            <!-- Modal Content -->
-            <div class="space-y-5 text-xs">
-                
-                <!-- Equipment & General Info -->
-                <div class="grid grid-cols-2 gap-3 p-3 rounded-xl bg-slate-950 border border-slate-800">
-                    <div>
-                        <span class="text-slate-500 block">Équipement Cible :</span>
-                        <span id="modal-equipment" class="font-semibold text-slate-200">Calculateur Avionique</span>
-                    </div>
-                    <div>
-                        <span class="text-slate-500 block">Vecteur d'Attaque :</span>
-                        <span id="modal-vector" class="font-mono text-cyan-400">Network (AV:N/AC:L)</span>
-                    </div>
-                </div>
+            <!-- Dropzone Area -->
+            <div id="dropzone" onclick="document.getElementById('file-input').click()" 
+                class="border-2 border-dashed border-slate-700 hover:border-indigo-500 bg-slate-900/50 hover:bg-slate-900 rounded-xl p-8 text-center cursor-pointer transition">
+                <i class="fa-solid fa-cloud-arrow-up text-3xl text-indigo-400 mb-3"></i>
+                <p class="text-xs font-semibold text-slate-200">Glissez-déposez votre fichier ici</p>
+                <p class="text-[11px] text-slate-400 mt-1">ou cliquez pour sélectionner depuis votre ordinateur</p>
+                <p class="text-[10px] text-slate-500 mt-3 font-mono">Formats acceptés: .json, .csv</p>
+                <input type="file" id="file-input" accept=".json,.csv" onchange="handleFileSelect(event)" class="hidden">
+            </div>
 
-                <!-- Description -->
-                <div>
-                    <h4 class="font-bold text-slate-300 uppercase tracking-wider text-[11px] mb-1">Description Technique</h4>
-                    <p id="modal-description" class="text-slate-400 leading-relaxed bg-slate-950/40 p-3 rounded-lg border border-slate-800/80">
-                        Description de la faille...
-                    </p>
-                </div>
+            <div class="bg-slate-900 p-3 rounded-xl border border-slate-800 text-[11px] text-slate-400 space-y-1">
+                <p class="font-semibold text-slate-300"><i class="fa-solid fa-shield-check text-emerald-400 mr-1"></i> Formats JSON pris en charge :</p>
+                <ul class="list-disc pl-4 space-y-0.5 font-mono text-[10px]">
+                    <li>Tableau brut: <code class="text-indigo-300">[ { "cveID": "..." }, ... ]</code></li>
+                    <li>Objets englobants: <code class="text-indigo-300">{ "vulnerabilities": [...] }</code>, <code class="text-indigo-300">{ "cves": [...] }</code>, <code class="text-indigo-300">{ "data": [...] }</code></li>
+                    <li>Objet CVE unique: <code class="text-indigo-300">{ "cveID": "CVE-2024-1234", ... }</code></li>
+                </ul>
+            </div>
 
-                <!-- Detailed Math Breakdown -->
-                <div class="p-4 rounded-xl bg-gradient-to-b from-slate-950 to-slate-900 border border-slate-800 space-y-3">
-                    <h4 class="font-bold text-cyan-400 uppercase tracking-wider text-[11px] flex items-center gap-1.5">
-                        <i class="fa-solid fa-calculator"></i>
-                        Décomposition Mathématique du Score VIE
-                    </h4>
-
-                    <div class="space-y-2">
-                        <!-- CVSS Part -->
-                        <div class="flex items-center justify-between">
-                            <span class="text-slate-400">1. Composante CVSS (35%) :</span>
-                            <span id="modal-math-cvss" class="font-mono text-slate-200 font-bold">9.8 × 10 × 0.35 = 34.3 pts</span>
-                        </div>
-                        <!-- EPSS Part -->
-                        <div class="flex items-center justify-between">
-                            <span class="text-slate-400">2. Composante EPSS (35%) :</span>
-                            <span id="modal-math-epss" class="font-mono text-slate-200 font-bold">85% × 0.35 = 29.75 pts</span>
-                        </div>
-                        <!-- KEV Part -->
-                        <div class="flex items-center justify-between">
-                            <span class="text-slate-400">3. Composante CISA KEV (30%) :</span>
-                            <span id="modal-math-kev" class="font-mono text-rose-400 font-bold">Actif (+27.0 pts)</span>
-                        </div>
-                        <hr class="border-slate-800">
-                        <!-- Weighted Base -->
-                        <div class="flex items-center justify-between text-slate-300">
-                            <span>Score de Base Pondéré :</span>
-                            <span id="modal-math-base" class="font-mono font-bold">91.05 / 100</span>
-                        </div>
-                        <!-- Equipment Multiplier -->
-                        <div class="flex items-center justify-between text-slate-300">
-                            <span>Coeff Criticité Actif :</span>
-                            <span id="modal-math-coeff" class="font-mono text-amber-400 font-bold">× 1.50</span>
-                        </div>
-                        <!-- Final Result -->
-                        <div class="flex items-center justify-between text-sm pt-2 border-t border-slate-800">
-                            <span class="font-extrabold text-white">Score Final Ajusté VIE :</span>
-                            <span id="modal-math-final" class="font-mono font-black text-rose-400 text-base">98.5 / 100</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Remediation & KEV notes -->
-                <div id="modal-remediation-box" class="p-3 rounded-xl bg-emerald-950/30 border border-emerald-800/40 text-emerald-300">
-                    <h5 class="font-bold flex items-center gap-1.5 mb-1">
-                        <i class="fa-solid fa-wrench"></i> Action Recommandée
-                    </h5>
-                    <p id="modal-remediation-text">Appliquer le correctif firmware v2.1.0 immédiatement.</p>
-                </div>
-
+            <div class="flex justify-end gap-2">
+                <button onclick="closeImportModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-xs font-medium rounded-xl text-slate-300">Annuler</button>
             </div>
         </div>
     </div>
 
-    <!-- MODAL 2: INTERACTIVE LIVE CALCULATOR / SIMULATOR -->
-    <div id="simulator-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-700 rounded-2xl max-w-xl w-full p-6 shadow-2xl relative">
-            
+    <div id="simulator-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden overflow-y-auto">
+        <div class="glass-panel max-w-2xl w-full rounded-2xl border border-slate-800 p-6 space-y-6 relative shadow-2xl my-8">
             <button onclick="closeSimulatorModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-lg">
                 <i class="fa-solid fa-xmark"></i>
             </button>
 
-            <div class="flex items-center gap-3 mb-4">
-                <div class="w-9 h-9 rounded-xl bg-cyan-500/20 border border-cyan-500/30 text-cyan-400 flex items-center justify-center">
-                    <i class="fa-solid fa-sliders"></i>
+            <!-- Header info -->
+            <div class="flex items-start gap-4">
+                <div id="sim-severity-icon" class="w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold border shrink-0">
+                    <i class="fa-solid fa-shield text-xl"></i>
                 </div>
                 <div>
-                    <h3 class="text-base font-bold text-white">Simulateur Unitaire de Risque VIE</h3>
-                    <p class="text-xs text-slate-400">Testez l'impact du KEV et des paramètres sur le score final</p>
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <h2 id="sim-cve-id" class="text-lg font-bold text-white font-mono">CVE-XXXX-XXXX</h2>
+                        <span id="sim-kev-badge" class="hidden px-2 py-0.5 rounded text-[10px] font-bold bg-pink-950 text-pink-400 border border-pink-800">
+                            <i class="fa-solid fa-fire mr-1"></i> CISA KEV
+                        </span>
+                        <span id="sim-ransomware-badge" class="hidden px-2 py-0.5 rounded text-[10px] font-bold bg-red-950 text-red-400 border border-red-800">
+                            <i class="fa-solid fa-biohazard mr-1"></i> RANSOMWARE
+                        </span>
+                    </div>
+                    <p id="sim-vendor-product" class="text-xs text-slate-400 mt-1">Vendor - Product</p>
                 </div>
             </div>
 
-            <!-- Controls Form -->
-            <div class="space-y-4 text-xs">
-                <!-- Slider CVSS -->
-                <div>
-                    <div class="flex justify-between mb-1">
-                        <label class="text-slate-300 font-semibold">Score CVSS v3/v4 :</label>
-                        <span id="sim-cvss-val" class="font-mono font-bold text-cyan-400">8.5</span>
-                    </div>
-                    <input type="range" id="sim-cvss" min="0" max="10" step="0.1" value="8.5" oninput="runSimulation()" class="w-full accent-cyan-400 bg-slate-800">
-                </div>
+            <!-- Description -->
+            <div class="bg-slate-900/80 p-3.5 rounded-xl border border-slate-800 text-xs text-slate-300 leading-relaxed" id="sim-description">
+                Description de la vulnérabilité...
+            </div>
 
-                <!-- Slider EPSS -->
-                <div>
-                    <div class="flex justify-between mb-1">
-                        <label class="text-slate-300 font-semibold">Probabilité EPSS (%) :</label>
-                        <span id="sim-epss-val" class="font-mono font-bold text-cyan-400">45%</span>
-                    </div>
-                    <input type="range" id="sim-epss" min="0" max="100" step="1" value="45" oninput="runSimulation()" class="w-full accent-cyan-400 bg-slate-800">
-                </div>
+            <!-- Recommended remediation action -->
+            <div class="bg-indigo-950/40 p-3.5 rounded-xl border border-indigo-800/50 text-xs space-y-1">
+                <p class="font-semibold text-indigo-300 flex items-center gap-1.5">
+                    <i class="fa-solid fa-screwdriver-wrench"></i> Action Corrective Recommandée CISA :
+                </p>
+                <p id="sim-solution" class="text-slate-300"></p>
+            </div>
 
-                <!-- KEV Switch & Ransomware Switch -->
-                <div class="grid grid-cols-2 gap-3 pt-2">
-                    <label class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800 cursor-pointer">
-                        <div>
-                            <span class="block text-slate-200 font-bold">Statut CISA KEV</span>
-                            <span class="text-[10px] text-slate-500">Exploitation active</span>
-                        </div>
-                        <input type="checkbox" id="sim-kev" onchange="runSimulation()" checked class="w-4 h-4 accent-rose-500 rounded">
+            <!-- Simulator Controls Section -->
+            <div class="space-y-3">
+                <h3 class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-indigo-400"></i> Simulateur d'Ajustement des Mesures de Compensatoires
+                </h3>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <label class="flex items-center justify-between p-3 bg-slate-900 rounded-xl border border-slate-800 cursor-pointer hover:border-slate-700">
+                        <span class="text-xs text-slate-200">Patch de sécurité appliqué</span>
+                        <input type="checkbox" id="sim-chk-patch" onchange="recalculateSimulatedRisk()" class="w-4 h-4 rounded text-indigo-600 bg-slate-800 border-slate-700">
                     </label>
 
-                    <label class="flex items-center justify-between p-3 rounded-xl bg-slate-950 border border-slate-800 cursor-pointer">
-                        <div>
-                            <span class="block text-slate-200 font-bold">Usage Ransomware</span>
-                            <span class="text-[10px] text-slate-500">Bonus urgence</span>
-                        </div>
-                        <input type="checkbox" id="sim-ransomware" onchange="runSimulation()" class="w-4 h-4 accent-purple-500 rounded">
+                    <label class="flex items-center justify-between p-3 bg-slate-900 rounded-xl border border-slate-800 cursor-pointer hover:border-slate-700">
+                        <span class="text-xs text-slate-200">Segmentation réseau / Isolation</span>
+                        <input type="checkbox" id="sim-chk-segmentation" onchange="recalculateSimulatedRisk()" class="w-4 h-4 rounded text-indigo-600 bg-slate-800 border-slate-700">
                     </label>
-                </div>
 
-                <!-- Asset Criticality Slider -->
+                    <label class="flex items-center justify-between p-3 bg-slate-900 rounded-xl border border-slate-800 cursor-pointer hover:border-slate-700">
+                        <span class="text-xs text-slate-200">WAF / EDR Protection active</span>
+                        <input type="checkbox" id="sim-chk-waf" onchange="recalculateSimulatedRisk()" class="w-4 h-4 rounded text-indigo-600 bg-slate-800 border-slate-700">
+                    </label>
+
+                    <div class="p-3 bg-slate-900 rounded-xl border border-slate-800 flex items-center justify-between">
+                        <span class="text-xs text-slate-200">Criticité de l'Actif</span>
+                        <select id="sim-select-criticality" onchange="recalculateSimulatedRisk()" class="bg-slate-800 text-xs text-slate-200 border border-slate-700 rounded px-2 py-1">
+                            <option value="HIGH">Élevée (1.0x)</option>
+                            <option value="MEDIUM">Moyenne (0.75x)</option>
+                            <option value="LOW">Faible (0.5x)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Risk Calculation Impact Box -->
+            <div class="p-4 bg-slate-900 rounded-xl border border-slate-800 grid grid-cols-2 gap-4 text-center">
                 <div>
-                    <div class="flex justify-between mb-1">
-                        <label class="text-slate-300 font-semibold">Coefficient Criticité Équipement :</label>
-                        <span id="sim-crit-val" class="font-mono font-bold text-amber-400">1.50x</span>
-                    </div>
-                    <input type="range" id="sim-crit" min="1.0" max="2.0" step="0.1" value="1.5" oninput="runSimulation()" class="w-full accent-amber-400 bg-slate-800">
+                    <p class="text-[11px] text-slate-400">Score de Risque Brut</p>
+                    <p id="sim-raw-risk" class="text-xl font-bold text-red-400 mt-0.5">0.0</p>
                 </div>
+                <div>
+                    <p class="text-[11px] text-slate-400">Score Résiduel Simulé</p>
+                    <p id="sim-residual-risk" class="text-xl font-bold text-emerald-400 mt-0.5">0.0</p>
+                </div>
+            </div>
 
-                <!-- Real-time Result Box -->
-                <div class="p-4 rounded-xl bg-slate-950 border border-slate-800 text-center space-y-2">
-                    <span class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">Score de Risque VIE Calculé</span>
-                    <div id="sim-result-score" class="text-4xl font-black font-mono text-rose-500">
-                        88.5
-                    </div>
-                    <div id="sim-result-badge" class="inline-block px-3 py-1 rounded-full text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30">
-                        RISQUE CRITIQUE
-                    </div>
-                </div>
+            <div class="flex justify-end gap-2">
+                <button onclick="closeSimulatorModal()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold rounded-xl">Fermer</button>
             </div>
         </div>
     </div>
 
-    <!-- FOOTER -->
-    <footer class="border-t border-slate-800 bg-slate-950 py-4 no-print mt-8">
-        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-500 flex flex-col sm:flex-row justify-between items-center gap-2">
-            <span>Vuln Intel Engine (VIE) © 2026 - Moteur de Risque pour Équipements Tactiques</span>
-            <span class="flex items-center gap-2">
-                <i class="fa-solid fa-shield-cat text-cyan-400"></i>
-                Compatible CISA KEV Feed & EPSS v3
-            </span>
-        </div>
-    </footer>
-
     <script>
-        // Global Application State
         let rawDataset = [];
         let filteredDataset = [];
-        let kevFilterOnly = false;
-        let sortRiskAsc = false;
+        let currentSimulatedCve = null;
+        let chartSeverity = null;
+        let chartThreat = null;
+        let chartVendors = null;
 
-        // Chart instances
-        let severityChartInstance = null;
-        let matrixChartInstance = null;
-
-        // Realistic Demo Dataset with equipment and CISA KEV information
+        // Realistic Demo Dataset (CISA KEV + High Priority CVEs)
         const DEMO_DATASET = [
             {
-                id: "CVE-2024-21762",
-                title: "Out-of-bounds write in Fortinet FortiOS SSL VPN",
-                equipment: "Passerelle Réseau Tactique GW-80",
-                cvss: 9.8,
-                epss: 0.94,
-                isKev: true,
-                isRansomware: true,
-                criticality: 1.8,
-                vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-                description: "Une vulnérabilité d'écriture hors limites dans FortiOS permet à un attaquant non authentifié d'exécuter du code arbitraire via des requêtes spécifiquement conçues.",
-                remediation: "Appliquer la mise à jour firmware v7.4.3 ou désactiver le module SSL VPN immédiatement."
+                cveID: "CVE-2023-23397",
+                cvssScore: 9.8,
+                epssScore: 0.962,
+                cisaKev: true,
+                ransomwareUse: true,
+                vendorProject: "Microsoft",
+                product: "Outlook",
+                shortDescription: "Microsoft Outlook Elevation of Privilege Vulnerability allowing NTLM credential theft via crafted email.",
+                requiredAction: "Appliquer la mise à jour cumulative de sécurité Microsoft ou bloquer les ports UDP 445 en sortie.",
+                dateAdded: "2023-03-14"
             },
             {
-                id: "CVE-2023-3519",
-                title: "Unauthenticated RCE in Citrix ADC & Gateway",
-                equipment: "Calculateur de Vol FlightCore-X",
-                cvss: 9.8,
-                epss: 0.89,
-                isKev: true,
-                isRansomware: false,
-                criticality: 2.0,
-                vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-                description: "Exécution de code à distance non authentifiée sur le calculateur d'avionique principale lors du traitement des paquets de contrôle.",
-                remediation: "Isoler le bus de données critique et installer le patch constructeur v4.2."
+                cveID: "CVE-2023-34362",
+                cvssScore: 9.8,
+                epssScore: 0.975,
+                cisaKev: true,
+                ransomwareUse: true,
+                vendorProject: "Progress",
+                product: "MOVEit Transfer",
+                shortDescription: "SQL injection vulnerability in MOVEit Transfer web application leading to unauthenticated remote code execution.",
+                requiredAction: "Désactiver l'accès HTTP/HTTPS distant et appliquer le correctif fournisseur immédiatement.",
+                dateAdded: "2023-06-02"
             },
             {
-                id: "CVE-2024-3400",
-                title: "Command Injection in Palo Alto PAN-OS",
-                equipment: "Processeur Radar Sentinel-4",
-                cvss: 10.0,
-                epss: 0.92,
-                isKev: true,
-                isRansomware: true,
-                criticality: 1.7,
-                vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:C/C:H/I:H/A:H",
-                description: "Une vulnérabilité d'injection de commandes dans la fonction de télémétrie permet à un attaquant distant non authentifié d'exécuter du code avec les privilèges root.",
-                remediation: "Désactiver temporairement la télémétrie et appliquer le correctif d'urgence."
+                cveID: "CVE-2024-21887",
+                cvssScore: 9.1,
+                epssScore: 0.912,
+                cisaKev: true,
+                ransomwareUse: true,
+                vendorProject: "Ivanti",
+                product: "Connect Secure",
+                shortDescription: "Command injection vulnerability in web components of Ivanti Connect Secure and Policy Secure gateways.",
+                requiredAction: "Exécuter l'outil d'intégrité interne (ICT) et appliquer le correctif de firmware.",
+                dateAdded: "2024-01-10"
             },
             {
-                id: "CVE-2023-48788",
-                title: "SQL Injection in FortiClient EMS",
-                equipment: "Unité Display Tactique HUD-3",
-                cvss: 7.8,
-                epss: 0.35,
-                isKev: false,
-                isRansomware: false,
-                criticality: 1.2,
-                vector: "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
-                description: "Injection SQL permettant l'exécution de commandes système sur la console de visualisation.",
-                remediation: "Mettre à jour vers la version 7.2.2 ou supérieure."
+                cveID: "CVE-2024-1709",
+                cvssScore: 10.0,
+                epssScore: 0.941,
+                cisaKev: true,
+                ransomwareUse: true,
+                vendorProject: "ConnectWise",
+                product: "ScreenConnect",
+                shortDescription: "Authentication bypass vulnerability allowing administrative account creation and arbitrary code execution.",
+                requiredAction: "Mettre à jour ConnectWise ScreenConnect vers la version 23.9.8 ou supérieure.",
+                dateAdded: "2024-02-22"
             },
             {
-                id: "CVE-2024-20353",
-                title: "Cisco ASA and FTD Denial of Service",
-                equipment: "Passerelle Bus MIL-STD-1553",
-                cvss: 8.6,
-                epss: 0.78,
-                isKev: true,
-                isRansomware: false,
-                criticality: 1.5,
-                vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-                description: "Provoque le redémarrage en boucle du calculateur de gestion de bus suite à l'envoi de paquets malformés.",
-                remediation: "Restreindre l'accès à l'interface de gestion et mettre à jour l'image système."
+                cveID: "CVE-2023-4863",
+                cvssScore: 8.8,
+                epssScore: 0.720,
+                cisaKev: true,
+                ransomwareUse: false,
+                vendorProject: "Google",
+                product: "Chrome / libwebp",
+                shortDescription: "Heap buffer overflow in WebP image parsing component affecting multiple web browsers and applications.",
+                requiredAction: "Mettre à jour Google Chrome, Mozilla Firefox et les bibliothèques libwebp associées.",
+                dateAdded: "2023-09-13"
             },
             {
-                id: "CVE-2023-27997",
-                title: "Heap-based buffer overflow in FortiOS",
-                equipment: "Calculateur Optronique EO-300",
-                cvss: 9.2,
-                epss: 0.81,
-                isKev: true,
-                isRansomware: true,
-                criticality: 1.4,
-                vector: "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-                description: "Dépassement de tampon dans le tas permettant une prise de contrôle à distance de l'unité de guidage optronique.",
-                remediation: "Mettre à jour immédiatement vers la version patchée."
+                cveID: "CVE-2023-22515",
+                cvssScore: 10.0,
+                epssScore: 0.880,
+                cisaKev: true,
+                ransomwareUse: true,
+                vendorProject: "Atlassian",
+                product: "Confluence Data Center",
+                shortDescription: "Broken access control vulnerability allowing unauthenticated admin account creation in Confluence Server.",
+                requiredAction: "Restreindre l'accès externe à la passerelle /setup/* et mettre à jour Confluence immédiatement.",
+                dateAdded: "2023-10-04"
             },
             {
-                id: "CVE-2022-30190",
-                title: "Microsoft Windows MSDT Remote Code Execution (Follina)",
-                equipment: "Station Sol de Recommandation ST-2",
-                cvss: 7.8,
-                epss: 0.65,
-                isKev: true,
-                isRansomware: true,
-                criticality: 1.1,
-                vector: "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
-                description: "Exécution de code à distance via l'outil de diagnostic lorsque la cible ouvre un document spécifique.",
-                remediation: "Désactiver le protocole MSDT dans la base de registre."
+                cveID: "CVE-2024-30078",
+                cvssScore: 8.8,
+                epssScore: 0.125,
+                cisaKev: false,
+                ransomwareUse: false,
+                vendorProject: "Microsoft",
+                product: "Windows Wi-Fi Driver",
+                shortDescription: "Windows Wi-Fi Driver Remote Code Execution Vulnerability via malicious wireless packets.",
+                requiredAction: "Appliquer la mise à jour mensuelle des correctifs Windows de Juin 2024.",
+                dateAdded: "2024-06-11"
             },
             {
-                id: "CVE-2024-1086",
-                title: "Linux Kernel Use-After-Free Vulnerability",
-                equipment: "Module d'Analyse IA Edge-Compute",
-                cvss: 7.8,
-                epss: 0.12,
-                isKev: false,
-                isRansomware: false,
-                criticality: 1.3,
-                vector: "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
-                description: "Élévation locale de privilèges vers root dans le composant netfilter du noyau Linux.",
-                remediation: "Mettre à jour le noyau Linux vers la version 6.8+."
+                cveID: "CVE-2024-20353",
+                cvssScore: 8.6,
+                epssScore: 0.350,
+                cisaKev: true,
+                ransomwareUse: false,
+                vendorProject: "Cisco",
+                product: "ASA & FTD Software",
+                shortDescription: "Denial of Service vulnerability in Cisco Adaptive Security Appliance and Firepower Threat Defense management web server.",
+                requiredAction: "Appliquer les mises à jour logicielles Cisco ASA/FTD correspondantes.",
+                dateAdded: "2024-04-24"
+            },
+            {
+                cveID: "CVE-2023-38606",
+                cvssScore: 7.8,
+                epssScore: 0.082,
+                cisaKev: true,
+                ransomwareUse: false,
+                vendorProject: "Apple",
+                product: "iOS / macOS",
+                shortDescription: "Kernel vulnerability in Apple operating systems allowing malicious app to modify sensitive state.",
+                requiredAction: "Mettre à jour iOS 16.6, iPadOS 16.6 ou macOS Ventura 13.5.",
+                dateAdded: "2023-07-25"
+            },
+            {
+                cveID: "CVE-2024-38077",
+                cvssScore: 9.8,
+                epssScore: 0.650,
+                cisaKev: false,
+                ransomwareUse: false,
+                vendorProject: "Microsoft",
+                product: "Windows Remote Desktop Licensing",
+                shortDescription: "Remote Code Execution vulnerability in Windows Remote Desktop Licensing Service.",
+                requiredAction: "Désactiver le service de licence RDP si non utilisé ou appliquer la mise à jour Juillet 2024.",
+                dateAdded: "2024-07-09"
             }
         ];
 
         /**
-         * CALCULATEUR DU SCORE DE RISQUE OPÉRATIONNEL VIE
-         * Formule :
-         * Base CVSS (0-100) = CVSS * 10
-         * Base EPSS (0-100) = EPSS * 100
-         * Base KEV (0-100)  = Si KEV actif : 85 points (ou 100 points si Ransomware) ; sinon 0 point.
-         * Score Pondéré = (CVSS_Base * 0.35) + (EPSS_Base * 0.35) + (KEV_Base * 0.30)
-         * Score Final = Score Pondéré * Criticalité_Équipement (plafonné à 100)
+         * Normalizes any incoming JSON object/array to ensure we retrieve an array of vulnerability objects.
+         * Handles:
+         * 1. Raw Array: [...]
+         * 2. Wrapper objects: { vulnerabilities: [] }, { cves: [] }, { data: [] }, { items: [] }, { results: [] }
+         * 3. Single vulnerability object: { cveID: "CVE-..." }
          */
-        function calculateVieRiskScore(item) {
-            const cvssComponent = (item.cvss * 10) * 0.35;
-            const epssComponent = (item.epss * 100) * 0.35;
-            
-            let kevScore = 0;
-            if (item.isKev) {
-                kevScore = item.isRansomware ? 100 : 85;
-            }
-            const kevComponent = kevScore * 0.30;
+        function extractVulnerabilityArray(parsedData) {
+            if (!parsedData) return [];
 
-            const weightedBase = cvssComponent + epssComponent + kevComponent;
-            const finalScore = Math.min(100, weightedBase * item.criticality);
+            // Case 1: Direct array
+            if (Array.isArray(parsedData)) {
+                return parsedData;
+            }
+
+            // Case 2: Object with array wrappers
+            if (typeof parsedData === 'object' && parsedData !== null) {
+                const standardKeys = [
+                    'vulnerabilities', 'vulnerability', 'cves', 'cve',
+                    'data', 'items', 'results', 'findings',
+                    'vulnerabilities_list', 'vulnerabilityList', 'records'
+                ];
+
+                for (const key of standardKeys) {
+                    if (Array.isArray(parsedData[key])) {
+                        return parsedData[key];
+                    }
+                }
+
+                // Case 3: Search for the largest array inside any property of the object
+                let candidateArray = null;
+                for (const key in parsedData) {
+                    if (Array.isArray(parsedData[key])) {
+                        if (!candidateArray || parsedData[key].length > candidateArray.length) {
+                            candidateArray = parsedData[key];
+                        }
+                    }
+                }
+                if (candidateArray) return candidateArray;
+
+                // Case 4: Single vulnerability object wrapped in JSON
+                if (
+                    parsedData.cveID || parsedData.cve_id || parsedData.cve ||
+                    parsedData.id || parsedData.name || parsedData.title || parsedData.cveId
+                ) {
+                    return [parsedData];
+                }
+            }
+
+            throw new Error("Impossible de localiser une liste de vulnérabilités dans ce fichier.");
+        }
+
+        /**
+         * Robust CSV parser supporting quotes, commas, and semicolons
+         */
+        function parseCSV(text) {
+            const lines = text.split(/\r\n|\n/).filter(line => line.trim().length > 0);
+            if (lines.length < 2) {
+                throw new Error("Le fichier CSV doit au moins contenir une ligne d'en-tête et une ligne de données.");
+            }
+
+            const headerLine = lines[0];
+            const delimiter = headerLine.includes(';') ? ';' : ',';
+
+            function splitLine(line) {
+                const result = [];
+                let current = '';
+                let inQuotes = false;
+                for (let i = 0; i < line.length; i++) {
+                    const char = line[i];
+                    if (char === '"' || char === "'") {
+                        inQuotes = !inQuotes;
+                    } else if (char === delimiter && !inQuotes) {
+                        result.push(current.trim().replace(/^["']|["']$/g, ''));
+                        current = '';
+                    } else {
+                        current += char;
+                    }
+                }
+                result.push(current.trim().replace(/^["']|["']$/g, ''));
+                return result;
+            }
+
+            const headers = splitLine(lines[0]).map(h => h.toLowerCase().replace(/[^a-z0-9_]/g, ''));
+            const rows = [];
+
+            for (let i = 1; i < lines.length; i++) {
+                const values = splitLine(lines[i]);
+                if (values.length === 0 || (values.length === 1 && !values[0])) continue;
+
+                const rowObj = {};
+                headers.forEach((header, idx) => {
+                    rowObj[header] = values[idx] !== undefined ? values[idx] : '';
+                });
+                rows.push(rowObj);
+            }
+
+            return rows;
+        }
+
+        /**
+         * Normalizes a vulnerability item from JSON or CSV into standard VIE format
+         */
+        function normalizeVulnerabilityItem(item, index) {
+            const cveId = item.cveID || item.cve_id || item.cve || item.cveId || item.id || `VULN-${index + 1}`;
+
+            let cvss = parseFloat(item.cvssScore || item.cvss_score || item.cvss || item.cvssV3 || item.cvss_v3 || item.score || 0);
+            if (isNaN(cvss)) cvss = 0;
+            cvss = Math.min(10, Math.max(0, cvss));
+
+            let epss = parseFloat(item.epssScore || item.epss_score || item.epss || item.epss_percentile || 0);
+            if (isNaN(epss)) epss = 0;
+            if (epss > 1.0) epss = epss / 100; // Convert percentage 85.5 to 0.855
+            epss = Math.min(1, Math.max(0, epss));
+
+            const cisaKev = Boolean(
+                item.cisaKev || item.cisa_kev || item.knownExploited || item.known_exploited ||
+                item.inKev || item.isKev || item.cisaKevStatus === true ||
+                (typeof item.cisa_kev === 'string' && item.cisa_kev.toLowerCase() === 'true') ||
+                (typeof item.knownExploited === 'string' && item.knownExploited.toLowerCase() === 'true')
+            );
+
+            const ransomware = Boolean(
+                item.ransomwareUse || item.ransomware_use || item.ransomware || item.isRansomware ||
+                (typeof item.ransomware === 'string' && item.ransomware.toLowerCase() === 'true')
+            );
+
+            let severity = (item.severity || item.cvssSeverity || item.impact || '').toUpperCase();
+            if (!['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].includes(severity)) {
+                if (cvss >= 9.0) severity = 'CRITICAL';
+                else if (cvss >= 7.0) severity = 'HIGH';
+                else if (cvss >= 4.0) severity = 'MEDIUM';
+                else severity = 'LOW';
+            }
+
+            const vendor = item.vendorProject || item.vendor || item.vendor_project || item.publisher || 'Non spécifié';
+            const product = item.product || item.affectedProduct || item.software || 'Non spécifié';
+            const description = item.shortDescription || item.description || item.summary || item.title || 'Pas de description fournie.';
+            const solution = item.requiredAction || item.solution || item.remediation || item.action || 'Appliquer le dernier patch de sécurité fournisseur.';
+            const dateAdded = item.dateAdded || item.publishedDate || item.published || new Date().toISOString().split('T')[0];
 
             return {
-                cvssComponent: cvssComponent.toFixed(2),
-                epssComponent: epssComponent.toFixed(2),
-                kevComponent: kevComponent.toFixed(2),
-                weightedBase: weightedBase.toFixed(2),
-                finalScore: parseFloat(finalScore.toFixed(1))
-            };
-        }
-
-        // Load demo data
-        function loadDemoData() {
-            processAndRenderDataset(DEMO_DATASET, "donnees_demo_tactique.json");
-        }
-
-        // Reset state to empty upload page
-        function resetData() {
-            rawDataset = [];
-            filteredDataset = [];
-            document.getElementById("empty-state-view").classList.remove("hidden");
-            document.getElementById("dashboard-view").classList.add("hidden");
-            document.getElementById("active-file-badge").classList.add("hidden");
-            document.getElementById("btn-export-pdf").classList.add("hidden");
-        }
-
-        // Process loaded dataset and display dashboard
-        function processAndRenderDataset(data, fileName) {
-            rawDataset = data.map(item => {
-                const math = calculateVieRiskScore(item);
-                return {
-                    ...item,
-                    riskScore: math.finalScore,
-                    mathDetails: math
-                };
-            });
-
-            // Update UI elements
-            document.getElementById("active-file-name").textContent = fileName;
-            document.getElementById("active-file-badge").classList.remove("hidden");
-            document.getElementById("active-file-badge").classList.add("flex");
-            document.getElementById("btn-export-pdf").classList.remove("hidden");
-
-            document.getElementById("empty-state-view").classList.add("hidden");
-            document.getElementById("dashboard-view").classList.remove("hidden");
-
-            // Apply filters & render stats
-            applyFilters();
-            renderCharts();
-        }
-
-        // Drag & Drop handlers
-        function handleDragOver(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            document.getElementById("drop-zone").classList.add("border-cyan-500", "bg-slate-800/80");
-        }
-
-        function handleDragLeave(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            document.getElementById("drop-zone").classList.remove("border-cyan-500", "bg-slate-800/80");
-        }
-
-        function handleFileDrop(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            document.getElementById("drop-zone").classList.remove("border-cyan-500", "bg-slate-800/80");
-            
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                parseFile(files[0]);
-            }
-        }
-
-        function handleFileSelect(e) {
-            const files = e.target.files;
-            if (files.length > 0) {
-                parseFile(files[0]);
-            }
-        }
-
-        // Parse JSON or CSV
-        function parseFile(file) {
-            const reader = new FileReader();
-            reader.onload = function(evt) {
-                try {
-                    const content = evt.target.result;
-                    if (file.name.endsWith('.json')) {
-                        const parsed = JSON.parse(content);
-                        processAndRenderDataset(parsed, file.name);
-                    } else if (file.name.endsWith('.csv')) {
-                        const parsedCSV = parseCSVToDataset(content);
-                        processAndRenderDataset(parsedCSV, file.name);
-                    } else {
-                        alert("Format non supporté. Veuillez charger un fichier .json ou .csv");
-                    }
-                } catch (err) {
-                    alert("Erreur de lecture du fichier : " + err.message);
+                id: cveId,
+                cveId,
+                cvss,
+                epss,
+                cisaKev,
+                ransomware,
+                severity,
+                vendor,
+                product,
+                description,
+                solution,
+                dateAdded,
+                mitigations: {
+                    patched: false,
+                    segmented: false,
+                    wafActive: false,
+                    assetCriticality: 'HIGH'
                 }
             };
+        }
+
+        /**
+         * Calculates composite VIE risk score
+         */
+        function calculateRiskScore(vuln) {
+            let score = (vuln.cvss * 0.35) + (vuln.epss * 10 * 0.35);
+            if (vuln.cisaKev) score += 2.0;
+            if (vuln.ransomware) score += 1.0;
+
+            // Apply mitigations if present
+            if (vuln.mitigations) {
+                if (vuln.mitigations.patched) return 0.0;
+                if (vuln.mitigations.segmented) score *= 0.65;
+                if (vuln.mitigations.wafActive) score *= 0.80;
+
+                const critMult = { HIGH: 1.0, MEDIUM: 0.75, LOW: 0.5 };
+                score *= (critMult[vuln.mitigations.assetCriticality] || 1.0);
+            }
+
+            return Math.min(10.0, Math.max(0.0, score));
+        }
+
+        function showToast(title, message, type = 'error') {
+            const banner = document.getElementById('toast-banner');
+            const titleEl = document.getElementById('toast-title');
+            const msgEl = document.getElementById('toast-message');
+            const iconEl = document.getElementById('toast-icon');
+
+            titleEl.textContent = title;
+            msgEl.textContent = message;
+
+            banner.className = `rounded-xl p-4 border transition-all duration-300 flex items-start justify-between gap-3 shadow-lg ${
+                type === 'error' ? 'bg-red-950/80 border-red-800 text-red-200' :
+                type === 'success' ? 'bg-emerald-950/80 border-emerald-800 text-emerald-200' :
+                'bg-slate-900 border-slate-700 text-slate-200'
+            }`;
+
+            iconEl.className = `fa-solid text-lg mt-0.5 ${
+                type === 'error' ? 'fa-circle-exclamation text-red-400' :
+                type === 'success' ? 'fa-circle-check text-emerald-400' :
+                'fa-circle-info text-indigo-400'
+            }`;
+
+            banner.classList.remove('hidden');
+        }
+
+        function hideToast() {
+            document.getElementById('toast-banner').classList.add('hidden');
+        }
+
+        function openImportModal() {
+            document.getElementById('import-modal').classList.remove('hidden');
+        }
+
+        function closeImportModal() {
+            document.getElementById('import-modal').classList.add('hidden');
+        }
+
+        function loadDemoDataset() {
+            processParsedDataset(DEMO_DATASET);
+            showToast('Dataset Démo Chargé', '10 vulnérabilités CISA KEV et zéro-days chargées avec succès.', 'success');
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const content = e.target.result;
+                    let rawList = [];
+
+                    if (file.name.endsWith('.csv')) {
+                        const parsedCsv = parseCSV(content);
+                        rawList = parsedCsv;
+                    } else {
+                        // Attempt JSON parse
+                        const parsedJson = JSON.parse(content);
+                        rawList = extractVulnerabilityArray(parsedJson);
+                    }
+
+                    if (!rawList || rawList.length === 0) {
+                        throw new Error("Aucune donnée utilisable n'a été détectée dans le fichier.");
+                    }
+
+                    processParsedDataset(rawList);
+                    closeImportModal();
+                    showToast('Fichier traité avec succès', `${rawList.length} vulnérabilité(s) extraite(s) et analysée(s).`, 'success');
+                } catch (err) {
+                    console.error("Erreur de lecture du fichier :", err);
+                    showToast('Erreur de lecture du fichier', err.message || 'Impossible de parser le fichier sélectionné.', 'error');
+                }
+            };
+
+            reader.onerror = function() {
+                showToast('Erreur Fichier', 'Échec de la lecture du fichier du disque.', 'error');
+            };
+
             reader.readAsText(file);
         }
 
-        // CSV Simple Parser fallback
-        function parseCSVToDataset(csvText) {
-            const lines = csvText.split('\n').filter(l => l.trim().length > 0);
-            const result = [];
-            
-            for (let i = 1; i < lines.length; i++) {
-                const cols = lines[i].split(',');
-                if (cols.length >= 5) {
-                    result.push({
-                        id: cols[0]?.trim() || `CVE-2024-00${i}`,
-                        title: cols[1]?.trim() || "Vulnérabilité Importée",
-                        equipment: cols[2]?.trim() || "Calculateur Générique",
-                        cvss: parseFloat(cols[3]) || 5.0,
-                        epss: parseFloat(cols[4]) || 0.1,
-                        isKev: cols[5] ? cols[5].toLowerCase().includes('true') || cols[5].includes('1') : false,
-                        isRansomware: cols[6] ? cols[6].toLowerCase().includes('true') || cols[6].includes('1') : false,
-                        criticality: parseFloat(cols[7]) || 1.2,
-                        vector: "AV:N/AC:L/PR:N/UI:N",
-                        description: "Importé depuis un fichier CSV personnalisé.",
-                        remediation: "Consulter la documentation sécurité de l'équipement."
-                    });
-                }
-            }
-            return result.length > 0 ? result : DEMO_DATASET;
-        }
+        function processParsedDataset(dataArray) {
+            rawDataset = dataArray.map((item, index) => normalizeVulnerabilityItem(item, index));
+            filteredDataset = [...rawDataset];
 
-        function toggleKevFilter() {
-            kevFilterOnly = !kevFilterOnly;
-            const btn = document.getElementById("btn-filter-kev");
-            if (kevFilterOnly) {
-                btn.classList.add("bg-rose-950", "border-rose-500", "text-rose-300", "glow-kev");
-            } else {
-                btn.classList.remove("bg-rose-950", "border-rose-500", "text-rose-300", "glow-kev");
-            }
-            applyFilters();
-        }
+            // Enable export button
+            const btnExport = document.getElementById('btn-export');
+            btnExport.disabled = false;
+            btnExport.className = "px-3 py-2 text-xs font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg border border-slate-700 transition flex items-center gap-2 cursor-pointer";
 
-        function toggleSortRisk() {
-            sortRiskAsc = !sortRiskAsc;
+            document.getElementById('empty-state').classList.add('hidden');
+            document.getElementById('dashboard-content').classList.remove('hidden');
+
             applyFilters();
         }
 
         function applyFilters() {
-            const query = document.getElementById("table-search").value.toLowerCase();
-            const sevFilter = document.getElementById("severity-filter").value;
+            const search = document.getElementById('filter-search').value.toLowerCase().trim();
+            const severity = document.getElementById('filter-severity').value;
+            const kev = document.getElementById('filter-kev').value;
+            const ransomware = document.getElementById('filter-ransomware').value;
+            const sort = document.getElementById('filter-sort').value;
+            const minEpss = parseFloat(document.getElementById('filter-epss-min').value) / 100;
 
             filteredDataset = rawDataset.filter(item => {
-                // Search filter
-                const matchesSearch = item.id.toLowerCase().includes(query) ||
-                                      item.title.toLowerCase().includes(query) ||
-                                      item.equipment.toLowerCase().includes(query);
+                // Search matching
+                if (search) {
+                    const matchText = `${item.cveId} ${item.vendor} ${item.product} ${item.description}`.toLowerCase();
+                    if (!matchText.includes(search)) return false;
+                }
 
-                // KEV filter
-                const matchesKev = !kevFilterOnly || item.isKev;
+                // Severity matching
+                if (severity !== 'ALL' && item.severity !== severity) return false;
 
-                // Severity filter
-                let matchesSev = true;
-                if (sevFilter === "CRITICAL") matchesSev = item.riskScore >= 80;
-                else if (sevFilter === "HIGH") matchesSev = item.riskScore >= 60 && item.riskScore < 80;
-                else if (sevFilter === "MEDIUM") matchesSev = item.riskScore >= 30 && item.riskScore < 60;
-                else if (sevFilter === "LOW") matchesSev = item.riskScore < 30;
+                // KEV matching
+                if (kev === 'KEV_ONLY' && !item.cisaKev) return false;
+                if (kev === 'NON_KEV' && item.cisaKev) return false;
 
-                return matchesSearch && matchesKev && matchesSev;
+                // Ransomware matching
+                if (ransomware === 'RANSOMWARE_ONLY' && !item.ransomware) return false;
+
+                // EPSS threshold
+                if (item.epss < minEpss) return false;
+
+                return true;
             });
 
-            // Sort
-            filteredDataset.sort((a, b) => sortRiskAsc ? a.riskScore - b.riskScore : b.riskScore - a.riskScore);
+            // Sorting
+            filteredDataset.sort((a, b) => {
+                const scoreA = calculateRiskScore(a);
+                const scoreB = calculateRiskScore(b);
 
-            renderTable();
+                if (sort === 'RISK_DESC') return scoreB - scoreA;
+                if (sort === 'EPSS_DESC') return b.epss - a.epss;
+                if (sort === 'CVSS_DESC') return b.cvss - a.cvss;
+                if (sort === 'CVE_ASC') return a.cveId.localeCompare(b.cveId);
+                return 0;
+            });
+
+            renderDashboard();
+        }
+
+        function updateEpssSliderLabel() {
+            const val = document.getElementById('filter-epss-min').value;
+            document.getElementById('epss-slider-val').textContent = `${val}%`;
+        }
+
+        function renderDashboard() {
             renderMetrics();
+            renderTable();
+            renderCharts();
         }
 
         function renderMetrics() {
-            if (rawDataset.length === 0) return;
+            const total = filteredDataset.length;
+            const kevCount = filteredDataset.filter(d => d.cisaKev).length;
+            const critCount = filteredDataset.filter(d => d.cvss >= 9.0).length;
+            const epssHighCount = filteredDataset.filter(d => d.epss >= 0.50).length;
 
-            const total = rawDataset.length;
-            const avgScore = (rawDataset.reduce((sum, i) => sum + i.riskScore, 0) / total).toFixed(1);
-            const kevCount = rawDataset.filter(i => i.isKev).length;
-            const ransomwareCount = rawDataset.filter(i => i.isKev && i.isRansomware).length;
-            const criticalAssets = rawDataset.filter(i => i.riskScore >= 75).length;
+            const avgRisk = total > 0 ? (filteredDataset.reduce((sum, d) => sum + calculateRiskScore(d), 0) / total) : 0;
 
-            document.getElementById("kpi-avg-score").textContent = avgScore;
-            document.getElementById("kpi-kev-count").textContent = kevCount;
-            document.getElementById("kpi-kev-percent").textContent = `${((kevCount / total) * 100).toFixed(0)}%`;
-            document.getElementById("kpi-ransomware-count").textContent = ransomwareCount;
-            document.getElementById("kpi-critical-assets").textContent = criticalAssets;
-
-            const sevBadge = document.getElementById("kpi-avg-severity");
-            if (avgScore >= 80) {
-                sevBadge.textContent = "NIVEAU CRITIQUE";
-                sevBadge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30";
-            } else if (avgScore >= 60) {
-                sevBadge.textContent = "NIVEAU ÉLEVÉ";
-                sevBadge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30";
-            } else {
-                sevBadge.textContent = "NIVEAU MODÉRÉ";
-                sevBadge.className = "px-2 py-0.5 rounded text-[10px] font-bold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30";
-            }
+            document.getElementById('kpi-total').textContent = total;
+            document.getElementById('kpi-kev').textContent = kevCount;
+            document.getElementById('kpi-kev-pct').textContent = total > 0 ? `${Math.round((kevCount / total) * 100)}% du filtre` : '0%';
+            document.getElementById('kpi-critical').textContent = critCount;
+            document.getElementById('kpi-epss').textContent = epssHighCount;
+            document.getElementById('kpi-risk-avg').textContent = avgRisk.toFixed(1);
         }
 
         function renderTable() {
-            const tbody = document.getElementById("vuln-table-body");
-            tbody.innerHTML = "";
+            const tbody = document.getElementById('vuln-table-body');
+            tbody.innerHTML = '';
 
-            document.getElementById("table-count-info").textContent = `Affichage de ${filteredDataset.length} sur ${rawDataset.length} vulnérabilités`;
+            document.getElementById('table-count').textContent = filteredDataset.length;
 
             if (filteredDataset.length === 0) {
                 tbody.innerHTML = `
                     <tr>
-                        <td colspan="7" class="py-8 text-center text-slate-500">
-                            <i class="fa-solid fa-filter-circle-xmark text-2xl mb-2 block"></i>
-                            Aucune vulnérabilité ne correspond à vos critères de recherche.
+                        <td colspan="7" class="p-8 text-center text-slate-500 italic">
+                            Aucune vulnérabilité ne correspond aux critères de recherche actuels.
                         </td>
                     </tr>
                 `;
                 return;
             }
 
-            filteredDataset.forEach(item => {
-                const tr = document.createElement("tr");
-                tr.className = "hover:bg-slate-800/40 transition border-b border-slate-800/40";
+            filteredDataset.forEach((item) => {
+                const riskScore = calculateRiskScore(item);
 
-                // Badges for KEV
-                let kevBadgeHtml = `<span class="px-2 py-0.5 rounded text-[10px] bg-slate-800 text-slate-500 border border-slate-700">Inactif</span>`;
-                if (item.isKev) {
-                    if (item.isRansomware) {
-                        kevBadgeHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-purple-950 text-purple-300 border border-purple-700 flex items-center justify-center gap-1"><i class="fa-solid fa-skull"></i> KEV Ransomware</span>`;
-                    } else {
-                        kevBadgeHtml = `<span class="px-2 py-0.5 rounded text-[10px] font-bold bg-rose-950 text-rose-300 border border-rose-700 flex items-center justify-center gap-1 pulse-kev"><i class="fa-solid fa-fire"></i> KEV Actif</span>`;
-                    }
-                }
+                // Badge styling
+                const cvssColor = item.cvss >= 9.0 ? 'bg-red-950 text-red-400 border-red-800' :
+                                item.cvss >= 7.0 ? 'bg-amber-950 text-amber-400 border-amber-800' :
+                                item.cvss >= 4.0 ? 'bg-yellow-950 text-yellow-400 border-yellow-800' :
+                                'bg-emerald-950 text-emerald-400 border-emerald-800';
 
-                // Risk Score color
-                let riskColorClass = "text-emerald-400 bg-emerald-950/40 border-emerald-800/50";
-                if (item.riskScore >= 80) riskColorClass = "text-rose-400 bg-rose-950/50 border-rose-800/50";
-                else if (item.riskScore >= 60) riskColorClass = "text-amber-400 bg-amber-950/50 border-amber-800/50";
-
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-900/50 transition";
                 tr.innerHTML = `
-                    <td class="py-3 px-4">
-                        <div class="font-bold font-mono text-cyan-400 flex items-center gap-2">
-                            ${item.id}
-                        </div>
-                        <div class="text-slate-300 text-[11px] font-medium truncate max-w-xs mt-0.5">${item.title}</div>
-                        <div class="text-[10px] text-slate-500 flex items-center gap-1 mt-0.5">
-                            <i class="fa-solid fa-microchip text-slate-600"></i> ${item.equipment}
-                        </div>
+                    <td class="p-4">
+                        <div class="font-bold font-mono text-indigo-300 text-sm">${item.cveId}</div>
+                        <div class="text-[10px] text-slate-500 mt-0.5">Ajouté: ${item.dateAdded}</div>
                     </td>
-                    <td class="py-3 px-4 text-center font-mono font-semibold">${item.cvss}</td>
-                    <td class="py-3 px-4 text-center font-mono text-slate-400">${(item.epss * 100).toFixed(0)}%</td>
-                    <td class="py-3 px-4 text-center">${kevBadgeHtml}</td>
-                    <td class="py-3 px-4 text-center font-mono text-amber-400 font-semibold">${item.criticality.toFixed(1)}x</td>
-                    <td class="py-3 px-4 text-center">
-                        <span class="px-2.5 py-1 rounded-lg font-mono font-bold text-xs border ${riskColorClass}">
-                            ${item.riskScore}
+                    <td class="p-4">
+                        <div class="font-semibold text-slate-200">${item.vendor}</div>
+                        <div class="text-[11px] text-slate-400">${item.product}</div>
+                    </td>
+                    <td class="p-4 text-center">
+                        <span class="inline-block px-2 py-1 rounded-md text-xs font-mono font-bold border ${cvssColor}">
+                            ${item.cvss.toFixed(1)}
                         </span>
                     </td>
-                    <td class="py-3 px-4 text-right">
-                        <button onclick='openCveModal(${JSON.stringify(item.id)})' class="px-2.5 py-1 rounded bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-slate-700 transition text-[11px]">
-                            <i class="fa-solid fa-circle-info mr-1"></i> Formule
+                    <td class="p-4 text-center">
+                        <div class="font-mono font-bold ${item.epss >= 0.5 ? 'text-amber-400' : 'text-slate-300'}">
+                            ${(item.epss * 100).toFixed(1)}%
+                        </div>
+                        <div class="w-16 h-1 bg-slate-800 rounded-full mx-auto mt-1 overflow-hidden">
+                            <div class="h-full ${item.epss >= 0.5 ? 'bg-amber-500' : 'bg-indigo-500'}" style="width: ${Math.min(100, item.epss * 100)}%"></div>
+                        </div>
+                    </td>
+                    <td class="p-4 text-center space-x-1">
+                        ${item.cisaKev ? `<span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-pink-950 text-pink-400 border border-pink-800" title="CISA Known Exploited Vulnerability"><i class="fa-solid fa-fire mr-1"></i>KEV</span>` : ''}
+                        ${item.ransomware ? `<span class="inline-block px-2 py-0.5 rounded text-[10px] font-bold bg-red-950 text-red-400 border border-red-800" title="Exploité dans des attaques Ransomware"><i class="fa-solid fa-biohazard mr-1"></i>Ransomware</span>` : ''}
+                        ${!item.cisaKev && !item.ransomware ? `<span class="text-slate-500 text-[11px]">-</span>` : ''}
+                    </td>
+                    <td class="p-4 text-center">
+                        <div class="text-sm font-extrabold font-mono ${riskScore >= 8.0 ? 'text-red-400' : riskScore >= 5.0 ? 'text-amber-400' : 'text-emerald-400'}">
+                            ${riskScore.toFixed(1)} / 10
+                        </div>
+                    </td>
+                    <td class="p-4 text-right">
+                        <button onclick="openSimulatorModal('${item.cveId}')" class="px-2.5 py-1.5 bg-indigo-950 hover:bg-indigo-900 text-indigo-300 border border-indigo-800/60 rounded-lg text-xs font-medium transition flex items-center gap-1.5 ml-auto">
+                            <i class="fa-solid fa-sliders text-xs"></i> Simuler / Détails
                         </button>
                     </td>
                 `;
@@ -992,24 +995,23 @@
         }
 
         function renderCharts() {
-            if (rawDataset.length === 0) return;
+            // Severity Doughnut Chart
+            const sevCounts = {
+                CRITICAL: filteredDataset.filter(d => d.severity === 'CRITICAL').length,
+                HIGH: filteredDataset.filter(d => d.severity === 'HIGH').length,
+                MEDIUM: filteredDataset.filter(d => d.severity === 'MEDIUM').length,
+                LOW: filteredDataset.filter(d => d.severity === 'LOW').length,
+            };
 
-            // Chart 1: Severity & KEV Doughnut
-            const ctxSeverity = document.getElementById('chart-severity').getContext('2d');
-            
-            const criticalCount = rawDataset.filter(i => i.riskScore >= 80).length;
-            const highCount = rawDataset.filter(i => i.riskScore >= 60 && i.riskScore < 80).length;
-            const medCount = rawDataset.filter(i => i.riskScore < 60).length;
-
-            if (severityChartInstance) severityChartInstance.destroy();
-
-            severityChartInstance = new Chart(ctxSeverity, {
+            const ctxSev = document.getElementById('chart-severity').getContext('2d');
+            if (chartSeverity) chartSeverity.destroy();
+            chartSeverity = new Chart(ctxSev, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Critique (≥80)', 'Élevée (60-79)', 'Modérée (<60)'],
+                    labels: ['Critique', 'Élevée', 'Moyenne', 'Faible'],
                     datasets: [{
-                        data: [criticalCount, highCount, medCount],
-                        backgroundColor: ['#f43f5e', '#f59e0b', '#06b6d4'],
+                        data: [sevCounts.CRITICAL, sevCounts.HIGH, sevCounts.MEDIUM, sevCounts.LOW],
+                        backgroundColor: ['#ef4444', '#f97316', '#eab308', '#10b981'],
                         borderWidth: 0
                     }]
                 },
@@ -1017,152 +1019,202 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     plugins: {
-                        legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 10 } } }
+                        legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 11 } } }
                     }
                 }
             });
 
-            // Chart 2: Matrix Scatter (CVSS vs EPSS with KEV highlights)
-            const ctxMatrix = document.getElementById('chart-matrix').getContext('2d');
+            // KEV vs Non-KEV Threat Bar Chart
+            const kevCount = filteredDataset.filter(d => d.cisaKev).length;
+            const nonKevCount = filteredDataset.length - kevCount;
+            const ransomwareCount = filteredDataset.filter(d => d.ransomware).length;
 
-            const kevPoints = rawDataset.filter(i => i.isKev).map(i => ({ x: i.cvss, y: (i.epss * 100) }));
-            const nonKevPoints = rawDataset.filter(i => !i.isKev).map(i => ({ x: i.cvss, y: (i.epss * 100) }));
-
-            if (matrixChartInstance) matrixChartInstance.destroy();
-
-            matrixChartInstance = new Chart(ctxMatrix, {
-                type: 'scatter',
+            const ctxThreat = document.getElementById('chart-kev-threat').getContext('2d');
+            if (chartThreat) chartThreat.destroy();
+            chartThreat = new Chart(ctxThreat, {
+                type: 'bar',
                 data: {
-                    datasets: [
-                        {
-                            label: 'KEV Actifs',
-                            data: kevPoints,
-                            backgroundColor: '#f43f5e',
-                            pointRadius: 6,
-                            pointHoverRadius: 8
-                        },
-                        {
-                            label: 'Non KEV',
-                            data: nonKevPoints,
-                            backgroundColor: '#38bdf8',
-                            pointRadius: 4
-                        }
-                    ]
+                    labels: ['CISA KEV Actifs', 'Hors KEV', 'Lié Ransomware'],
+                    datasets: [{
+                        label: 'Nombre de Vulnérabilités',
+                        data: [kevCount, nonKevCount, ransomwareCount],
+                        backgroundColor: ['#ec4899', '#6366f1', '#ef4444'],
+                        borderRadius: 8
+                    }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    scales: {
-                        x: {
-                            title: { display: true, text: 'Score CVSS (Severity)', color: '#64748b' },
-                            grid: { color: '#1e293b' },
-                            ticks: { color: '#94a3b8' },
-                            min: 0, max: 10
-                        },
-                        y: {
-                            title: { display: true, text: 'EPSS Probabilité (%)', color: '#64748b' },
-                            grid: { color: '#1e293b' },
-                            ticks: { color: '#94a3b8' },
-                            min: 0, max: 100
-                        }
-                    },
                     plugins: {
-                        legend: { position: 'top', labels: { color: '#94a3b8', font: { size: 10 } } }
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { display: false } },
+                        y: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } }
+                    }
+                }
+            });
+
+            // Top Vendors Chart
+            const vendorCounts = {};
+            filteredDataset.forEach(d => {
+                vendorCounts[d.vendor] = (vendorCounts[d.vendor] || 0) + 1;
+            });
+
+            const sortedVendors = Object.entries(vendorCounts)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5);
+
+            const ctxVendors = document.getElementById('chart-vendors').getContext('2d');
+            if (chartVendors) chartVendors.destroy();
+            chartVendors = new Chart(ctxVendors, {
+                type: 'bar',
+                data: {
+                    labels: sortedVendors.map(v => v[0]),
+                    datasets: [{
+                        label: 'Vulnérabilités',
+                        data: sortedVendors.map(v => v[1]),
+                        backgroundColor: '#f59e0b',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        x: { ticks: { color: '#94a3b8' }, grid: { color: '#1e293b' } },
+                        y: { ticks: { color: '#94a3b8', font: { size: 10 } }, grid: { display: false } }
                     }
                 }
             });
         }
 
-        // CVE Detail Modal
-        function openCveModal(cveId) {
-            const item = rawDataset.find(i => i.id === cveId);
-            if (!item) return;
+        function openSimulatorModal(cveId) {
+            const vuln = rawDataset.find(d => d.cveId === cveId);
+            if (!vuln) return;
 
-            document.getElementById("modal-cve-badge").textContent = item.id;
-            document.getElementById("modal-cve-title").textContent = item.title;
-            document.getElementById("modal-equipment").textContent = item.equipment;
-            document.getElementById("modal-vector").textContent = item.vector;
-            document.getElementById("modal-description").textContent = item.description;
-            document.getElementById("modal-remediation-text").textContent = item.remediation;
+            currentSimulatedCve = vuln;
 
-            // Math breakdown
-            const m = item.mathDetails;
-            document.getElementById("modal-math-cvss").textContent = `${item.cvss} × 10 × 0.35 = ${m.cvssComponent} pts`;
-            document.getElementById("modal-math-epss").textContent = `${(item.epss * 100).toFixed(0)}% × 0.35 = ${m.epssComponent} pts`;
-            
-            let kevText = "Inactif (0 pt)";
-            if (item.isKev) {
-                kevText = item.isRansomware ? "KEV + Ransomware (30.0 pts)" : "KEV Actif (25.5 pts)";
-            }
-            document.getElementById("modal-math-kev").textContent = kevText;
-            document.getElementById("modal-math-base").textContent = `${m.weightedBase} / 100`;
-            document.getElementById("modal-math-coeff").textContent = `× ${item.criticality.toFixed(2)}`;
-            document.getElementById("modal-math-final").textContent = `${m.finalScore} / 100`;
+            document.getElementById('sim-cve-id').textContent = vuln.cveId;
+            document.getElementById('sim-vendor-product').textContent = `${vuln.vendor} - ${vuln.product}`;
+            document.getElementById('sim-description').textContent = vuln.description;
+            document.getElementById('sim-solution').textContent = vuln.solution;
 
-            document.getElementById("cve-modal").classList.remove("hidden");
-        }
+            // KEV & Ransomware badges
+            const kevBadge = document.getElementById('sim-kev-badge');
+            const rswBadge = document.getElementById('sim-ransomware-badge');
 
-        function closeCveModal() {
-            document.getElementById("cve-modal").classList.add("hidden");
-        }
+            if (vuln.cisaKev) kevBadge.classList.remove('hidden'); else kevBadge.classList.add('hidden');
+            if (vuln.ransomware) rswBadge.classList.remove('hidden'); else rswBadge.classList.add('hidden');
 
-        // Live Risk Simulator Modal
-        function openSimulatorModal() {
-            document.getElementById("simulator-modal").classList.remove("hidden");
-            runSimulation();
+            // Severity icon box
+            const iconBox = document.getElementById('sim-severity-icon');
+            iconBox.className = `w-12 h-12 rounded-xl flex items-center justify-center text-xl font-bold border shrink-0 ${
+                vuln.cvss >= 9.0 ? 'bg-red-950 text-red-400 border-red-800' :
+                vuln.cvss >= 7.0 ? 'bg-amber-950 text-amber-400 border-amber-800' :
+                'bg-indigo-950 text-indigo-400 border-indigo-800'
+            }`;
+
+            // Reset simulator inputs
+            document.getElementById('sim-chk-patch').checked = vuln.mitigations.patched;
+            document.getElementById('sim-chk-segmentation').checked = vuln.mitigations.segmented;
+            document.getElementById('sim-chk-waf').checked = vuln.mitigations.wafActive;
+            document.getElementById('sim-select-criticality').value = vuln.mitigations.assetCriticality;
+
+            recalculateSimulatedRisk();
+            document.getElementById('simulator-modal').classList.remove('hidden');
         }
 
         function closeSimulatorModal() {
-            document.getElementById("simulator-modal").classList.add("hidden");
+            document.getElementById('simulator-modal').classList.add('hidden');
+            currentSimulatedCve = null;
         }
 
-        function runSimulation() {
-            const cvss = parseFloat(document.getElementById("sim-cvss").value);
-            const epss = parseFloat(document.getElementById("sim-epss").value) / 100;
-            const isKev = document.getElementById("sim-kev").checked;
-            const isRansomware = document.getElementById("sim-ransomware").checked;
-            const criticality = parseFloat(document.getElementById("sim-crit").value);
+        function recalculateSimulatedRisk() {
+            if (!currentSimulatedCve) return;
 
-            document.getElementById("sim-cvss-val").textContent = cvss.toFixed(1);
-            document.getElementById("sim-epss-val").textContent = `${(epss * 100).toFixed(0)}%`;
-            document.getElementById("sim-crit-val").textContent = `${criticality.toFixed(1)}x`;
+            const isPatched = document.getElementById('sim-chk-patch').checked;
+            const isSegmented = document.getElementById('sim-chk-segmentation').checked;
+            const isWaf = document.getElementById('sim-chk-waf').checked;
+            const criticality = document.getElementById('sim-select-criticality').value;
 
-            const math = calculateVieRiskScore({
-                cvss, epss, isKev, isRansomware, criticality
-            });
+            // Save back to object
+            currentSimulatedCve.mitigations = {
+                patched: isPatched,
+                segmented: isSegmented,
+                wafActive: isWaf,
+                assetCriticality: criticality
+            };
 
-            const scoreElem = document.getElementById("sim-result-score");
-            scoreElem.textContent = math.finalScore;
+            // Unmitigated raw score
+            const rawScore = (currentSimulatedCve.cvss * 0.35) + (currentSimulatedCve.epss * 10 * 0.35) + (currentSimulatedCve.cisaKev ? 2.0 : 0) + (currentSimulatedCve.ransomware ? 1.0 : 0);
+            const boundedRaw = Math.min(10.0, Math.max(0.0, rawScore));
 
-            const badgeElem = document.getElementById("sim-result-badge");
-            if (math.finalScore >= 80) {
-                scoreElem.className = "text-4xl font-black font-mono text-rose-500";
-                badgeElem.textContent = "RISQUE CRITIQUE";
-                badgeElem.className = "inline-block px-3 py-1 rounded-full text-xs font-bold bg-rose-500/20 text-rose-400 border border-rose-500/30";
-            } else if (math.finalScore >= 60) {
-                scoreElem.className = "text-4xl font-black font-mono text-amber-500";
-                badgeElem.textContent = "RISQUE ÉLEVÉ";
-                badgeElem.className = "inline-block px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-400 border border-amber-500/30";
-            } else {
-                scoreElem.className = "text-4xl font-black font-mono text-cyan-400";
-                badgeElem.textContent = "RISQUE MODÉRÉ";
-                badgeElem.className = "inline-block px-3 py-1 rounded-full text-xs font-bold bg-cyan-500/20 text-cyan-400 border border-cyan-500/30";
+            const residualScore = calculateRiskScore(currentSimulatedCve);
+
+            document.getElementById('sim-raw-risk').textContent = boundedRaw.toFixed(1);
+            document.getElementById('sim-residual-risk').textContent = residualScore.toFixed(1);
+
+            renderDashboard();
+        }
+
+        function exportFilteredData() {
+            if (filteredDataset.length === 0) {
+                showToast('Export impossible', 'Aucune donnée à exporter avec les filtres actuels.', 'error');
+                return;
             }
-        }
 
-        function exportReport() {
-            window.print();
-        }
+            const exportData = filteredDataset.map(item => ({
+                ...item,
+                calculatedRiskScore: calculateRiskScore(item)
+            }));
 
-        function downloadJsonExport() {
-            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(rawDataset, null, 2));
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(exportData, null, 2));
             const downloadAnchor = document.createElement('a');
             downloadAnchor.setAttribute("href", dataStr);
-            downloadAnchor.setAttribute("download", "rapport_risque_vie.json");
+            downloadAnchor.setAttribute("download", `VIE_Threat_Intel_Export_${new Date().toISOString().split('T')[0]}.json`);
             document.body.appendChild(downloadAnchor);
             downloadAnchor.click();
             downloadAnchor.remove();
+
+            showToast('Export Terminé', 'Le fichier JSON a été téléchargé avec succès.', 'success');
         }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const dropzone = document.getElementById('dropzone');
+
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }, false);
+            });
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropzone.addEventListener(eventName, () => {
+                    dropzone.classList.add('border-indigo-500', 'bg-slate-900');
+                }, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropzone.addEventListener(eventName, () => {
+                    dropzone.classList.remove('border-indigo-500', 'bg-slate-900');
+                }, false);
+            });
+
+            dropzone.addEventListener('drop', (e) => {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                if (files.length > 0) {
+                    document.getElementById('file-input').files = files;
+                    handleFileSelect({ target: { files } });
+                }
+            }, false);
+        });
     </script>
 </body>
 </html>
