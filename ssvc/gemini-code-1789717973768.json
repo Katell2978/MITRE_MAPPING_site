@@ -1,0 +1,188 @@
+{
+  "namespace": "cisa",
+  "key": "DT_CISA_COORDINATOR_2_0_3",
+  "version": "2.0.3",
+  "name": "CISA Coordinator",
+  "definition": "SSVC Decision table for CISA Coordinator version 2.0.3 (Dryad / CERT/CC framework).",
+  "schemaVersion": "2.0.0",
+  "decision_points": {
+    "ssvc:E:1.0.0": {
+      "namespace": "ssvc",
+      "key": "E",
+      "version": "1.0.0",
+      "name": "Exploitation",
+      "definition": "Evidence of active exploitation or public proof-of-concept.",
+      "schemaVersion": "2.0.0",
+      "values": [
+        {
+          "key": "none",
+          "name": "None",
+          "definition": "No evidence of active exploitation or public PoC."
+        },
+        {
+          "key": "poc",
+          "name": "Public PoC",
+          "definition": "Public proof-of-concept or exploit code available."
+        },
+        {
+          "key": "active",
+          "name": "Active",
+          "definition": "Shared or public evidence of active exploitation in the wild (e.g. CISA KEV)."
+        }
+      ]
+    },
+    "ssvc:A:2.0.0": {
+      "namespace": "ssvc",
+      "key": "A",
+      "version": "2.0.0",
+      "name": "Automatable",
+      "definition": "Can an attacker reliably automate exploitation steps 1-4 of the kill chain?",
+      "schemaVersion": "2.0.0",
+      "values": [
+        {
+          "key": "no",
+          "name": "No",
+          "definition": "Exploitation cannot be reliably automated."
+        },
+        {
+          "key": "yes",
+          "name": "Yes",
+          "definition": "Exploitation can be reliably automated."
+        }
+      ]
+    },
+    "ssvc:TI:1.0.0": {
+      "namespace": "ssvc",
+      "key": "TI",
+      "version": "1.0.0",
+      "name": "Technical Impact",
+      "definition": "Technical control gained by an attacker upon successful exploitation.",
+      "schemaVersion": "2.0.0",
+      "values": [
+        {
+          "key": "partial",
+          "name": "Partial",
+          "definition": "Limited control or information disclosure."
+        },
+        {
+          "key": "total",
+          "name": "Total",
+          "definition": "Total administrative control over the targeted system/component."
+        }
+      ]
+    },
+    "ssvc:MW:1.0.0": {
+      "namespace": "ssvc",
+      "key": "MW",
+      "version": "1.0.0",
+      "name": "Mission & Well-being Impact",
+      "definition": "Impact on organizational mission, safety, and human well-being.",
+      "schemaVersion": "2.0.0",
+      "values": [
+        {
+          "key": "low",
+          "name": "Low",
+          "definition": "Minimal impact on operations or safety."
+        },
+        {
+          "key": "medium",
+          "name": "Medium",
+          "definition": "Degraded performance or moderate operational impact."
+        },
+        {
+          "key": "high",
+          "name": "High",
+          "definition": "Significant operational disruption or physical risk."
+        },
+        {
+          "key": "very_high",
+          "name": "Very High",
+          "definition": "Catastrophic loss of life, critical infrastructure, or core mission."
+        }
+      ]
+    },
+    "ssvc:CD:2.0.3": {
+      "namespace": "ssvc",
+      "key": "CD",
+      "version": "2.0.3",
+      "name": "Coordinator Decision",
+      "definition": "Actionable decision outcomes for CISA Coordinator v2.0.3.",
+      "schemaVersion": "2.0.0",
+      "values": [
+        {
+          "key": "Track",
+          "name": "Track",
+          "definition": "Standard patching schedule applies."
+        },
+        {
+          "key": "Track*",
+          "name": "Track*",
+          "definition": "Monitor closely; prioritize if patch becomes available or state changes."
+        },
+        {
+          "key": "Attend",
+          "name": "Attend",
+          "definition": "Requires supervisor attention and accelerated remediation timeline."
+        },
+        {
+          "key": "Act",
+          "name": "Act",
+          "definition": "Immediate crisis response and emergency mitigation required."
+        }
+      ]
+    }
+  },
+  "outcome": "ssvc:CD:2.0.3",
+  "mapping": [
+    { "ssvc:E:1.0.0": "active", "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "low",       "ssvc:CD:2.0.3": "Attend" },
+    { "ssvc:E:1.0.0": "active", "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "medium",    "ssvc:CD:2.0.3": "Attend" },
+    { "ssvc:E:1.0.0": "active", "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "high",      "ssvc:CD:2.0.3": "Act" },
+    { "ssvc:E:1.0.0": "active", "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "very_high", "ssvc:CD:2.0.3": "Act" },
+    { "ssvc:E:1.0.0": "active", "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "low",       "ssvc:CD:2.0.3": "Act" },
+    { "ssvc:E:1.0.0": "active", "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "medium",    "ssvc:CD:2.0.3": "Act" },
+    { "ssvc:E:1.0.0": "active", "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "high",      "ssvc:CD:2.0.3": "Act" },
+    { "ssvc:E:1.0.0": "active", "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "very_high", "ssvc:CD:2.0.3": "Act" },
+    { "ssvc:E:1.0.0": "active", "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "low",       "ssvc:CD:2.0.3": "Act" },
+    { "ssvc:E:1.0.0": "active", "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "medium",    "ssvc:CD:2.0.3": "Act" },
+    { "ssvc:E:1.0.0": "active", "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "high",      "ssvc:CD:2.0.3": "Act" },
+    { "ssvc:E:1.0.0": "active", "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "very_high", "ssvc:CD:2.0.3": "Act" },
+    { "ssvc:E:1.0.0": "active", "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "low",       "ssvc:CD:2.0.3": "Act" },
+    { "ssvc:E:1.0.0": "active", "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "medium",    "ssvc:CD:2.0.3": "Act" },
+    { "ssvc:E:1.0.0": "active", "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "high",      "ssvc:CD:2.0.3": "Act" },
+    { "ssvc:E:1.0.0": "active", "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "very_high", "ssvc:CD:2.0.3": "Act" },
+
+    { "ssvc:E:1.0.0": "poc",    "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "low",       "ssvc:CD:2.0.3": "Track*" },
+    { "ssvc:E:1.0.0": "poc",    "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "medium",    "ssvc:CD:2.0.3": "Track*" },
+    { "ssvc:E:1.0.0": "poc",    "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "high",      "ssvc:CD:2.0.3": "Track*" },
+    { "ssvc:E:1.0.0": "poc",    "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "very_high", "ssvc:CD:2.0.3": "Attend" },
+    { "ssvc:E:1.0.0": "poc",    "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "low",       "ssvc:CD:2.0.3": "Track*" },
+    { "ssvc:E:1.0.0": "poc",    "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "medium",    "ssvc:CD:2.0.3": "Track*" },
+    { "ssvc:E:1.0.0": "poc",    "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "high",      "ssvc:CD:2.0.3": "Attend" },
+    { "ssvc:E:1.0.0": "poc",    "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "very_high", "ssvc:CD:2.0.3": "Attend" },
+    { "ssvc:E:1.0.0": "poc",    "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "low",       "ssvc:CD:2.0.3": "Track*" },
+    { "ssvc:E:1.0.0": "poc",    "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "medium",    "ssvc:CD:2.0.3": "Track*" },
+    { "ssvc:E:1.0.0": "poc",    "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "high",      "ssvc:CD:2.0.3": "Attend" },
+    { "ssvc:E:1.0.0": "poc",    "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "very_high", "ssvc:CD:2.0.3": "Attend" },
+    { "ssvc:E:1.0.0": "poc",    "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "low",       "ssvc:CD:2.0.3": "Attend" },
+    { "ssvc:E:1.0.0": "poc",    "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "medium",    "ssvc:CD:2.0.3": "Attend" },
+    { "ssvc:E:1.0.0": "poc",    "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "high",      "ssvc:CD:2.0.3": "Act" },
+    { "ssvc:E:1.0.0": "poc",    "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "very_high", "ssvc:CD:2.0.3": "Act" },
+
+    { "ssvc:E:1.0.0": "none",   "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "low",       "ssvc:CD:2.0.3": "Track" },
+    { "ssvc:E:1.0.0": "none",   "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "medium",    "ssvc:CD:2.0.3": "Track" },
+    { "ssvc:E:1.0.0": "none",   "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "high",      "ssvc:CD:2.0.3": "Track" },
+    { "ssvc:E:1.0.0": "none",   "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "very_high", "ssvc:CD:2.0.3": "Track" },
+    { "ssvc:E:1.0.0": "none",   "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "low",       "ssvc:CD:2.0.3": "Track" },
+    { "ssvc:E:1.0.0": "none",   "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "medium",    "ssvc:CD:2.0.3": "Track" },
+    { "ssvc:E:1.0.0": "none",   "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "high",      "ssvc:CD:2.0.3": "Track*" },
+    { "ssvc:E:1.0.0": "none",   "ssvc:A:2.0.0": "no",  "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "very_high", "ssvc:CD:2.0.3": "Track*" },
+    { "ssvc:E:1.0.0": "none",   "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "low",       "ssvc:CD:2.0.3": "Track" },
+    { "ssvc:E:1.0.0": "none",   "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "medium",    "ssvc:CD:2.0.3": "Track" },
+    { "ssvc:E:1.0.0": "none",   "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "high",      "ssvc:CD:2.0.3": "Track" },
+    { "ssvc:E:1.0.0": "none",   "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "partial", "ssvc:MW:1.0.0": "very_high", "ssvc:CD:2.0.3": "Track" },
+    { "ssvc:E:1.0.0": "none",   "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "low",       "ssvc:CD:2.0.3": "Track*" },
+    { "ssvc:E:1.0.0": "none",   "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "medium",    "ssvc:CD:2.0.3": "Track*" },
+    { "ssvc:E:1.0.0": "none",   "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "high",      "ssvc:CD:2.0.3": "Attend" },
+    { "ssvc:E:1.0.0": "none",   "ssvc:A:2.0.0": "yes", "ssvc:TI:1.0.0": "total",   "ssvc:MW:1.0.0": "very_high", "ssvc:CD:2.0.3": "Attend" }
+  ]
+}
