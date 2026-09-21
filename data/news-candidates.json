@@ -1,5 +1,19 @@
 [
   {
+    "date": "2026-09-21",
+    "datetime_utc": "2026-09-21T08:41:31+00:00",
+    "source": "BSI CERT-Bund (WID)",
+    "region": "DE",
+    "trust": "Government",
+    "category": "Security Advisories",
+    "title": "[UPDATE] [hoch] Icinga: Mehrere Schwachstellen",
+    "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-2136",
+    "summary": "Ein Angreifer kann mehrere Schwachstellen in Icinga ausnutzen, um einen Denial of Service Angriff durchzuführen, um Sicherheitsvorkehrungen zu umgehen, und um seine Privilegien zu erhöhen.",
+    "cves": [],
+    "status": "to-review",
+    "origin": "RSS"
+  },
+  {
     "date": "2026-09-19",
     "datetime_utc": "2026-09-19T10:55:18+00:00",
     "source": "Anquanke",
@@ -8428,20 +8442,6 @@
     "title": "[NEU] [hoch] Wazuh: Mehrere Schwachstellen",
     "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-2377",
     "summary": "Ein Angreifer kann mehrere Schwachstellen in Wazuh ausnutzen, um seine Privilegien zu erhöhen, um einen Denial of Service Angriff durchzuführen, um Informationen offenzulegen, und um Sicherheitsvorkehrungen zu umgehen.",
-    "cves": [],
-    "status": "to-review",
-    "origin": "RSS"
-  },
-  {
-    "date": "2026-07-16",
-    "datetime_utc": "2026-07-16T10:07:10+00:00",
-    "source": "BSI CERT-Bund (WID)",
-    "region": "DE",
-    "trust": "Government",
-    "category": "Security Advisories",
-    "title": "[UPDATE] [hoch] Keycloak: Mehrere Schwachstellen",
-    "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-0356",
-    "summary": "Ein entfernter, authentisierter Angreifer kann mehrere Schwachstellen in Keycloak ausnutzen, um seine Privilegien zu erhöhen und Sicherheitsmaßnahmen zu umgehen.",
     "cves": [],
     "status": "to-review",
     "origin": "RSS"
