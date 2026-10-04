@@ -15,6 +15,20 @@
   },
   {
     "date": "2026-10-02",
+    "datetime_utc": "2026-10-02T12:34:18+00:00",
+    "source": "CCB Belgium",
+    "region": "BE",
+    "trust": "Government",
+    "category": "Advisories",
+    "title": "Warning: Actively Exploited FortiMail Vulnerability, Patch Immediately!",
+    "link": "https://ccb.belgium.be/advisories/warning-actively-exploited-fortimail-vulnerability-patch-immediately",
+    "summary": "CCB Advisories",
+    "cves": [],
+    "status": "to-review",
+    "origin": "RSS"
+  },
+  {
+    "date": "2026-10-02",
     "datetime_utc": "2026-10-02T10:51:29+00:00",
     "source": "BSI CERT-Bund (WID)",
     "region": "DE",
@@ -8439,20 +8453,6 @@
     "title": "[UPDATE] [hoch] AMD Prozessor: Mehrere Schwachstellen",
     "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-1482",
     "summary": "Ein Angreifer kann mehrere Schwachstellen in AMD Prozessor ausnutzen, um seine Privilegien zu erhöhen, beliebigen Code auszuführen – sogar mit Administratorrechten –, Daten zu manipulieren, vertrauliche Informationen offenzulegen oder einen Denial-of-Service-Zustand herbeizuführen.",
-    "cves": [],
-    "status": "to-review",
-    "origin": "RSS"
-  },
-  {
-    "date": "2026-08-06",
-    "datetime_utc": "2026-08-06T09:41:10+00:00",
-    "source": "BSI CERT-Bund (WID)",
-    "region": "DE",
-    "trust": "Government",
-    "category": "Security Advisories",
-    "title": "[UPDATE] [mittel] Linux Kernel (Bluetooth): Mehrere Schwachstellen",
-    "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2024-1227",
-    "summary": "Ein lokaler Angreifer kann mehrere Schwachstellen in der Bluetooth-Komponente des Linux Kernels ausnutzen, um einen Denial of Service Angriff durchzuführen oder einen nicht spezifizierten Angriff durchzuführen.",
     "cves": [],
     "status": "to-review",
     "origin": "RSS"
