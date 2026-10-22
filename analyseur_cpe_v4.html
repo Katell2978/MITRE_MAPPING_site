@@ -1,0 +1,846 @@
+<!doctype html>
+<html lang="fr" class="dark">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OOAC : CPE Vulnerabilities Analyzer V4 (CISA Vulnrichment & SSVC Edition)</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { blue: '#79EBFF', dark: '#0d1117', card: '#161b22', border: '#30363d' },
+                        ssvc: {
+                            track: '#388bfd',
+                            trackstar: '#d29922',
+                            attend: '#f0883e',
+                            act: '#f85149'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+        
+        body {
+            background-color: #0d1117;
+            color: #c9d1d9;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        code, kbd, pre, .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #161b22;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #30363d;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #484f58;
+        }
+
+        .badge-act { background: rgba(248, 81, 73, 0.25); color: #ff7b72; border: 1px solid #f85149; }
+        .badge-attend { background: rgba(240, 136, 62, 0.25); color: #ffa657; border: 1px solid rgba(240, 136, 62, 0.5); }
+        .badge-trackstar { background: rgba(210, 153, 34, 0.25); color: #e3b341; border: 1px solid rgba(210, 153, 34, 0.5); }
+        .badge-track { background: rgba(56, 139, 253, 0.15); color: #58a6ff; border: 1px solid rgba(56, 139, 253, 0.4); }
+
+        .kpi-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            transition: transform 0.15s ease, border-color 0.15s ease;
+        }
+        .kpi-card:hover {
+            border-color: #484f58;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col p-4 md:p-6 text-slate-200">
+
+<header class="border-b border-brand-border pb-5 mb-6">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <nav class="flex flex-wrap gap-3 text-xs mb-2 text-slate-400">
+                <a href="index.html" class="hover:text-brand-blue">🔍 Analyseur by CVE</a>
+                <a href="veille.html" class="hover:text-brand-blue">🔭 Veille (Watchtower)</a>
+                <a href="analyseur_cpe.html" class="hover:text-brand-blue">🔍 Analyseur by CPE</a>
+                <a href="Dashboard_VIE.html" class="hover:text-brand-blue">🔍 Vuln Dashboard</a>
+                <a href="Dashboard_VIE_2.html" class="hover:text-brand-blue">🔍 Vuln Dashboard cumul V2</a>
+                <a href="analyseur_cpe_v3.html" class="text-brand-blue font-semibold">Analyseur File list (Vulnrichment)</a>
+            </nav>
+            <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white flex items-center gap-3">
+                CPE Vulns Analyzer 
+                <span class="text-xs px-2.5 py-1 rounded-full bg-cyan-950/80 text-cyan-300 border border-cyan-600/50 font-mono">
+                    Version 3.1 (CISA Vulnrichment & SSVC)
+                </span>
+            </h1>
+            <p class="text-xs md:text-sm text-slate-400 mt-1">
+                Analyse NVD priorisant CVSS v4.0/v3.x, filtre de sévérité dynamique & enrichissement CISA Vulnrichment (GitHub ADP) pour une gestion des risques ciblée.
+            </p>
+        </div>
+        
+        <!-- Environment Context & Threshold Toggles -->
+        <div class="flex flex-wrap items-center gap-3">
+            <div class="bg-brand-card border border-brand-border rounded-lg p-3 flex items-center gap-3">
+                <div class="text-xs">
+                    <span class="font-semibold block text-slate-200">Seuil Sécurité (CVSS min)</span>
+                    <span class="text-slate-400 text-[11px]">Seuil pour requête CISA Vulnrichment</span>
+                </div>
+                <select id="severityThreshold" class="bg-brand-dark border border-brand-border text-xs text-brand-blue font-mono rounded px-2 py-1 outline-none focus:border-brand-blue">
+                    <option value="0.0">&ge; 0.0 (Tout)</option>
+                    <option value="4.0">&ge; 4.0 (Medium+)</option>
+                    <option value="7.0" selected>&ge; 7.0 (High+)</option>
+                    <option value="9.0">&ge; 9.0 (Critical)</option>
+                </select>
+            </div>
+
+            <div class="bg-brand-card border border-brand-border rounded-lg p-3 flex items-center gap-3">
+                <div class="text-xs">
+                    <span class="font-semibold block text-slate-200">Exposition Système (PE)</span>
+                    <span class="text-slate-400 text-[11px]">Paramètre SSVC</span>
+                </div>
+                <label class="relative inline-flex items-center cursor-pointer">
+                    <input type="checkbox" id="peToggle" class="sr-only peer" checked>
+                    <div class="w-11 h-6 bg-slate-700 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+                </label>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="flex-grow space-y-6">
+
+    <section class="bg-brand-card border border-brand-border rounded-xl p-5 shadow-lg">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-2">
+            ⚙️ Configuration & Execution Bulk (avec CISA Vulnrichment)
+        </h2>
+        <div class="flex flex-wrap items-center gap-3">
+            <input id="cpeInput" type="text" 
+                   class="flex-grow min-w-[280px] bg-brand-dark border border-brand-border text-slate-100 text-sm rounded-lg p-2.5 font-mono focus:ring-1 focus:ring-brand-blue focus:border-brand-blue outline-none" 
+                   value="cpe:2.3:o:google:android:13.0:*:*:*:*:*:*:*" 
+                   placeholder="cpe:2.3:o:vendor:product:version:...">
+            
+            <button id="btnAnalyze" class="bg-emerald-700 hover:bg-emerald-600 text-white font-semibold text-sm px-4 py-2.5 rounded-lg transition flex items-center gap-2">
+                ⚡ Analyser unique
+            </button>
+            
+            <input type="file" id="fileImport" class="hidden" accept=".json">
+            <button onclick="document.getElementById('fileImport').click()" class="bg-purple-700 hover:bg-purple-600 text-white font-semibold text-sm px-4 py-2.5 rounded-lg transition flex items-center gap-2">
+                📁 1. Charger Fichier CPE
+            </button>
+            
+            <button id="btnRunFile" class="bg-amber-600 hover:bg-amber-500 text-white font-semibold text-sm px-4 py-2.5 rounded-lg transition hidden flex items-center gap-2">
+                🚀 2. Lancer l'Analyse & Enrichissement CISA
+            </button>
+            
+            <button id="btnDownloadTemplate" class="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-brand-border font-semibold text-sm px-3.5 py-2.5 rounded-lg transition">
+                📄 Template JSON
+            </button>
+            
+            <button id="btnExportJSON" class="bg-blue-700 hover:bg-blue-600 text-white font-semibold text-sm px-4 py-2.5 rounded-lg transition hidden flex items-center gap-2">
+                💾 Exporter l'Audit Enrichi
+            </button>
+        </div>
+
+        <div id="fileStatus" class="mt-3 p-3 rounded-lg text-xs font-mono hidden"></div>
+        
+        <div id="progressContainer" class="hidden mt-4 pt-3 border-t border-brand-border">
+            <div class="flex justify-between items-center text-xs font-mono mb-1">
+                <span id="statusUpdate" class="text-brand-blue font-semibold">Initialisation de l'analyse...</span>
+                <span id="progressText" class="text-slate-400">0/0</span>
+            </div>
+            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+                <div id="progressInner" class="bg-brand-blue h-full w-0 transition-all duration-300"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <!-- KPI 1: Total Vulns & CVSS Distribution -->
+        <div class="kpi-card rounded-xl p-4 flex flex-col justify-between">
+            <div>
+                <div class="flex justify-between items-start">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Vulnérabilités</span>
+                    <span class="text-xs font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-800">CVSS v4.0 / v3.x</span>
+                </div>
+                <div id="kpiTotalVulns" class="text-4xl font-black text-brand-blue my-2">0</div>
+            </div>
+            <div class="border-t border-brand-border/60 pt-2.5 mt-2">
+                <div class="text-[11px] font-semibold text-slate-400 mb-1.5">Répartition par Score CVSS :</div>
+                <div class="grid grid-cols-3 gap-1.5 text-center font-mono text-xs">
+                    <div class="bg-slate-900/80 p-1.5 rounded border border-slate-800">
+                        <span class="block text-[10px] text-slate-400">[0 - 7]</span>
+                        <span id="kpiScoreLow" class="font-bold text-emerald-400">0</span>
+                    </div>
+                    <div class="bg-slate-900/80 p-1.5 rounded border border-slate-800">
+                        <span class="block text-[10px] text-slate-400">]7 - 9]</span>
+                        <span id="kpiScoreMed" class="font-bold text-amber-400">0</span>
+                    </div>
+                    <div class="bg-slate-900/80 p-1.5 rounded border border-slate-800">
+                        <span class="block text-[10px] text-slate-400">&gt; 9</span>
+                        <span id="kpiScoreHigh" class="font-bold text-rose-500">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI 2: Exploitability & Threat Vectors -->
+        <div class="kpi-card rounded-xl p-4 flex flex-col justify-between">
+            <div>
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Vecteurs & CISA Vulnrichment</span>
+                <div class="mt-3 space-y-2">
+                    <div class="flex justify-between items-center text-xs bg-slate-900/60 p-2 rounded border border-slate-800">
+                        <span class="flex items-center gap-1.5 text-slate-300 font-medium">
+                            <span class="w-2 h-2 rounded-full bg-rose-500"></span> CISA KEV (Exploité)
+                        </span>
+                        <span id="kpiKevCount" class="font-mono font-bold text-rose-400 text-sm">0</span>
+                    </div>
+                    <div class="flex justify-between items-center text-xs bg-slate-900/60 p-2 rounded border border-slate-800">
+                        <span class="flex items-center gap-1.5 text-slate-300 font-medium">
+                            <span class="w-2 h-2 rounded-full bg-cyan-400"></span> Enrichi CISA Vulnrichment
+                        </span>
+                        <span id="kpiEnrichedCount" class="font-mono font-bold text-cyan-300 text-sm">0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-brand-border/60 pt-2 mt-2">
+                <div class="flex justify-between items-center text-xs bg-red-950/40 p-2 rounded border border-red-900/50">
+                    <span class="text-red-300 font-semibold flex items-center gap-1">
+                        ⚠️ KEV + Auto + RCE
+                    </span>
+                    <span id="kpiKevAutoRceCount" class="font-mono font-black text-red-400 text-sm">0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- KPI 3: SSVC Decision Breakdown -->
+        <div class="kpi-card rounded-xl p-4 col-span-1 md:col-span-2 flex flex-col justify-between">
+            <div class="flex justify-between items-center mb-2">
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">Synthèse Décisions SSVC (CISA Coordinateur)</span>
+                <span class="text-[11px] text-slate-400">Basé sur le risque réel</span>
+            </div>
+            
+            <div class="grid grid-cols-4 gap-2 my-1">
+                <div class="text-center p-2 rounded-lg bg-red-950/40 border border-red-800">
+                    <div class="text-[10px] font-bold text-red-400 uppercase tracking-wider">Act</div>
+                    <div id="kpiAct" class="text-xl font-extrabold text-red-200 font-mono my-0.5">0</div>
+                    <div class="text-[9px] text-red-300/80">Action immédiate</div>
+                </div>
+                <div class="text-center p-2 rounded-lg bg-amber-900/30 border border-amber-600/50">
+                    <div class="text-[10px] font-bold text-amber-400 uppercase tracking-wider">Attend</div>
+                    <div id="kpiAttend" class="text-xl font-extrabold text-amber-300 font-mono my-0.5">0</div>
+                    <div class="text-[9px] text-amber-300/70">Traitement prioritaire</div>
+                </div>
+                <div class="text-center p-2 rounded-lg bg-yellow-900/30 border border-yellow-600/50">
+                    <div class="text-[10px] font-bold text-yellow-400 uppercase tracking-wider">Track*</div>
+                    <div id="kpiTrackStar" class="text-xl font-extrabold text-yellow-300 font-mono my-0.5">0</div>
+                    <div class="text-[9px] text-yellow-300/70">Surveillance accrue</div>
+                </div>
+                <div class="text-center p-2 rounded-lg bg-blue-950/40 border border-blue-700/50">
+                    <div class="text-[10px] font-bold text-blue-400 uppercase tracking-wider">Track</div>
+                    <div id="kpiTrack" class="text-xl font-extrabold text-blue-300 font-mono my-0.5">0</div>
+                    <div class="text-[9px] text-blue-300/80">Maintenance routine</div>
+                </div>
+            </div>
+
+            <!-- Visual Bar Progress -->
+            <div class="w-full bg-slate-900 rounded-full h-2.5 flex overflow-hidden border border-slate-800 mt-2">
+                <div id="barAct"       class="bg-red-600 h-full transition-all duration-300" style="width: 0%" title="Act"></div>
+                <div id="barAttend"    class="bg-amber-500 h-full transition-all duration-300" style="width: 0%" title="Attend"></div>
+                <div id="barTrackStar" class="bg-yellow-500 h-full transition-all duration-300" style="width: 0%" title="Track*"></div>
+                <div id="barTrack"     class="bg-blue-500 h-full transition-all duration-300" style="width: 0%" title="Track"></div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="bg-brand-card border border-brand-border rounded-xl p-5 shadow-lg">
+        <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 mb-4">
+            <div>
+                <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                    📋 Listing des Vulnérabilités & Enrichissement CISA Vulnrichment
+                </h2>
+                <p class="text-xs text-slate-400">Évaluation combinée CVSS v4.0/v3.x et arbre SSVC CISA Coordinateur.</p>
+            </div>
+            
+            <!-- Filters & Sorting -->
+            <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto">
+                <input id="tableSearch" type="text" placeholder="🔍 Filtrer CVE, CPE..." 
+                       class="bg-brand-dark border border-brand-border text-xs text-slate-200 rounded-lg p-2 font-mono outline-none focus:border-brand-blue w-full sm:w-44">
+                
+                <select id="filterSSVC" class="bg-brand-dark border border-brand-border text-xs text-slate-200 rounded-lg p-2 outline-none focus:border-brand-blue">
+                    <option value="ALL">Tous SSVC</option>
+                    <option value="Act">Act (Action immédiate)</option>
+                    <option value="Attend">Attend (Prioritaire)</option>
+                    <option value="Track*">Track* (Surveillance)</option>
+                    <option value="Track">Track (Routine)</option>
+                </select>
+
+                <select id="filterThreat" class="bg-brand-dark border border-brand-border text-xs text-slate-200 rounded-lg p-2 outline-none focus:border-brand-blue">
+                    <option value="ALL">Toutes menaces</option>
+                    <option value="KEV">🔥 CISA KEV</option>
+                    <option value="ENRICHED">🌐 CISA Vulnrichment</option>
+                    <option value="RCE">🎯 RCE Potentiel</option>
+                    <option value="AUTO">🤖 Automatisable</option>
+                </select>
+
+                <select id="sortSelect" class="bg-brand-dark border border-brand-border text-xs text-slate-200 rounded-lg p-2 outline-none focus:border-brand-blue">
+                    <option value="score-desc">Tri : Score (↓)</option>
+                    <option value="score-asc">Tri : Score (↑)</option>
+                    <option value="ssvc-desc">Tri : SSVC (Act → Track)</option>
+                    <option value="cve-asc">Tri : CVE ID (A-Z)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto custom-scrollbar border border-brand-border rounded-lg">
+            <table class="w-full text-left border-collapse" id="vulnTable">
+                <thead>
+                    <tr class="bg-slate-900/80 border-b border-brand-border text-slate-400 text-[11px] uppercase tracking-wider font-semibold">
+                        <th class="p-3">CPE / CVE ID</th>
+                        <th class="p-3">Score CVSS (v4/v3)</th>
+                        <th class="p-3">Preuves d'Exploit & CISA Enrich</th>
+                        <th class="p-3">Points de Décision SSVC</th>
+                        <th class="p-3">Décision CISA Coordinateur</th>
+                    </tr>
+                </thead>
+                <tbody id="vulnBody" class="divide-y divide-slate-800/60 text-xs font-mono">
+                    <tr>
+                        <td colspan="5" class="p-6 text-center text-slate-500 font-sans italic">
+                            Aucune donnée analysée. Entrez un CPE ou chargez un fichier pour lancer le scan NVD et l'enrichissement CISA Vulnrichment.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<footer class="mt-8 border-t border-brand-border pt-6 pb-8 text-xs text-slate-400">
+    <div class="text-center text-[11px] text-slate-500">
+        OOAC CPE Vulnerabilities Analyzer V3.1 • CISA Vulnrichment GitHub ADP Integration • Export & Import Intègres
+    </div>
+</footer>
+
+<script>
+    const $ = id => document.getElementById(id);
+    let cisaKevData = [];
+    let globalAuditResults = [];
+    let pendingCpeList = [];
+
+    // Table SSVC CISA Coordinateur v2.0 officielle
+    const CISA_COORDINATOR_MAPPING = [
+        { E: 'Active', A: 'Yes', TI: 'Total',   PE: 'High', outcome: 'Act' },
+        { E: 'Active', A: 'Yes', TI: 'Total',   PE: 'Low',  outcome: 'Act' },
+        { E: 'Active', A: 'Yes', TI: 'Partial', PE: 'High', outcome: 'Act' },
+        { E: 'Active', A: 'Yes', TI: 'Partial', PE: 'Low',  outcome: 'Attend' },
+        { E: 'Active', A: 'No',  TI: 'Total',   PE: 'High', outcome: 'Act' },
+        { E: 'Active', A: 'No',  TI: 'Total',   PE: 'Low',  outcome: 'Attend' },
+        { E: 'Active', A: 'No',  TI: 'Partial', PE: 'High', outcome: 'Attend' },
+        { E: 'Active', A: 'No',  TI: 'Partial', PE: 'Low',  outcome: 'Attend' },
+
+        { E: 'PoC',    A: 'Yes', TI: 'Total',   PE: 'High', outcome: 'Act' },
+        { E: 'PoC',    A: 'Yes', TI: 'Total',   PE: 'Low',  outcome: 'Attend' },
+        { E: 'PoC',    A: 'Yes', TI: 'Partial', PE: 'High', outcome: 'Attend' },
+        { E: 'PoC',    A: 'Yes', TI: 'Partial', PE: 'Low',  outcome: 'Track*' },
+        { E: 'PoC',    A: 'No',  TI: 'Total',   PE: 'High', outcome: 'Attend' },
+        { E: 'PoC',    A: 'No',  TI: 'Total',   PE: 'Low',  outcome: 'Track*' },
+        { E: 'PoC',    A: 'No',  TI: 'Partial', PE: 'High', outcome: 'Track*' },
+        { E: 'PoC',    A: 'No',  TI: 'Partial', PE: 'Low',  outcome: 'Track' },
+
+        { E: 'None',   A: 'Yes', TI: 'Total',   PE: 'High', outcome: 'Attend' },
+        { E: 'None',   A: 'Yes', TI: 'Total',   PE: 'Low',  outcome: 'Track*' },
+        { E: 'None',   A: 'Yes', TI: 'Partial', PE: 'High', outcome: 'Track*' },
+        { E: 'None',   A: 'Yes', TI: 'Partial', PE: 'Low',  outcome: 'Track' },
+        { E: 'None',   A: 'No',  TI: 'Total',   PE: 'High', outcome: 'Track*' },
+        { E: 'None',   A: 'No',  TI: 'Total',   PE: 'Low',  outcome: 'Track' },
+        { E: 'None',   A: 'No',  TI: 'Partial', PE: 'High', outcome: 'Track' },
+        { E: 'None',   A: 'No',  TI: 'Partial', PE: 'Low',  outcome: 'Track' }
+    ];
+
+    window.onload = async () => {
+        try {
+            const resp = await fetch('https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json');
+            if (resp.ok) {
+                const data = await resp.json();
+                cisaKevData = data.vulnerabilities || [];
+                console.log(`CISA KEV chargé : ${cisaKevData.length} vulnérabilités.`);
+            }
+        } catch(e) { 
+            console.error("Erreur chargement CISA KEV:", e); 
+        }
+    };
+
+    // Helper pour générer l'URL raw GitHub de CISA Vulnrichment
+    function getVulnrichmentUrl(cveId) {
+        const match = cveId.match(/CVE-(\d{4})-(\d+)/);
+        if (!match) return null;
+        const year = match[1];
+        const numStr = match[2];
+        let tranche = '0xxx';
+        if (numStr.length >= 4) {
+            tranche = numStr.substring(0, numStr.length - 3) + 'xxx';
+        }
+        return `https://raw.githubusercontent.com/cisagov/vulnrichment/main/${year}/${tranche}/${cveId}.json`;
+    }
+
+    // Récupération et parsing du conteneur CISA ADP (Vulnrichment)
+    async function fetchCisaEnrichment(cveId) {
+        const url = getVulnrichmentUrl(cveId);
+        if (!url) return null;
+        try {
+            const resp = await fetch(url);
+            if (!resp.ok) return null;
+            const data = await resp.json();
+            return parseCisaAdp(data, cveId);
+        } catch (e) {
+            return null;
+        }
+    }
+
+    function parseCisaAdp(cveJson, cveId) {
+        const adpContainers = cveJson.containers?.adp || [];
+        const cisaAdp = adpContainers.find(c => 
+            c.providerMetadata?.shortName === 'cisa' || 
+            c.providerMetadata?.shortName === 'CISA-ADP' || 
+            (c.title && c.title.toLowerCase().includes('cisa')) ||
+            c.metrics
+        );
+        
+        if (!cisaAdp) return null;
+
+        let ssvcContent = null;
+        let enrichedCvss = null;
+        let enrichedCwe = null;
+
+        if (cisaAdp.metrics) {
+            cisaAdp.metrics.forEach(m => {
+                if (m.type === 'ssvc' && m.content) {
+                    ssvcContent = m.content;
+                }
+                if (m.cvssV4_0 || m.cvssV3_1 || m.cvssV3_0) {
+                    enrichedCvss = m.cvssV4_0 || m.cvssV3_1 || m.cvssV3_0;
+                }
+            });
+        }
+
+        if (cisaAdp.problemTypes) {
+            enrichedCwe = cisaAdp.problemTypes;
+        }
+
+        return {
+            enriched: true,
+            ssvc: ssvcContent,
+            cvss: enrichedCvss,
+            cwe: enrichedCwe,
+            dateUpdated: cisaAdp.providerMetadata?.dateUpdated || 'N/A'
+        };
+    }
+
+    function evaluateSSVC(cveId, cvssData, isPubliclyExposed, cisaEnrichment = null) {
+        const isKev = cisaKevData.some(v => v.cveID === cveId);
+        
+        // Exploitation (E: None, PoC, Active)
+        let exploitationKey = 'None';
+        if (isKev) {
+            exploitationKey = 'Active';
+        } else if (cisaEnrichment?.ssvc?.options) {
+            // Chercher dans les options SSVC de CISA Vulnrichment
+            const expOpt = cisaEnrichment.ssvc.options.find(o => o.exploitation || o.category === 'exploitation');
+            if (expOpt && expOpt.value) {
+                const val = expOpt.value.toLowerCase();
+                if (val.includes('active')) exploitationKey = 'Active';
+                else if (val.includes('poc')) exploitationKey = 'PoC';
+            }
+        }
+
+        // Automatable (A: No, Yes)
+        const av = cvssData.attackVector || cvssData.AV || '';
+        const ac = cvssData.attackComplexity || cvssData.AC || '';
+        const pr = cvssData.privilegesRequired || cvssData.PR || '';
+        const ui = cvssData.userInteraction || cvssData.UI || '';
+
+        const isAutomatable = (av.toUpperCase() === 'NETWORK' && (ac.toUpperCase() === 'LOW' || ac.toUpperCase() === 'L') && (pr.toUpperCase() === 'NONE' || pr.toUpperCase() === 'N') && (ui.toUpperCase() === 'NONE' || ui.toUpperCase() === 'N'));
+        const autoKey = isAutomatable ? 'Yes' : 'No';
+
+        // Technical Impact (TI: Partial, Total)
+        const c = cvssData.confidentialityImpact || cvssData.VC || '';
+        const i = cvssData.integrityImpact || cvssData.VI || '';
+        const a = cvssData.availabilityImpact || cvssData.VA || '';
+
+        const isTotalImpact = (c.toUpperCase() === 'HIGH' && i.toUpperCase() === 'HIGH' && a.toUpperCase() === 'HIGH');
+        const tiKey = isTotalImpact ? 'Total' : 'Partial';
+
+        const peKey = isPubliclyExposed ? 'High' : 'Low';
+
+        const rule = CISA_COORDINATOR_MAPPING.find(r => 
+            r.E === exploitationKey && r.A === autoKey && r.TI === tiKey && r.PE === peKey
+        );
+
+        const outcome = rule ? rule.outcome : 'Track';
+        const isRCE = (av.toUpperCase() === 'NETWORK' && (c.toUpperCase() === 'HIGH' || i.toUpperCase() === 'HIGH'));
+
+        return {
+            outcome,
+            isKev,
+            isAutomatable,
+            isTotalImpact,
+            isRCE,
+            decisionPoints: { E: exploitationKey, A: autoKey, TI: tiKey, PE: peKey }
+        };
+    }
+
+    async function runAudit(list) {
+        globalAuditResults = [];
+        $("vulnBody").innerHTML = "";
+        $("progressContainer").classList.remove("hidden");
+        $("btnRunFile").classList.add("hidden");
+        $("fileStatus").classList.add("hidden");
+
+        const isPubliclyExposed = $("peToggle").checked;
+        const severityThreshold = parseFloat($("severityThreshold").value);
+
+        let candidateVulns = [];
+
+        // ÉTAPE 1 : Scan rapide NVD et priorisation CVSS v4.0 / v3.x
+        for (let i = 0; i < list.length; i++) {
+            const cpe = list[i].trim();
+            if(!cpe) continue;
+
+            $("progressInner").style.width = `${((i + 1) / list.length) * 50}%`;
+            $("progressText").textContent = `Scan CPE ${i + 1}/${list.length}`;
+            $("statusUpdate").textContent = `Interrogation NVD : ${cpe}`;
+
+            try {
+                const resp = await fetch(`https://services.nvd.nist.gov/rest/json/cves/2.0?cpeName=${encodeURIComponent(cpe)}`);
+                if (resp.ok) {
+                    const data = await resp.json();
+                    if (data.vulnerabilities && data.vulnerabilities.length > 0) {
+                        for (const item of data.vulnerabilities) {
+                            const cve = item.cve;
+                            const metrics = cve.metrics;
+                            
+                            let cvssData = null;
+                            let cvssVersion = 'v3.1';
+
+                            // Priorité CVSS v4.0 -> v3.1 -> v3.0
+                            if (metrics?.cvssMetricV40?.[0]?.cvssData) {
+                                cvssData = metrics.cvssMetricV40[0].cvssData;
+                                cvssVersion = 'v4.0';
+                            } else if (metrics?.cvssMetricV31?.[0]?.cvssData) {
+                                cvssData = metrics.cvssMetricV31[0].cvssData;
+                                cvssVersion = 'v3.1';
+                            } else if (metrics?.cvssMetricV30?.[0]?.cvssData) {
+                                cvssData = metrics.cvssMetricV30[0].cvssData;
+                                cvssVersion = 'v3.0';
+                            }
+
+                            if (!cvssData) continue;
+                            const score = cvssData.baseScore || 0;
+
+                            // Application du filtre de sévérité dynamique
+                            if (score >= severityThreshold) {
+                                candidateVulns.push({
+                                    cpe,
+                                    cveId: cve.id,
+                                    score,
+                                    cvssVersion,
+                                    cvssData,
+                                    published: cve.published ? cve.published.split('T')[0] : 'N/A'
+                                });
+                            }
+                        }
+                    }
+                }
+                if (list.length > 1 && i < list.length - 1) {
+                    await new Promise(r => setTimeout(r, 6000)); // Respect rate limits NVD
+                }
+            } catch (err) {
+                console.error(`Erreur CPE ${cpe}:`, err);
+            }
+        }
+
+        // ÉTAPE 2 : Enrichissement CISA Vulnrichment pour les CVE retenues
+        const totalCandidates = candidateVulns.length;
+        $("statusUpdate").textContent = `Enrichissement CISA Vulnrichment (${totalCandidates} CVE au-dessus du seuil)...`;
+
+        for (let j = 0; j < candidateVulns.length; j++) {
+            const vuln = candidateVulns[j];
+            $("progressInner").style.width = `${50 + ((j + 1) / totalCandidates) * 50}%`;
+            $("progressText").textContent = `Enrichissement ${j + 1}/${totalCandidates}`;
+            $("statusUpdate").textContent = `CISA Vulnrichment : ${vuln.cveId}`;
+
+            // Requête CISA Vulnrichment GitHub
+            const cisaEnrichment = await fetchCisaEnrichment(vuln.cveId);
+
+            // Si CISA propose un CVSS enrichi, on l'utilise
+            let finalCvssData = vuln.cvssData;
+            let finalScore = vuln.score;
+            if (cisaEnrichment?.cvss) {
+                finalCvssData = cisaEnrichment.cvss;
+                if (finalCvssData.baseScore) finalScore = finalCvssData.baseScore;
+            }
+
+            const ssvc = evaluateSSVC(vuln.cveId, finalCvssData, isPubliclyExposed, cisaEnrichment);
+
+            globalAuditResults.push({
+                cpe: vuln.cpe,
+                cveId: vuln.cveId,
+                score: finalScore,
+                cvssVersion: vuln.cvssVersion,
+                vectorString: finalCvssData.vectorString || '',
+                published: vuln.published,
+                cisaEnriched: cisaEnrichment ? true : false,
+                cisaData: cisaEnrichment,
+                ssvc
+            });
+
+            // Pause légère pour éviter le rate-limit GitHub API
+            await new Promise(r => setTimeout(r, 150));
+        }
+
+        $("statusUpdate").textContent = "Analyse et enrichissement CISA terminés avec succès.";
+        $("btnExportJSON").classList.remove("hidden");
+        renderAuditResults();
+    }
+
+    function renderAuditResults() {
+        const tableSearch = $("tableSearch").value.toLowerCase().trim();
+        const filterSSVC = $("filterSSVC").value;
+        const filterThreat = $("filterThreat").value;
+        const sortOption = $("sortSelect").value;
+
+        const total = globalAuditResults.length;
+        let scoreLow = 0, scoreMed = 0, scoreHigh = 0;
+        let kevCount = 0, enrichedCount = 0, kevAutoRceCount = 0;
+        let countAct = 0, countAttend = 0, countTrackStar = 0, countTrack = 0;
+
+        globalAuditResults.forEach(r => {
+            if (r.score <= 7.0) scoreLow++;
+            else if (r.score <= 9.0) scoreMed++;
+            else scoreHigh++;
+
+            if (r.ssvc.isKev) kevCount++;
+            if (r.cisaEnriched) enrichedCount++;
+            if (r.ssvc.isKev && r.ssvc.isAutomatable && r.ssvc.isRCE) kevAutoRceCount++;
+
+            switch(r.ssvc.outcome) {
+                case 'Act':       countAct++; break;
+                case 'Attend':    countAttend++; break;
+                case 'Track*':    countTrackStar++; break;
+                case 'Track':     countTrack++; break;
+            }
+        });
+
+        $("kpiTotalVulns").textContent = total;
+        $("kpiScoreLow").textContent = scoreLow;
+        $("kpiScoreMed").textContent = scoreMed;
+        $("kpiScoreHigh").textContent = scoreHigh;
+
+        $("kpiKevCount").textContent = kevCount;
+        $("kpiEnrichedCount").textContent = enrichedCount;
+        $("kpiKevAutoRceCount").textContent = kevAutoRceCount;
+
+        $("kpiAct").textContent = countAct;
+        $("kpiAttend").textContent = countAttend;
+        $("kpiTrackStar").textContent = countTrackStar;
+        $("kpiTrack").textContent = countTrack;
+
+        if (total > 0) {
+            $("barAct").style.width       = `${(countAct / total) * 100}%`;
+            $("barAttend").style.width    = `${(countAttend / total) * 100}%`;
+            $("barTrackStar").style.width = `${(countTrackStar / total) * 100}%`;
+            $("barTrack").style.width     = `${(countTrack / total) * 100}%`;
+        }
+
+        let filtered = globalAuditResults.filter(r => {
+            const matchesText = r.cveId.toLowerCase().includes(tableSearch) || r.cpe.toLowerCase().includes(tableSearch);
+            const matchesSSVC = (filterSSVC === 'ALL') || (r.ssvc.outcome === filterSSVC);
+
+            let matchesThreat = true;
+            if (filterThreat === 'KEV') matchesThreat = r.ssvc.isKev;
+            else if (filterThreat === 'ENRICHED') matchesThreat = r.cisaEnriched;
+            else if (filterThreat === 'RCE') matchesThreat = r.ssvc.isRCE;
+            else if (filterThreat === 'AUTO') matchesThreat = r.ssvc.isAutomatable;
+
+            return matchesText && matchesSSVC && matchesThreat;
+        });
+
+        const ssvcPriorityMap = { 'Act': 4, 'Attend': 3, 'Track*': 2, 'Track': 1 };
+        filtered.sort((a, b) => {
+            if (sortOption === 'score-desc') return b.score - a.score;
+            if (sortOption === 'score-asc') return a.score - b.score;
+            if (sortOption === 'ssvc-desc') return (ssvcPriorityMap[b.ssvc.outcome] || 0) - (ssvcPriorityMap[a.ssvc.outcome] || 0);
+            if (sortOption === 'cve-asc') return a.cveId.localeCompare(b.cveId);
+            return 0;
+        });
+
+        const tbody = $("vulnBody");
+        tbody.innerHTML = "";
+
+        if (filtered.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="5" class="p-6 text-center text-slate-500 font-sans italic">
+                        ${total === 0 ? "Aucune vulnérabilité trouvée pour ce seuil." : "Aucune vulnérabilité ne correspond aux filtres appliqués."}
+                    </td>
+                </tr>`;
+            return;
+        }
+
+        filtered.forEach(r => {
+            const ssvcBadgeClass = {
+                'Act':       'badge-act',
+                'Attend':    'badge-attend',
+                'Track*':    'badge-trackstar',
+                'Track':     'badge-track'
+            }[r.ssvc.outcome] || 'badge-track';
+
+            const ssvcDesc = {
+                'Act':       'Action corrective immédiate',
+                'Attend':    'Traitement prioritaire',
+                'Track*':    'Surveillance accrue',
+                'Track':     'Maintenance routine'
+            }[r.ssvc.outcome];
+
+            const tr = document.createElement("tr");
+            tr.className = "hover:bg-slate-900/50 transition";
+            tr.innerHTML = `
+                <td class="p-3">
+                    <div class="text-[10px] text-slate-400 font-mono truncate max-w-[200px]" title="${r.cpe}">${r.cpe}</div>
+                    <div class="text-sm font-bold text-white mt-0.5">${r.cveId}</div>
+                    <div class="text-[10px] text-slate-500">Publié: ${r.published}</div>
+                </td>
+                <td class="p-3">
+                    <div class="flex items-center gap-1.5">
+                        <span class="inline-block px-2 py-0.5 rounded font-mono font-bold text-xs ${r.score >= 9 ? 'bg-red-950 text-red-300 border border-red-800' : (r.score >= 7 ? 'bg-amber-950 text-amber-300 border border-amber-800' : 'bg-slate-800 text-slate-300 border border-slate-700')}">
+                            ${r.score.toFixed(1)}
+                        </span>
+                        <span class="text-[10px] text-cyan-400 font-mono">(${r.cvssVersion})</span>
+                    </div>
+                </td>
+                <td class="p-3">
+                    <div class="flex flex-col gap-1">
+                        ${r.ssvc.isKev ? `<span class="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded bg-red-900/60 text-red-200 border border-red-700 font-semibold">🔥 CISA KEV</span>` : ''}
+                        ${r.cisaEnriched ? `<span class="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded bg-cyan-950 text-cyan-200 border border-cyan-800 font-semibold">🌐 CISA Vulnrichment</span>` : ''}
+                        ${r.ssvc.isAutomatable ? `<span class="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800">🤖 Automatisable</span>` : ''}
+                        ${r.ssvc.isRCE ? `<span class="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded bg-rose-950 text-rose-300 border border-rose-800">🎯 RCE</span>` : ''}
+                        ${(!r.ssvc.isKev && !r.cisaEnriched && !r.ssvc.isAutomatable && !r.ssvc.isRCE) ? `<span class="text-[10px] text-slate-500 italic">Standard</span>` : ''}
+                    </div>
+                </td>
+                <td class="p-3">
+                    <div class="grid grid-cols-2 gap-1 text-[10px] font-mono">
+                        <span class="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">E: <b class="${r.ssvc.decisionPoints.E === 'Active' ? 'text-red-400' : (r.ssvc.decisionPoints.E === 'PoC' ? 'text-amber-400' : 'text-slate-400')}">${r.ssvc.decisionPoints.E}</b></span>
+                        <span class="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">A: <b class="${r.ssvc.decisionPoints.A === 'Yes' ? 'text-amber-400' : 'text-slate-400'}">${r.ssvc.decisionPoints.A}</b></span>
+                        <span class="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">TI: <b class="${r.ssvc.decisionPoints.TI === 'Total' ? 'text-rose-400' : 'text-slate-400'}">${r.ssvc.decisionPoints.TI}</b></span>
+                        <span class="bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800">PE: <b class="${r.ssvc.decisionPoints.PE === 'High' ? 'text-emerald-400' : 'text-slate-400'}">${r.ssvc.decisionPoints.PE}</b></span>
+                    </div>
+                </td>
+                <td class="p-3">
+                    <div class="inline-block px-2.5 py-1 rounded text-xs font-bold ${ssvcBadgeClass}">
+                        ${r.ssvc.outcome}
+                    </div>
+                    <div class="text-[10px] text-slate-400 font-sans mt-1 leading-tight">${ssvcDesc}</div>
+                </td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    // Écouteurs de filtres
+    $("tableSearch").oninput = renderAuditResults;
+    $("filterSSVC").onchange = renderAuditResults;
+    $("filterThreat").onchange = renderAuditResults;
+    $("sortSelect").onchange = renderAuditResults;
+
+    $("peToggle").onchange = () => {
+        if (globalAuditResults.length > 0) {
+            const isPE = $("peToggle").checked;
+            globalAuditResults.forEach(r => {
+                r.ssvc = evaluateSSVC(r.cveId, { attackVector: 'NETWORK', confidentialityImpact: 'HIGH' }, isPE, r.cisaData);
+            });
+            renderAuditResults();
+        }
+    };
+
+    $("btnAnalyze").onclick = () => runAudit([$("cpeInput").value]);
+
+    $("fileImport").onchange = (e) => {
+        const file = e.target.files[0];
+        const status = $("fileStatus");
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            try {
+                const data = JSON.parse(ev.target.result);
+                if (data.cpeList && Array.isArray(data.cpeList)) {
+                    pendingCpeList = data.cpeList;
+                    status.classList.remove("hidden");
+                    status.className = "mt-3 p-3 rounded-lg text-xs font-mono bg-emerald-950/60 border border-emerald-800 text-emerald-300";
+                    status.textContent = `✅ Fichier valide : ${pendingCpeList.length} CPE détectés. Cliquez sur "Lancer l'Analyse & Enrichissement CISA".`;
+                    $("btnRunFile").classList.remove("hidden");
+                } else {
+                    throw new Error("Clé 'cpeList' introuvable dans le JSON.");
+                }
+            } catch (err) {
+                status.classList.remove("hidden");
+                status.className = "mt-3 p-3 rounded-lg text-xs font-mono bg-rose-950/60 border border-rose-800 text-rose-300";
+                status.textContent = `❌ Erreur : ${err.message}`;
+                $("btnRunFile").classList.add("hidden");
+            }
+        };
+        reader.readAsText(file);
+    };
+
+    $("btnRunFile").onclick = () => runAudit(pendingCpeList);
+
+    $("btnDownloadTemplate").onclick = () => {
+        const template = {
+            cpeList: [
+                "cpe:2.3:o:google:android:13.0:*:*:*:*:*:*:*",
+                "cpe:2.3:a:apache:log4j:2.14.1:*:*:*:*:*:*:*"
+            ]
+        };
+        const blob = new Blob([JSON.stringify(template, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = "cpe_audit_template.json";
+        a.click();
+    };
+
+    $("btnExportJSON").onclick = () => {
+        const exportData = {
+            timestamp: new Date().toISOString(),
+            source: "CISA Vulnrichment GitHub ADP & NVD API",
+            totalEvaluated: globalAuditResults.length,
+            results: globalAuditResults
+        };
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `audit_cisa_vulnrichment_${new Date().toISOString().slice(0,10)}.json`;
+        a.click();
+    };
+</script>
+</body>
+</html>
+
+```
