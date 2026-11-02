@@ -15,6 +15,20 @@
   },
   {
     "date": "2026-10-30",
+    "datetime_utc": "2026-10-30T18:09:17+00:00",
+    "source": "Anquanke",
+    "region": "CN",
+    "trust": "Security Media",
+    "category": "Cyber News",
+    "title": "突发！1day漏洞致使大量NAS用户文件被加密",
+    "link": "https://www.anquanke.com/post/id/316387",
+    "summary": "",
+    "cves": [],
+    "status": "to-review",
+    "origin": "RSS"
+  },
+  {
+    "date": "2026-10-30",
     "datetime_utc": "2026-10-30T17:02:22+00:00",
     "source": "CCB Belgium",
     "region": "BE",
@@ -8437,20 +8451,6 @@
     "title": "Multiples vulnérabilités dans les produits Check Point (10 septembre 2026)",
     "link": "https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-1152/",
     "summary": "De multiples vulnérabilités ont été découvertes dans les produits Check Point. Elles permettent à un attaquant de provoquer une exécution de code arbitraire à distance et un contournement de la politique de sécurité.",
-    "cves": [],
-    "status": "to-review",
-    "origin": "RSS"
-  },
-  {
-    "date": "2026-09-10",
-    "datetime_utc": "2026-09-10T00:00:00+00:00",
-    "source": "CERT-FR",
-    "region": "FR",
-    "trust": "Government",
-    "category": "Avis",
-    "title": "Vulnérabilité dans Laravel (10 septembre 2026)",
-    "link": "https://www.cert.ssi.gouv.fr/avis/CERTFR-2026-AVI-1153/",
-    "summary": "Une vulnérabilité a été découverte dans Laravel. Elle permet à un attaquant de provoquer une injection de code indirecte à distance (XSS).",
     "cves": [],
     "status": "to-review",
     "origin": "RSS"
