@@ -2,14 +2,14 @@ name: Mettre à jour les données Vulnrichment
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Exécution automatique tous les jours à minuit
+    - cron: '0 0 * * *' # Exécution automatique tous les jours à minuit UTC
   workflow_dispatch: # Permet de lancer la mise à jour manuellement depuis l'onglet Actions de GitHub
 
 jobs:
   update:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: write # Nécessaire pour autoriser le bot à faire un commit et un push sur votre dépôt
     steps:
       - name: Cloner votre dépôt
         uses: actions/checkout@v4
@@ -26,6 +26,6 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/vulnrichment_summary/vulnrichment_summary.json
-          git diff --staged --quiet || git commit -m "Mise à jour automatique des données CISA Vulnrichment"
+          git add data/vulnrichment_summary/
+          git diff --staged --quiet || git commit -m "Mise à jour automatique des données CISA Vulnrichment par année"
           git push
