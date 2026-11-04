@@ -2,14 +2,14 @@ name: Mettre à jour les données Vulnrichment
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Exécution automatique tous les jours à minuit UTC
-  workflow_dispatch: # Permet de lancer la mise à jour manuellement depuis l'onglet Actions de GitHub
+    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   update:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # Nécessaire pour autoriser le bot à faire un commit et un push sur votre dépôt
+      contents: write
     steps:
       - name: Cloner votre dépôt
         uses: actions/checkout@v4
@@ -27,7 +27,6 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Synchronisation indispensable pour éviter l'erreur "fetch first"
           git pull origin main --rebase || true
           
           git add data/vulnrichment_summary/
