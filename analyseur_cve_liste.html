@@ -72,7 +72,7 @@
                 </span>
             </h1>
             <p class="text-xs md:text-sm text-slate-400 mt-1">
-                Collez ou importez une liste d'identifiants CVE pour interroger les bases locales Vulnrichment (`data/vulnrichment_summary/cve_YYYY.json`)[cite: 4].
+                Collez ou importez une liste d'identifiants CVE pour interroger les bases locales Vulnrichment (`data/vulnrichment_summary/cve_YYYY.json`).
             </p>
         </div>
     </div>
@@ -128,7 +128,7 @@
             <div id="kpiFound" class="text-3xl font-black text-emerald-400 my-1">0</div>
         </div>
         <div class="kpi-card rounded-xl p-4">
-            <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">CVE Non Trouvées / Absentes</span>
+            <span class="text-xs font-semibold uppercase tracking-wider text-slate-400">CVE Non Présentes</span>
             <div id="kpiNotFound" class="text-3xl font-black text-rose-400 my-1">0</div>
         </div>
     </section>
@@ -148,15 +148,16 @@
                 <thead>
                     <tr class="bg-slate-900/80 border-b border-brand-border text-slate-400 text-[11px] uppercase tracking-wider font-semibold">
                         <th class="p-3">CVE ID</th>
-                        <th class="p-3">Métriques (CVSS)</th>
-                        <th class="p-3">Types de Problèmes (CWE)</th>
-                        <th class="p-3">Données CISA / SSVC / Autre</th>
-                        <th class="p-3">Références</th>
+                        <th class="p-3">Score V3</th>
+                        <th class="p-3">Score V4 & Vecteur</th>
+                        <th class="p-3">CWE</th>
+                        <th class="p-3">SSVC (Exploitation / Auto / Impact)</th>
+                        <th class="p-3">Statut</th>
                     </tr>
                 </thead>
                 <tbody id="resultsBody" class="divide-y divide-slate-800/60 text-xs font-mono">
                     <tr>
-                        <td colspan="5" class="p-6 text-center text-slate-500 font-sans italic">
+                        <td colspan="6" class="p-6 text-center text-slate-500 font-sans italic">
                             Aucune CVE analysée. Entrez une liste ci-dessus et lancez l'analyse.
                         </td>
                     </tr>
@@ -173,16 +174,14 @@
 
 <script>
     const $ = id => document.getElementById(id);
-    let loadedYearData = {}; // Cache pour stocker les fichiers JSON par année
+    let loadedYearData = {}; 
     let currentAnalysisResults = [];
 
-    // Fonction utilitaire pour extraire l'année d'une CVE
     function getYearFromCve(cveId) {
         const match = cveId.match(/CVE-(\d{4})-\d+/i);
         return match ? match[1] : null;
     }
 
-    // Chargement dynamique du fichier JSON correspondant à l'année de la CVE
     async function getYearData(year) {
         if (loadedYearData[year]) return loadedYearData[year];
         try {
@@ -201,9 +200,61 @@
         }
     }
 
+    // Extraction fine des métriques, CWE et SSVC
+    function parseEnrichmentData(d) {
+        let scoreV3 = 'N/A', vectorV3 = '';
+        let scoreV4 = 'N/A', vectorV4 = '';
+        let cweList = [];
+        let exploitation = 'N/A';
+        let automatability = 'N/A';
+        let impact = 'N/A';
+
+        if (d.metrics && Array.isArray(d.metrics)) {
+            d.metrics.forEach(m => {
+                if (m.cvssV3_1) {
+                    scoreV3 = m.cvssV3_1.baseScore ?? 'N/A';
+                    vectorV3 = m.cvssV3_1.vectorString || '';
+                } else if (m.cvssV3_0 && scoreV3 === 'N/A') {
+                    scoreV3 = m.cvssV3_0.baseScore ?? 'N/A';
+                    vectorV3 = m.cvssV3_0.vectorString || '';
+                }
+                if (m.cvssV4_0) {
+                    scoreV4 = m.cvssV4_0.baseScore ?? 'N/A';
+                    vectorV4 = m.cvssV4_0.vectorString || '';
+                }
+                if (m.type === 'ssvc' && m.content && m.content.options) {
+                    m.content.options.forEach(opt => {
+                        if (opt.exploitation) exploitation = opt.exploitation;
+                        if (opt.automatability) automatability = opt.automatability;
+                        if (opt.technicalImpact) impact = opt.technicalImpact;
+                    });
+                }
+            });
+        }
+
+        if (d.other && d.other.content && d.other.content.options) {
+            d.other.content.options.forEach(opt => {
+                if (opt.exploitation && exploitation === 'N/A') exploitation = opt.exploitation;
+                if (opt.automatability && automatability === 'N/A') automatability = opt.automatability;
+                if (opt.technicalImpact && impact === 'N/A') impact = opt.technicalImpact;
+            });
+        }
+
+        if (d.problemTypes && Array.isArray(d.problemTypes)) {
+            d.problemTypes.forEach(pt => {
+                if (pt.descriptions && Array.isArray(pt.descriptions)) {
+                    pt.descriptions.forEach(desc => {
+                        if (desc.description) cweList.push(desc.description);
+                    });
+                }
+            });
+        }
+
+        return { scoreV3, vectorV3, scoreV4, vectorV4, cweList, exploitation, automatability, impact };
+    }
+
     $("btnRunAnalysis").onclick = async () => {
         const rawText = $("cveInputText").value;
-        // Découpage par virgule, point-virgule, tabulation ou retour à la ligne
         const cveList = rawText
             .split(/[\s,;\n\r]+/)
             .map(s => s.trim().toUpperCase())
@@ -225,7 +276,6 @@
         let foundCount = 0;
         let notFoundCount = 0;
 
-        // Regrouper les CVEs par année pour optimiser les requêtes fetch
         const cvesByYear = {};
         uniqueCves.forEach(cve => {
             const year = getYearFromCve(cve);
@@ -260,15 +310,14 @@
             });
         }
 
-        // Mise à jour des KPI
         $("kpiRequested").textContent = uniqueCves.length;
         $("kpiFound").textContent = foundCount;
         $("kpiNotFound").textContent = notFoundCount;
-        
+
         status.className = "p-3 rounded-lg text-xs font-mono bg-emerald-950/60 border border-emerald-800 text-emerald-300";
         status.textContent = `✅ Analyse terminée : ${foundCount} trouvées, ${notFoundCount} non trouvées dans le résumé CISA Vulnrichment.`;
 
-        if (foundCount > 0) {
+        if (uniqueCves.length > 0) {
             $("btnExportCSV").classList.remove("hidden");
         } else {
             $("btnExportCSV").classList.add("hidden");
@@ -277,7 +326,6 @@
         renderTable(currentAnalysisResults);
     };
 
-    // Gestion de l'import de fichier texte ou json
     $("fileImport").onchange = (e) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -311,91 +359,97 @@
         const searchTerm = $("tableSearch").value.toLowerCase();
         const filtered = results.filter(r => r.cveId.toLowerCase().includes(searchTerm));
 
-        if (filtered.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" class="p-6 text-center text-slate-500 font-sans italic">Aucun résultat ne correspond à la recherche.</td></tr>`;
+        const foundItems = filtered.filter(r => r.found);
+        const notFoundItems = filtered.filter(r => !r.found);
+
+        if (foundItems.length === 0 && notFoundItems.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-500 font-sans italic">Aucun résultat ne correspond à la recherche.</td></tr>`;
             return;
         }
 
-        filtered.forEach(item => {
+        // 1. Afficher les CVE trouvées (enrichies)
+        foundItems.forEach(item => {
             const tr = document.createElement("tr");
             tr.className = "hover:bg-slate-900/50 transition";
+            const parsed = parseEnrichmentData(item.data);
+            
+            const cweHtml = parsed.cweList.length > 0 
+                ? parsed.cweList.map(c => `<span class="inline-block bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded mr-1 mb-1 text-[11px]">${c}</span>`).join('') 
+                : '<span class="text-slate-500">N/A</span>';
 
-            if (!item.found) {
-                tr.innerHTML = `
-                    <td class="p-3 font-bold text-white">${item.cveId}</td>
-                    <td colspan="4" class="p-3 text-rose-400 italic">Absente du dépôt CISA Vulnrichment (ou non enrichie).</td>
-                `;
-            } else {
-                const d = item.data;
-                
-                // Formater les métriques CVSS
-                let metricsHtml = "N/A";
-                if (d.metrics && d.metrics.length > 0) {
-                    metricsHtml = d.metrics.map(m => {
-                        const cvss = m.cvssV4_0 || m.cvssV3_1 || m.cvssV3_0 || {};
-                        return `<div class="mb-1"><span class="text-cyan-400 font-bold">${cvss.baseScore || 'N/A'}</span> <span class="text-[10px] text-slate-400">(${cvss.vectorString || 'Pas de vecteur'})</span></div>`;
-                    }).join('');
-                }
-
-                // Formater les problemTypes (CWE)
-                let cweHtml = "N/A";
-                if (d.problemTypes && d.problemTypes.length > 0) {
-                    cweHtml = d.problemTypes.map(pt => {
-                        return (pt.descriptions || []).map(desc => `<span class="inline-block bg-slate-900 border border-slate-800 px-1.5 py-0.5 rounded mr-1 mb-1">${desc.description || desc.cweId || ''}</span>`).join('');
-                    }).join('');
-                }
-
-                // Formater les autres infos (SSVC, etc.)
-                let otherHtml = "<span class='text-slate-500'>Aucun détail supp.</span>";
-                if (d.other) {
-                    otherHtml = `<pre class="text-[10px] text-slate-300 max-h-24 overflow-y-auto custom-scrollbar">${JSON.stringify(d.other, null, 2)}</pre>`;
-                }
-
-                tr.innerHTML = `
-                    <td class="p-3 font-bold text-white align-top">${item.cveId}</td>
-                    <td class="p-3 align-top">${metricsHtml}</td>
-                    <td class="p-3 align-top">${cweHtml}</td>
-                    <td class="p-3 align-top">${otherHtml}</td>
-                    <td class="p-3 align-top">
-                        <span class="text-emerald-400 font-semibold">✓ Enrichi CISA</span>
-                    </td>
-                `;
-            }
+            tr.innerHTML = `
+                <td class="p-3 font-bold text-white align-top">${item.cveId}</td>
+                <td class="p-3 align-top">
+                    <span class="text-cyan-400 font-bold">${parsed.scoreV3}</span>
+                    ${parsed.vectorV3 ? `<div class="text-[10px] text-slate-400 font-mono mt-0.5 truncate max-w-[150px]" title="${parsed.vectorV3}">${parsed.vectorV3}</div>` : ''}
+                </td>
+                <td class="p-3 align-top">
+                    <span class="text-brand-blue font-bold">${parsed.scoreV4}</span>
+                    ${parsed.vectorV4 ? `<div class="text-[10px] text-slate-400 font-mono mt-0.5 truncate max-w-[180px]" title="${parsed.vectorV4}">${parsed.vectorV4}</div>` : ''}
+                </td>
+                <td class="p-3 align-top">${cweHtml}</td>
+                <td class="p-3 align-top">
+                    <div class="space-y-0.5 text-[11px]">
+                        <div><span class="text-slate-400">Exploitation :</span> <b class="${parsed.exploitation.toLowerCase() === 'active' ? 'text-rose-400' : (parsed.exploitation.toLowerCase() === 'poc' ? 'text-amber-400' : 'text-slate-300')}">${parsed.exploitation}</b></div>
+                        <div><span class="text-slate-400">Automatisable :</span> <b class="${parsed.automatability.toLowerCase() === 'yes' ? 'text-amber-400' : 'text-slate-300'}">${parsed.automatability}</b></div>
+                        <div><span class="text-slate-400">Impact :</span> <b class="${parsed.impact.toLowerCase() === 'total' ? 'text-rose-400' : 'text-slate-300'}">${parsed.impact}</b></div>
+                    </div>
+                </td>
+                <td class="p-3 align-top"><span class="text-emerald-400 font-semibold text-[11px]">✓ CISA Enrichi</span></td>
+            `;
             tbody.appendChild(tr);
         });
+
+        // 2. Ligne de synthèse pour les CVE non présentes
+        if (notFoundItems.length > 0) {
+            const trSummary = document.createElement("tr");
+            trSummary.className = "bg-rose-950/20 border-t border-rose-900/40 text-rose-300";
+            const missingListStr = notFoundItems.map(i => i.cveId).join(', ');
+            trSummary.innerHTML = `
+                <td colspan="6" class="p-3.5">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold">⚠️ CVE non présente(s) CISA Vulnrichment :</span>
+                            <span class="bg-rose-950/60 border border-rose-800/80 px-2 py-0.5 rounded font-mono font-bold text-rose-200">
+                                ${notFoundItems.length} concernée(s)
+                            </span>
+                        </div>
+                        <div class="text-[11px] text-slate-400 font-mono truncate max-w-xl" title="${missingListStr}">
+                            Liste : ${missingListStr}
+                        </div>
+                    </div>
+                </td>
+            `;
+            tbody.appendChild(trSummary);
+        }
     }
 
     $("tableSearch").oninput = () => renderTable(currentAnalysisResults);
 
-    // Fonction d'export CSV
     $("btnExportCSV").onclick = () => {
         if (currentAnalysisResults.length === 0) return;
 
-        let csvContent = "CVE_ID;Annee;Statut;Score_CVSS;Vecteur_CVSS;CWE;Details_CISA\n";
+        let csvContent = "CVE_ID;Annee;Statut;Score_V3;Vecteur_V3;Score_V4;Vecteur_V4;CWE;Exploitation;Automatisable;Impact\n";
 
         currentAnalysisResults.forEach(item => {
             const cveId = item.cveId;
             const year = item.year || '';
-            const statut = item.found ? "Enrichi" : "Non_Trouve";
-            let score = "";
-            let vector = "";
-            let cwe = "";
-            let details = "";
+            const statut = item.found ? "Enrichi" : "Non_Present_CISA";
+            let s3 = "", v3 = "", s4 = "", v4 = "", cwe = "", exp = "", auto = "", imp = "";
 
             if (item.found && item.data) {
-                if (item.data.metrics && item.data.metrics.length > 0) {
-                    const m = item.data.metrics[0];
-                    const cvss = m.cvssV4_0 || m.cvssV3_1 || m.cvssV3_0 || {};
-                    score = cvss.baseScore || "";
-                    vector = cvss.vectorString || "";
-                }
-                if (item.data.problemTypes && item.data.problemTypes.length > 0) {
-                    cwe = item.data.problemTypes.flatMap(pt => (pt.descriptions || []).map(d => d.description || "")).join(" | ");
-                }
-                details = JSON.stringify(item.data.other || {}).replace(/"/g, '""');
+                const parsed = parseEnrichmentData(item.data);
+                s3 = parsed.scoreV3;
+                v3 = parsed.vectorV3;
+                s4 = parsed.scoreV4;
+                v4 = parsed.vectorV4;
+                cwe = parsed.cweList.join(" | ");
+                exp = parsed.exploitation;
+                auto = parsed.automatability;
+                imp = parsed.impact;
             }
 
-            csvContent += `"${cveId}";"${year}";"${statut}";"${score}";"${vector}";"${cwe}";"${details}"\n`;
+            csvContent += `"${cveId}";"${year}";"${statut}";"${s3}";"${v3}";"${s4}";"${v4}";"${cwe}";"${exp}";"${auto}";"${imp}"\n`;
         });
 
         const blob = new Blob(["\ufeff" + csvContent], { type: 'text/csv;charset=utf-8;' });
