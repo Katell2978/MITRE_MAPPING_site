@@ -1,0 +1,31 @@
+name: Mettre à jour les données Vulnrichment
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Exécution automatique tous les jours à minuit
+  workflow_dispatch: # Permet de lancer la mise à jour manuellement depuis l'onglet Actions de GitHub
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Cloner votre dépôt
+        uses: actions/checkout@v4
+
+      - name: Configurer Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Exécuter le script de récupération
+        run: python scripts/fetch_vulnrichment.py
+
+      - name: Commit et push automatiques si les données ont changé
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/vulnrichment_summary/vulnrichment_summary.json
+          git diff --staged --quiet || git commit -m "Mise à jour automatique des données CISA Vulnrichment"
+          git push
