@@ -24,7 +24,6 @@ def process_vuln_data():
     output_path = Path(OUTPUT_DIR)
     output_path.mkdir(parents=True, exist_ok=True)
     
-    # Dictionnaire pour stocker les données classées par année
     by_year = {}
     count = 0
     
@@ -39,11 +38,9 @@ def process_vuln_data():
                 
             cve_id = data.get("cveMetadata", {}).get("cveId", json_file.stem)
             
-            # Extraire l'année du CVE (ex: CVE-2024-1234 -> 2024)
             parts = cve_id.split("-")
             year = parts[1] if len(parts) > 1 and parts[1].isdigit() else "other"
             
-            # Recherche du conteneur d'enrichissement CISA (ADP)
             adps = data.get("containers", {}).get("adp", [])
             cisa_enrichment = None
             for adp in adps:
@@ -67,12 +64,10 @@ def process_vuln_data():
         except Exception:
             continue
 
-    # Nettoyer l'ancien fichier unique s'il existe pour éviter qu'il ne reste dans Git
     old_single_file = output_path / "vulnrichment_summary.json"
     if old_single_file.exists():
         old_single_file.unlink()
 
-    # Sauvegarder un fichier JSON distinct par année
     for year, items in by_year.items():
         year_file = output_path / f"cve_{year}.json"
         with open(year_file, 'w', encoding='utf-8') as f:
@@ -82,7 +77,6 @@ def process_vuln_data():
     print(f"Succès ! Total de {count} CVEs enrichies réparties par année.")
 
 def clean_up():
-    """Supprime le dossier temporaire cloné."""
     if os.path.exists(CLONE_DIR):
         print("Nettoyage des fichiers temporaires...")
         shutil.rmtree(CLONE_DIR)
