@@ -261,11 +261,10 @@
         }
 
         // Mise à jour des KPI
-        $("kpiRequested.textContent").innerText = uniqueCves.length; // Correction syntaxique ci-dessous
         $("kpiRequested").textContent = uniqueCves.length;
         $("kpiFound").textContent = foundCount;
         $("kpiNotFound").textContent = notFoundCount;
-
+        
         status.className = "p-3 rounded-lg text-xs font-mono bg-emerald-950/60 border border-emerald-800 text-emerald-300";
         status.textContent = `✅ Analyse terminée : ${foundCount} trouvées, ${notFoundCount} non trouvées dans le résumé CISA Vulnrichment.`;
 
