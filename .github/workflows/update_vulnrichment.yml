@@ -26,6 +26,10 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Synchronisation indispensable pour éviter l'erreur "fetch first"
+          git pull origin main --rebase || true
+          
           git add data/vulnrichment_summary/
           git diff --staged --quiet || git commit -m "Mise à jour automatique des données CISA Vulnrichment par année"
           git push
