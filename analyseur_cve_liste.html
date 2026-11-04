@@ -91,7 +91,7 @@
                 <label for="cveInputText" class="text-xs text-slate-400 font-mono">Entrez les CVE (une par ligne ou séparées par des virgules/espaces) :</label>
                 <textarea id="cveInputText" rows="4" 
                           class="w-full bg-brand-dark border border-brand-border text-slate-100 text-xs rounded-lg p-3 font-mono focus:ring-1 focus:ring-brand-blue focus:border-brand-blue outline-none custom-scrollbar"
-                          placeholder="CVE-2024-1234, CVE-2023-5678&#10;CVE-2021-44228"></textarea>
+                          placeholder="CVE-2025-7424, CVE-2023-5678&#10;CVE-2021-44228"></textarea>
             </div>
             
             <div class="flex flex-col justify-between gap-3">
@@ -200,7 +200,7 @@
         }
     }
 
-    // Extraction fine des métriques, CWE et SSVC
+    // Analyse robuste et dynamique pour extraire toutes les données CISA (SSVC, CVSS, CWE)
     function parseEnrichmentData(d) {
         let scoreV3 = 'N/A', vectorV3 = '';
         let scoreV4 = 'N/A', vectorV4 = '';
@@ -209,6 +209,27 @@
         let automatability = 'N/A';
         let impact = 'N/A';
 
+        // Fonction récursive pour extraire les valeurs SSVC peu importe la structure
+        function extractSsvc(obj) {
+            if (!obj) return;
+            if (Array.isArray(obj)) {
+                obj.forEach(item => extractSsvc(item));
+            } else if (typeof obj === 'object') {
+                for (const key of Object.keys(obj)) {
+                    const lk = key.toLowerCase();
+                    const val = obj[key];
+                    if (typeof val === 'string') {
+                        if (lk.includes('exploit')) exploitation = val;
+                        if (lk.includes('automat')) automatability = val;
+                        if (lk.includes('impact') || lk === 'ti') impact = val;
+                    } else if (val && (typeof val === 'object' || Array.isArray(val))) {
+                        extractSsvc(val);
+                    }
+                }
+            }
+        }
+
+        // 1. Analyse des métriques
         if (d.metrics && Array.isArray(d.metrics)) {
             d.metrics.forEach(m => {
                 if (m.cvssV3_1) {
@@ -222,24 +243,16 @@
                     scoreV4 = m.cvssV4_0.baseScore ?? 'N/A';
                     vectorV4 = m.cvssV4_0.vectorString || '';
                 }
-                if (m.type === 'ssvc' && m.content && m.content.options) {
-                    m.content.options.forEach(opt => {
-                        if (opt.exploitation) exploitation = opt.exploitation;
-                        if (opt.automatability) automatability = opt.automatability;
-                        if (opt.technicalImpact) impact = opt.technicalImpact;
-                    });
-                }
+                extractSsvc(m);
             });
         }
 
-        if (d.other && d.other.content && d.other.content.options) {
-            d.other.content.options.forEach(opt => {
-                if (opt.exploitation && exploitation === 'N/A') exploitation = opt.exploitation;
-                if (opt.automatability && automatability === 'N/A') automatability = opt.automatability;
-                if (opt.technicalImpact && impact === 'N/A') impact = opt.technicalImpact;
-            });
+        // 2. Analyse de l'objet other
+        if (d.other) {
+            extractSsvc(d.other);
         }
 
+        // 3. Analyse des problemTypes (CWE)
         if (d.problemTypes && Array.isArray(d.problemTypes)) {
             d.problemTypes.forEach(pt => {
                 if (pt.descriptions && Array.isArray(pt.descriptions)) {
@@ -263,7 +276,7 @@
         const uniqueCves = [...new Set(cveList)];
 
         if (uniqueCves.length === 0) {
-            alert("Veuillez entrer au moins un identifiant CVE valide (ex: CVE-2024-1234).");
+            alert("Veuillez entrer au moins un identifiant CVE valide (ex: CVE-2025-7424).");
             return;
         }
 
