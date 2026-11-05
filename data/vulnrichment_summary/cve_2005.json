@@ -28,6 +28,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2005-10003": {
+    "cveId": "CVE-2005-10003",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2005-10003",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-10-17T16:12:56.245378Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2005-10001": {
     "cveId": "CVE-2005-10001",
     "metrics": [
@@ -57,14 +86,86 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2005-10003": {
-    "cveId": "CVE-2005-10003",
+  "CVE-2005-4650": {
+    "cveId": "CVE-2005-4650",
     "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 5.3,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "LOW",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "NONE"
+        }
+      },
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2005-10003",
+            "id": "CVE-2005-4650",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-16T19:56:15.505761Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-770",
+            "description": "CWE-770 Allocation of Resources Without Limits or Throttling"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2005-4780": {
+    "cveId": "CVE-2005-4780",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 3.7,
+          "attackVector": "NETWORK",
+          "baseSeverity": "LOW",
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N",
+          "integrityImpact": "LOW",
+          "userInteraction": "NONE",
+          "attackComplexity": "HIGH",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "NONE"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2005-4780",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -78,12 +179,767 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-10-17T16:12:56.245378Z"
+            "timestamp": "2024-04-15T19:23:25.002384Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "description": "CWE-noinfo Not enough information"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2005-4900": {
+    "cveId": "CVE-2005-4900",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 5.9,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "HIGH",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2005-4900",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-05-22T16:17:39.588677Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-327",
+            "description": "CWE-327 Use of a Broken or Risky Cryptographic Algorithm"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2005-4349": {
+    "cveId": "CVE-2005-4349",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 6.3,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L",
+          "integrityImpact": "LOW",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "LOW",
+          "privilegesRequired": "LOW",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2005-4349",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-04-15T19:20:51.357317Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-89",
+            "description": "CWE-89 Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2005-4206": {
+    "cveId": "CVE-2005-4206",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "CHANGED",
+          "version": "3.1",
+          "baseScore": 6.1,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+          "integrityImpact": "LOW",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2005-4206",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-16T19:48:32.555946Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-601",
+            "description": "CWE-601 URL Redirection to Untrusted Site ('Open Redirect')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2005-1674": {
+    "cveId": "CVE-2005-1674",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 6.5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N",
+          "integrityImpact": "NONE",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2005-1674",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-16T18:10:54.662454Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-352",
+            "description": "CWE-352 Cross-Site Request Forgery (CSRF)"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2005-1794": {
+    "cveId": "CVE-2005-1794",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.4,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "HIGH",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2005-1794",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-05-22T10:32:10.235169Z"
           }
         }
       }
     ],
     "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2005-1876": {
+    "cveId": "CVE-2005-1876",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 4.5,
+          "attackVector": "LOCAL",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:L/AC:H/PR:N/UI:R/S:U/C:L/I:L/A:L",
+          "integrityImpact": "LOW",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "HIGH",
+          "availabilityImpact": "LOW",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2005-1876",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-02-14T15:46:22.530197Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-94",
+            "description": "CWE-94 Improper Control of Generation of Code ('Code Injection')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2005-1831": {
+    "cveId": "CVE-2005-1831",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 8.4,
+          "attackVector": "LOCAL",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2005-1831",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-04-15T19:19:25.314836Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "description": "CWE-noinfo Not enough information"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2005-1688": {
+    "cveId": "CVE-2005-1688",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 5.3,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2005-1688",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-16T18:41:43.843484Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-425",
+            "description": "CWE-425 Direct Request ('Forced Browsing')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2005-3302": {
+    "cveId": "CVE-2005-3302",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.3,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L",
+          "integrityImpact": "LOW",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "LOW",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2005-3302",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-16T19:46:14.945366Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-94",
+            "description": "CWE-94 Improper Control of Generation of Code ('Code Injection')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2005-3106": {
+    "cveId": "CVE-2005-3106",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 4.7,
+          "attackVector": "LOCAL",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:N/A:H",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "HIGH",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "LOW",
+          "confidentialityImpact": "NONE"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2005-3106",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-02-16T16:17:54.787409Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-667",
+            "description": "CWE-667 Improper Locking"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2005-3274": {
+    "cveId": "CVE-2005-3274",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2005-3274",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-04-02T18:26:04.388396Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2005-3170": {
+    "cveId": "CVE-2005-3170",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:L/I:L/A:L",
+          "integrityImpact": "LOW",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "HIGH",
+          "availabilityImpact": "LOW",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2005-3170",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-10-15T14:14:19.553033Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-295",
+            "description": "CWE-295 Improper Certificate Validation"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2005-0254": {
+    "cveId": "CVE-2005-0254",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 3.7,
+          "attackVector": "NETWORK",
+          "baseSeverity": "LOW",
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N",
+          "integrityImpact": "LOW",
+          "userInteraction": "NONE",
+          "attackComplexity": "HIGH",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "NONE"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2005-0254",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-16T17:54:18.251124Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-434",
+            "description": "CWE-434 Unrestricted Upload of File with Dangerous Type"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2005-0369": {
+    "cveId": "CVE-2005-0369",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 5.3,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "LOW",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "NONE"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2005-0369",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-02-09T19:37:41.057871Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-129",
+            "description": "CWE-129 Improper Validation of Array Index"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2005-2103": {
@@ -201,862 +1057,6 @@
             "type": "CWE",
             "cweId": "CWE-77",
             "description": "CWE-77 Improper Neutralization of Special Elements used in a Command ('Command Injection')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2005-3106": {
-    "cveId": "CVE-2005-3106",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 4.7,
-          "attackVector": "LOCAL",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:N/A:H",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "HIGH",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "LOW",
-          "confidentialityImpact": "NONE"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2005-3106",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-02-16T16:17:54.787409Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-667",
-            "description": "CWE-667 Improper Locking"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2005-3274": {
-    "cveId": "CVE-2005-3274",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2005-3274",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-04-02T18:26:04.388396Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2005-3302": {
-    "cveId": "CVE-2005-3302",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.3,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L",
-          "integrityImpact": "LOW",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "LOW",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "LOW"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2005-3302",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-16T19:46:14.945366Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-94",
-            "description": "CWE-94 Improper Control of Generation of Code ('Code Injection')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2005-3170": {
-    "cveId": "CVE-2005-3170",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 5,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:L/I:L/A:L",
-          "integrityImpact": "LOW",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "HIGH",
-          "availabilityImpact": "LOW",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "LOW"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2005-3170",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-10-15T14:14:19.553033Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-295",
-            "description": "CWE-295 Improper Certificate Validation"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2005-4650": {
-    "cveId": "CVE-2005-4650",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 5.3,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "LOW",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "NONE"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2005-4650",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-16T19:56:15.505761Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-770",
-            "description": "CWE-770 Allocation of Resources Without Limits or Throttling"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2005-4780": {
-    "cveId": "CVE-2005-4780",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 3.7,
-          "attackVector": "NETWORK",
-          "baseSeverity": "LOW",
-          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N",
-          "integrityImpact": "LOW",
-          "userInteraction": "NONE",
-          "attackComplexity": "HIGH",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "NONE"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2005-4780",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-04-15T19:23:25.002384Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "description": "CWE-noinfo Not enough information"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2005-4206": {
-    "cveId": "CVE-2005-4206",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "CHANGED",
-          "version": "3.1",
-          "baseScore": 6.1,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
-          "integrityImpact": "LOW",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "LOW"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2005-4206",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-16T19:48:32.555946Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-601",
-            "description": "CWE-601 URL Redirection to Untrusted Site ('Open Redirect')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2005-4349": {
-    "cveId": "CVE-2005-4349",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 6.3,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L",
-          "integrityImpact": "LOW",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "LOW",
-          "privilegesRequired": "LOW",
-          "confidentialityImpact": "LOW"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2005-4349",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-04-15T19:20:51.357317Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-89",
-            "description": "CWE-89 Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2005-4900": {
-    "cveId": "CVE-2005-4900",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 5.9,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "HIGH",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2005-4900",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-05-22T16:17:39.588677Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-327",
-            "description": "CWE-327 Use of a Broken or Risky Cryptographic Algorithm"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2005-1794": {
-    "cveId": "CVE-2005-1794",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.4,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "HIGH",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2005-1794",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-05-22T10:32:10.235169Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2005-1688": {
-    "cveId": "CVE-2005-1688",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 5.3,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "LOW"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2005-1688",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-16T18:41:43.843484Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-425",
-            "description": "CWE-425 Direct Request ('Forced Browsing')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2005-1674": {
-    "cveId": "CVE-2005-1674",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 6.5,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:N/A:N",
-          "integrityImpact": "NONE",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2005-1674",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-16T18:10:54.662454Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-352",
-            "description": "CWE-352 Cross-Site Request Forgery (CSRF)"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2005-1876": {
-    "cveId": "CVE-2005-1876",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 4.5,
-          "attackVector": "LOCAL",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:L/AC:H/PR:N/UI:R/S:U/C:L/I:L/A:L",
-          "integrityImpact": "LOW",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "HIGH",
-          "availabilityImpact": "LOW",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "LOW"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2005-1876",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-02-14T15:46:22.530197Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-94",
-            "description": "CWE-94 Improper Control of Generation of Code ('Code Injection')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2005-1831": {
-    "cveId": "CVE-2005-1831",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 8.4,
-          "attackVector": "LOCAL",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2005-1831",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-04-15T19:19:25.314836Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "description": "CWE-noinfo Not enough information"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2005-0369": {
-    "cveId": "CVE-2005-0369",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 5.3,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "LOW",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "NONE"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2005-0369",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-02-09T19:37:41.057871Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-129",
-            "description": "CWE-129 Improper Validation of Array Index"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2005-0254": {
-    "cveId": "CVE-2005-0254",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 3.7,
-          "attackVector": "NETWORK",
-          "baseSeverity": "LOW",
-          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N",
-          "integrityImpact": "LOW",
-          "userInteraction": "NONE",
-          "attackComplexity": "HIGH",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "NONE"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2005-0254",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-16T17:54:18.251124Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-434",
-            "description": "CWE-434 Unrestricted Upload of File with Dangerous Type"
           }
         ]
       }

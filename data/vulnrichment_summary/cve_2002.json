@@ -28,60 +28,33 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2002-2024": {
-    "cveId": "CVE-2002-2024",
+  "CVE-2002-1117": {
+    "cveId": "CVE-2002-1117",
     "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 5.3,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "LOW"
-        }
-      },
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2002-2024",
+            "id": "CVE-2002-1117",
             "role": "CISA Coordinator",
             "options": [
               {
                 "Exploitation": "none"
               },
               {
-                "Automatable": "yes"
+                "Automatable": "no"
               },
               {
                 "Technical Impact": "partial"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-08-08T14:02:22.048868Z"
+            "timestamp": "2026-10-09T18:46:34.583413Z"
           }
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-219",
-            "description": "CWE-219 Storage of File with Sensitive Data Under Web Root"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2002-1796": {
@@ -134,118 +107,6 @@
             "type": "CWE",
             "cweId": "CWE-347",
             "description": "CWE-347 Improper Verification of Cryptographic Signature"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2002-1975": {
-    "cveId": "CVE-2002-1975",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 5.5,
-          "attackVector": "LOCAL",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "LOW",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2002-1975",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-02-14T18:32:35.113838Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-326",
-            "description": "CWE-326 Inadequate Encryption Strength"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2002-1816": {
-    "cveId": "CVE-2002-1816",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2002-1816",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-02-16T16:45:29.048974Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-193",
-            "description": "CWE-193 Off-by-one Error"
           }
         ]
       }
@@ -364,14 +225,30 @@
     ],
     "other": {}
   },
-  "CVE-2002-1117": {
-    "cveId": "CVE-2002-1117",
+  "CVE-2002-1975": {
+    "cveId": "CVE-2002-1975",
     "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 5.5,
+          "attackVector": "LOCAL",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:N",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "LOW",
+          "confidentialityImpact": "HIGH"
+        }
+      },
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2002-1117",
+            "id": "CVE-2002-1975",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -385,81 +262,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-10-09T18:46:34.583413Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2002-0478": {
-    "cveId": "CVE-2002-0478",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2002-0478",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-10-09T19:03:00.766409Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2002-0485": {
-    "cveId": "CVE-2002-0485",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.5,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "NONE"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2002-0485",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-02-05T17:19:31.934437Z"
+            "timestamp": "2024-02-14T18:32:35.113838Z"
           }
         }
       }
@@ -470,8 +273,64 @@
           {
             "lang": "en",
             "type": "CWE",
-            "cweId": "CWE-178",
-            "description": "CWE-178 Improper Handling of Case Sensitivity"
+            "cweId": "CWE-326",
+            "description": "CWE-326 Inadequate Encryption Strength"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2002-1816": {
+    "cveId": "CVE-2002-1816",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2002-1816",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-02-16T16:45:29.048974Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-193",
+            "description": "CWE-193 Off-by-one Error"
           }
         ]
       }
@@ -534,14 +393,14 @@
     ],
     "other": {}
   },
-  "CVE-2002-0109": {
-    "cveId": "CVE-2002-0109",
+  "CVE-2002-0510": {
+    "cveId": "CVE-2002-0510",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2002-0109",
+            "id": "CVE-2002-0510",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -555,68 +414,12 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-10-09T18:48:10.512196Z"
+            "timestamp": "2026-10-09T19:03:30.663672Z"
           }
         }
       }
     ],
     "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2002-0051": {
-    "cveId": "CVE-2002-0051",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.8,
-          "attackVector": "LOCAL",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "LOW",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2002-0051",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-16T17:12:27.298249Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-667",
-            "description": "CWE-667 Improper Locking"
-          }
-        ]
-      }
-    ],
     "other": {}
   },
   "CVE-2002-0367": {
@@ -684,14 +487,14 @@
     ],
     "other": {}
   },
-  "CVE-2002-0510": {
-    "cveId": "CVE-2002-0510",
+  "CVE-2002-0109": {
+    "cveId": "CVE-2002-0109",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2002-0510",
+            "id": "CVE-2002-0109",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -705,12 +508,209 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-10-09T19:03:30.663672Z"
+            "timestamp": "2026-10-09T18:48:10.512196Z"
           }
         }
       }
     ],
     "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2002-0485": {
+    "cveId": "CVE-2002-0485",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "NONE"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2002-0485",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-02-05T17:19:31.934437Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-178",
+            "description": "CWE-178 Improper Handling of Case Sensitivity"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2002-0478": {
+    "cveId": "CVE-2002-0478",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2002-0478",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-10-09T19:03:00.766409Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2002-0051": {
+    "cveId": "CVE-2002-0051",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.8,
+          "attackVector": "LOCAL",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "LOW",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2002-0051",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-16T17:12:27.298249Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-667",
+            "description": "CWE-667 Improper Locking"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2002-2024": {
+    "cveId": "CVE-2002-2024",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 5.3,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2002-2024",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-08-08T14:02:22.048868Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-219",
+            "description": "CWE-219 Storage of File with Sensitive Data Under Web Root"
+          }
+        ]
+      }
+    ],
     "other": {}
   }
 }

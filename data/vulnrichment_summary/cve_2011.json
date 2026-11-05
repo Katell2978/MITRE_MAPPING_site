@@ -1,223 +1,4 @@
 {
-  "CVE-2011-20001": {
-    "cveId": "CVE-2011-20001",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-20001",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-10-14T18:57:28.121550Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-20002": {
-    "cveId": "CVE-2011-20002",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-20002",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-10-14T18:58:23.653672Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10006": {
-    "cveId": "CVE-2011-10006",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10006",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-04-09T17:28:10.894549Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10025": {
-    "cveId": "CVE-2011-10025",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10025",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-20T18:44:42.500842Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10043": {
-    "cveId": "CVE-2011-10043",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10043",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-07-07T16:04:25.108284Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10036": {
-    "cveId": "CVE-2011-10036",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10036",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-10-31T13:45:09.601918Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10039": {
-    "cveId": "CVE-2011-10039",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10039",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-10-31T13:45:10.350840Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
   "CVE-2011-10021": {
     "cveId": "CVE-2011-10021",
     "metrics": [
@@ -240,499 +21,6 @@
             ],
             "version": "2.0.3",
             "timestamp": "2025-08-22T16:18:30.916650Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10016": {
-    "cveId": "CVE-2011-10016",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10016",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-14T13:46:08.820850Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10005": {
-    "cveId": "CVE-2011-10005",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10005",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-05-08T20:11:39.762344Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10014": {
-    "cveId": "CVE-2011-10014",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10014",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-14T14:12:12.851939Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10010": {
-    "cveId": "CVE-2011-10010",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10010",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-14T13:46:30.106393Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10038": {
-    "cveId": "CVE-2011-10038",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10038",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-10-31T12:27:53.066440Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10003": {
-    "cveId": "CVE-2011-10003",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10003",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-03-25T15:36:59.575649Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10040": {
-    "cveId": "CVE-2011-10040",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10040",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-10-31T12:29:23.135750Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10037": {
-    "cveId": "CVE-2011-10037",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10037",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-12-22T17:23:53.332316Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10022": {
-    "cveId": "CVE-2011-10022",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10022",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-20T18:47:45.599711Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10032": {
-    "cveId": "CVE-2011-10032",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10032",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-09-02T20:39:11.169286Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10026": {
-    "cveId": "CVE-2011-10026",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10026",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-20T18:45:19.867407Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10018": {
-    "cveId": "CVE-2011-10018",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10018",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-14T14:07:57.715204Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10029": {
-    "cveId": "CVE-2011-10029",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10029",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-20T18:20:37.213026Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10017": {
-    "cveId": "CVE-2011-10017",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10017",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-14T13:31:24.804163Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10012": {
-    "cveId": "CVE-2011-10012",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10012",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-14T14:33:20.760482Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10024": {
-    "cveId": "CVE-2011-10024",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10024",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-22T16:14:06.909061Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10030": {
-    "cveId": "CVE-2011-10030",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10030",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-22T15:48:22.316366Z"
           }
         }
       }
@@ -798,6 +86,151 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2011-10006": {
+    "cveId": "CVE-2011-10006",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10006",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-04-09T17:28:10.894549Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10018": {
+    "cveId": "CVE-2011-10018",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10018",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-14T14:07:57.715204Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10041": {
+    "cveId": "CVE-2011-10041",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10041",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-01-20T15:56:15.810926Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10009": {
+    "cveId": "CVE-2011-10009",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10009",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-14T13:45:59.555571Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10017": {
+    "cveId": "CVE-2011-10017",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10017",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-14T13:31:24.804163Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2011-10020": {
     "cveId": "CVE-2011-10020",
     "metrics": [
@@ -856,6 +289,354 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2011-10038": {
+    "cveId": "CVE-2011-10038",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10038",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-10-31T12:27:53.066440Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10014": {
+    "cveId": "CVE-2011-10014",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10014",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-14T14:12:12.851939Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10024": {
+    "cveId": "CVE-2011-10024",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10024",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-22T16:14:06.909061Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10022": {
+    "cveId": "CVE-2011-10022",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10022",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-20T18:47:45.599711Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10016": {
+    "cveId": "CVE-2011-10016",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10016",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-14T13:46:08.820850Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10005": {
+    "cveId": "CVE-2011-10005",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10005",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-05-08T20:11:39.762344Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10027": {
+    "cveId": "CVE-2011-10027",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10027",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-20T19:25:48.011351Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10033": {
+    "cveId": "CVE-2011-10033",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10033",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-10-15T18:47:35.381732Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10036": {
+    "cveId": "CVE-2011-10036",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10036",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-10-31T13:45:09.601918Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10037": {
+    "cveId": "CVE-2011-10037",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10037",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-12-22T17:23:53.332316Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10011": {
+    "cveId": "CVE-2011-10011",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10011",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-14T13:43:53.690210Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10029": {
+    "cveId": "CVE-2011-10029",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10029",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-20T18:20:37.213026Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2011-10004": {
     "cveId": "CVE-2011-10004",
     "metrics": [
@@ -878,6 +659,312 @@
             ],
             "version": "2.0.3",
             "timestamp": "2024-09-16T15:37:10.354860Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10010": {
+    "cveId": "CVE-2011-10010",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10010",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-14T13:46:30.106393Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10012": {
+    "cveId": "CVE-2011-10012",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10012",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-14T14:33:20.760482Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10030": {
+    "cveId": "CVE-2011-10030",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10030",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-22T15:48:22.316366Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10015": {
+    "cveId": "CVE-2011-10015",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10015",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-14T14:31:46.311052Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10035": {
+    "cveId": "CVE-2011-10035",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10035",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-10-31T13:05:44.124387Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10019": {
+    "cveId": "CVE-2011-10019",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10019",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-14T13:45:30.960902Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10039": {
+    "cveId": "CVE-2011-10039",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10039",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-10-31T13:45:10.350840Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10043": {
+    "cveId": "CVE-2011-10043",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10043",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-07-07T16:04:25.108284Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10003": {
+    "cveId": "CVE-2011-10003",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10003",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-03-25T15:36:59.575649Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-10026": {
+    "cveId": "CVE-2011-10026",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-10026",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-20T18:45:19.867407Z"
           }
         }
       }
@@ -959,151 +1046,6 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2011-10015": {
-    "cveId": "CVE-2011-10015",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10015",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-14T14:31:46.311052Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10019": {
-    "cveId": "CVE-2011-10019",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10019",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-14T13:45:30.960902Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10035": {
-    "cveId": "CVE-2011-10035",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10035",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-10-31T13:05:44.124387Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10041": {
-    "cveId": "CVE-2011-10041",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10041",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-01-20T15:56:15.810926Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10027": {
-    "cveId": "CVE-2011-10027",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10027",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-20T19:25:48.011351Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
   "CVE-2011-10013": {
     "cveId": "CVE-2011-10013",
     "metrics": [
@@ -1133,251 +1075,14 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2011-10009": {
-    "cveId": "CVE-2011-10009",
+  "CVE-2011-10040": {
+    "cveId": "CVE-2011-10040",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2011-10009",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-14T13:45:59.555571Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10033": {
-    "cveId": "CVE-2011-10033",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10033",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-10-15T18:47:35.381732Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-10011": {
-    "cveId": "CVE-2011-10011",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-10011",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-14T13:43:53.690210Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-2462": {
-    "cveId": "CVE-2011-2462",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 8.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-2462",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "active"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-11-21T15:55:34.571121Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2022-06-08",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2011-2462"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-787",
-            "description": "CWE-787 Out-of-bounds Write"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2011-2013": {
-    "cveId": "CVE-2011-2013",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-2013",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-10-17T19:26:54.726723Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-190",
-            "description": "CWE-190 Integer Overflow or Wraparound"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2011-2538": {
-    "cveId": "CVE-2011-2538",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-2538",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-11-20T16:50:42.581742Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-2054": {
-    "cveId": "CVE-2011-2054",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-2054",
+            "id": "CVE-2011-10040",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -1391,7 +1096,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-11-15T16:29:28.157200Z"
+            "timestamp": "2025-10-31T12:29:23.135750Z"
           }
         }
       }
@@ -1399,205 +1104,14 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2011-2016": {
-    "cveId": "CVE-2011-2016",
+  "CVE-2011-10025": {
+    "cveId": "CVE-2011-10025",
     "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.3,
-          "attackVector": "LOCAL",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "LOW",
-          "confidentialityImpact": "HIGH"
-        }
-      },
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2011-2016",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-06-04T15:46:35.107739Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "description": "NVD-CWE-Other"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2011-2005": {
-    "cveId": "CVE-2011-2005",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.8,
-          "attackVector": "LOCAL",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-2005",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "active"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-02-10T19:02:58.169093Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2022-03-28",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2011-2005"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "description": "CWE-noinfo Not enough information"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2011-3406": {
-    "cveId": "CVE-2011-3406",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 8.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "LOW",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-3406",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2023-12-11T20:34:05.030449Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-125",
-            "description": "CWE-125 Out-of-bounds Read"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2011-3045": {
-    "cveId": "CVE-2011-3045",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 8.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-3045",
+            "id": "CVE-2011-10025",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -1611,53 +1125,26 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-06-09T15:35:38.664911Z"
+            "timestamp": "2025-08-20T18:44:42.500842Z"
           }
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-195",
-            "description": "CWE-195 Signed to Unsigned Conversion Error"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
-  "CVE-2011-3544": {
-    "cveId": "CVE-2011-3544",
+  "CVE-2011-10032": {
+    "cveId": "CVE-2011-10032",
     "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2011-3544",
+            "id": "CVE-2011-10032",
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "active"
+                "Exploitation": "none"
               },
               {
                 "Automatable": "yes"
@@ -1667,149 +1154,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-02-10T19:24:24.898601Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2022-03-03",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2011-3544"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-284",
-            "description": "CWE-284 Improper Access Control"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2011-3402": {
-    "cveId": "CVE-2011-3402",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 8.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-3402",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "active"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-10-04T03:55:29.370251Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2025-10-06",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2011-3402"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "description": "CWE-noinfo Not enough information"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2011-3389": {
-    "cveId": "CVE-2011-3389",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-3389",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-10-09T19:05:44.931872Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-4899": {
-    "cveId": "CVE-2011-4899",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-4899",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-05-08T15:56:39.639939Z"
+            "timestamp": "2025-09-02T20:39:11.169286Z"
           }
         }
       }
@@ -1839,35 +1184,6 @@
             ],
             "version": "2.0.3",
             "timestamp": "2024-11-15T16:22:26.896212Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2011-4517": {
-    "cveId": "CVE-2011-4517",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-4517",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-10-21T16:11:47.370512Z"
           }
         }
       }
@@ -1996,8 +1312,124 @@
     ],
     "other": {}
   },
-  "CVE-2011-1874": {
-    "cveId": "CVE-2011-1874",
+  "CVE-2011-4517": {
+    "cveId": "CVE-2011-4517",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-4517",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-10-21T16:11:47.370512Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-4899": {
+    "cveId": "CVE-2011-4899",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-4899",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-05-08T15:56:39.639939Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-20002": {
+    "cveId": "CVE-2011-20002",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-20002",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-10-14T18:58:23.653672Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-20001": {
+    "cveId": "CVE-2011-20001",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-20001",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-10-14T18:57:28.121550Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-1887": {
+    "cveId": "CVE-2011-1887",
     "metrics": [
       {
         "cvssV3_1": {
@@ -2019,7 +1451,7 @@
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2011-1874",
+            "id": "CVE-2011-1887",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -2033,7 +1465,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2023-12-11T20:39:01.575558Z"
+            "timestamp": "2023-12-11T20:37:48.331920Z"
           }
         }
       }
@@ -2044,8 +1476,8 @@
           {
             "lang": "en",
             "type": "CWE",
-            "cweId": "CWE-416",
-            "description": "CWE-416 Use After Free"
+            "cweId": "CWE-476",
+            "description": "CWE-476 NULL Pointer Dereference"
           }
         ]
       }
@@ -2117,8 +1549,8 @@
     ],
     "other": {}
   },
-  "CVE-2011-1887": {
-    "cveId": "CVE-2011-1887",
+  "CVE-2011-1874": {
+    "cveId": "CVE-2011-1874",
     "metrics": [
       {
         "cvssV3_1": {
@@ -2140,7 +1572,7 @@
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2011-1887",
+            "id": "CVE-2011-1874",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -2154,7 +1586,63 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2023-12-11T20:37:48.331920Z"
+            "timestamp": "2023-12-11T20:39:01.575558Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-416",
+            "description": "CWE-416 Use After Free"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2011-1231": {
+    "cveId": "CVE-2011-1231",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 8.4,
+          "attackVector": "LOCAL",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-1231",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-01-10T21:03:55.363013Z"
           }
         }
       }
@@ -2167,6 +1655,212 @@
             "type": "CWE",
             "cweId": "CWE-476",
             "description": "CWE-476 NULL Pointer Dereference"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2011-1985": {
+    "cveId": "CVE-2011-1985",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.1,
+          "attackVector": "LOCAL",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "LOW",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-1985",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-21T18:07:45.289079Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-476",
+            "description": "CWE-476 NULL Pointer Dereference"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2011-1978": {
+    "cveId": "CVE-2011-1978",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-1978",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-01-10T20:57:11.646362Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-1823": {
+    "cveId": "CVE-2011-1823",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.8,
+          "attackVector": "LOCAL",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "LOW",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-1823",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "active"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-02-07T14:17:26.875888Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2022-09-08",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2011-1823"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-190",
+            "description": "CWE-190 Integer Overflow or Wraparound"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2011-1236": {
+    "cveId": "CVE-2011-1236",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.8,
+          "attackVector": "LOCAL",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "LOW",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-1236",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2023-12-11T20:54:28.475589Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-416",
+            "description": "CWE-416 Use After Free"
           }
         ]
       }
@@ -2223,6 +1917,62 @@
             "type": "CWE",
             "cweId": "CWE-476",
             "description": "CWE-476 NULL Pointer Dereference"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2011-1142": {
+    "cveId": "CVE-2011-1142",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "NONE"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-1142",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-02-23T19:47:06.823820Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-835",
+            "description": "CWE-835 Loop with Unreachable Exit Condition ('Infinite Loop')"
           }
         ]
       }
@@ -2341,212 +2091,6 @@
     ],
     "other": {}
   },
-  "CVE-2011-1823": {
-    "cveId": "CVE-2011-1823",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.8,
-          "attackVector": "LOCAL",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "LOW",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-1823",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "active"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-02-07T14:17:26.875888Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2022-09-08",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2011-1823"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-190",
-            "description": "CWE-190 Integer Overflow or Wraparound"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2011-1142": {
-    "cveId": "CVE-2011-1142",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.5,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "NONE"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-1142",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-02-23T19:47:06.823820Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-835",
-            "description": "CWE-835 Loop with Unreachable Exit Condition ('Infinite Loop')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2011-1236": {
-    "cveId": "CVE-2011-1236",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.8,
-          "attackVector": "LOCAL",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "LOW",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-1236",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2023-12-11T20:54:28.475589Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-416",
-            "description": "CWE-416 Use After Free"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2011-1978": {
-    "cveId": "CVE-2011-1978",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-1978",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-01-10T20:57:11.646362Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
   "CVE-2011-1282": {
     "cveId": "CVE-2011-1282",
     "metrics": [
@@ -2603,18 +2147,18 @@
     ],
     "other": {}
   },
-  "CVE-2011-1985": {
-    "cveId": "CVE-2011-1985",
+  "CVE-2011-3406": {
+    "cveId": "CVE-2011-3406",
     "metrics": [
       {
         "cvssV3_1": {
           "scope": "UNCHANGED",
           "version": "3.1",
-          "baseScore": 7.1,
-          "attackVector": "LOCAL",
+          "baseScore": 8.8,
+          "attackVector": "NETWORK",
           "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H",
-          "integrityImpact": "NONE",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
           "userInteraction": "NONE",
           "attackComplexity": "LOW",
           "availabilityImpact": "HIGH",
@@ -2626,63 +2170,7 @@
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2011-1985",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-21T18:07:45.289079Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-476",
-            "description": "CWE-476 NULL Pointer Dereference"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2011-1231": {
-    "cveId": "CVE-2011-1231",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 8.4,
-          "attackVector": "LOCAL",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-1231",
+            "id": "CVE-2011-3406",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -2696,7 +2184,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-01-10T21:03:55.363013Z"
+            "timestamp": "2023-12-11T20:34:05.030449Z"
           }
         }
       }
@@ -2707,8 +2195,278 @@
           {
             "lang": "en",
             "type": "CWE",
-            "cweId": "CWE-476",
-            "description": "CWE-476 NULL Pointer Dereference"
+            "cweId": "CWE-125",
+            "description": "CWE-125 Out-of-bounds Read"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2011-3389": {
+    "cveId": "CVE-2011-3389",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-3389",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-10-09T19:05:44.931872Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-3402": {
+    "cveId": "CVE-2011-3402",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 8.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-3402",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "active"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-10-04T03:55:29.370251Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2025-10-06",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2011-3402"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "description": "CWE-noinfo Not enough information"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2011-3045": {
+    "cveId": "CVE-2011-3045",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 8.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-3045",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-06-09T15:35:38.664911Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-195",
+            "description": "CWE-195 Signed to Unsigned Conversion Error"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2011-3544": {
+    "cveId": "CVE-2011-3544",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-3544",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "active"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-02-10T19:24:24.898601Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2022-03-03",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2011-3544"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-284",
+            "description": "CWE-284 Improper Access Control"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2011-0663": {
+    "cveId": "CVE-2011-0663",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 8.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-0663",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-21T17:48:48.202373Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-190",
+            "description": "CWE-190 Integer Overflow or Wraparound"
           }
         ]
       }
@@ -2765,6 +2523,61 @@
             "type": "CWE",
             "cweId": "CWE-416",
             "description": "CWE-416 Use After Free"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2011-0736": {
+    "cveId": "CVE-2011-0736",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 5.3,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-0736",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-21T17:41:49.462339Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "description": "CWE-noinfo Not enough information"
           }
         ]
       }
@@ -2891,6 +2704,71 @@
     ],
     "other": {}
   },
+  "CVE-2011-0611": {
+    "cveId": "CVE-2011-0611",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 8.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-0611",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "active"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-02-02T14:05:34.031031Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2022-03-03",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2011-0611"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-843",
+            "description": "CWE-843 Access of Resource Using Incompatible Type ('Type Confusion')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
   "CVE-2011-0199": {
     "cveId": "CVE-2011-0199",
     "metrics": [
@@ -2947,118 +2825,6 @@
     ],
     "other": {}
   },
-  "CVE-2011-0627": {
-    "cveId": "CVE-2011-0627",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 8.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-0627",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-06-23T15:07:20.467683Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-20",
-            "description": "CWE-20 Improper Input Validation"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2011-0663": {
-    "cveId": "CVE-2011-0663",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 8.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-0663",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-21T17:48:48.202373Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-190",
-            "description": "CWE-190 Integer Overflow or Wraparound"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
   "CVE-2011-0539": {
     "cveId": "CVE-2011-0539",
     "metrics": [
@@ -3109,6 +2875,228 @@
             "type": "CWE",
             "cweId": "CWE-457",
             "description": "CWE-457 Use of Uninitialized Variable"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2011-0676": {
+    "cveId": "CVE-2011-0676",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.8,
+          "attackVector": "LOCAL",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "LOW",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-0676",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2023-12-11T20:55:59.043779Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-476",
+            "description": "CWE-476 NULL Pointer Dereference"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2011-0096": {
+    "cveId": "CVE-2011-0096",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "CHANGED",
+          "version": "3.1",
+          "baseScore": 6.1,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+          "integrityImpact": "LOW",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-0096",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-21T17:39:01.748185Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-79",
+            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2011-0657": {
+    "cveId": "CVE-2011-0657",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-0657",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-10-17T19:58:57.519457Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "description": "CWE-noinfo Not enough information"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2011-0042": {
+    "cveId": "CVE-2011-0042",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.8,
+          "attackVector": "LOCAL",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-0042",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-21T17:43:51.360717Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "description": "CWE-noinfo Not enough information"
           }
         ]
       }
@@ -3226,229 +3214,8 @@
     ],
     "other": {}
   },
-  "CVE-2011-0657": {
-    "cveId": "CVE-2011-0657",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-0657",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-10-17T19:58:57.519457Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "description": "CWE-noinfo Not enough information"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2011-0042": {
-    "cveId": "CVE-2011-0042",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.8,
-          "attackVector": "LOCAL",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-0042",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-21T17:43:51.360717Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "description": "CWE-noinfo Not enough information"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2011-0736": {
-    "cveId": "CVE-2011-0736",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 5.3,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "LOW"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-0736",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-21T17:41:49.462339Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "description": "CWE-noinfo Not enough information"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2011-0096": {
-    "cveId": "CVE-2011-0096",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "CHANGED",
-          "version": "3.1",
-          "baseScore": 6.1,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
-          "integrityImpact": "LOW",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "LOW"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-0096",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-21T17:39:01.748185Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-79",
-            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2011-0611": {
-    "cveId": "CVE-2011-0611",
+  "CVE-2011-0627": {
+    "cveId": "CVE-2011-0627",
     "metrics": [
       {
         "cvssV3_1": {
@@ -3470,72 +3237,7 @@
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2011-0611",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "active"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-02-02T14:05:34.031031Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2022-03-03",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2011-0611"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-843",
-            "description": "CWE-843 Access of Resource Using Incompatible Type ('Type Confusion')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2011-0676": {
-    "cveId": "CVE-2011-0676",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.8,
-          "attackVector": "LOCAL",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "LOW",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2011-0676",
+            "id": "CVE-2011-0627",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -3549,7 +3251,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2023-12-11T20:55:59.043779Z"
+            "timestamp": "2026-06-23T15:07:20.467683Z"
           }
         }
       }
@@ -3560,8 +3262,306 @@
           {
             "lang": "en",
             "type": "CWE",
-            "cweId": "CWE-476",
-            "description": "CWE-476 NULL Pointer Dereference"
+            "cweId": "CWE-20",
+            "description": "CWE-20 Improper Input Validation"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2011-2016": {
+    "cveId": "CVE-2011-2016",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.3,
+          "attackVector": "LOCAL",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "LOW",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-2016",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-06-04T15:46:35.107739Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "description": "NVD-CWE-Other"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2011-2005": {
+    "cveId": "CVE-2011-2005",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.8,
+          "attackVector": "LOCAL",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-2005",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "active"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-02-10T19:02:58.169093Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2022-03-28",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2011-2005"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "description": "CWE-noinfo Not enough information"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2011-2054": {
+    "cveId": "CVE-2011-2054",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-2054",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-11-15T16:29:28.157200Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-2013": {
+    "cveId": "CVE-2011-2013",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-2013",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-10-17T19:26:54.726723Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-190",
+            "description": "CWE-190 Integer Overflow or Wraparound"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2011-2538": {
+    "cveId": "CVE-2011-2538",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-2538",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-11-20T16:50:42.581742Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2011-2462": {
+    "cveId": "CVE-2011-2462",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 8.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2011-2462",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "active"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-11-21T15:55:34.571121Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2022-06-08",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2011-2462"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-787",
+            "description": "CWE-787 Out-of-bounds Write"
           }
         ]
       }

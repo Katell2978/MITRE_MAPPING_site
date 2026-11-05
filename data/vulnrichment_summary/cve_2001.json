@@ -1,33 +1,4 @@
 {
-  "CVE-2001-1210": {
-    "cveId": "CVE-2001-1210",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2001-1210",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-10-09T19:01:53.210744Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
   "CVE-2001-1546": {
     "cveId": "CVE-2001-1546",
     "metrics": [
@@ -78,90 +49,6 @@
             "type": "CWE",
             "cweId": "CWE-326",
             "description": "CWE-326 Inadequate Encryption Strength"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2001-1184": {
-    "cveId": "CVE-2001-1184",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2001-1184",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-10-09T18:48:54.419465Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2001-1533": {
-    "cveId": "CVE-2001-1533",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 5.3,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "LOW",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "NONE"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2001-1533",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-03-21T15:57:24.602314Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "description": "CWE-noinfo Not enough information"
           }
         ]
       }
@@ -222,6 +109,233 @@
         ]
       }
     ],
+    "other": {}
+  },
+  "CVE-2001-1533": {
+    "cveId": "CVE-2001-1533",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 5.3,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "LOW",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "NONE"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2001-1533",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-03-21T15:57:24.602314Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "description": "CWE-noinfo Not enough information"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2001-1184": {
+    "cveId": "CVE-2001-1184",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2001-1184",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-10-09T18:48:54.419465Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2001-1210": {
+    "cveId": "CVE-2001-1210",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2001-1210",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-10-09T19:01:53.210744Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2001-0514": {
+    "cveId": "CVE-2001-0514",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2001-0514",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-10-09T19:01:05.878704Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2001-0667": {
+    "cveId": "CVE-2001-0667",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.3,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L",
+          "integrityImpact": "LOW",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "LOW",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2001-0667",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-16T16:14:19.075236Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-88",
+            "description": "CWE-88 Improper Neutralization of Argument Delimiters in a Command ('Argument Injection')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2001-0331": {
+    "cveId": "CVE-2001-0331",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2001-0331",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-08-29T15:50:47.972234Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2001-0006": {
@@ -309,62 +423,6 @@
     ],
     "other": {}
   },
-  "CVE-2001-0667": {
-    "cveId": "CVE-2001-0667",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.3,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L",
-          "integrityImpact": "LOW",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "LOW",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "LOW"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2001-0667",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-16T16:14:19.075236Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-88",
-            "description": "CWE-88 Improper Neutralization of Argument Delimiters in a Command ('Argument Injection')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
   "CVE-2001-0380": {
     "cveId": "CVE-2001-0380",
     "metrics": [
@@ -387,64 +445,6 @@
             ],
             "version": "2.0.3",
             "timestamp": "2026-10-09T19:00:31.669482Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2001-0514": {
-    "cveId": "CVE-2001-0514",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2001-0514",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-10-09T19:01:05.878704Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2001-0331": {
-    "cveId": "CVE-2001-0331",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2001-0331",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-08-29T15:50:47.972234Z"
           }
         }
       }

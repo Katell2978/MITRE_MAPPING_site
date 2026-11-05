@@ -1,4 +1,1348 @@
 {
+  "CVE-2007-10003": {
+    "cveId": "CVE-2007-10003",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-10003",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-09-06T19:29:41.947435Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2007-10002": {
+    "cveId": "CVE-2007-10002",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-10002",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-04-09T14:43:25.333900Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2007-10001": {
+    "cveId": "CVE-2007-10001",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-10001",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-04-10T14:15:44.609144Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2007-4559": {
+    "cveId": "CVE-2007-4559",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-4559",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-17T14:48:13.204984Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-22",
+            "description": "CWE-22 Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-4290": {
+    "cveId": "CVE-2007-4290",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-4290",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-17T14:45:47.918580Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-94",
+            "description": "CWE-94 Improper Control of Generation of Code ('Code Injection')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-4043": {
+    "cveId": "CVE-2007-4043",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-4043",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-04-03T14:23:20.940264Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-287",
+            "description": "CWE-287 Improper Authentication"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-4786": {
+    "cveId": "CVE-2007-4786",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 5.3,
+          "attackVector": "ADJACENT_NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "HIGH",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-4786",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-01-30T20:00:33.769696Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-319",
+            "description": "CWE-319 Cleartext Transmission of Sensitive Information"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-4150": {
+    "cveId": "CVE-2007-4150",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-4150",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-02-09T19:45:20.981635Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2007-4465": {
+    "cveId": "CVE-2007-4465",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "CHANGED",
+          "version": "3.1",
+          "baseScore": 6.1,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+          "integrityImpact": "LOW",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-4465",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-01-05T17:42:37.598591Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-79",
+            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-4040": {
+    "cveId": "CVE-2007-4040",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 8.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-4040",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-04-03T14:26:07.732559Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-79",
+            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-4039": {
+    "cveId": "CVE-2007-4039",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-4039",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-04-03T14:28:46.060236Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-79",
+            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-1383": {
+    "cveId": "CVE-2007-1383",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-1383",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-04-03T14:51:46.992815Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-190",
+            "description": "CWE-190 Integer Overflow or Wraparound"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-1679": {
+    "cveId": "CVE-2007-1679",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "CHANGED",
+          "version": "3.1",
+          "baseScore": 5.4,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:L/I:L/A:N",
+          "integrityImpact": "LOW",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "LOW",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-1679",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-04-15T20:16:46.267575Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-79",
+            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-1966": {
+    "cveId": "CVE-2007-1966",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.1,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-1966",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-04-03T14:49:42.633483Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-287",
+            "description": "CWE-287 Improper Authentication"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-3484": {
+    "cveId": "CVE-2007-3484",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "CHANGED",
+          "version": "3.1",
+          "baseScore": 6.1,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+          "integrityImpact": "LOW",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-3484",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-05-24T19:33:37.182425Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2007-3194": {
+    "cveId": "CVE-2007-3194",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-3194",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-04-18T15:05:24.813685Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "description": "CWE-noinfo Not enough information"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-3968": {
+    "cveId": "CVE-2007-3968",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 5.3,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "LOW",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "NONE"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-3968",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-04-03T14:31:49.620159Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-863",
+            "description": "CWE-863 Incorrect Authorization"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-3409": {
+    "cveId": "CVE-2007-3409",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "NONE"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-3409",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-02-07T15:28:48.362608Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-674",
+            "description": "CWE-674 Uncontrolled Recursion"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-3816": {
+    "cveId": "CVE-2007-3816",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "NONE"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-3816",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-17T14:44:40.898851Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "description": "CWE-noinfo Not enough information"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-3798": {
+    "cveId": "CVE-2007-3798",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-3798",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-10-15T14:17:36.142524Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-252",
+            "description": "CWE-252 Unchecked Return Value"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-3651": {
+    "cveId": "CVE-2007-3651",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 5.3,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-3651",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-04-03T14:40:24.271874Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-200",
+            "description": "CWE-200 Exposure of Sensitive Information to an Unauthorized Actor"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-3650": {
+    "cveId": "CVE-2007-3650",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 5.3,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-3650",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-04-03T14:46:36.548713Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-200",
+            "description": "CWE-200 Exposure of Sensitive Information to an Unauthorized Actor"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-3967": {
+    "cveId": "CVE-2007-3967",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-3967",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-04-03T14:35:50.629647Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-22",
+            "description": "CWE-22 Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-3010": {
+    "cveId": "CVE-2007-3010",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-3010",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "active"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-02-07T14:25:23.970930Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2022-04-15",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2007-3010"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-77",
+            "description": "CWE-77 Improper Neutralization of Special Elements used in a Command ('Command Injection')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-3652": {
+    "cveId": "CVE-2007-3652",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-3652",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-04-03T14:37:58.156157Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-89",
+            "description": "CWE-89 Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-5928": {
+    "cveId": "CVE-2007-5928",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 8.1,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "LOW",
+          "confidentialityImpact": "NONE"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-5928",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-04-03T14:07:10.340389Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-119",
+            "description": "CWE-119 Improper Restriction of Operations within the Bounds of a Memory Buffer"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
   "CVE-2007-5659": {
     "cveId": "CVE-2007-5659",
     "metrics": [
@@ -64,8 +1408,64 @@
     ],
     "other": {}
   },
-  "CVE-2007-5954": {
-    "cveId": "CVE-2007-5954",
+  "CVE-2007-5565": {
+    "cveId": "CVE-2007-5565",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-5565",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-04-18T15:14:18.744939Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-94",
+            "description": "CWE-94 Improper Control of Generation of Code ('Code Injection')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-5817": {
+    "cveId": "CVE-2007-5817",
     "metrics": [
       {
         "cvssV3_1": {
@@ -87,7 +1487,7 @@
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2007-5954",
+            "id": "CVE-2007-5817",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -101,7 +1501,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-04-03T14:04:46.868001Z"
+            "timestamp": "2025-04-03T14:15:21.452154Z"
           }
         }
       }
@@ -288,120 +1688,8 @@
     ],
     "other": {}
   },
-  "CVE-2007-5928": {
-    "cveId": "CVE-2007-5928",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 8.1,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "LOW",
-          "confidentialityImpact": "NONE"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-5928",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-04-03T14:07:10.340389Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-119",
-            "description": "CWE-119 Improper Restriction of Operations within the Bounds of a Memory Buffer"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-5565": {
-    "cveId": "CVE-2007-5565",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-5565",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-04-18T15:14:18.744939Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-94",
-            "description": "CWE-94 Improper Control of Generation of Code ('Code Injection')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-5817": {
-    "cveId": "CVE-2007-5817",
+  "CVE-2007-5954": {
+    "cveId": "CVE-2007-5954",
     "metrics": [
       {
         "cvssV3_1": {
@@ -423,7 +1711,7 @@
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2007-5817",
+            "id": "CVE-2007-5954",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -437,7 +1725,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-04-03T14:15:21.452154Z"
+            "timestamp": "2025-04-03T14:04:46.868001Z"
           }
         }
       }
@@ -450,1489 +1738,6 @@
             "type": "CWE",
             "cweId": "CWE-79",
             "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-10003": {
-    "cveId": "CVE-2007-10003",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-10003",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-09-06T19:29:41.947435Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2007-10002": {
-    "cveId": "CVE-2007-10002",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-10002",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-04-09T14:43:25.333900Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2007-10001": {
-    "cveId": "CVE-2007-10001",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-10001",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-04-10T14:15:44.609144Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2007-2422": {
-    "cveId": "CVE-2007-2422",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-2422",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-04-15T20:20:05.115584Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "description": "CWE-noinfo Not enough information"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-2728": {
-    "cveId": "CVE-2007-2728",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-2728",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-08-29T16:00:04.918528Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2007-2020": {
-    "cveId": "CVE-2007-2020",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-2020",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-04-15T20:18:29.662806Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "description": "CWE-noinfo Not enough information"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-2534": {
-    "cveId": "CVE-2007-2534",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-2534",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-09-25T16:06:00.375653Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-89",
-            "description": "CWE-89 Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-3967": {
-    "cveId": "CVE-2007-3967",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.5,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-3967",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-04-03T14:35:50.629647Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-22",
-            "description": "CWE-22 Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-3968": {
-    "cveId": "CVE-2007-3968",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 5.3,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "LOW",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "NONE"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-3968",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-04-03T14:31:49.620159Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-863",
-            "description": "CWE-863 Incorrect Authorization"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-3194": {
-    "cveId": "CVE-2007-3194",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-3194",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-04-18T15:05:24.813685Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "description": "CWE-noinfo Not enough information"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-3651": {
-    "cveId": "CVE-2007-3651",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 5.3,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "LOW"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-3651",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-04-03T14:40:24.271874Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-200",
-            "description": "CWE-200 Exposure of Sensitive Information to an Unauthorized Actor"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-3409": {
-    "cveId": "CVE-2007-3409",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.5,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "NONE"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-3409",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-02-07T15:28:48.362608Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-674",
-            "description": "CWE-674 Uncontrolled Recursion"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-3816": {
-    "cveId": "CVE-2007-3816",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.5,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "NONE"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-3816",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-17T14:44:40.898851Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "description": "CWE-noinfo Not enough information"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-3484": {
-    "cveId": "CVE-2007-3484",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "CHANGED",
-          "version": "3.1",
-          "baseScore": 6.1,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
-          "integrityImpact": "LOW",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "LOW"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-3484",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-05-24T19:33:37.182425Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2007-3650": {
-    "cveId": "CVE-2007-3650",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 5.3,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:N",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "LOW"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-3650",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-04-03T14:46:36.548713Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-200",
-            "description": "CWE-200 Exposure of Sensitive Information to an Unauthorized Actor"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-3798": {
-    "cveId": "CVE-2007-3798",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-3798",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-10-15T14:17:36.142524Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-252",
-            "description": "CWE-252 Unchecked Return Value"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-3652": {
-    "cveId": "CVE-2007-3652",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-3652",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-04-03T14:37:58.156157Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-89",
-            "description": "CWE-89 Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-3010": {
-    "cveId": "CVE-2007-3010",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-3010",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "active"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-02-07T14:25:23.970930Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2022-04-15",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2007-3010"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-77",
-            "description": "CWE-77 Improper Neutralization of Special Elements used in a Command ('Command Injection')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-4039": {
-    "cveId": "CVE-2007-4039",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-4039",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-04-03T14:28:46.060236Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-79",
-            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-4465": {
-    "cveId": "CVE-2007-4465",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "CHANGED",
-          "version": "3.1",
-          "baseScore": 6.1,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
-          "integrityImpact": "LOW",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "LOW"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-4465",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-01-05T17:42:37.598591Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-79",
-            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-4043": {
-    "cveId": "CVE-2007-4043",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-4043",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-04-03T14:23:20.940264Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-287",
-            "description": "CWE-287 Improper Authentication"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-4786": {
-    "cveId": "CVE-2007-4786",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 5.3,
-          "attackVector": "ADJACENT_NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "HIGH",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-4786",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-01-30T20:00:33.769696Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-319",
-            "description": "CWE-319 Cleartext Transmission of Sensitive Information"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-4290": {
-    "cveId": "CVE-2007-4290",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-4290",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-17T14:45:47.918580Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-94",
-            "description": "CWE-94 Improper Control of Generation of Code ('Code Injection')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-4559": {
-    "cveId": "CVE-2007-4559",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-4559",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-17T14:48:13.204984Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-22",
-            "description": "CWE-22 Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-4040": {
-    "cveId": "CVE-2007-4040",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 8.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-4040",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-04-03T14:26:07.732559Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-79",
-            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-4150": {
-    "cveId": "CVE-2007-4150",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-4150",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-02-09T19:45:20.981635Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2007-1679": {
-    "cveId": "CVE-2007-1679",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "CHANGED",
-          "version": "3.1",
-          "baseScore": 5.4,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:R/S:C/C:L/I:L/A:N",
-          "integrityImpact": "LOW",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "LOW",
-          "confidentialityImpact": "LOW"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-1679",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-04-15T20:16:46.267575Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-79",
-            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-1966": {
-    "cveId": "CVE-2007-1966",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.1,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-1966",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-04-03T14:49:42.633483Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-287",
-            "description": "CWE-287 Improper Authentication"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2007-1383": {
-    "cveId": "CVE-2007-1383",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2007-1383",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-04-03T14:51:46.992815Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-190",
-            "description": "CWE-190 Integer Overflow or Wraparound"
           }
         ]
       }
@@ -2097,6 +1902,201 @@
             ],
             "version": "2.0.3",
             "timestamp": "2024-04-15T20:13:33.925048Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "description": "CWE-noinfo Not enough information"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-2728": {
+    "cveId": "CVE-2007-2728",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-2728",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-08-29T16:00:04.918528Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2007-2020": {
+    "cveId": "CVE-2007-2020",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-2020",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-04-15T20:18:29.662806Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "description": "CWE-noinfo Not enough information"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-2534": {
+    "cveId": "CVE-2007-2534",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-2534",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-09-25T16:06:00.375653Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-89",
+            "description": "CWE-89 Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2007-2422": {
+    "cveId": "CVE-2007-2422",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2007-2422",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-04-15T20:20:05.115584Z"
           }
         }
       }
