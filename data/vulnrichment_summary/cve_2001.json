@@ -1,4 +1,33 @@
 {
+  "CVE-2001-1184": {
+    "cveId": "CVE-2001-1184",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2001-1184",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-10-09T18:48:54.419465Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2001-1546": {
     "cveId": "CVE-2001-1546",
     "metrics": [
@@ -49,62 +78,6 @@
             "type": "CWE",
             "cweId": "CWE-326",
             "description": "CWE-326 Inadequate Encryption Strength"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2001-1125": {
-    "cveId": "CVE-2001-1125",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2001-1125",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-02-08T17:21:18.892262Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-494",
-            "description": "CWE-494 Download of Code Without Integrity Check"
           }
         ]
       }
@@ -166,35 +139,6 @@
     ],
     "other": {}
   },
-  "CVE-2001-1184": {
-    "cveId": "CVE-2001-1184",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2001-1184",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-10-09T18:48:54.419465Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
   "CVE-2001-1210": {
     "cveId": "CVE-2001-1210",
     "metrics": [
@@ -224,14 +168,70 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2001-0514": {
-    "cveId": "CVE-2001-0514",
+  "CVE-2001-1125": {
+    "cveId": "CVE-2001-1125",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2001-1125",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-02-08T17:21:18.892262Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-494",
+            "description": "CWE-494 Download of Code Without Integrity Check"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2001-0331": {
+    "cveId": "CVE-2001-0331",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2001-0514",
+            "id": "CVE-2001-0331",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -245,7 +245,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-10-09T19:01:05.878704Z"
+            "timestamp": "2024-08-29T15:50:47.972234Z"
           }
         }
       }
@@ -309,14 +309,14 @@
     ],
     "other": {}
   },
-  "CVE-2001-0331": {
-    "cveId": "CVE-2001-0331",
+  "CVE-2001-0380": {
+    "cveId": "CVE-2001-0380",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2001-0331",
+            "id": "CVE-2001-0380",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -330,7 +330,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-08-29T15:50:47.972234Z"
+            "timestamp": "2026-10-09T19:00:31.669482Z"
           }
         }
       }
@@ -338,28 +338,28 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2001-0006": {
-    "cveId": "CVE-2001-0006",
+  "CVE-2001-0514": {
+    "cveId": "CVE-2001-0514",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2001-0006",
+            "id": "CVE-2001-0514",
             "role": "CISA Coordinator",
             "options": [
               {
                 "Exploitation": "none"
               },
               {
-                "Automatable": "no"
+                "Automatable": "yes"
               },
               {
                 "Technical Impact": "partial"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-01-31T15:50:22.565040Z"
+            "timestamp": "2026-10-09T19:01:05.878704Z"
           }
         }
       }
@@ -423,28 +423,28 @@
     ],
     "other": {}
   },
-  "CVE-2001-0380": {
-    "cveId": "CVE-2001-0380",
+  "CVE-2001-0006": {
+    "cveId": "CVE-2001-0006",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2001-0380",
+            "id": "CVE-2001-0006",
             "role": "CISA Coordinator",
             "options": [
               {
                 "Exploitation": "none"
               },
               {
-                "Automatable": "yes"
+                "Automatable": "no"
               },
               {
                 "Technical Impact": "partial"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-10-09T19:00:31.669482Z"
+            "timestamp": "2024-01-31T15:50:22.565040Z"
           }
         }
       }

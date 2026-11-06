@@ -1,157 +1,12 @@
 {
-  "CVE-2012-10041": {
-    "cveId": "CVE-2012-10041",
+  "CVE-2012-10057": {
+    "cveId": "CVE-2012-10057",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-10041",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-08T18:45:38.599546Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10019": {
-    "cveId": "CVE-2012-10019",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10019",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-07-21T16:24:33.212771Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10028": {
-    "cveId": "CVE-2012-10028",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10028",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-07T15:49:54.720390Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10035": {
-    "cveId": "CVE-2012-10035",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10035",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-07T15:13:39.616249Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10029": {
-    "cveId": "CVE-2012-10029",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10029",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-06T15:13:18.530298Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10062": {
-    "cveId": "CVE-2012-10062",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10062",
+            "id": "CVE-2012-10057",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -165,7 +20,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-09-02T20:37:16.819019Z"
+            "timestamp": "2025-08-14T14:10:10.373811Z"
           }
         }
       }
@@ -173,28 +28,28 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2012-10002": {
-    "cveId": "CVE-2012-10002",
+  "CVE-2012-10048": {
+    "cveId": "CVE-2012-10048",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-10002",
+            "id": "CVE-2012-10048",
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "none"
+                "Exploitation": "poc"
               },
               {
                 "Automatable": "no"
               },
               {
-                "Technical Impact": "partial"
+                "Technical Impact": "total"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-02-29T19:05:26.470355Z"
+            "timestamp": "2025-08-08T18:41:35.487704Z"
           }
         }
       }
@@ -224,6 +79,64 @@
             ],
             "version": "2.0.3",
             "timestamp": "2025-08-14T14:21:35.355588Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10055": {
+    "cveId": "CVE-2012-10055",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10055",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-14T13:49:56.063256Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10054": {
+    "cveId": "CVE-2012-10054",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10054",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-14T13:44:22.995765Z"
           }
         }
       }
@@ -289,72 +202,14 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2012-10008": {
-    "cveId": "CVE-2012-10008",
+  "CVE-2012-10058": {
+    "cveId": "CVE-2012-10058",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-10008",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-03-12T19:55:33.154439Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10016": {
-    "cveId": "CVE-2012-10016",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10016",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-09-16T15:34:54.539230Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10060": {
-    "cveId": "CVE-2012-10060",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10060",
+            "id": "CVE-2012-10058",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -368,413 +223,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-08-14T13:45:09.272202Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10048": {
-    "cveId": "CVE-2012-10048",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10048",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-08T18:41:35.487704Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10031": {
-    "cveId": "CVE-2012-10031",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10031",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-05T20:52:24.451877Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10046": {
-    "cveId": "CVE-2012-10046",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10046",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-08T18:53:57.797080Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10043": {
-    "cveId": "CVE-2012-10043",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10043",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-08T19:02:06.468606Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10039": {
-    "cveId": "CVE-2012-10039",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10039",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-11T15:41:44.558442Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10032": {
-    "cveId": "CVE-2012-10032",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10032",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-07T13:56:13.248313Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10040": {
-    "cveId": "CVE-2012-10040",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10040",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-11T15:52:16.200279Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10038": {
-    "cveId": "CVE-2012-10038",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10038",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-11T15:51:37.971650Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10037": {
-    "cveId": "CVE-2012-10037",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10037",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-11T15:50:35.861076Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10050": {
-    "cveId": "CVE-2012-10050",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10050",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-08T19:00:12.601696Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10063": {
-    "cveId": "CVE-2012-10063",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10063",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-11-24T20:28:45.405708Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10061": {
-    "cveId": "CVE-2012-10061",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10061",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-20T18:21:22.591655Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10054": {
-    "cveId": "CVE-2012-10054",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10054",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-14T13:44:22.995765Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10044": {
-    "cveId": "CVE-2012-10044",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10044",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-08T18:53:02.372580Z"
+            "timestamp": "2025-08-14T13:46:19.568495Z"
           }
         }
       }
@@ -811,14 +260,14 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2012-10042": {
-    "cveId": "CVE-2012-10042",
+  "CVE-2012-10035": {
+    "cveId": "CVE-2012-10035",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-10042",
+            "id": "CVE-2012-10035",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -832,7 +281,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-08-08T18:49:22.655858Z"
+            "timestamp": "2025-08-07T15:13:39.616249Z"
           }
         }
       }
@@ -840,231 +289,28 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2012-10064": {
-    "cveId": "CVE-2012-10064",
+  "CVE-2012-10016": {
+    "cveId": "CVE-2012-10016",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-10064",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-01-16T20:59:01.633289Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10033": {
-    "cveId": "CVE-2012-10033",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10033",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-06T15:16:25.029378Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10018": {
-    "cveId": "CVE-2012-10018",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10018",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-10-16T17:55:14.671222Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10058": {
-    "cveId": "CVE-2012-10058",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10058",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-14T13:46:19.568495Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10023": {
-    "cveId": "CVE-2012-10023",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10023",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-06T17:55:59.664083Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10024": {
-    "cveId": "CVE-2012-10024",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10024",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-06-02T13:31:56.636998Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10036": {
-    "cveId": "CVE-2012-10036",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10036",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-08T18:51:08.914152Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10006": {
-    "cveId": "CVE-2012-10006",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10006",
+            "id": "CVE-2012-10016",
             "role": "CISA Coordinator",
             "options": [
               {
                 "Exploitation": "none"
               },
               {
-                "Automatable": "yes"
+                "Automatable": "no"
               },
               {
-                "Technical Impact": "total"
+                "Technical Impact": "partial"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-04-02T16:06:09.341667Z"
+            "timestamp": "2024-09-16T15:34:54.539230Z"
           }
         }
       }
@@ -1072,86 +318,28 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2012-10049": {
-    "cveId": "CVE-2012-10049",
+  "CVE-2012-10040": {
+    "cveId": "CVE-2012-10040",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-10049",
+            "id": "CVE-2012-10040",
             "role": "CISA Coordinator",
             "options": [
               {
                 "Exploitation": "poc"
               },
               {
-                "Automatable": "yes"
+                "Automatable": "no"
               },
               {
                 "Technical Impact": "total"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-08-08T18:44:45.941355Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10025": {
-    "cveId": "CVE-2012-10025",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10025",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-07T15:12:44.140302Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10055": {
-    "cveId": "CVE-2012-10055",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10055",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-14T13:49:56.063256Z"
+            "timestamp": "2025-08-11T15:52:16.200279Z"
           }
         }
       }
@@ -1188,14 +376,14 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2012-10017": {
-    "cveId": "CVE-2012-10017",
+  "CVE-2012-10008": {
+    "cveId": "CVE-2012-10008",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-10017",
+            "id": "CVE-2012-10008",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -1209,7 +397,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-01-11T18:51:37.289141Z"
+            "timestamp": "2025-03-12T19:55:33.154439Z"
           }
         }
       }
@@ -1217,14 +405,43 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2012-10051": {
-    "cveId": "CVE-2012-10051",
+  "CVE-2012-10037": {
+    "cveId": "CVE-2012-10037",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-10051",
+            "id": "CVE-2012-10037",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-11T15:50:35.861076Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10032": {
+    "cveId": "CVE-2012-10032",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10032",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -1238,7 +455,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-08-08T18:52:08.993123Z"
+            "timestamp": "2025-08-07T13:56:13.248313Z"
           }
         }
       }
@@ -1275,6 +492,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2012-10018": {
+    "cveId": "CVE-2012-10018",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10018",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-10-16T17:55:14.671222Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2012-10027": {
     "cveId": "CVE-2012-10027",
     "metrics": [
@@ -1304,43 +550,14 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2012-10047": {
-    "cveId": "CVE-2012-10047",
+  "CVE-2012-10063": {
+    "cveId": "CVE-2012-10063",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-10047",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-08T18:59:27.634141Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10020": {
-    "cveId": "CVE-2012-10020",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10020",
+            "id": "CVE-2012-10063",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -1350,11 +567,11 @@
                 "Automatable": "no"
               },
               {
-                "Technical Impact": "partial"
+                "Technical Impact": "total"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-07-22T19:47:14.691715Z"
+            "timestamp": "2025-11-24T20:28:45.405708Z"
           }
         }
       }
@@ -1362,28 +579,28 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2012-10057": {
-    "cveId": "CVE-2012-10057",
+  "CVE-2012-10023": {
+    "cveId": "CVE-2012-10023",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-10057",
+            "id": "CVE-2012-10023",
             "role": "CISA Coordinator",
             "options": [
               {
                 "Exploitation": "poc"
               },
               {
-                "Automatable": "no"
+                "Automatable": "yes"
               },
               {
-                "Technical Impact": "total"
+                "Technical Impact": "partial"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-08-14T14:10:10.373811Z"
+            "timestamp": "2025-08-06T17:55:59.664083Z"
           }
         }
       }
@@ -1391,14 +608,14 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2012-10030": {
-    "cveId": "CVE-2012-10030",
+  "CVE-2012-10060": {
+    "cveId": "CVE-2012-10060",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-10030",
+            "id": "CVE-2012-10060",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -1412,65 +629,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-08-06T17:55:10.298025Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10053": {
-    "cveId": "CVE-2012-10053",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10053",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-08-08T18:48:34.021500Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-10014": {
-    "cveId": "CVE-2012-10014",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-10014",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-07-18T15:13:31.152364Z"
+            "timestamp": "2025-08-14T13:45:09.272202Z"
           }
         }
       }
@@ -1507,6 +666,441 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2012-10028": {
+    "cveId": "CVE-2012-10028",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10028",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-07T15:49:54.720390Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10042": {
+    "cveId": "CVE-2012-10042",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10042",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-08T18:49:22.655858Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10044": {
+    "cveId": "CVE-2012-10044",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10044",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-08T18:53:02.372580Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10062": {
+    "cveId": "CVE-2012-10062",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10062",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-09-02T20:37:16.819019Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10002": {
+    "cveId": "CVE-2012-10002",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10002",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-02-29T19:05:26.470355Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10046": {
+    "cveId": "CVE-2012-10046",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10046",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-08T18:53:57.797080Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10061": {
+    "cveId": "CVE-2012-10061",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10061",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-20T18:21:22.591655Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10041": {
+    "cveId": "CVE-2012-10041",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10041",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-08T18:45:38.599546Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10014": {
+    "cveId": "CVE-2012-10014",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10014",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-07-18T15:13:31.152364Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10020": {
+    "cveId": "CVE-2012-10020",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10020",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-07-22T19:47:14.691715Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10033": {
+    "cveId": "CVE-2012-10033",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10033",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-06T15:16:25.029378Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10039": {
+    "cveId": "CVE-2012-10039",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10039",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-11T15:41:44.558442Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10030": {
+    "cveId": "CVE-2012-10030",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10030",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-06T17:55:10.298025Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10024": {
+    "cveId": "CVE-2012-10024",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10024",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-06-02T13:31:56.636998Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10043": {
+    "cveId": "CVE-2012-10043",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10043",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-08T19:02:06.468606Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2012-10056": {
     "cveId": "CVE-2012-10056",
     "metrics": [
@@ -1536,8 +1130,742 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2012-4775": {
-    "cveId": "CVE-2012-4775",
+  "CVE-2012-10053": {
+    "cveId": "CVE-2012-10053",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10053",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-08T18:48:34.021500Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10050": {
+    "cveId": "CVE-2012-10050",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10050",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-08T19:00:12.601696Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10038": {
+    "cveId": "CVE-2012-10038",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10038",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-11T15:51:37.971650Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10019": {
+    "cveId": "CVE-2012-10019",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10019",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-07-21T16:24:33.212771Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10006": {
+    "cveId": "CVE-2012-10006",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10006",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-04-02T16:06:09.341667Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10064": {
+    "cveId": "CVE-2012-10064",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10064",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-01-16T20:59:01.633289Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10017": {
+    "cveId": "CVE-2012-10017",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10017",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-01-11T18:51:37.289141Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10047": {
+    "cveId": "CVE-2012-10047",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10047",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-08T18:59:27.634141Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10051": {
+    "cveId": "CVE-2012-10051",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10051",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-08T18:52:08.993123Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10025": {
+    "cveId": "CVE-2012-10025",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10025",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-07T15:12:44.140302Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10049": {
+    "cveId": "CVE-2012-10049",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10049",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-08T18:44:45.941355Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10029": {
+    "cveId": "CVE-2012-10029",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10029",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-06T15:13:18.530298Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10036": {
+    "cveId": "CVE-2012-10036",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10036",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-08T18:51:08.914152Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-10031": {
+    "cveId": "CVE-2012-10031",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-10031",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-08-05T20:52:24.451877Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-2034": {
+    "cveId": "CVE-2012-2034",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "HIGH",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-2034",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "active"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-02-10T21:08:36.837368Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2022-03-28",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-2034"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-119",
+            "description": "CWE-119 Improper Restriction of Operations within the Bounds of a Memory Buffer"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-2897": {
+    "cveId": "CVE-2012-2897",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.8,
+          "attackVector": "LOCAL",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-2897",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-16T21:00:08.032853Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "description": "CWE-noinfo Not enough information"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-2539": {
+    "cveId": "CVE-2012-2539",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.8,
+          "attackVector": "LOCAL",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-2539",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "active"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-02-10T19:01:25.331995Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2022-03-28",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-2539"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-787",
+            "description": "CWE-787 Out-of-bounds Write"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-2657": {
+    "cveId": "CVE-2012-2657",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-2657",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-06-26T19:00:40.470154Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-2212": {
+    "cveId": "CVE-2012-2212",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-2212",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-06-18T18:38:10.594120Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-2993": {
+    "cveId": "CVE-2012-2993",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 5.9,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "HIGH",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-2993",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-16T21:19:19.103167Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-295",
+            "description": "CWE-295 Improper Certificate Validation"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-2524": {
+    "cveId": "CVE-2012-2524",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-2524",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-10-09T19:06:19.561977Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-2806": {
+    "cveId": "CVE-2012-2806",
     "metrics": [
       {
         "cvssV3_1": {
@@ -1559,7 +1887,7 @@
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-4775",
+            "id": "CVE-2012-2806",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -1573,7 +1901,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-01-16T20:53:35.103415Z"
+            "timestamp": "2025-01-21T19:56:19.824480Z"
           }
         }
       }
@@ -1584,63 +1912,8 @@
           {
             "lang": "en",
             "type": "CWE",
-            "description": "CWE-noinfo Not enough information"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-4787": {
-    "cveId": "CVE-2012-4787",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "CHANGED",
-          "version": "3.1",
-          "baseScore": 9,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "HIGH",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-4787",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-01-10T20:43:32.573505Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-416",
-            "description": "CWE-416 Use After Free"
+            "cweId": "CWE-787",
+            "description": "CWE-787 Out-of-bounds Write"
           }
         ]
       }
@@ -1712,100 +1985,6 @@
     ],
     "other": {}
   },
-  "CVE-2012-4969": {
-    "cveId": "CVE-2012-4969",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 8.1,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "HIGH",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-4969",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "active"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-02-04T21:20:31.922142Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2022-06-08",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-4969"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-416",
-            "description": "CWE-416 Use After Free"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-4431": {
-    "cveId": "CVE-2012-4431",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-4431",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-10-09T19:07:45.928708Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
   "CVE-2012-4681": {
     "cveId": "CVE-2012-4681",
     "metrics": [
@@ -1871,6 +2050,211 @@
     ],
     "other": {}
   },
+  "CVE-2012-4969": {
+    "cveId": "CVE-2012-4969",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 8.1,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "HIGH",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-4969",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "active"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-02-04T21:20:31.922142Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2022-06-08",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-4969"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-416",
+            "description": "CWE-416 Use After Free"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-4775": {
+    "cveId": "CVE-2012-4775",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 8.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-4775",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-16T20:53:35.103415Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "description": "CWE-noinfo Not enough information"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-4431": {
+    "cveId": "CVE-2012-4431",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-4431",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-10-09T19:07:45.928708Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-4787": {
+    "cveId": "CVE-2012-4787",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "CHANGED",
+          "version": "3.1",
+          "baseScore": 9,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:C/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "HIGH",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-4787",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-01-10T20:43:32.573505Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-416",
+            "description": "CWE-416 Use After Free"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
   "CVE-2012-4534": {
     "cveId": "CVE-2012-4534",
     "metrics": [
@@ -1893,64 +2277,6 @@
             ],
             "version": "2.0.3",
             "timestamp": "2026-10-09T19:08:12.854202Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-20002": {
-    "cveId": "CVE-2012-20002",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-20002",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-10-28T16:39:04.888424Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-20004": {
-    "cveId": "CVE-2012-20004",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-20004",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-10-23T02:04:45.421831Z"
           }
         }
       }
@@ -2016,22 +2342,80 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2012-1879": {
-    "cveId": "CVE-2012-1879",
+  "CVE-2012-20002": {
+    "cveId": "CVE-2012-20002",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-20002",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-10-28T16:39:04.888424Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-20004": {
+    "cveId": "CVE-2012-20004",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-20004",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-10-23T02:04:45.421831Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-5379": {
+    "cveId": "CVE-2012-5379",
     "metrics": [
       {
         "cvssV3_1": {
           "scope": "UNCHANGED",
           "version": "3.1",
-          "baseScore": 8.1,
-          "attackVector": "NETWORK",
+          "baseScore": 7.3,
+          "attackVector": "LOCAL",
           "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H",
           "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
           "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
+          "privilegesRequired": "LOW",
           "confidentialityImpact": "HIGH"
         }
       },
@@ -2039,7 +2423,7 @@
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-1879",
+            "id": "CVE-2012-5379",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -2053,7 +2437,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-01-10T20:47:47.582187Z"
+            "timestamp": "2024-04-18T16:11:32.268700Z"
           }
         }
       }
@@ -2064,67 +2448,21 @@
           {
             "lang": "en",
             "type": "CWE",
-            "cweId": "CWE-94",
-            "description": "CWE-94 Improper Control of Generation of Code ('Code Injection')"
+            "description": "CWE-noinfo Not enough information"
           }
         ]
       }
     ],
     "other": {}
   },
-  "CVE-2012-1326": {
-    "cveId": "CVE-2012-1326",
+  "CVE-2012-5887": {
+    "cveId": "CVE-2012-5887",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-1326",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-11-15T16:25:14.798191Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-1571": {
-    "cveId": "CVE-2012-1571",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 6.5,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
-          "integrityImpact": "NONE",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "NONE"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-1571",
+            "id": "CVE-2012-5887",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -2138,7 +2476,119 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-12-04T20:30:57.318506Z"
+            "timestamp": "2026-10-09T19:10:06.229343Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-5568": {
+    "cveId": "CVE-2012-5568",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-5568",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-10-09T19:08:36.889570Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-5885": {
+    "cveId": "CVE-2012-5885",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-5885",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-10-09T19:09:05.165875Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-5054": {
+    "cveId": "CVE-2012-5054",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 8.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-5054",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "active"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-02-04T22:04:50.597682Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2022-06-08",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-5054"
           }
         }
       }
@@ -2149,30 +2599,59 @@
           {
             "lang": "en",
             "type": "CWE",
-            "cweId": "CWE-125",
-            "description": "CWE-125 Out-of-bounds Read"
+            "cweId": "CWE-190",
+            "description": "CWE-190 Integer Overflow or Wraparound"
           }
         ]
       }
     ],
     "other": {}
   },
-  "CVE-2012-1539": {
-    "cveId": "CVE-2012-1539",
+  "CVE-2012-5340": {
+    "cveId": "CVE-2012-5340",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-5340",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-09-13T16:02:31.781858Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-5380": {
+    "cveId": "CVE-2012-5380",
     "metrics": [
       {
         "cvssV3_1": {
           "scope": "UNCHANGED",
           "version": "3.1",
-          "baseScore": 8.1,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "baseScore": 6.7,
+          "attackVector": "LOCAL",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:U/C:H/I:H/A:H",
           "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
+          "userInteraction": "REQUIRED",
           "attackComplexity": "HIGH",
           "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
+          "privilegesRequired": "LOW",
           "confidentialityImpact": "HIGH"
         }
       },
@@ -2180,7 +2659,7 @@
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-1539",
+            "id": "CVE-2012-5380",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -2194,7 +2673,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-01-10T20:50:43.552243Z"
+            "timestamp": "2024-04-22T19:27:47.842050Z"
           }
         }
       }
@@ -2205,8 +2684,444 @@
           {
             "lang": "en",
             "type": "CWE",
-            "cweId": "CWE-416",
-            "description": "CWE-416 Use After Free"
+            "cweId": "CWE-22",
+            "description": "CWE-22 Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-5786": {
+    "cveId": "CVE-2012-5786",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-5786",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-06-18T18:47:10.382377Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-5886": {
+    "cveId": "CVE-2012-5886",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-5886",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-10-09T19:09:36.492626Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-5872": {
+    "cveId": "CVE-2012-5872",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-5872",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-02-03T21:05:40.346188Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-89",
+            "description": "CWE-89 Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-5639": {
+    "cveId": "CVE-2012-5639",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-5639",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-10-15T17:09:43.165391Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-5076": {
+    "cveId": "CVE-2012-5076",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-5076",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "active"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-02-10T19:52:51.647416Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2022-03-28",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-5076"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-284",
+            "description": "CWE-284 Improper Access Control"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-5873": {
+    "cveId": "CVE-2012-5873",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-5873",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-02-03T21:01:25.118475Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-79",
+            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-3372": {
+    "cveId": "CVE-2012-3372",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.4,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "HIGH",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-3372",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-21T19:32:24.195135Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "description": "CWE-noinfo Not enough information"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-3152": {
+    "cveId": "CVE-2012-3152",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.1,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-3152",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "active"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-02-10T19:35:18.859406Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2021-11-03",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-3152"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "description": "CWE-noinfo Not enough information"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-3544": {
+    "cveId": "CVE-2012-3544",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-3544",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-10-09T19:06:58.460834Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-3363": {
+    "cveId": "CVE-2012-3363",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.1,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-3363",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-16T20:38:37.378788Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-611",
+            "description": "CWE-611 Improper Restriction of XML External Entity Reference"
           }
         ]
       }
@@ -2263,482 +3178,6 @@
             "type": "CWE",
             "cweId": "CWE-190",
             "description": "CWE-190 Integer Overflow or Wraparound"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-1823": {
-    "cveId": "CVE-2012-1823",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-1823",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "active"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-02-07T13:10:55.600294Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2022-03-25",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-1823"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-77",
-            "description": "CWE-77 Improper Neutralization of Special Elements used in a Command ('Command Injection')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-1854": {
-    "cveId": "CVE-2012-1854",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.8,
-          "attackVector": "LOCAL",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-1854",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "active"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-04-13T17:00:22.133870Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2026-04-13",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-1854"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-426",
-            "description": "CWE-426 Untrusted Search Path"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-1872": {
-    "cveId": "CVE-2012-1872",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "CHANGED",
-          "version": "3.1",
-          "baseScore": 6.1,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
-          "integrityImpact": "LOW",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "LOW"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-1872",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2023-12-11T19:56:48.794173Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-79",
-            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-1889": {
-    "cveId": "CVE-2012-1889",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 8.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-1889",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "active"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-02-04T18:23:21.674978Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2022-06-08",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-1889"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-787",
-            "description": "CWE-787 Out-of-bounds Write"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-1723": {
-    "cveId": "CVE-2012-1723",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-1723",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "active"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-08-05T20:52:47.890615Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2022-03-03",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-1723"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-284",
-            "description": "CWE-284 Improper Access Control"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-1891": {
-    "cveId": "CVE-2012-1891",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-1891",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-10-17T18:26:20.341142Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-908",
-            "description": "CWE-908 Use of Uninitialized Resource"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-1316": {
-    "cveId": "CVE-2012-1316",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-1316",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-11-15T16:30:17.814057Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-1535": {
-    "cveId": "CVE-2012-1535",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.8,
-          "attackVector": "LOCAL",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-1535",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "active"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-02-07T14:14:06.378775Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2022-03-03",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-1535"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-94",
-            "description": "CWE-94 Improper Control of Generation of Code ('Code Injection')"
-          }
-        ]
-      },
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-20",
-            "description": "CWE-20 Improper Input Validation"
           }
         ]
       }
@@ -2873,441 +3312,14 @@
     ],
     "other": {}
   },
-  "CVE-2012-6437": {
-    "cveId": "CVE-2012-6437",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-6437",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-06-03T13:39:03.654457Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-6438": {
-    "cveId": "CVE-2012-6438",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.5,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "NONE"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-6438",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-06-03T13:37:46.126142Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-6440": {
-    "cveId": "CVE-2012-6440",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 4.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N",
-          "integrityImpact": "LOW",
-          "userInteraction": "NONE",
-          "attackComplexity": "HIGH",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "LOW"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-6440",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-06-03T13:34:42.563148Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-6436": {
-    "cveId": "CVE-2012-6436",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.5,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "NONE"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-6436",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-06-03T13:40:25.252695Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-6435": {
-    "cveId": "CVE-2012-6435",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.5,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "NONE"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-6435",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-06-03T13:41:32.933358Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-6442": {
-    "cveId": "CVE-2012-6442",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.5,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "NONE"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-6442",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-06-03T13:32:40.167029Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-6664": {
-    "cveId": "CVE-2012-6664",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.1,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-6664",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-06-22T17:18:15.609935Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-22",
-            "description": "CWE-22 Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-3363": {
-    "cveId": "CVE-2012-3363",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.1,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-3363",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-16T20:38:37.378788Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-611",
-            "description": "CWE-611 Improper Restriction of XML External Entity Reference"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-3544": {
-    "cveId": "CVE-2012-3544",
+  "CVE-2012-1326": {
+    "cveId": "CVE-2012-1326",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-3544",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-10-09T19:06:58.460834Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-3372": {
-    "cveId": "CVE-2012-3372",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.4,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "HIGH",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-3372",
+            "id": "CVE-2012-1326",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -3321,110 +3333,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-01-21T19:32:24.195135Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "description": "CWE-noinfo Not enough information"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-3152": {
-    "cveId": "CVE-2012-3152",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.1,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-3152",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "active"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-02-10T19:35:18.859406Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2021-11-03",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-3152"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "description": "CWE-noinfo Not enough information"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-5340": {
-    "cveId": "CVE-2012-5340",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-5340",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-09-13T16:02:31.781858Z"
+            "timestamp": "2024-11-15T16:25:14.798191Z"
           }
         }
       }
@@ -3432,116 +3341,22 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2012-5885": {
-    "cveId": "CVE-2012-5885",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-5885",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-10-09T19:09:05.165875Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-5076": {
-    "cveId": "CVE-2012-5076",
+  "CVE-2012-1535": {
+    "cveId": "CVE-2012-1535",
     "metrics": [
       {
         "cvssV3_1": {
           "scope": "UNCHANGED",
           "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-5076",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "active"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-02-10T19:52:51.647416Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2022-03-28",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-5076"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-284",
-            "description": "CWE-284 Improper Access Control"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-5380": {
-    "cveId": "CVE-2012-5380",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 6.7,
+          "baseScore": 7.8,
           "attackVector": "LOCAL",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:U/C:H/I:H/A:H",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
           "integrityImpact": "HIGH",
           "userInteraction": "REQUIRED",
-          "attackComplexity": "HIGH",
+          "attackComplexity": "LOW",
           "availabilityImpact": "HIGH",
-          "privilegesRequired": "LOW",
+          "privilegesRequired": "NONE",
           "confidentialityImpact": "HIGH"
         }
       },
@@ -3549,7 +3364,147 @@
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-5380",
+            "id": "CVE-2012-1535",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "active"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-02-07T14:14:06.378775Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2022-03-03",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-1535"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-94",
+            "description": "CWE-94 Improper Control of Generation of Code ('Code Injection')"
+          }
+        ]
+      },
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-20",
+            "description": "CWE-20 Improper Input Validation"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-1823": {
+    "cveId": "CVE-2012-1823",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-1823",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "active"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-02-07T13:10:55.600294Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2022-03-25",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-1823"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-77",
+            "description": "CWE-77 Improper Neutralization of Special Elements used in a Command ('Command Injection')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-1879": {
+    "cveId": "CVE-2012-1879",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 8.1,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "HIGH",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-1879",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -3563,7 +3518,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-04-22T19:27:47.842050Z"
+            "timestamp": "2024-01-10T20:47:47.582187Z"
           }
         }
       }
@@ -3574,22 +3529,22 @@
           {
             "lang": "en",
             "type": "CWE",
-            "cweId": "CWE-22",
-            "description": "CWE-22 Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')"
+            "cweId": "CWE-94",
+            "description": "CWE-94 Improper Control of Generation of Code ('Code Injection')"
           }
         ]
       }
     ],
     "other": {}
   },
-  "CVE-2012-5887": {
-    "cveId": "CVE-2012-5887",
+  "CVE-2012-1316": {
+    "cveId": "CVE-2012-1316",
     "metrics": [
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-5887",
+            "id": "CVE-2012-1316",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -3603,7 +3558,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-10-09T19:10:06.229343Z"
+            "timestamp": "2024-11-15T16:30:17.814057Z"
           }
         }
       }
@@ -3611,8 +3566,129 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2012-5054": {
-    "cveId": "CVE-2012-5054",
+  "CVE-2012-1854": {
+    "cveId": "CVE-2012-1854",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.8,
+          "attackVector": "LOCAL",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-1854",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "active"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-04-13T17:00:22.133870Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2026-04-13",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-1854"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-426",
+            "description": "CWE-426 Untrusted Search Path"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-1571": {
+    "cveId": "CVE-2012-1571",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 6.5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+          "integrityImpact": "NONE",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "NONE"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-1571",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-12-04T20:30:57.318506Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-125",
+            "description": "CWE-125 Out-of-bounds Read"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-1889": {
+    "cveId": "CVE-2012-1889",
     "metrics": [
       {
         "cvssV3_1": {
@@ -3634,7 +3710,7 @@
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-5054",
+            "id": "CVE-2012-1889",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -3648,7 +3724,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-02-04T22:04:50.597682Z"
+            "timestamp": "2025-02-04T18:23:21.674978Z"
           }
         }
       },
@@ -3657,7 +3733,7 @@
           "type": "kev",
           "content": {
             "dateAdded": "2022-06-08",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-5054"
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-1889"
           }
         }
       }
@@ -3668,186 +3744,30 @@
           {
             "lang": "en",
             "type": "CWE",
-            "cweId": "CWE-190",
-            "description": "CWE-190 Integer Overflow or Wraparound"
+            "cweId": "CWE-787",
+            "description": "CWE-787 Out-of-bounds Write"
           }
         ]
       }
     ],
     "other": {}
   },
-  "CVE-2012-5872": {
-    "cveId": "CVE-2012-5872",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-5872",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "poc"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-02-03T21:05:40.346188Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-89",
-            "description": "CWE-89 Improper Neutralization of Special Elements used in an SQL Command ('SQL Injection')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-5886": {
-    "cveId": "CVE-2012-5886",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-5886",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-10-09T19:09:36.492626Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-5639": {
-    "cveId": "CVE-2012-5639",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-5639",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-10-15T17:09:43.165391Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-5568": {
-    "cveId": "CVE-2012-5568",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-5568",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-10-09T19:08:36.889570Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-5786": {
-    "cveId": "CVE-2012-5786",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-5786",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-06-18T18:47:10.382377Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-5379": {
-    "cveId": "CVE-2012-5379",
+  "CVE-2012-1539": {
+    "cveId": "CVE-2012-1539",
     "metrics": [
       {
         "cvssV3_1": {
           "scope": "UNCHANGED",
           "version": "3.1",
-          "baseScore": 7.3,
-          "attackVector": "LOCAL",
+          "baseScore": 8.1,
+          "attackVector": "NETWORK",
           "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:L/UI:R/S:U/C:H/I:H/A:H",
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
           "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
+          "userInteraction": "NONE",
+          "attackComplexity": "HIGH",
           "availabilityImpact": "HIGH",
-          "privilegesRequired": "LOW",
+          "privilegesRequired": "NONE",
           "confidentialityImpact": "HIGH"
         }
       },
@@ -3855,7 +3775,7 @@
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-5379",
+            "id": "CVE-2012-1539",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -3869,7 +3789,240 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-04-18T16:11:32.268700Z"
+            "timestamp": "2024-01-10T20:50:43.552243Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-416",
+            "description": "CWE-416 Use After Free"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-1891": {
+    "cveId": "CVE-2012-1891",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-1891",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-10-17T18:26:20.341142Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-908",
+            "description": "CWE-908 Use of Uninitialized Resource"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-1872": {
+    "cveId": "CVE-2012-1872",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "CHANGED",
+          "version": "3.1",
+          "baseScore": 6.1,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N",
+          "integrityImpact": "LOW",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-1872",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2023-12-11T19:56:48.794173Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-79",
+            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-1723": {
+    "cveId": "CVE-2012-1723",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-1723",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "active"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-08-05T20:52:47.890615Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2022-03-03",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-1723"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-284",
+            "description": "CWE-284 Improper Access Control"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-0003": {
+    "cveId": "CVE-2012-0003",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 8.1,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "HIGH",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-0003",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-01-10T20:54:17.570381Z"
           }
         }
       }
@@ -3887,28 +4040,53 @@
     ],
     "other": {}
   },
-  "CVE-2012-5873": {
-    "cveId": "CVE-2012-5873",
+  "CVE-2012-0754": {
+    "cveId": "CVE-2012-0754",
     "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.8,
+          "attackVector": "LOCAL",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-5873",
+            "id": "CVE-2012-0754",
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "poc"
+                "Exploitation": "active"
               },
               {
                 "Automatable": "no"
               },
               {
-                "Technical Impact": "partial"
+                "Technical Impact": "total"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-02-03T21:01:25.118475Z"
+            "timestamp": "2025-02-10T21:13:32.255738Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2022-06-08",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-0754"
           }
         }
       }
@@ -3919,12 +4097,40 @@
           {
             "lang": "en",
             "type": "CWE",
-            "cweId": "CWE-79",
-            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+            "description": "CWE-noinfo Not enough information"
           }
         ]
       }
     ],
+    "other": {}
+  },
+  "CVE-2012-0334": {
+    "cveId": "CVE-2012-0334",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-0334",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-11-15T16:25:16.136811Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2012-0518": {
@@ -3992,248 +4198,6 @@
     ],
     "other": {}
   },
-  "CVE-2012-0507": {
-    "cveId": "CVE-2012-0507",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-0507",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "active"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-02-10T19:54:57.403498Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2022-03-03",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-0507"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-843",
-            "description": "CWE-843 Access of Resource Using Incompatible Type ('Type Confusion')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-0175": {
-    "cveId": "CVE-2012-0175",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 8.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-0175",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-21T19:57:50.883462Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-94",
-            "description": "CWE-94 Improper Control of Generation of Code ('Code Injection')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-0014": {
-    "cveId": "CVE-2012-0014",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.8,
-          "attackVector": "LOCAL",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-0014",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-21T18:30:19.555043Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-94",
-            "description": "CWE-94 Improper Control of Generation of Code ('Code Injection')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-0158": {
-    "cveId": "CVE-2012-0158",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 8.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-0158",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "active"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-02-10T19:33:55.404318Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2021-11-03",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-0158"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-94",
-            "description": "CWE-94 Improper Control of Generation of Code ('Code Injection')"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
   "CVE-2012-0814": {
     "cveId": "CVE-2012-0814",
     "metrics": [
@@ -4284,61 +4248,6 @@
             "type": "CWE",
             "cweId": "CWE-532",
             "description": "CWE-532 Insertion of Sensitive Information into Log File"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-0157": {
-    "cveId": "CVE-2012-0157",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 8.4,
-          "attackVector": "LOCAL",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-0157",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-01-10T20:52:51.728488Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "description": "CWE-noinfo Not enough information"
           }
         ]
       }
@@ -4465,20 +4374,20 @@
     ],
     "other": {}
   },
-  "CVE-2012-0003": {
-    "cveId": "CVE-2012-0003",
+  "CVE-2012-0175": {
+    "cveId": "CVE-2012-0175",
     "metrics": [
       {
         "cvssV3_1": {
           "scope": "UNCHANGED",
           "version": "3.1",
-          "baseScore": 8.1,
+          "baseScore": 8.8,
           "attackVector": "NETWORK",
           "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
           "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
           "availabilityImpact": "HIGH",
           "privilegesRequired": "NONE",
           "confidentialityImpact": "HIGH"
@@ -4488,7 +4397,7 @@
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-0003",
+            "id": "CVE-2012-0175",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -4502,71 +4411,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-01-10T20:54:17.570381Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "description": "CWE-noinfo Not enough information"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-0391": {
-    "cveId": "CVE-2012-0391",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-0391",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "active"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-02-10T20:07:52.407977Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2022-01-21",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-0391"
+            "timestamp": "2025-01-21T19:57:50.883462Z"
           }
         }
       }
@@ -4585,8 +4430,8 @@
     ],
     "other": {}
   },
-  "CVE-2012-0754": {
-    "cveId": "CVE-2012-0754",
+  "CVE-2012-0014": {
+    "cveId": "CVE-2012-0014",
     "metrics": [
       {
         "cvssV3_1": {
@@ -4608,7 +4453,128 @@
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-0754",
+            "id": "CVE-2012-0014",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-21T18:30:19.555043Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-94",
+            "description": "CWE-94 Improper Control of Generation of Code ('Code Injection')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-0507": {
+    "cveId": "CVE-2012-0507",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-0507",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "active"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-02-10T19:54:57.403498Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2022-03-03",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-0507"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-843",
+            "description": "CWE-843 Access of Resource Using Incompatible Type ('Type Confusion')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-0158": {
+    "cveId": "CVE-2012-0158",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 8.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-0158",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -4622,7 +4588,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-02-10T21:13:32.255738Z"
+            "timestamp": "2025-02-10T19:33:55.404318Z"
           }
         }
       },
@@ -4630,8 +4596,8 @@
         "other": {
           "type": "kev",
           "content": {
-            "dateAdded": "2022-06-08",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-0754"
+            "dateAdded": "2021-11-03",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-0158"
           }
         }
       }
@@ -4642,21 +4608,38 @@
           {
             "lang": "en",
             "type": "CWE",
-            "description": "CWE-noinfo Not enough information"
+            "cweId": "CWE-94",
+            "description": "CWE-94 Improper Control of Generation of Code ('Code Injection')"
           }
         ]
       }
     ],
     "other": {}
   },
-  "CVE-2012-0334": {
-    "cveId": "CVE-2012-0334",
+  "CVE-2012-0157": {
+    "cveId": "CVE-2012-0157",
     "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 8.4,
+          "attackVector": "LOCAL",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-0334",
+            "id": "CVE-2012-0157",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -4670,52 +4653,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-11-15T16:25:16.136811Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-0039": {
-    "cveId": "CVE-2012-0039",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.5,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-          "integrityImpact": "NONE",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "NONE"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-0039",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-21T18:29:14.034924Z"
+            "timestamp": "2024-01-10T20:52:51.728488Z"
           }
         }
       }
@@ -4798,187 +4736,8 @@
     ],
     "other": {}
   },
-  "CVE-2012-2806": {
-    "cveId": "CVE-2012-2806",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 8.8,
-          "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-2806",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-01-21T19:56:19.824480Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-787",
-            "description": "CWE-787 Out-of-bounds Write"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-2657": {
-    "cveId": "CVE-2012-2657",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-2657",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-06-26T19:00:40.470154Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-2539": {
-    "cveId": "CVE-2012-2539",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.8,
-          "attackVector": "LOCAL",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-2539",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "active"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-02-10T19:01:25.331995Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2022-03-28",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-2539"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-787",
-            "description": "CWE-787 Out-of-bounds Write"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-2212": {
-    "cveId": "CVE-2012-2212",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-2212",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-06-18T18:38:10.594120Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
-  "CVE-2012-2034": {
-    "cveId": "CVE-2012-2034",
+  "CVE-2012-0039": {
+    "cveId": "CVE-2012-0039",
     "metrics": [
       {
         "cvssV3_1": {
@@ -4987,99 +4746,34 @@
           "baseScore": 7.5,
           "attackVector": "NETWORK",
           "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "HIGH",
-          "availabilityImpact": "HIGH",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
-        }
-      },
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2012-2034",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "active"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "total"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2025-02-10T21:08:36.837368Z"
-          }
-        }
-      },
-      {
-        "other": {
-          "type": "kev",
-          "content": {
-            "dateAdded": "2022-03-28",
-            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-2034"
-          }
-        }
-      }
-    ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-119",
-            "description": "CWE-119 Improper Restriction of Operations within the Bounds of a Memory Buffer"
-          }
-        ]
-      }
-    ],
-    "other": {}
-  },
-  "CVE-2012-2897": {
-    "cveId": "CVE-2012-2897",
-    "metrics": [
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 7.8,
-          "attackVector": "LOCAL",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
-          "userInteraction": "REQUIRED",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
           "attackComplexity": "LOW",
           "availabilityImpact": "HIGH",
           "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
+          "confidentialityImpact": "NONE"
         }
       },
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-2897",
+            "id": "CVE-2012-0039",
             "role": "CISA Coordinator",
             "options": [
               {
                 "Exploitation": "none"
               },
               {
-                "Automatable": "no"
+                "Automatable": "yes"
               },
               {
-                "Technical Impact": "total"
+                "Technical Impact": "partial"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-01-16T21:00:08.032853Z"
+            "timestamp": "2025-01-21T18:29:14.034924Z"
           }
         }
       }
@@ -5097,28 +4791,109 @@
     ],
     "other": {}
   },
-  "CVE-2012-2524": {
-    "cveId": "CVE-2012-2524",
+  "CVE-2012-0391": {
+    "cveId": "CVE-2012-0391",
     "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
       {
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-2524",
+            "id": "CVE-2012-0391",
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "none"
+                "Exploitation": "active"
               },
               {
-                "Automatable": "no"
+                "Automatable": "yes"
               },
               {
                 "Technical Impact": "total"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-10-09T19:06:19.561977Z"
+            "timestamp": "2025-02-10T20:07:52.407977Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2022-01-21",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2012-0391"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-94",
+            "description": "CWE-94 Improper Control of Generation of Code ('Code Injection')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-6436": {
+    "cveId": "CVE-2012-6436",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "NONE"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-6436",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-06-03T13:40:25.252695Z"
           }
         }
       }
@@ -5126,20 +4901,110 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2012-2993": {
-    "cveId": "CVE-2012-2993",
+  "CVE-2012-6437": {
+    "cveId": "CVE-2012-6437",
     "metrics": [
       {
         "cvssV3_1": {
           "scope": "UNCHANGED",
           "version": "3.1",
-          "baseScore": 5.9,
+          "baseScore": 9.8,
           "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-6437",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-06-03T13:39:03.654457Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-6442": {
+    "cveId": "CVE-2012-6442",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
           "integrityImpact": "NONE",
           "userInteraction": "NONE",
-          "attackComplexity": "HIGH",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "NONE"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-6442",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-06-03T13:32:40.167029Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-6664": {
+    "cveId": "CVE-2012-6664",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 9.1,
+          "attackVector": "NETWORK",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
           "availabilityImpact": "NONE",
           "privilegesRequired": "NONE",
           "confidentialityImpact": "HIGH"
@@ -5149,7 +5014,108 @@
         "other": {
           "type": "ssvc",
           "content": {
-            "id": "CVE-2012-2993",
+            "id": "CVE-2012-6664",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-06-22T17:18:15.609935Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-22",
+            "description": "CWE-22 Improper Limitation of a Pathname to a Restricted Directory ('Path Traversal')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2012-6438": {
+    "cveId": "CVE-2012-6438",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "NONE"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-6438",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-06-03T13:37:46.126142Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-6440": {
+    "cveId": "CVE-2012-6440",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 4.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N",
+          "integrityImpact": "LOW",
+          "userInteraction": "NONE",
+          "attackComplexity": "HIGH",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-6440",
             "role": "CISA Coordinator",
             "options": [
               {
@@ -5163,23 +5129,57 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-01-16T21:19:19.103167Z"
+            "timestamp": "2026-06-03T13:34:42.563148Z"
           }
         }
       }
     ],
-    "problemTypes": [
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2012-6435": {
+    "cveId": "CVE-2012-6435",
+    "metrics": [
       {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-295",
-            "description": "CWE-295 Improper Certificate Validation"
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 7.5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "NONE"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2012-6435",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-06-03T13:41:32.933358Z"
           }
-        ]
+        }
       }
     ],
+    "problemTypes": [],
     "other": {}
   }
 }
