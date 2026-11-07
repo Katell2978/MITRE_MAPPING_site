@@ -3211,6 +3211,35 @@
     ],
     "other": {}
   },
+  "CVE-2014-125137": {
+    "cveId": "CVE-2014-125137",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2014-125137",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-05T17:19:47.002368Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2014-125118": {
     "cveId": "CVE-2014-125118",
     "metrics": [
