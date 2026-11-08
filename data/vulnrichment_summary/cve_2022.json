@@ -266586,6 +266586,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2022-29966": {
+    "cveId": "CVE-2022-29966",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2022-29966",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-06T19:07:42.850084Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2022-29209": {
     "cveId": "CVE-2022-29209",
     "metrics": [
@@ -433983,6 +434012,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2025-04-23T13:08:01.916412Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2022-30267": {
+    "cveId": "CVE-2022-30267",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2022-30267",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-06T19:06:59.602514Z"
           }
         }
       }

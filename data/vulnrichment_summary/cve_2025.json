@@ -329250,6 +329250,35 @@
     ],
     "other": {}
   },
+  "CVE-2025-71450": {
+    "cveId": "CVE-2025-71450",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-71450",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-06T19:22:12.946222Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-71157": {
     "cveId": "CVE-2025-71157",
     "metrics": [
@@ -332215,6 +332244,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2026-06-22T17:54:20.295719Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-71451": {
+    "cveId": "CVE-2025-71451",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-71451",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-07T03:28:15.713821Z"
           }
         }
       }
@@ -454246,6 +454304,62 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-15701": {
+    "cveId": "CVE-2025-15701",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 3.5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "LOW",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:U/C:L/I:L/A:N",
+          "integrityImpact": "LOW",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "HIGH",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-15701",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-06T11:55:58.323416Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-79",
+            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
   "CVE-2025-15271": {
     "cveId": "CVE-2025-15271",
     "metrics": [
@@ -461720,6 +461834,62 @@
             "type": "CWE",
             "cweId": "CWE-862",
             "description": "CWE-862 Missing Authorization"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2025-15702": {
+    "cveId": "CVE-2025-15702",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 8.8,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "HIGH",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-15702",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-06T11:55:20.442866Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-79",
+            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
           }
         ]
       }
@@ -507361,16 +507531,16 @@
         "cvssV3_1": {
           "scope": "UNCHANGED",
           "version": "3.1",
-          "baseScore": 7.5,
+          "baseScore": 9.8,
           "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-          "integrityImpact": "NONE",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
           "userInteraction": "NONE",
           "attackComplexity": "LOW",
           "availabilityImpact": "HIGH",
           "privilegesRequired": "NONE",
-          "confidentialityImpact": "NONE"
+          "confidentialityImpact": "HIGH"
         }
       },
       {
@@ -507384,14 +507554,14 @@
                 "Exploitation": "none"
               },
               {
-                "Automatable": "no"
+                "Automatable": "yes"
               },
               {
-                "Technical Impact": "partial"
+                "Technical Impact": "total"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-09-30T19:30:08.302408Z"
+            "timestamp": "2026-11-06T21:44:39.419163Z"
           }
         }
       }
@@ -664111,6 +664281,62 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-62819": {
+    "cveId": "CVE-2025-62819",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 6.5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:H/A:N",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "LOW",
+          "confidentialityImpact": "NONE"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-62819",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-06T19:15:49.175626Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-862",
+            "description": "CWE-862 Missing Authorization"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
   "CVE-2025-62397": {
     "cveId": "CVE-2025-62397",
     "metrics": [
@@ -733783,6 +734009,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2025-06-10T14:41:45.639857Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-5769": {
+    "cveId": "CVE-2025-5769",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-5769",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-06T18:40:57.682346Z"
           }
         }
       }
