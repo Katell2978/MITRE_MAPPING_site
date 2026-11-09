@@ -227178,16 +227178,16 @@
         "cvssV3_1": {
           "scope": "UNCHANGED",
           "version": "3.1",
-          "baseScore": 6.3,
+          "baseScore": 7.4,
           "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:U/C:L/I:L/A:L",
-          "integrityImpact": "LOW",
-          "userInteraction": "REQUIRED",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "LOW",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "HIGH",
+          "availabilityImpact": "NONE",
           "privilegesRequired": "NONE",
-          "confidentialityImpact": "LOW"
+          "confidentialityImpact": "HIGH"
         }
       },
       {
@@ -227204,11 +227204,11 @@
                 "Automatable": "no"
               },
               {
-                "Technical Impact": "partial"
+                "Technical Impact": "total"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-02-14T20:24:14.595864Z"
+            "timestamp": "2026-11-06T21:37:16.928580Z"
           }
         }
       }
@@ -418609,16 +418609,16 @@
         "cvssV3_1": {
           "scope": "UNCHANGED",
           "version": "3.1",
-          "baseScore": 7.5,
+          "baseScore": 9.8,
           "attackVector": "NETWORK",
-          "baseSeverity": "HIGH",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
-          "integrityImpact": "NONE",
+          "baseSeverity": "CRITICAL",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
           "userInteraction": "NONE",
           "attackComplexity": "LOW",
           "availabilityImpact": "HIGH",
           "privilegesRequired": "NONE",
-          "confidentialityImpact": "NONE"
+          "confidentialityImpact": "HIGH"
         }
       },
       {
@@ -418635,11 +418635,11 @@
                 "Automatable": "yes"
               },
               {
-                "Technical Impact": "partial"
+                "Technical Impact": "total"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-11-13T14:45:07.092438Z"
+            "timestamp": "2026-11-06T21:40:09.343062Z"
           }
         }
       }
@@ -488316,16 +488316,16 @@
         "cvssV3_1": {
           "scope": "UNCHANGED",
           "version": "3.1",
-          "baseScore": 4.3,
+          "baseScore": 8.8,
           "attackVector": "NETWORK",
-          "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:L/A:N",
-          "integrityImpact": "LOW",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H",
+          "integrityImpact": "HIGH",
           "userInteraction": "NONE",
           "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
+          "availabilityImpact": "HIGH",
           "privilegesRequired": "LOW",
-          "confidentialityImpact": "NONE"
+          "confidentialityImpact": "HIGH"
         }
       },
       {
@@ -488342,11 +488342,11 @@
                 "Automatable": "no"
               },
               {
-                "Technical Impact": "partial"
+                "Technical Impact": "total"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-10-16T19:45:11.544020Z"
+            "timestamp": "2026-11-06T21:35:52.868340Z"
           }
         }
       }
@@ -677959,11 +677959,11 @@
                 "Automatable": "no"
               },
               {
-                "Technical Impact": "total"
+                "Technical Impact": "partial"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-10-07T20:27:39.384448Z"
+            "timestamp": "2024-07-12T19:25:06.290598Z"
           }
         }
       }
@@ -711695,16 +711695,16 @@
         "cvssV3_1": {
           "scope": "UNCHANGED",
           "version": "3.1",
-          "baseScore": 4.1,
+          "baseScore": 4.6,
           "attackVector": "PHYSICAL",
           "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:P/AC:L/PR:L/UI:N/S:U/C:L/I:L/A:L",
-          "integrityImpact": "LOW",
+          "vectorString": "CVSS:3.1/AV:P/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+          "integrityImpact": "NONE",
           "userInteraction": "NONE",
           "attackComplexity": "LOW",
-          "availabilityImpact": "LOW",
-          "privilegesRequired": "LOW",
-          "confidentialityImpact": "LOW"
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "HIGH"
         }
       },
       {
@@ -1256076,11 +1256076,11 @@
                 "Automatable": "no"
               },
               {
-                "Technical Impact": "total"
+                "Technical Impact": "partial"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-07-12T03:55:31.094259Z"
+            "timestamp": "2024-07-08T18:22:05.919509Z"
           }
         }
       }

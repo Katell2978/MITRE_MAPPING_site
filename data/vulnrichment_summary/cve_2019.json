@@ -1245,8 +1245,8 @@
         "other": {
           "type": "ssvc",
           "content": {
-            "timestamp": "2026-11-06T18:52:52.905645Z",
             "id": "CVE-2019-16447",
+            "role": "CISA Coordinator",
             "options": [
               {
                 "Exploitation": "none"
@@ -1258,8 +1258,8 @@
                 "Technical Impact": "total"
               }
             ],
-            "role": "CISA Coordinator",
-            "version": "2.0.3"
+            "version": "2.0.3",
+            "timestamp": "2026-11-06T18:52:52.905645Z"
           }
         }
       }

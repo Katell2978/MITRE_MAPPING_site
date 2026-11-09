@@ -230439,7 +230439,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-08-18T12:41:47.892664Z"
+            "timestamp": "2025-08-14T18:28:21.432788Z"
           }
         }
       }
@@ -436354,7 +436354,7 @@
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "poc"
+                "Exploitation": "none"
               },
               {
                 "Automatable": "no"
@@ -436364,7 +436364,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-05-06T15:04:45.602956Z"
+            "timestamp": "2025-05-16T18:08:10.776270Z"
           }
         }
       }
@@ -448703,7 +448703,7 @@
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "poc"
+                "Exploitation": "none"
               },
               {
                 "Automatable": "no"
@@ -448713,7 +448713,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-03-19T18:15:34.640088Z"
+            "timestamp": "2025-05-20T14:04:42.401057Z"
           }
         }
       }
@@ -459182,6 +459182,62 @@
       }
     ],
     "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-15708": {
+    "cveId": "CVE-2025-15708",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 3.5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "LOW",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:U/C:L/I:L/A:N",
+          "integrityImpact": "LOW",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "HIGH",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-15708",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-07T18:05:43.740149Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-79",
+            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-15353": {
@@ -525080,16 +525136,16 @@
         "cvssV3_1": {
           "scope": "UNCHANGED",
           "version": "3.1",
-          "baseScore": 6.5,
+          "baseScore": 5.9,
           "attackVector": "NETWORK",
           "baseSeverity": "MEDIUM",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:L",
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N",
           "integrityImpact": "NONE",
           "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "LOW",
+          "attackComplexity": "HIGH",
+          "availabilityImpact": "NONE",
           "privilegesRequired": "NONE",
-          "confidentialityImpact": "LOW"
+          "confidentialityImpact": "HIGH"
         }
       },
       {
@@ -781359,7 +781415,7 @@
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "poc"
+                "Exploitation": "none"
               },
               {
                 "Automatable": "no"
@@ -781369,7 +781425,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-06-30T14:19:24.430671Z"
+            "timestamp": "2025-04-07T13:23:42.465415Z"
           }
         }
       }

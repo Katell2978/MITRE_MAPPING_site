@@ -246188,6 +246188,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2023-4147": {
+    "cveId": "CVE-2023-4147",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2023-4147",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-01-09T15:55:27.469292Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2023-4910": {
     "cveId": "CVE-2023-4910",
     "metrics": [
@@ -807358,7 +807387,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-06-10T13:58:01.737027Z"
+            "timestamp": "2024-07-26T15:58:53.623448Z"
           }
         }
       }
@@ -829514,7 +829543,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-07-09T13:38:12.203477Z"
+            "timestamp": "2024-07-26T15:28:16.003937Z"
           }
         }
       }
