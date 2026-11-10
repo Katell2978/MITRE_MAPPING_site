@@ -2662,6 +2662,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2014-125092": {
+    "cveId": "CVE-2014-125092",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2014-125092",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-03-05T18:40:48.668294Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2014-125059": {
     "cveId": "CVE-2014-125059",
     "metrics": [
@@ -3528,6 +3557,64 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2014-125104": {
+    "cveId": "CVE-2014-125104",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2014-125104",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-03-05T18:36:48.829985Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2014-125090": {
+    "cveId": "CVE-2014-125090",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2014-125090",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-03-05T18:40:56.152574Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2014-125126": {
     "cveId": "CVE-2014-125126",
     "metrics": [
@@ -3818,6 +3905,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2014-125003": {
+    "cveId": "CVE-2014-125003",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2014-125003",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-04-14T16:58:36.629986Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2014-125079": {
     "cveId": "CVE-2014-125079",
     "metrics": [
@@ -3869,6 +3985,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2025-04-10T14:10:04.407158Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2014-125011": {
+    "cveId": "CVE-2014-125011",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2014-125011",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-04-14T16:58:07.164242Z"
           }
         }
       }
@@ -4146,6 +4291,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2024-07-18T18:07:50.264727Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2014-125004": {
+    "cveId": "CVE-2014-125004",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2014-125004",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2025-04-14T16:58:31.376585Z"
           }
         }
       }
