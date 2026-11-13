@@ -229735,7 +229735,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-02-27T04:55:14.796829Z"
+            "timestamp": "2025-02-26T18:00:38.232849Z"
           }
         }
       }
@@ -979957,18 +979957,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-776",
-            "description": "CWE-776 Improper Restriction of Recursive Entity References in DTDs ('XML Entity Expansion')"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2024-28515": {

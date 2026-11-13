@@ -331107,18 +331107,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-416",
-            "description": "CWE-416 Use After Free"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-71117": {
@@ -332592,18 +332581,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-476",
-            "description": "CWE-476 NULL Pointer Dereference"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-71031": {
@@ -333371,18 +333349,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-401",
-            "description": "CWE-401 Missing Release of Memory after Effective Lifetime"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-71211": {
@@ -333585,18 +333552,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-400",
-            "description": "CWE-400 Uncontrolled Resource Consumption"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-71324": {
@@ -333683,18 +333639,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-190",
-            "description": "CWE-190 Integer Overflow or Wraparound"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-71320": {
@@ -334102,18 +334047,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-119",
-            "description": "CWE-119 Improper Restriction of Operations within the Bounds of a Memory Buffer"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-71231": {
@@ -334777,18 +334711,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-119",
-            "description": "CWE-119 Improper Restriction of Operations within the Bounds of a Memory Buffer"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-71000": {
@@ -336233,18 +336156,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-20",
-            "description": "CWE-20 Improper Input Validation"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-71078": {
@@ -337190,18 +337102,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-787",
-            "description": "CWE-787 Out-of-bounds Write"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-71096": {
@@ -337328,18 +337229,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-400",
-            "description": "CWE-400 Uncontrolled Resource Consumption"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-71399": {
@@ -337709,18 +337599,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-401",
-            "description": "CWE-401 Missing Release of Memory after Effective Lifetime"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-71274": {
@@ -340374,18 +340253,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-134",
-            "description": "CWE-134 Use of Externally-Controlled Format String"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-68020": {
@@ -340792,18 +340660,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-476",
-            "description": "CWE-476 NULL Pointer Dereference"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-68811": {
@@ -342182,18 +342039,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-863",
-            "description": "CWE-863 Incorrect Authorization"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-68472": {
@@ -345414,18 +345260,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-200",
-            "description": "CWE-200 Exposure of Sensitive Information to an Unauthorized Actor"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-68422": {
@@ -345760,18 +345595,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-476",
-            "description": "CWE-476 NULL Pointer Dereference"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-68115": {
@@ -352116,18 +351940,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-476",
-            "description": "CWE-476 NULL Pointer Dereference"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-68544": {
@@ -358475,18 +358288,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-862",
-            "description": "CWE-862 Missing Authorization"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-68951": {
@@ -463221,6 +463023,62 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-15714": {
+    "cveId": "CVE-2025-15714",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 3.5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "LOW",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:U/C:L/I:L/A:N",
+          "integrityImpact": "LOW",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "HIGH",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-15714",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-11T11:27:53.148629Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-79",
+            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
   "CVE-2025-15333": {
     "cveId": "CVE-2025-15333",
     "metrics": [
@@ -467168,6 +467026,118 @@
       }
     ],
     "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-15713": {
+    "cveId": "CVE-2025-15713",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 3.5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "LOW",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:U/C:L/I:L/A:N",
+          "integrityImpact": "LOW",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "HIGH",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-15713",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-11T11:28:04.856633Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-79",
+            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
+  "CVE-2025-15711": {
+    "cveId": "CVE-2025-15711",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 3.5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "LOW",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:U/C:L/I:L/A:N",
+          "integrityImpact": "LOW",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "HIGH",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-15711",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-11T11:28:36.250909Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-79",
+            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-15039": {
@@ -474476,7 +474446,7 @@
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "poc"
+                "Exploitation": "none"
               },
               {
                 "Automatable": "yes"
@@ -474486,7 +474456,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-03-19T18:39:38.156023Z"
+            "timestamp": "2026-01-29T14:50:31.874299Z"
           }
         }
       }
@@ -477661,6 +477631,62 @@
       }
     ],
     "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-15712": {
+    "cveId": "CVE-2025-15712",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 3.5,
+          "attackVector": "NETWORK",
+          "baseSeverity": "LOW",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:H/UI:R/S:U/C:L/I:L/A:N",
+          "integrityImpact": "LOW",
+          "userInteraction": "REQUIRED",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "HIGH",
+          "confidentialityImpact": "LOW"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-15712",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-11T11:28:23.457888Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-79",
+            "description": "CWE-79 Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-15182": {
@@ -620107,7 +620133,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-10-08T03:55:10.734755Z"
+            "timestamp": "2025-10-07T13:38:50.155795Z"
           }
         }
       }
@@ -1345901,7 +1345927,7 @@
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "active"
+                "Exploitation": "none"
               },
               {
                 "Automatable": "no"
@@ -1345911,7 +1345937,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-09-18T14:40:05.718549Z"
+            "timestamp": "2026-09-18T13:00:36.411880Z"
           }
         }
       },
@@ -1377943,6 +1377969,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2025-10-17T13:13:03.398851Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-55002": {
+    "cveId": "CVE-2025-55002",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-55002",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-11T03:29:38.969959Z"
           }
         }
       }
