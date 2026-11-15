@@ -141,6 +141,20 @@
   },
   {
     "date": "2026-11-13",
+    "datetime_utc": "2026-11-13T12:07:37+00:00",
+    "source": "BSI CERT-Bund (WID)",
+    "region": "DE",
+    "trust": "Government",
+    "category": "Security Advisories",
+    "title": "[UPDATE] [mittel] Linux Kernel: Mehrere Schwachstellen",
+    "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2026-3588",
+    "summary": "Ein Angreifer kann mehrere Schwachstellen im Linux Kernel ausnutzen, um Informationen offenzulegen, Ressourcen- oder Speicherverwaltungsfehler zu verursachen, Denial-of-Service-Zustände auszulösen oder andere, nicht näher spezifizierte Angriffe durchzuführen.",
+    "cves": [],
+    "status": "to-review",
+    "origin": "RSS"
+  },
+  {
+    "date": "2026-11-13",
     "datetime_utc": "2026-11-13T10:37:59+00:00",
     "source": "BSI CERT-Bund (WID)",
     "region": "DE",
@@ -8424,20 +8438,6 @@
     "title": "Warning: Two critical vulnerabilities which can lead to Remote Code Execution in WatchGuard, Patch Immediately!",
     "link": "https://ccb.belgium.be/advisories/warning-two-critical-vulnerabilities-which-can-lead-remote-code-execution-watchguard",
     "summary": "CCB Advisories",
-    "cves": [],
-    "status": "to-review",
-    "origin": "RSS"
-  },
-  {
-    "date": "2026-09-29",
-    "datetime_utc": "2026-09-29T11:31:29+00:00",
-    "source": "BSI CERT-Bund (WID)",
-    "region": "DE",
-    "trust": "Government",
-    "category": "Security Advisories",
-    "title": "[UPDATE] [hoch] Node.js: Mehrere Schwachstellen",
-    "link": "https://wid.cert-bund.de/portal/wid/securityadvisory?name=WID-SEC-2024-0393",
-    "summary": "Ein entfernter, anonymer Angreifer kann mehrere Schwachstellen in Node.js ausnutzen, um beliebigen Code auszuführen, Sicherheitsmaßnahmen zu umgehen, einen Denial-of-Service-Zustand zu verursachen, vertrauliche Informationen offenzulegen, Dateien zu manipulieren oder seine Privilegien zu erweitern.",
     "cves": [],
     "status": "to-review",
     "origin": "RSS"
