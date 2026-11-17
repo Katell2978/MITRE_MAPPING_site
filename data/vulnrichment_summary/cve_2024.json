@@ -17391,6 +17391,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2024-41786": {
+    "cveId": "CVE-2024-41786",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2024-41786",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-12T20:10:38.575581Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2024-41030": {
     "cveId": "CVE-2024-41030",
     "metrics": [
@@ -229735,7 +229764,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-02-26T18:00:38.232849Z"
+            "timestamp": "2025-02-27T04:55:14.796829Z"
           }
         }
       }
@@ -850126,6 +850155,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2024-58407": {
+    "cveId": "CVE-2024-58407",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2024-58407",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-16T18:21:11.018261Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2024-58090": {
     "cveId": "CVE-2024-58090",
     "metrics": [
@@ -850320,6 +850378,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2026-08-31T11:02:09.695643Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2024-58406": {
+    "cveId": "CVE-2024-58406",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2024-58406",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-13T21:08:04.608383Z"
           }
         }
       }
@@ -851603,6 +851690,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2024-58405": {
+    "cveId": "CVE-2024-58405",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2024-58405",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-13T16:34:47.962720Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2024-58287": {
     "cveId": "CVE-2024-58287",
     "metrics": [
@@ -852847,6 +852963,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2025-12-18T20:48:44.742300Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2024-58408": {
+    "cveId": "CVE-2024-58408",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2024-58408",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-16T17:53:20.707908Z"
           }
         }
       }
@@ -905147,6 +905292,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2024-36309": {
+    "cveId": "CVE-2024-36309",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2024-36309",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-12T23:48:21.027281Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2024-36736": {
     "cveId": "CVE-2024-36736",
     "metrics": [
@@ -915931,6 +916105,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2024-06-14T13:23:27.850246Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2024-36344": {
+    "cveId": "CVE-2024-36344",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2024-36344",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-13T00:16:37.654294Z"
           }
         }
       }
@@ -979957,7 +980160,18 @@
         }
       }
     ],
-    "problemTypes": [],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-776",
+            "description": "CWE-776 Improper Restriction of Recursive Entity References in DTDs ('XML Entity Expansion')"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2024-28515": {
@@ -1336342,6 +1336556,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2024-21954": {
+    "cveId": "CVE-2024-21954",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2024-21954",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-13T00:14:33.335747Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2024-21376": {
     "cveId": "CVE-2024-21376",
     "metrics": [
@@ -1343358,6 +1343601,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2024-04-23T21:47:31.702467Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2024-21963": {
+    "cveId": "CVE-2024-21963",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2024-21963",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-13T00:15:56.802266Z"
           }
         }
       }

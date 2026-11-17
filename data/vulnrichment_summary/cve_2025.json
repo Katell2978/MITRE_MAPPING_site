@@ -434,6 +434,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-41725": {
+    "cveId": "CVE-2025-41725",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-41725",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-13T21:01:50.713795Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-41702": {
     "cveId": "CVE-2025-41702",
     "metrics": [
@@ -79740,6 +79769,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-48504": {
+    "cveId": "CVE-2025-48504",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-48504",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-12T23:50:03.090117Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-48390": {
     "cveId": "CVE-2025-48390",
     "metrics": [
@@ -125420,6 +125478,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-54508": {
+    "cveId": "CVE-2025-54508",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-54508",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-12T23:38:51.520840Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-54782": {
     "cveId": "CVE-2025-54782",
     "metrics": [
@@ -128430,6 +128517,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2025-10-03T19:03:13.054441Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-54506": {
+    "cveId": "CVE-2025-54506",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-54506",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-12T23:37:22.980351Z"
           }
         }
       }
@@ -135294,6 +135410,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-54501": {
+    "cveId": "CVE-2025-54501",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-54501",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-13T00:17:42.748134Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-54952": {
     "cveId": "CVE-2025-54952",
     "metrics": [
@@ -137909,6 +138054,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2025-07-28T15:25:44.118629Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-54504": {
+    "cveId": "CVE-2025-54504",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-54504",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-12T23:39:44.566667Z"
           }
         }
       }
@@ -141733,6 +141907,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-54503": {
+    "cveId": "CVE-2025-54503",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-54503",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-12T23:38:10.484039Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-54026": {
     "cveId": "CVE-2025-54026",
     "metrics": [
@@ -142014,6 +142217,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2025-08-06T15:12:04.067529Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-54507": {
+    "cveId": "CVE-2025-54507",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-54507",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-13T00:16:17.805215Z"
           }
         }
       }
@@ -151489,6 +151721,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2025-09-09T19:21:49.778920Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-10935": {
+    "cveId": "CVE-2025-10935",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-10935",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-16T20:16:37.063076Z"
           }
         }
       }
@@ -166875,6 +167136,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2025-10-30T13:27:07.686303Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-10698": {
+    "cveId": "CVE-2025-10698",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-10698",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-16T15:46:26.684960Z"
           }
         }
       }
@@ -236698,6 +236988,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-52537": {
+    "cveId": "CVE-2025-52537",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-52537",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-12T23:43:44.134862Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-52834": {
     "cveId": "CVE-2025-52834",
     "metrics": [
@@ -237082,6 +237401,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2025-07-02T20:08:46.377959Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-52535": {
+    "cveId": "CVE-2025-52535",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-52535",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-12T23:42:59.286501Z"
           }
         }
       }
@@ -330063,6 +330411,35 @@
     ],
     "other": {}
   },
+  "CVE-2025-71468": {
+    "cveId": "CVE-2025-71468",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-71468",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-16T18:20:45.681630Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-71454": {
     "cveId": "CVE-2025-71454",
     "metrics": [
@@ -331107,7 +331484,18 @@
         }
       }
     ],
-    "problemTypes": [],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-416",
+            "description": "CWE-416 Use After Free"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-71117": {
@@ -331547,6 +331935,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-71462": {
+    "cveId": "CVE-2025-71462",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-71462",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-13T15:30:54.975130Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-71428": {
     "cveId": "CVE-2025-71428",
     "metrics": [
@@ -331939,6 +332356,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2026-06-23T14:31:45.381769Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-71463": {
+    "cveId": "CVE-2025-71463",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-71463",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-13T20:34:57.242804Z"
           }
         }
       }
@@ -332581,7 +333027,18 @@
         }
       }
     ],
-    "problemTypes": [],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-476",
+            "description": "CWE-476 NULL Pointer Dereference"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-71031": {
@@ -333082,6 +333539,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-71469": {
+    "cveId": "CVE-2025-71469",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-71469",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-16T16:03:08.124368Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-71259": {
     "cveId": "CVE-2025-71259",
     "metrics": [
@@ -333349,7 +333835,18 @@
         }
       }
     ],
-    "problemTypes": [],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-401",
+            "description": "CWE-401 Missing Release of Memory after Effective Lifetime"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-71211": {
@@ -333552,7 +334049,18 @@
         }
       }
     ],
-    "problemTypes": [],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-400",
+            "description": "CWE-400 Uncontrolled Resource Consumption"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-71324": {
@@ -333639,7 +334147,18 @@
         }
       }
     ],
-    "problemTypes": [],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-190",
+            "description": "CWE-190 Integer Overflow or Wraparound"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-71320": {
@@ -334047,7 +334566,18 @@
         }
       }
     ],
-    "problemTypes": [],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-119",
+            "description": "CWE-119 Improper Restriction of Operations within the Bounds of a Memory Buffer"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-71231": {
@@ -334711,7 +335241,18 @@
         }
       }
     ],
-    "problemTypes": [],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-119",
+            "description": "CWE-119 Improper Restriction of Operations within the Bounds of a Memory Buffer"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-71000": {
@@ -335053,6 +335594,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2026-11-05T21:14:59.801669Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-71465": {
+    "cveId": "CVE-2025-71465",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-71465",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-16T19:39:00.852014Z"
           }
         }
       }
@@ -336156,7 +336726,18 @@
         }
       }
     ],
-    "problemTypes": [],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-20",
+            "description": "CWE-20 Improper Input Validation"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-71078": {
@@ -336427,6 +337008,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-71459": {
+    "cveId": "CVE-2025-71459",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-71459",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-13T20:34:21.054650Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-71119": {
     "cveId": "CVE-2025-71119",
     "metrics": [
@@ -336605,6 +337215,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2026-06-22T17:11:50.314580Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-71470": {
+    "cveId": "CVE-2025-71470",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-71470",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-16T19:36:34.102397Z"
           }
         }
       }
@@ -337229,7 +337868,18 @@
         }
       }
     ],
-    "problemTypes": [],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-400",
+            "description": "CWE-400 Uncontrolled Resource Consumption"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-71399": {
@@ -337533,6 +338183,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-71464": {
+    "cveId": "CVE-2025-71464",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-71464",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-16T18:42:32.076688Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-71234": {
     "cveId": "CVE-2025-71234",
     "metrics": [
@@ -337599,7 +338278,18 @@
         }
       }
     ],
-    "problemTypes": [],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-401",
+            "description": "CWE-401 Missing Release of Memory after Effective Lifetime"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-71274": {
@@ -338017,6 +338707,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-71460": {
+    "cveId": "CVE-2025-71460",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-71460",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-16T20:37:30.954728Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-71111": {
     "cveId": "CVE-2025-71111",
     "metrics": [
@@ -338119,6 +338838,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2026-09-09T14:14:00.996696Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-71466": {
+    "cveId": "CVE-2025-71466",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-71466",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-16T19:35:21.497588Z"
           }
         }
       }
@@ -340253,7 +341001,18 @@
         }
       }
     ],
-    "problemTypes": [],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-134",
+            "description": "CWE-134 Use of Externally-Controlled Format String"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-68020": {
@@ -340660,7 +341419,18 @@
         }
       }
     ],
-    "problemTypes": [],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-476",
+            "description": "CWE-476 NULL Pointer Dereference"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-68811": {
@@ -342039,7 +342809,18 @@
         }
       }
     ],
-    "problemTypes": [],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-863",
+            "description": "CWE-863 Incorrect Authorization"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-68472": {
@@ -345260,7 +346041,18 @@
         }
       }
     ],
-    "problemTypes": [],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-200",
+            "description": "CWE-200 Exposure of Sensitive Information to an Unauthorized Actor"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-68422": {
@@ -345595,7 +346387,18 @@
         }
       }
     ],
-    "problemTypes": [],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-476",
+            "description": "CWE-476 NULL Pointer Dereference"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-68115": {
@@ -351940,7 +352743,18 @@
         }
       }
     ],
-    "problemTypes": [],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-476",
+            "description": "CWE-476 NULL Pointer Dereference"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-68544": {
@@ -358288,7 +359102,18 @@
         }
       }
     ],
-    "problemTypes": [],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-862",
+            "description": "CWE-862 Missing Authorization"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-68951": {
@@ -474446,7 +475271,7 @@
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "none"
+                "Exploitation": "poc"
               },
               {
                 "Automatable": "yes"
@@ -474456,7 +475281,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-01-29T14:50:31.874299Z"
+            "timestamp": "2026-03-19T18:39:38.156023Z"
           }
         }
       }
@@ -497645,6 +498470,22 @@
     "cveId": "CVE-2025-66621",
     "metrics": [
       {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 8.1,
+          "attackVector": "NETWORK",
+          "baseSeverity": "HIGH",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:N",
+          "integrityImpact": "HIGH",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "NONE",
+          "privilegesRequired": "LOW",
+          "confidentialityImpact": "HIGH"
+        }
+      },
+      {
         "other": {
           "type": "ssvc",
           "content": {
@@ -497664,22 +498505,6 @@
             "version": "2.0.3",
             "timestamp": "2026-11-10T18:47:45.501078Z"
           }
-        }
-      },
-      {
-        "cvssV3_1": {
-          "scope": "UNCHANGED",
-          "version": "3.1",
-          "baseScore": 9.1,
-          "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:N",
-          "integrityImpact": "HIGH",
-          "userInteraction": "NONE",
-          "attackComplexity": "LOW",
-          "availabilityImpact": "NONE",
-          "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
         }
       }
     ],
@@ -498458,6 +499283,51 @@
             ],
             "version": "2.0.3",
             "timestamp": "2025-12-05T18:37:20.458733Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-66365": {
+    "cveId": "CVE-2025-66365",
+    "metrics": [
+      {
+        "cvssV3_1": {
+          "scope": "UNCHANGED",
+          "version": "3.1",
+          "baseScore": 5.3,
+          "attackVector": "NETWORK",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+          "integrityImpact": "NONE",
+          "userInteraction": "NONE",
+          "attackComplexity": "LOW",
+          "availabilityImpact": "LOW",
+          "privilegesRequired": "NONE",
+          "confidentialityImpact": "NONE"
+        }
+      },
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-66365",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-12T11:13:44.382829Z"
           }
         }
       }
@@ -499479,14 +500349,14 @@
                 "Exploitation": "none"
               },
               {
-                "Automatable": "yes"
+                "Automatable": "no"
               },
               {
                 "Technical Impact": "partial"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-12-05T16:15:39.701596Z"
+            "timestamp": "2026-11-10T16:03:37.458950Z"
           }
         }
       }
@@ -650349,6 +651219,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-29940": {
+    "cveId": "CVE-2025-29940",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-29940",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-12T23:44:14.087317Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-29916": {
     "cveId": "CVE-2025-29916",
     "metrics": [
@@ -655762,6 +656661,35 @@
         ]
       }
     ],
+    "other": {}
+  },
+  "CVE-2025-29941": {
+    "cveId": "CVE-2025-29941",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-29941",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-12T23:50:34.620832Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-29084": {
@@ -672928,6 +673856,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-62621": {
+    "cveId": "CVE-2025-62621",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-62621",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-12T23:40:18.597035Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-62559": {
     "cveId": "CVE-2025-62559",
     "metrics": [
@@ -685667,6 +686624,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2026-01-27T15:28:16.606616Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-62620": {
+    "cveId": "CVE-2025-62620",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-62620",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-12T23:41:28.925596Z"
           }
         }
       }
@@ -727829,6 +728815,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2025-06-06T13:45:05.485730Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-5809": {
+    "cveId": "CVE-2025-5809",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-5809",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-16T15:44:49.140795Z"
           }
         }
       }
@@ -890998,6 +892013,46 @@
       }
     ],
     "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-53700": {
+    "cveId": "CVE-2025-53700",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-53700",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-16T22:53:09.900649Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-922",
+            "description": "CWE-922 Insecure Storage of Sensitive Information"
+          }
+        ]
+      }
+    ],
     "other": {}
   },
   "CVE-2025-53630": {
@@ -1081747,6 +1082802,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-59847": {
+    "cveId": "CVE-2025-59847",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-59847",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-16T21:53:54.627607Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-59013": {
     "cveId": "CVE-2025-59013",
     "metrics": [
@@ -1083540,6 +1084624,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2025-10-14T18:36:48.321517Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-59848": {
+    "cveId": "CVE-2025-59848",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-59848",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-16T21:53:12.442745Z"
           }
         }
       }
@@ -1117234,6 +1118347,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-0008": {
+    "cveId": "CVE-2025-0008",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-0008",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-12T23:49:03.958779Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-0666": {
     "cveId": "CVE-2025-0666",
     "metrics": [
@@ -1122773,6 +1123915,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-0043": {
+    "cveId": "CVE-2025-0043",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-0043",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-13T00:15:36.585880Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-0792": {
     "cveId": "CVE-2025-0792",
     "metrics": [
@@ -1124629,6 +1125800,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2025-02-24T12:50:38.670042Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-0027": {
+    "cveId": "CVE-2025-0027",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-0027",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-12T23:45:31.765095Z"
           }
         }
       }
@@ -1246319,6 +1247519,46 @@
     ],
     "other": {}
   },
+  "CVE-2025-43867": {
+    "cveId": "CVE-2025-43867",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-43867",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-13T21:23:26.021386Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [
+      {
+        "descriptions": [
+          {
+            "lang": "en",
+            "type": "CWE",
+            "cweId": "CWE-1395",
+            "description": "CWE-1395 Dependency on Vulnerable Third-Party Component"
+          }
+        ]
+      }
+    ],
+    "other": {}
+  },
   "CVE-2025-43290": {
     "cveId": "CVE-2025-43290",
     "metrics": [
@@ -1256420,6 +1257660,35 @@
         ]
       }
     ],
+    "other": {}
+  },
+  "CVE-2025-43874": {
+    "cveId": "CVE-2025-43874",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-43874",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-16T22:52:21.861701Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2025-43430": {
@@ -1345927,7 +1347196,7 @@
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "none"
+                "Exploitation": "active"
               },
               {
                 "Automatable": "no"
@@ -1345937,7 +1347206,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-09-18T13:00:36.411880Z"
+            "timestamp": "2026-09-18T14:40:05.718549Z"
           }
         }
       },

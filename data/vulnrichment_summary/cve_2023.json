@@ -93427,6 +93427,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2023-54423": {
+    "cveId": "CVE-2023-54423",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2023-54423",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-16T20:44:02.234813Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2023-54193": {
     "cveId": "CVE-2023-54193",
     "metrics": [
