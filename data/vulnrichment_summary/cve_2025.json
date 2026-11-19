@@ -669065,6 +669065,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-62165": {
+    "cveId": "CVE-2025-62165",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-62165",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-18T15:59:40.375785Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-62777": {
     "cveId": "CVE-2025-62777",
     "metrics": [
