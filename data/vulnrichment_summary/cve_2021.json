@@ -39279,6 +39279,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2021-48023": {
+    "cveId": "CVE-2021-48023",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2021-48023",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-18T17:40:31.849378Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2021-48019": {
     "cveId": "CVE-2021-48019",
     "metrics": [
@@ -39540,6 +39569,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2021-48025": {
+    "cveId": "CVE-2021-48025",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2021-48025",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-18T16:34:56.799304Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2021-48015": {
     "cveId": "CVE-2021-48015",
     "metrics": [
@@ -39562,6 +39620,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2026-11-05T15:59:02.753208Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2021-48028": {
+    "cveId": "CVE-2021-48028",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2021-48028",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-18T17:44:11.642364Z"
           }
         }
       }

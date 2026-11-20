@@ -63574,6 +63574,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2020-37290": {
+    "cveId": "CVE-2020-37290",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2020-37290",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-18T16:35:52.238480Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2020-37038": {
     "cveId": "CVE-2020-37038",
     "metrics": [
