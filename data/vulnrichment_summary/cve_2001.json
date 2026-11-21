@@ -1,33 +1,4 @@
 {
-  "CVE-2001-1184": {
-    "cveId": "CVE-2001-1184",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2001-1184",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-10-09T18:48:54.419465Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
   "CVE-2001-1546": {
     "cveId": "CVE-2001-1546",
     "metrics": [
@@ -82,6 +53,35 @@
         ]
       }
     ],
+    "other": {}
+  },
+  "CVE-2001-1184": {
+    "cveId": "CVE-2001-1184",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2001-1184",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-10-09T18:48:54.419465Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2001-1533": {
@@ -253,6 +253,64 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2001-0514": {
+    "cveId": "CVE-2001-0514",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2001-0514",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-10-09T19:01:05.878704Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2001-0006": {
+    "cveId": "CVE-2001-0006",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2001-0006",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2024-01-31T15:50:22.565040Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2001-0667": {
     "cveId": "CVE-2001-0667",
     "metrics": [
@@ -338,35 +396,6 @@
     "problemTypes": [],
     "other": {}
   },
-  "CVE-2001-0514": {
-    "cveId": "CVE-2001-0514",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2001-0514",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "yes"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2026-10-09T19:01:05.878704Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
-    "other": {}
-  },
   "CVE-2001-0827": {
     "cveId": "CVE-2001-0827",
     "metrics": [
@@ -421,35 +450,6 @@
         ]
       }
     ],
-    "other": {}
-  },
-  "CVE-2001-0006": {
-    "cveId": "CVE-2001-0006",
-    "metrics": [
-      {
-        "other": {
-          "type": "ssvc",
-          "content": {
-            "id": "CVE-2001-0006",
-            "role": "CISA Coordinator",
-            "options": [
-              {
-                "Exploitation": "none"
-              },
-              {
-                "Automatable": "no"
-              },
-              {
-                "Technical Impact": "partial"
-              }
-            ],
-            "version": "2.0.3",
-            "timestamp": "2024-01-31T15:50:22.565040Z"
-          }
-        }
-      }
-    ],
-    "problemTypes": [],
     "other": {}
   }
 }
