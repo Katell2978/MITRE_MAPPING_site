@@ -183810,6 +183810,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2021-48026": {
+    "cveId": "CVE-2021-48026",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2021-48026",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-21T03:56:16.352776Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2021-48028": {
     "cveId": "CVE-2021-48028",
     "metrics": [
@@ -183955,6 +183984,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2021-48021": {
+    "cveId": "CVE-2021-48021",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2021-48021",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-21T03:57:26.893183Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2021-48008": {
     "cveId": "CVE-2021-48008",
     "metrics": [
@@ -184013,6 +184071,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2021-48022": {
+    "cveId": "CVE-2021-48022",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2021-48022",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-19T18:30:33.212903Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2021-48018": {
     "cveId": "CVE-2021-48018",
     "metrics": [
@@ -184064,6 +184151,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2026-09-18T17:07:41.902767Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2021-48027": {
+    "cveId": "CVE-2021-48027",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2021-48027",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-19T18:24:38.813675Z"
           }
         }
       }

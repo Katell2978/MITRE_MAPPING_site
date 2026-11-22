@@ -33706,6 +33706,35 @@
     ],
     "other": {}
   },
+  "CVE-2018-25442": {
+    "cveId": "CVE-2018-25442",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2018-25442",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-21T04:00:05.943341Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2018-25023": {
     "cveId": "CVE-2018-25023",
     "metrics": [
@@ -36394,6 +36423,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2026-05-29T17:22:43.786309Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2018-25443": {
+    "cveId": "CVE-2018-25443",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2018-25443",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-19T18:34:18.171491Z"
           }
         }
       }

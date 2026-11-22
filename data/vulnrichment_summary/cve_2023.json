@@ -474527,6 +474527,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2023-54416": {
+    "cveId": "CVE-2023-54416",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2023-54416",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-21T03:49:49.952380Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2023-54338": {
     "cveId": "CVE-2023-54338",
     "metrics": [
@@ -475535,6 +475564,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2026-10-15T21:37:51.425953Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2023-54420": {
+    "cveId": "CVE-2023-54420",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2023-54420",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "yes"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-21T03:48:17.681512Z"
           }
         }
       }

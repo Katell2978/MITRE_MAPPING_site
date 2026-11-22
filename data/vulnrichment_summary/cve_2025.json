@@ -27651,7 +27651,7 @@
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "none"
+                "Exploitation": "active"
               },
               {
                 "Automatable": "yes"
@@ -27661,7 +27661,16 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-11-12T17:32:55.237419Z"
+            "timestamp": "2026-11-20T18:42:15.844043Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2026-11-20",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2025-42884"
           }
         }
       }
@@ -388309,6 +388318,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2026-11-05T21:14:32.226190Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-71474": {
+    "cveId": "CVE-2025-71474",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-71474",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-20T13:35:41.270654Z"
           }
         }
       }
