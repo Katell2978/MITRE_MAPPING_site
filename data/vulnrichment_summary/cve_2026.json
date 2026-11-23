@@ -143891,18 +143891,7 @@
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-407",
-            "description": "CWE-407 Inefficient Algorithmic Complexity"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2026-42769": {
