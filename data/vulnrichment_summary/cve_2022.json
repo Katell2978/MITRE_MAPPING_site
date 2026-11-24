@@ -238534,6 +238534,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2022-4998": {
+    "cveId": "CVE-2022-4998",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2022-4998",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-23T16:23:01.002243Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2022-4985": {
     "cveId": "CVE-2022-4985",
     "metrics": [

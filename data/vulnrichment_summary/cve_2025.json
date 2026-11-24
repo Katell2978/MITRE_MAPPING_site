@@ -138874,7 +138874,7 @@
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "none"
+                "Exploitation": "poc"
               },
               {
                 "Automatable": "no"
@@ -138884,7 +138884,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-01-08T04:55:25.818237Z"
+            "timestamp": "2026-04-29T03:55:31.504847Z"
           }
         }
       }
@@ -525441,7 +525441,7 @@
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "none"
+                "Exploitation": "poc"
               },
               {
                 "Automatable": "no"
@@ -525451,7 +525451,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-04-03T15:05:56.300402Z"
+            "timestamp": "2025-04-08T12:58:45.628086Z"
           }
         }
       }
@@ -1035381,6 +1035381,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-61963": {
+    "cveId": "CVE-2025-61963",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-61963",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "total"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-23T20:24:06.050627Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-61972": {
     "cveId": "CVE-2025-61972",
     "metrics": [
@@ -1132812,7 +1132841,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-02-19T18:39:10.861038Z"
+            "timestamp": "2025-09-19T03:55:15.282969Z"
           }
         }
       }
