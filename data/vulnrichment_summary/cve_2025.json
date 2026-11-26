@@ -186017,7 +186017,7 @@
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "poc"
+                "Exploitation": "none"
               },
               {
                 "Automatable": "yes"
@@ -186027,7 +186027,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-11-08T04:55:22.583378Z"
+            "timestamp": "2025-11-07T20:25:11.566431Z"
           }
         }
       }
@@ -289124,6 +289124,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-36441": {
+    "cveId": "CVE-2025-36441",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-36441",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-18T21:08:42.307828Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-36271": {
     "cveId": "CVE-2025-36271",
     "metrics": [
@@ -381256,7 +381285,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-03-03T17:23:06.868981Z"
+            "timestamp": "2025-02-27T15:03:59.850885Z"
           }
         }
       }
@@ -388082,6 +388111,35 @@
     "problemTypes": [],
     "other": {}
   },
+  "CVE-2025-71472": {
+    "cveId": "CVE-2025-71472",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-71472",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "poc"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-24T03:34:14.128959Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
   "CVE-2025-71120": {
     "cveId": "CVE-2025-71120",
     "metrics": [
@@ -392781,6 +392839,35 @@
             ],
             "version": "2.0.3",
             "timestamp": "2026-11-05T21:14:46.262541Z"
+          }
+        }
+      }
+    ],
+    "problemTypes": [],
+    "other": {}
+  },
+  "CVE-2025-71473": {
+    "cveId": "CVE-2025-71473",
+    "metrics": [
+      {
+        "other": {
+          "type": "ssvc",
+          "content": {
+            "id": "CVE-2025-71473",
+            "role": "CISA Coordinator",
+            "options": [
+              {
+                "Exploitation": "none"
+              },
+              {
+                "Automatable": "no"
+              },
+              {
+                "Technical Impact": "partial"
+              }
+            ],
+            "version": "2.0.3",
+            "timestamp": "2026-11-25T03:44:13.925825Z"
           }
         }
       }
@@ -456913,7 +457000,7 @@
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "poc"
+                "Exploitation": "none"
               },
               {
                 "Automatable": "no"
@@ -456923,7 +457010,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-06-30T14:35:57.555416Z"
+            "timestamp": "2025-04-29T13:18:15.799218Z"
           }
         }
       }
@@ -474092,7 +474179,7 @@
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "none"
+                "Exploitation": "poc"
               },
               {
                 "Automatable": "no"
@@ -474102,7 +474189,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-05-16T18:08:10.776270Z"
+            "timestamp": "2026-05-06T15:04:45.602956Z"
           }
         }
       }
@@ -537708,14 +537795,14 @@
                 "Exploitation": "none"
               },
               {
-                "Automatable": "no"
+                "Automatable": "yes"
               },
               {
                 "Technical Impact": "partial"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-05-27T19:08:35.922002Z"
+            "timestamp": "2025-04-07T13:25:11.498089Z"
           }
         }
       }
@@ -537998,7 +538085,7 @@
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "none"
+                "Exploitation": "poc"
               },
               {
                 "Automatable": "no"
@@ -538008,7 +538095,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-04-07T13:23:42.465415Z"
+            "timestamp": "2026-06-30T14:19:24.430671Z"
           }
         }
       }
@@ -1130783,11 +1130870,11 @@
                 "Automatable": "no"
               },
               {
-                "Technical Impact": "partial"
+                "Technical Impact": "total"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-03-18T20:43:04.010677Z"
+            "timestamp": "2025-06-06T13:41:20.769621Z"
           }
         }
       }
@@ -1213074,11 +1213161,11 @@
                 "Automatable": "no"
               },
               {
-                "Technical Impact": "total"
+                "Technical Impact": "partial"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-01-22T04:55:55.619672Z"
+            "timestamp": "2025-07-07T14:37:02.701764Z"
           }
         }
       }
@@ -1289268,7 +1289355,7 @@
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "poc"
+                "Exploitation": "active"
               },
               {
                 "Automatable": "no"
@@ -1289278,7 +1289365,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-10-19T19:12:01.666467Z"
+            "timestamp": "2026-11-25T20:14:59.737127Z"
           }
         }
       }

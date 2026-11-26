@@ -50213,11 +50213,11 @@
                 "Automatable": "no"
               },
               {
-                "Technical Impact": "partial"
+                "Technical Impact": "total"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-10-22T13:48:09.407937Z"
+            "timestamp": "2024-01-12T05:01:15.675714Z"
           }
         }
       }
@@ -58437,7 +58437,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-07-26T15:58:53.623448Z"
+            "timestamp": "2025-06-10T13:58:01.737027Z"
           }
         }
       }
@@ -326591,7 +326591,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-07-26T15:28:16.003937Z"
+            "timestamp": "2025-07-09T13:38:12.203477Z"
           }
         }
       }
@@ -576874,7 +576874,7 @@
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "none"
+                "Exploitation": "active"
               },
               {
                 "Automatable": "no"
@@ -576884,7 +576884,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2025-07-02T14:46:32.023415Z"
+            "timestamp": "2026-11-25T20:15:08.560472Z"
           }
         }
       }
@@ -587119,7 +587119,7 @@
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "none"
+                "Exploitation": "active"
               },
               {
                 "Automatable": "no"
@@ -587129,7 +587129,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2024-10-03T19:42:57.224088Z"
+            "timestamp": "2026-11-25T20:15:14.073311Z"
           }
         }
       }
