@@ -118847,7 +118847,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-06-09T18:46:29.165945Z"
+            "timestamp": "2026-06-10T03:58:53.147448Z"
           }
         }
       }
@@ -460842,16 +460842,16 @@
         "cvssV3_1": {
           "scope": "UNCHANGED",
           "version": "3.1",
-          "baseScore": 9.8,
+          "baseScore": 5.9,
           "attackVector": "NETWORK",
-          "baseSeverity": "CRITICAL",
-          "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-          "integrityImpact": "HIGH",
+          "baseSeverity": "MEDIUM",
+          "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+          "integrityImpact": "NONE",
           "userInteraction": "NONE",
-          "attackComplexity": "LOW",
+          "attackComplexity": "HIGH",
           "availabilityImpact": "HIGH",
           "privilegesRequired": "NONE",
-          "confidentialityImpact": "HIGH"
+          "confidentialityImpact": "NONE"
         }
       },
       {
@@ -460865,30 +460865,19 @@
                 "Exploitation": "none"
               },
               {
-                "Automatable": "yes"
+                "Automatable": "no"
               },
               {
-                "Technical Impact": "total"
+                "Technical Impact": "partial"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-11-19T21:20:00.274936Z"
+            "timestamp": "2026-11-20T19:45:06.462019Z"
           }
         }
       }
     ],
-    "problemTypes": [
-      {
-        "descriptions": [
-          {
-            "lang": "en",
-            "type": "CWE",
-            "cweId": "CWE-122",
-            "description": "CWE-122 Heap-based Buffer Overflow"
-          }
-        ]
-      }
-    ],
+    "problemTypes": [],
     "other": {}
   },
   "CVE-2026-121261": {
@@ -882828,11 +882817,11 @@
                 "Automatable": "no"
               },
               {
-                "Technical Impact": "partial"
+                "Technical Impact": "total"
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-06-23T02:13:39.529220Z"
+            "timestamp": "2026-06-25T03:55:28.617885Z"
           }
         }
       }
@@ -1430319,7 +1430308,7 @@
             "role": "CISA Coordinator",
             "options": [
               {
-                "Exploitation": "none"
+                "Exploitation": "active"
               },
               {
                 "Automatable": "yes"
@@ -1430329,7 +1430318,16 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-11-19T01:39:42.653386Z"
+            "timestamp": "2026-11-24T18:42:13.103149Z"
+          }
+        }
+      },
+      {
+        "other": {
+          "type": "kev",
+          "content": {
+            "dateAdded": "2026-11-24",
+            "reference": "https://www.cisa.gov/known-exploited-vulnerabilities-catalog?field_cve=CVE-2026-131914"
           }
         }
       }
@@ -2490428,7 +2490426,7 @@
               }
             ],
             "version": "2.0.3",
-            "timestamp": "2026-01-23T15:33:03.735811Z"
+            "timestamp": "2026-01-24T04:55:25.177681Z"
           }
         }
       }
